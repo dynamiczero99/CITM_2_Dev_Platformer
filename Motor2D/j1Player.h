@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
+#include "SDL/include/SDL_render.h"
 
 struct SDL_Texture;
 struct SDL_Rect;
@@ -39,6 +40,7 @@ private:
 	//TODO: Change to animation class (which can hold multiple rectangles)
 
 	pugi::xml_node player_node;
+	SDL_RendererFlip flip;
 };
 
 #endif

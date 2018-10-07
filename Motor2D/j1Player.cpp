@@ -30,6 +30,12 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
+	//p2SString path;
+	//p2SString image;
+	//path.create(player_node.child("path").value());
+	//image.create(player_node.child("image").value());
+	//characterTex = App->tex->LoadTexture(PATH(path.GetString(), image.GetString()));
+	//TODO: Why the code above doesn't work even though it's the same as the map code?
 	characterTex = App->tex->LoadTexture("textures/engineer character/engineer-idle.png");
 	return true;
 }
@@ -37,6 +43,7 @@ bool j1Player::Start()
 bool j1Player::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+		flip = SDL_FLIP_HORIZONTAL;
 		velocity.x -= horizontalSpeed;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
@@ -44,6 +51,7 @@ bool j1Player::PreUpdate()
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+		flip = SDL_FLIP_NONE;
 		velocity.x += horizontalSpeed;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
@@ -68,7 +76,7 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	App->render->Blit(characterTex, (int)position.x, (int)position.y, characterAnim);
+	App->render->Blit(characterTex, (int)position.x, (int)position.y, characterAnim, 1.0f, flip);
 	return true;
 }
 

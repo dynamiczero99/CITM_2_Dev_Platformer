@@ -27,7 +27,8 @@
   </map>
 
   <player>
-    <path>"textures/engineer character/engineer-idle.png"</path>
+    <path>textures/engineer character/</path>
+    <image>engineer-idle.png</image>
     <sprite x ="0" y ="0" w ="16" h="28"/>
     <sprite x ="16" y ="0" w ="16" h="28"/>
     <sprite x ="32" y ="0" w ="16" h="28"/>
