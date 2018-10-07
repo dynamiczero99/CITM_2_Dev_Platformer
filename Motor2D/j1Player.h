@@ -7,6 +7,7 @@
 
 struct SDL_Texture;
 struct SDL_Rect;
+class Animation;
 
 class j1Player : public j1Module
 {
@@ -39,7 +40,7 @@ private:
 	//TODO: Add acceleration (to use incorporate gravity easily)
 
 	SDL_Texture* characterTex;
-	SDL_Rect* characterAnim;
+	Animation* characterAnim;
 	//TODO: Change to animation class (which can hold multiple rectangles)
 
 	pugi::xml_node player_node;
