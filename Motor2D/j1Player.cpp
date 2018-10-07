@@ -12,18 +12,25 @@ j1Player::j1Player() : j1Module()
 
 bool j1Player::Awake(pugi::xml_node& player_node)
 {
-	characterTex = App->tex->LoadTexture(player_node.child("path").value());
-	//TODO: Put this in a for to start getting all the values of the animation
+	this->player_node = player_node;
 	characterAnim = new SDL_Rect();
 	characterAnim->x = player_node.child("sprite").attribute("x").as_int();
 	characterAnim->y = player_node.child("sprite").attribute("y").as_int();
 	characterAnim->w = player_node.child("sprite").attribute("w").as_int();
 	characterAnim->h = player_node.child("sprite").attribute("h").as_int();
+	//TODO: Put this in a for to start getting all the values of the animation
+	position.x = 0;
+	position.y = 0;
+	velocity.x = 0;
+	velocity.y = 0;
+	//TODO: Set them to be 0,0 when they are made, not in here
 	return true;
 }
 
 bool j1Player::Start()
 {
+	//INFO: We can't load the texture in awake because the render is not initialized yet
+	characterTex = App->tex->LoadTexture("textures/engineer character/engineer-idle.png");
 	return true;
 }
 

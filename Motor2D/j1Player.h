@@ -37,6 +37,8 @@ private:
 	SDL_Texture* characterTex;
 	SDL_Rect* characterAnim;
 	//TODO: Change to animation class (which can hold multiple rectangles)
+
+	pugi::xml_node player_node;
 };
 
 #endif
