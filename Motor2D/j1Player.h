@@ -4,9 +4,13 @@
 #include "j1Module.h"
 #include "p2Point.h"
 
+struct SDL_Texture;
+struct SDL_Rect;
+
 class j1Player : public j1Module
 {
 public:
+	j1Player();
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
 	// Called before the first frame
@@ -23,7 +27,16 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 private:
+	float horizontalSpeed = 1;//Pixels it will move every second
+	//TODO: Set the velocity in the xml
+
 	fPoint position;
+	fPoint velocity;
+	//TODO: Add acceleration (to use incorporate gravity easily)
+
+	SDL_Texture* characterTex;
+	SDL_Rect* characterAnim;
+	//TODO: Change to animation class (which can hold multiple rectangles)
 };
 
 #endif

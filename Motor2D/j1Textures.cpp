@@ -59,7 +59,7 @@ bool j1Textures::CleanUp()
 }
 
 // Load new texture from file path
-SDL_Texture* const j1Textures::Load(const char* path)
+SDL_Texture* const j1Textures::LoadTexture(const char* path)
 {
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load(path);
@@ -78,7 +78,7 @@ SDL_Texture* const j1Textures::Load(const char* path)
 }
 
 // Unload texture
-bool j1Textures::UnLoad(SDL_Texture* texture)
+bool j1Textures::UnloadTexture(SDL_Texture* texture)
 {
 	p2List_item<SDL_Texture*>* item;
 

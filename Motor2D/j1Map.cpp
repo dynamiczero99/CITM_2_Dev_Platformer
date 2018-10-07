@@ -329,7 +329,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = App->tex->LoadTexture(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
