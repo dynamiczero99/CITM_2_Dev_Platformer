@@ -1,2 +1,2 @@
 # CITM_2_Dev_Platformer
-A repository for the game development subject of our 2nd year in CITM (UPC).
+A platform game made for the development subject in the 2d year in CITM (UPC).
