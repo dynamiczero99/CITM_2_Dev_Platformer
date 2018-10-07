@@ -40,7 +40,11 @@ private:
 	//TODO: Add acceleration (to use incorporate gravity easily)
 
 	SDL_Texture* characterTex;
-	Animation* characterAnim;
+	Animation* currentAnim;
+	Animation* idleAnim;
+	Animation* jumpAnim;
+	Animation* runAnim;
+	Animation* deathAnim;
 	//TODO: Change to animation class (which can hold multiple rectangles)
 
 	pugi::xml_node player_node;

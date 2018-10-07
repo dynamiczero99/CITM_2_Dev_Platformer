@@ -5,7 +5,6 @@
 #include "j1Textures.h"
 #include "p2Animation.h"
 
-
 j1Player::j1Player() : j1Module()
 {
 	name.create("player");
@@ -14,22 +13,22 @@ j1Player::j1Player() : j1Module()
 bool j1Player::Awake(pugi::xml_node& player_node)
 {
 	this->player_node = player_node;
-	characterAnim = new Animation();
+	idleAnim = new Animation();
 	for (pugi::xml_node node_iterator = player_node.child("sprite"); node_iterator; node_iterator = node_iterator.next_sibling("sprite")) {
 		SDL_Rect frame;
 		frame.x = node_iterator.attribute("x").as_int();
 		frame.y = node_iterator.attribute("y").as_int();
 		frame.w = node_iterator.attribute("w").as_int();
 		frame.h = node_iterator.attribute("h").as_int();
-		characterAnim->PushBack(frame);
+		idleAnim->PushBack(frame);
 	}
-	characterAnim->speed = 0.5f;
-	//TODO: Put this in a for to start getting all the values of the animation
+	idleAnim->speed = 0.5f;
 	position.x = 0;
 	position.y = 0;
 	velocity.x = 0;
 	velocity.y = 0;
 	//TODO: Set them to be 0,0 when they are made, not in here
+	currentAnim = idleAnim;
 	return true;
 }
 
@@ -98,14 +97,13 @@ bool j1Player::Update(float dt)
 	if (!velocity.IsZero()) {
 		position += velocity;
 	}
-	
 
 	return true;
 }
 
 bool j1Player::PostUpdate()
 {
-	App->render->Blit(characterTex, (int)position.x, (int)position.y, &characterAnim->GetCurrentFrame(), 1.0f, flip);
+	App->render->Blit(characterTex, (int)position.x, (int)position.y, &currentAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
 
