@@ -27,12 +27,15 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	void AddForce(fPoint force);
+
 private:
 	float horizontalSpeed = 1;//Pixels it will move every second
 	//TODO: Set the velocity in the xml
 
 	fPoint position;
 	fPoint velocity;
+	fPoint acceleration;
 	//TODO: Add acceleration (to use incorporate gravity easily)
 
 	SDL_Texture* characterTex;

@@ -58,16 +58,39 @@ bool j1Player::PreUpdate()
 		velocity.x -= horizontalSpeed;
 	}
 
+	//&& Check that it is hitting the ground to be able to jump (he could jump on the air if not)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		fPoint force;
+		force.x = 0;
+		force.y = -2.0f;
+		AddForce(force);
+	}
+
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
 	//PHYSICS UPDATE
-	//TODO: Transfer from acceleration to velocity
+	//1- Add external forces
+	//Gravity
+	//Provisional value
+	acceleration.y += 0.25f;
+
+	//2- Checks if it has hit a wall
+	//Provisional, it only detects if it has reached a certain position in the y axis (we don't have collision detection yet)
+	if(position.y >= 50 && acceleration.y > 0)
+	{
+		acceleration.y = 0;
+		velocity.y = 0;
+	}
+
+	if (!acceleration.IsZero()) {
+		velocity += acceleration;
+	}
+
 	if (!velocity.IsZero()) {
-		position.x += velocity.x;
-		position.y += velocity.y;
+		position += velocity;
 	}
 	
 
@@ -94,4 +117,9 @@ bool j1Player::Load(pugi::xml_node&)
 bool j1Player::Save(pugi::xml_node&) const
 {
 	return true;
+}
+
+void j1Player::AddForce(fPoint force) {
+	acceleration += force;
+	//We don't have mass into consideration
 }
