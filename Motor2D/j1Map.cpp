@@ -44,7 +44,6 @@ void j1Map::Draw()
 					}
 				}
 			}
-
 		}
 	}
 
@@ -96,16 +95,15 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return retVec;
 }
 
+// TODO 7(old): Create a method that receives a tile id and returns it's Rect
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
 	SDL_Rect rect = {0, 0, 0, 0};
-	// TODO 7(old): Create a method that receives a tile id and returns it's Rect
 	rect.w = tile_width;
 	rect.h = tile_height;
 	rect.x = margin + ((rect.w + spacing) * (relative_id % columns));
 	rect.y = margin + ((rect.h + spacing) * (relative_id / columns));
-	return rect;
 	return rect;
 }
 
@@ -120,6 +118,7 @@ bool j1Map::CleanUp()
 
 	while(item != NULL)
 	{
+		RELEASE(item->data->anim);
 		RELEASE(item->data);
 		item = item->next;
 	}
@@ -295,14 +294,15 @@ bool j1Map::LoadMap()
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
+
 	set->name.create(tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->tile_width = tileset_node.attribute("tilewidth").as_int();
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
 	set->margin = tileset_node.attribute("margin").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
-	pugi::xml_node offset = tileset_node.child("tileoffset");
 
+	pugi::xml_node offset = tileset_node.child("tileoffset");
 	if(offset != NULL)
 	{
 		set->offset_x = offset.attribute("x").as_int();
@@ -348,6 +348,19 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 
 		set->columns = set->tex_width / set->tile_width;
 		set->rows = set->tex_height / set->tile_height;
+	}
+
+	//Loading animation
+	//Currently each tileset can only hold one animation
+	if (tileset_node.child("tile").child("animation")) {
+		set->anim = new Animation;
+	}
+	for (pugi::xml_node frame_node = tileset_node.child("tile").child("animation").child("frame"); frame_node; frame_node = frame_node.next_sibling()) {
+		set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int()));
+	}
+	pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("speed");
+	if (speed_node) {
+		set->anim->speed = speed_node.text().as_float();
 	}
 
 	return ret;

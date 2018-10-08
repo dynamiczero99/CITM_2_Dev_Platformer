@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "p2Animation.h"
 
 // ----------------------------------------------------
 //INFO:
@@ -50,6 +51,7 @@ struct TileSet
 	int					rows;
 	int					offset_x;
 	int					offset_y;
+	Animation*			anim;
 };
 
 enum class MapTypes
