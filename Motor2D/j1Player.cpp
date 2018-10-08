@@ -5,6 +5,8 @@
 #include "j1Textures.h"
 #include "p2Animation.h"
 
+#define GRAVITY 9.8f
+
 j1Player::j1Player() : j1Module()
 {
 	name.create("player");
@@ -65,10 +67,7 @@ bool j1Player::PreUpdate()
 
 	//&& Check that it is hitting the ground to be able to jump (he could jump on the air if not)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		fPoint force;
-		force.x = 0;
-		force.y = -2.0f;
-		AddForce(force);
+
 	}
 
 	return true;
@@ -77,26 +76,17 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	//PHYSICS UPDATE
-	//1- Add external forces
-	//Gravity
-	//Provisional value
-	acceleration.y += 0.25f;
+	//- Calculate time since last frame
+	deltaTime = lastTime - time;
+	lastTime = time;
 
-	//2- Checks if it has hit a wall
-	//Provisional, it only detects if it has reached a certain position in the y axis (we don't have collision detection yet)
-	if(position.y >= 50 && acceleration.y > 0)
-	{
-		acceleration.y = 0;
-		velocity.y = 0;
+	//- Add gravity
+	if (!IsStanding()) {
+		acceleration.y = GRAVITY;
 	}
 
-	if (!acceleration.IsZero()) {
-		velocity += acceleration;
-	}
-
-	if (!velocity.IsZero()) {
-		position += velocity;
-	}
+	velocity = velocity + acceleration * deltaTime;
+	position = position + velocity * deltaTime;
 
 	return true;
 }
@@ -123,7 +113,7 @@ bool j1Player::Save(pugi::xml_node&) const
 	return true;
 }
 
-void j1Player::AddForce(fPoint force) {
-	acceleration += force;
-	//We don't have mass into consideration
+bool j1Player::IsStanding() {
+	//Change to true when it is standing in a collider, not when it's in a certain position
+	return (position.y >= 50);
 }

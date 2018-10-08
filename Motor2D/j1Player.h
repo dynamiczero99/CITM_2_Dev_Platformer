@@ -28,7 +28,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void AddForce(fPoint force);
+	bool IsStanding();
 
 private:
 	float horizontalSpeed = 1;//Pixels it will move every second
@@ -49,6 +49,8 @@ private:
 
 	pugi::xml_node player_node;
 	SDL_RendererFlip flip;
+	float deltaTime;
+	float lastTime;
 };
 
 #endif
