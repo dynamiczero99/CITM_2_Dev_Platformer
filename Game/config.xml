@@ -29,7 +29,7 @@
   <player>
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>16</tile_size>
-    <gravity>20</gravity>
+    <gravity>75</gravity>
     <!-- Tiles it moves every second-->
     <move_speed_ground>5</move_speed_ground>
     <move_speed_air>4</move_speed_air>
