@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "p2Animation.h"
+#include "p2Defs.h"
 
 #define GRAVITY 9.8f
 
@@ -29,7 +30,8 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	position.y = 0;
 	velocity.x = 0;
 	velocity.y = 0;
-	//TODO: Set them to be 0,0 when they are made, not in here
+	acceleration.x = 0;
+	acceleration.y = 0;
 	currentAnim = idleAnim;
 	return true;
 }
@@ -37,13 +39,10 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
-	//p2SString path;
-	//p2SString image;
-	//path.create(player_node.child("path").value());
-	//image.create(player_node.child("image").value());
-	//characterTex = App->tex->LoadTexture(PATH(path.GetString(), image.GetString()));
+	p2SString path;
+	characterTex = App->tex->LoadTexture(player_node.child("path").text().as_string());
 	//TODO: Why the code above doesn't work even though it's the same as the map code?
-	characterTex = App->tex->LoadTexture("textures/engineer character/engineer-idle.png");
+	//characterTex = App->tex->LoadTexture("textures/engineer character/engineer-idle.png");
 	return true;
 }
 
