@@ -31,7 +31,8 @@ public:
 	bool IsStanding();
 
 private:
-	float horizontalSpeed = 1;//Pixels it will move every second
+	float moveSpeed = 250;//Velocity in x (pixels/s)
+	float jumpSpeed = -25;//Velocity in y (pixels/s)
 	//TODO: Set the velocity in the xml
 
 	fPoint position;
@@ -49,8 +50,8 @@ private:
 
 	pugi::xml_node player_node;
 	SDL_RendererFlip flip;
-	float deltaTime;
-	float lastTime;
+	float deltaTime = 0;
+	Uint32 lastTime = 0;
 };
 
 #endif

@@ -51,23 +51,23 @@ bool j1Player::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 		flip = SDL_FLIP_HORIZONTAL;
-		velocity.x -= horizontalSpeed;
+		velocity.x -= moveSpeed;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		velocity.x += horizontalSpeed;
+		velocity.x += moveSpeed;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
 		flip = SDL_FLIP_NONE;
-		velocity.x += horizontalSpeed;
+		velocity.x += moveSpeed;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		velocity.x -= horizontalSpeed;
+		velocity.x -= moveSpeed;
 	}
 
-	//&& Check that it is hitting the ground to be able to jump (he could jump on the air if not)
+	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-
+		velocity.y = jumpSpeed;
 	}
 
 	return true;
@@ -77,16 +77,28 @@ bool j1Player::Update(float dt)
 {
 	//PHYSICS UPDATE
 	//- Calculate time since last frame
-	deltaTime = lastTime - time;
-	lastTime = time;
+	deltaTime = SDL_GetTicks() - lastTime;
+	deltaTime /= 1000;//1 second is 1000 miliseconds
+	lastTime = SDL_GetTicks();
 
 	//- Add gravity
 	if (!IsStanding()) {
 		acceleration.y = GRAVITY;
 	}
+	else {
+		//Stop the player falling when it reaches a ground collider
+		acceleration.y = 0.0f;
+		if (velocity.y > 0) {
+			velocity.y = 0.0f;
+		}
+	}
 
-	velocity = velocity + acceleration * deltaTime;
-	position = position + velocity * deltaTime;
+	//- Move the player
+	velocity.x = velocity.x + acceleration.x * deltaTime;
+	velocity.y = velocity.y + acceleration.y * deltaTime;
+
+	position.x = position.x + velocity.x * deltaTime;
+	position.y = position.y + velocity.y * deltaTime;
 
 	return true;
 }
