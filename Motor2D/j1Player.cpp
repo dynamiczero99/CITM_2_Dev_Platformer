@@ -24,11 +24,12 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 
 	//Values from xml
 	tile_size = player_node.child("tile_size").text().as_uint();
-	gravity = pixel_to_tile(player_node.child("gravity").text().as_float());
-	moveSpeed = pixel_to_tile(player_node.child("jump_height").text().as_float());
+	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
+	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
+	moveSpeedAir = tile_to_pixel(player_node.child("move_speed_air").text().as_float());
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * pixel_to_tile(player_node.child("jump_height").text().as_float()) * 2.0f);
+	jumpSpeed = -sqrtf(gravity * tile_to_pixel(player_node.child("jump_height").text().as_float()) * 2.0f);
 
 	//Animations from xml
 	path = player_node.child("path").text().as_string();
@@ -55,20 +56,32 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
-		flip = SDL_FLIP_HORIZONTAL;
-		velocity.x -= moveSpeed;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		velocity.x += moveSpeed;
-	}
+	//TODO: Control the animations from an state machine (Ryu like)
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
-		flip = SDL_FLIP_NONE;
-		velocity.x += moveSpeed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
+		flip = SDL_FLIP_HORIZONTAL;
+		if (IsStanding()) {
+			//currentAnim = idleAnim;
+			velocity.x = -moveSpeedGnd;
+		}
+		else {
+			//currentAnim = jumpingAnim;
+			velocity.x = -moveSpeedAir;
+		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		velocity.x -= moveSpeed;
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+		flip = SDL_FLIP_NONE;
+		if (IsStanding()) {
+			//currentAnim = idleAnim;
+			velocity.x = moveSpeedGnd;
+		}
+		else {
+			//currentAnim = jumpingAnim;
+			velocity.x = moveSpeedAir;
+		}
+	}
+	else {
+		velocity.x = 0;
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
@@ -134,7 +147,7 @@ bool j1Player::IsStanding() {
 	return (position.y >= 50);
 }
 
-//We can imagine that 1 tile = 1 meter to make it easier for us to understand
-inline float j1Player::pixel_to_tile(uint pixel) {
+//We can consider that 1 tile = 1 meter to make it easier for us to imagine the different values
+inline float j1Player::tile_to_pixel(uint pixel) {
 	return pixel * tile_size;
 }

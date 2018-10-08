@@ -28,7 +28,7 @@ public:
 	bool CleanUp();
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-	inline float pixel_to_tile(uint pixel);
+	inline float tile_to_pixel(uint pixel);
 
 private:
 	bool IsStanding();
@@ -47,7 +47,8 @@ private:
 	Animation* runAnim;
 	Animation* deathAnim;
 
-	float moveSpeed;//(pixels/s)
+	float moveSpeedAir;//(pixels/s)
+	float moveSpeedGnd;//(pixels/s)
 	float jumpSpeed;//(pixels/s)
 
 	uint tile_size;

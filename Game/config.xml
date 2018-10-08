@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1024" height="768" scale="4"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -31,7 +31,8 @@
     <tile_size>16</tile_size>
     <gravity>9.8</gravity>
     <!-- Tiles it moves every second-->
-    <move_speed>1</move_speed>
+    <move_speed_ground>3</move_speed_ground>
+    <move_speed_air>2.5</move_speed_air>
     <!-- Tiles it reaches when the character jumps -->
     <jump_height>3.2</jump_height>
     <path>textures/engineer character/engineer-idle.png</path>
