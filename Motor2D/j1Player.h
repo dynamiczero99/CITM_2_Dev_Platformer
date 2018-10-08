@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "SDL/include/SDL_render.h"
+#include "p2SString.h"
 
 struct SDL_Texture;
 struct SDL_Rect;
@@ -31,8 +32,6 @@ public:
 	bool IsStanding();
 
 private:
-	float moveSpeed = 250;//Velocity in x (pixels/s)
-	float jumpSpeed = -25;//Velocity in y (pixels/s)
 	//TODO: Set the velocity in the xml
 
 	fPoint position;
@@ -46,12 +45,15 @@ private:
 	Animation* jumpAnim;
 	Animation* runAnim;
 	Animation* deathAnim;
-	//TODO: Change to animation class (which can hold multiple rectangles)
 
-	pugi::xml_node player_node;
+	float moveSpeed;//(pixels/s)
+	float jumpSpeed;//(pixels/s)
+	uint tile_size;
+	p2SString path;
 	SDL_RendererFlip flip;
 	float deltaTime = 0;
 	Uint32 lastTime = 0;
+	float gravity;
 };
 
 #endif

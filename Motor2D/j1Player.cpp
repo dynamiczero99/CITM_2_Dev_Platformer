@@ -5,8 +5,7 @@
 #include "j1Textures.h"
 #include "p2Animation.h"
 #include "p2Defs.h"
-
-#define GRAVITY 9.8f
+#include "math.h"
 
 j1Player::j1Player() : j1Module()
 {
@@ -15,7 +14,24 @@ j1Player::j1Player() : j1Module()
 
 bool j1Player::Awake(pugi::xml_node& player_node)
 {
-	this->player_node = player_node;
+	//General values
+	position.x = 0;
+	position.y = 0;
+	velocity.x = 0;
+	velocity.y = 0;
+	acceleration.x = 0;
+	acceleration.y = 0;
+
+	//Values from xml
+	tile_size = player_node.child("tile_size").text().as_uint;
+	gravity = player_node.child("gravity").text().as_float();
+	moveSpeed = player_node.child("jump_height").text().as_float() * (float)tile_size;
+	//- This formula traduces gives us the speed necessary to reach a certain height
+	//- It is calculated using the conservation of mechanic energy
+	jumpSpeed = -sqrtf(gravity * player_node.child("jump_height").text().as_float() * (float)tile_size * 2.0f);
+
+	//Animations from xml
+	path = player_node.child("path").text().as_string();
 	idleAnim = new Animation();
 	for (pugi::xml_node node_iterator = player_node.child("sprite"); node_iterator; node_iterator = node_iterator.next_sibling("sprite")) {
 		SDL_Rect frame;
@@ -26,12 +42,6 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 		idleAnim->PushBack(frame);
 	}
 	idleAnim->speed = 0.5f;
-	position.x = 0;
-	position.y = 0;
-	velocity.x = 0;
-	velocity.y = 0;
-	acceleration.x = 0;
-	acceleration.y = 0;
 	currentAnim = idleAnim;
 	return true;
 }
@@ -39,10 +49,7 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
-	p2SString path;
-	characterTex = App->tex->LoadTexture(player_node.child("path").text().as_string());
-	//TODO: Why the code above doesn't work even though it's the same as the map code?
-	//characterTex = App->tex->LoadTexture("textures/engineer character/engineer-idle.png");
+	characterTex = App->tex->LoadTexture(path.GetString());
 	return true;
 }
 
@@ -82,7 +89,7 @@ bool j1Player::Update(float dt)
 
 	//- Add gravity
 	if (!IsStanding()) {
-		acceleration.y = GRAVITY;
+		acceleration.y = gravity;
 	}
 	else {
 		//Stop the player falling when it reaches a ground collider
@@ -108,6 +115,7 @@ bool j1Player::PostUpdate()
 bool j1Player::CleanUp()
 {
 	App->tex->UnloadTexture(characterTex);
+	delete(idleAnim);
 	return true;
 }
 

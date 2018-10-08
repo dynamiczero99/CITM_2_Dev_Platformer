@@ -27,6 +27,13 @@
   </map>
 
   <player>
+    <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
+    <tile_size>16</tile_size>
+    <gravity>9.8</gravity>
+    <!-- Tiles it moves every second-->
+    <move_speed>1</move_speed>
+    <!-- Tiles it reaches when the character jumps -->
+    <jump_height>3.2</jump_height>
     <path>textures/engineer character/engineer-idle.png</path>
     <sprite x ="0" y ="0" w ="16" h="28"/>
     <sprite x ="16" y ="0" w ="16" h="28"/>
