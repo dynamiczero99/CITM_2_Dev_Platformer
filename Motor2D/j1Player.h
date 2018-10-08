@@ -28,7 +28,9 @@ public:
 	bool CleanUp();
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+	inline float pixel_to_tile(uint pixel);
 
+private:
 	bool IsStanding();
 
 private:
@@ -38,7 +40,6 @@ private:
 	fPoint velocity;
 	fPoint acceleration;
 	//TODO: Add acceleration (to use incorporate gravity easily)
-
 	SDL_Texture* characterTex;
 	Animation* currentAnim;
 	Animation* idleAnim;
@@ -48,7 +49,9 @@ private:
 
 	float moveSpeed;//(pixels/s)
 	float jumpSpeed;//(pixels/s)
+
 	uint tile_size;
+
 	p2SString path;
 	SDL_RendererFlip flip;
 	float deltaTime = 0;

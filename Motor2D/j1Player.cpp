@@ -23,12 +23,12 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	acceleration.y = 0;
 
 	//Values from xml
-	tile_size = player_node.child("tile_size").text().as_uint;
-	gravity = player_node.child("gravity").text().as_float();
-	moveSpeed = player_node.child("jump_height").text().as_float() * (float)tile_size;
+	tile_size = player_node.child("tile_size").text().as_uint();
+	gravity = pixel_to_tile(player_node.child("gravity").text().as_float());
+	moveSpeed = pixel_to_tile(player_node.child("jump_height").text().as_float());
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * player_node.child("jump_height").text().as_float() * (float)tile_size * 2.0f);
+	jumpSpeed = -sqrtf(gravity * pixel_to_tile(player_node.child("jump_height").text().as_float()) * 2.0f);
 
 	//Animations from xml
 	path = player_node.child("path").text().as_string();
@@ -132,4 +132,9 @@ bool j1Player::Save(pugi::xml_node&) const
 bool j1Player::IsStanding() {
 	//Change to true when it is standing in a collider, not when it's in a certain position
 	return (position.y >= 50);
+}
+
+//We can imagine that 1 tile = 1 meter to make it easier for us to understand
+inline float j1Player::pixel_to_tile(uint pixel) {
+	return pixel * tile_size;
 }
