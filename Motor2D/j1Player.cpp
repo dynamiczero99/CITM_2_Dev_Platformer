@@ -94,11 +94,8 @@ bool j1Player::Update(float dt)
 	}
 
 	//- Move the player
-	velocity.x = velocity.x + acceleration.x * deltaTime;
-	velocity.y = velocity.y + acceleration.y * deltaTime;
-
-	position.x = position.x + velocity.x * deltaTime;
-	position.y = position.y + velocity.y * deltaTime;
+	velocity = velocity + acceleration * deltaTime;
+	position = position + velocity * deltaTime;
 
 	return true;
 }
