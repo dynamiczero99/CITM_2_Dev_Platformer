@@ -13,6 +13,7 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1Player.h"
+#include "j1Collision.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -28,19 +29,19 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	player = new j1Player();
+	collision = new j1Collision();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
+	AddModule(input);//Input is the first module to update beacause other modules use the input during their update
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(player);
 	AddModule(map);
 	AddModule(scene);
-
-	// render last to swap buffer
-	AddModule(render);
+	AddModule(collision);//Collision is the penultimate module to update because it calcules all the overlaping collisions and resolves them just before rendering
+	AddModule(render);// render last to swap buffer
 }
 
 // Destructor
