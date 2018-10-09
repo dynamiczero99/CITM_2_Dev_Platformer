@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "p2Animation.h"
 #include "p2Defs.h"
+#include "j1Collision.h"
 #include "math.h"
 
 j1Player::j1Player() : j1Module()
@@ -14,15 +15,11 @@ j1Player::j1Player() : j1Module()
 
 bool j1Player::Awake(pugi::xml_node& player_node)
 {
-	//General values
-	position.x = 0;
-	position.y = 0;
-	velocity.x = 0;
-	velocity.y = 0;
-	acceleration.x = 0;
-	acceleration.y = 0;
-
 	//Values from xml
+	SDL_Rect colliderRect;
+	colliderRect.w = player_node.child("collider_width").text().as_int();
+	colliderRect.h = player_node.child("collider_height").text().as_int();
+	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
 	tile_size = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
@@ -51,6 +48,15 @@ bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
 	characterTex = App->tex->LoadTexture(path.GetString());
+
+	//General values
+	position.x = 80;
+	position.y = 50;
+	velocity.x = 0;
+	velocity.y = 0;
+	acceleration.x = 0;
+	acceleration.y = 0;
+
 	return true;
 }
 
@@ -60,7 +66,7 @@ bool j1Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		flip = SDL_FLIP_HORIZONTAL;
-		if (IsStanding()) {
+		if (isStanding) {
 			//currentAnim = idleAnim;
 			velocity.x = -moveSpeedGnd;
 		}
@@ -71,7 +77,7 @@ bool j1Player::PreUpdate()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		flip = SDL_FLIP_NONE;
-		if (IsStanding()) {
+		if (isStanding) {
 			//currentAnim = idleAnim;
 			velocity.x = moveSpeedGnd;
 		}
@@ -85,8 +91,10 @@ bool j1Player::PreUpdate()
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isStanding) {
 		velocity.y = jumpSpeed;
+		isStanding = false;
+		//TODO: Is standing should also turn false when the character leaves the platform
 	}
 
 	return true;
@@ -96,12 +104,19 @@ bool j1Player::Update(float dt)
 {
 	//PHYSICS UPDATE
 	//- Calculate time since last frame
-	deltaTime = SDL_GetTicks() - lastTime;
+	if (isFirstFrame) {
+		currTime = lastTime = SDL_GetTicks();
+		isFirstFrame = false;
+	}
+	else {
+		currTime = SDL_GetTicks();
+	}
+	deltaTime = currTime - lastTime;
 	deltaTime /= 1000;//1 second is 1000 miliseconds
-	lastTime = SDL_GetTicks();
+	lastTime = currTime;
 
 	//- Add gravity
-	if (!IsStanding()) {
+	if (!isStanding) {
 		acceleration.y = gravity;
 	}
 	else {
@@ -115,6 +130,7 @@ bool j1Player::Update(float dt)
 	//- Move the player
 	velocity = velocity + acceleration * deltaTime;
 	position = position + velocity * deltaTime;
+	playerCol->SetPos(position.x, position.y);
 
 	return true;
 }
@@ -142,9 +158,20 @@ bool j1Player::Save(pugi::xml_node&) const
 	return true;
 }
 
-bool j1Player::IsStanding() {
-	//Change to true when it is standing in a collider, not when it's in a certain position
-	return (position.y >= 50);
+void j1Player::OnCollision(Collider* c1, Collider* c2) {
+	switch (c2->type) {
+	case COLLIDER_WALL:
+		//1. Determine where it has entered from
+		if (c1->rect.y + c1->rect.h < c2->rect.y + c2->rect.h/2) {
+			position.y = c2->rect.y - c1->rect.h;
+			c1->SetPos(position.x, position.y);
+			velocity.y = 0;
+			acceleration.y = 0;
+			isStanding = true;
+		}
+		
+		break;
+	}
 }
 
 //We can consider that 1 tile = 1 meter to make it easier for us to imagine the different values

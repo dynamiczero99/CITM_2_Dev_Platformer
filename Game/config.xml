@@ -27,12 +27,14 @@
   </map>
 
   <player>
+    <collider_width>10</collider_width>
+    <collider_height>10</collider_height>
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>16</tile_size>
     <gravity>75</gravity>
     <!-- Tiles it moves every second-->
-    <move_speed_ground>5</move_speed_ground>
-    <move_speed_air>4</move_speed_air>
+    <move_speed_ground>8</move_speed_ground>
+    <move_speed_air>6</move_speed_air>
     <!-- Tiles it reaches when the character jumps -->
     <jump_height>3.2</jump_height>
     <path>textures/engineer character/engineer-idle.png</path>

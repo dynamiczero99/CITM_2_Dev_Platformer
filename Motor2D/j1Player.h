@@ -9,6 +9,7 @@
 struct SDL_Texture;
 struct SDL_Rect;
 class Animation;
+struct Collider;
 
 class j1Player : public j1Module
 {
@@ -28,10 +29,11 @@ public:
 	bool CleanUp();
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+	void OnCollision(Collider* c1, Collider* c2);
+
 	inline float tile_to_pixel(uint pixel);
 
 private:
-	bool IsStanding();
 
 private:
 	//TODO: Set the velocity in the xml
@@ -57,7 +59,12 @@ private:
 	SDL_RendererFlip flip;
 	float deltaTime = 0;
 	Uint32 lastTime = 0;
+	Uint32 currTime = 0;
+	bool isFirstFrame = true;
 	float gravity;
+	Collider* playerCol;
+
+	bool isStanding = false;
 };
 
 #endif

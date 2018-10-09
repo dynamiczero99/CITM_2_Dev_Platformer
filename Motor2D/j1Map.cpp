@@ -472,7 +472,7 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 			if(tmp == "Platforms")
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL, this);
 			else if (tmp == "Floor")
-				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER_GOD, this); // reference collider type for test
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL, this); // reference collider type for test
 
 			// increments counter
 			++i;

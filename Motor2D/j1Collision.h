@@ -58,6 +58,7 @@ public:
 	// Called each loop iteration
 	bool PreUpdate() override;
 	bool Update(float dt) override;
+	bool PostUpdate()override;
 
 	// Called before quitting
 	bool CleanUp() override;
