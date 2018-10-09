@@ -130,8 +130,8 @@ bool j1Player::Update(float dt)
 	//- Move the player
 	velocity = velocity + acceleration * deltaTime;
 	position = position + velocity * deltaTime;
-	playerCol->SetPos(position.x, position.y);
-	footCol->SetPos(position.x, position.y + playerCol->rect.h);
+	playerCol->SetPos(position.x - playerCol->rect.w/2, position.y - playerCol->rect.h);
+	footCol->SetPos(position.x - footCol->rect.w/2, position.y);
 
 	isOnPlatform = false;//This value is going to be changed to true if
 
@@ -173,10 +173,10 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			//2. Check which point (opposite to those directions) is the nearest
 			//If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
 			uint dist[(uint)dir::max];
-			dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (c1->rect.y);
-			dist[(uint)dir::down] = (c1->rect.y + c1->rect.h) - (c2->rect.y);
-			dist[(uint)dir::left] = (c2->rect.x + c2->rect.w) - (c1->rect.x);
-			dist[(uint)dir::right] = (c1->rect.x + c1->rect.w) - (c2->rect.x);
+			dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (position.y - playerCol->rect.h);
+			dist[(uint)dir::down] = position.y - c2->rect.y;
+			dist[(uint)dir::left] = (c2->rect.x + c2->rect.w) - (position.x - playerCol->rect.w/2);
+			dist[(uint)dir::right] = (position.x + playerCol->rect.w / 2) - c2->rect.x;
 			dir nearestDir = (dir)0u;
 			for (uint i = 0; i < (uint)dir::max; ++i) {
 				if (direction[i]) {
@@ -189,33 +189,29 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			//+1 offset so that the next frame they don't collide again
 			switch (nearestDir) {
 			case dir::down:
-				position.y = c2->rect.y - c1->rect.h - 1;
-				c1->SetPos(position.x, position.y);
+				position.y = c2->rect.y - 1;
+				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				velocity.y = 0;
 				acceleration.y = 0;
 				checkFoot = true;
 				isOnPlatform = true;
 				break;
 			case dir::up:
-				position.y = c2->rect.y + c2->rect.h + 1;
-				c1->SetPos(position.x, position.y);
+				position.y = c2->rect.y + c2->rect.h + playerCol->rect.h + 1;
+				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				velocity.y = 0;
 				acceleration.y = 0;
 				break;
 			case dir::left:
-				position.x = c2->rect.x + c2->rect.w + 1;
-				c1->SetPos(position.x, position.y);
+				position.x = c2->rect.x + c2->rect.w + playerCol->rect.w / 2 + 1;
+				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				velocity.x = 0;
-				//Slide on platform walls
-				//velocity.y = 0;
 				acceleration.y = 0;
 				break;
 			case dir::right:
-				position.x = c2->rect.x - c1->rect.w - 1;
-				c1->SetPos(position.x, position.y);
+				position.x = c2->rect.x - playerCol->rect.w / 2 - 1;
+				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				velocity.x = 0;
-				//Slide on platform walls
-				//velocity.y = 0;
 				acceleration.y = 0;
 				break;
 			}
