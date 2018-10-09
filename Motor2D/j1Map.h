@@ -7,6 +7,22 @@
 #include "j1Module.h"
 #include "p2Animation.h"
 
+#define MAX_OBJECTGROUP_COLLIDERS 100
+
+struct Collider;
+
+struct MapObjects
+{
+	p2SString name;
+	uint id = 0;
+	Collider* colliders[MAX_OBJECTGROUP_COLLIDERS] = { nullptr };
+
+	~MapObjects()
+	{
+		//RELEASE_ARRAY(colliders[MAX_OBJECTGROUP_COLLIDERS]);
+	}
+};
+
 // ----------------------------------------------------
 //INFO:
 //- Width & Height are always calculated in pixels
@@ -72,6 +88,8 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	mapLayers;
+	p2List<MapObjects*> mapObjects;
+	
 };
 
 // ----------------------------------------------------
@@ -106,6 +124,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadMapColliders(pugi::xml_node& node);//, MapObjects* obj);
 
 public:
 

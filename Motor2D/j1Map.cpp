@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j1Collision.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -135,6 +136,17 @@ bool j1Map::CleanUp()
 	}
 	data.mapLayers.clear();
 
+	// remove all colliders/object data
+	p2List_item<MapObjects*>* objectItem;
+	objectItem = data.mapObjects.start;
+
+	while (objectItem != NULL)
+	{
+		RELEASE(objectItem->data);
+		objectItem = objectItem->next;
+	}
+	data.mapObjects.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -190,6 +202,28 @@ bool j1Map::Load(const char* file_name)
 
 		if(ret == true)
 			data.mapLayers.add(lay);
+	}
+
+	// Load scene colliders -----------------------------------------
+	pugi::xml_node objectGroup;
+	for (objectGroup = map_file.child("map").child("group"); objectGroup && ret; objectGroup = objectGroup.next_sibling("group"))
+	{
+		p2SString tmp(objectGroup.attribute("name").as_string());
+		//MapObjects* obj = new MapObjects();
+
+		if (tmp == "Colliders")
+		{
+			//for(pugi::xml_node collidersGroup = objectGroup.child("objectgroup"))
+			ret = LoadMapColliders(objectGroup);//, obj);
+			LOG("loading Map colliders");
+		}
+		else if (tmp == "playerStartPoint")
+		{
+
+		}
+
+		//if (ret == true)
+			//data.mapObjects.add(obj);
 	}
 
 	if(ret == true)
@@ -351,17 +385,20 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 
 	//Loading animation
-	//Currently each tileset can only hold one animation
+	//Currently each tileset can only hold one animation - tiled map editor restriction
 	if (tileset_node.child("tile").child("animation")) {
 		set->anim = new Animation;
+		//}
+		for (pugi::xml_node frame_node = tileset_node.child("tile").child("animation").child("frame"); frame_node; frame_node = frame_node.next_sibling()) {
+			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int()));
+		}
+		pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
+		set->anim->speed = speed_node.attribute("duration").as_float() * 0.01f; // divides by 100 - test
 	}
-	for (pugi::xml_node frame_node = tileset_node.child("tile").child("animation").child("frame"); frame_node; frame_node = frame_node.next_sibling()) {
-		set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int()));
-	}
-	pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("speed");
-	if (speed_node) {
-		set->anim->speed = speed_node.text().as_float();
-	}
+	//pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
+	//if (speed_node) {
+	//	set->anim->speed = speed_node.text().as_float() * 0.01f; // divides by 100 - test
+	//}
 
 	return ret;
 }
@@ -391,6 +428,58 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		{
 			layer->tileArray[i++] = tile.attribute("gid").as_int(0);
 		}
+	}
+
+	return ret;
+}
+
+bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
+{
+	bool ret = true;
+
+	SDL_Rect colliderRect;
+	
+	// iterate all objectgroups
+	for (pugi::xml_node objectGroup = node.child("objectgroup"); objectGroup && ret; objectGroup = objectGroup.next_sibling("objectgroup"))
+	{
+		p2SString tmp = objectGroup.attribute("name").as_string();
+		MapObjects* newObject = new MapObjects();
+
+		newObject->name = tmp.GetString();
+
+		//bool counted = false;
+
+		// iterate all objects
+		int i = 0; // to allocate i colliders at once on new MapObject pointer for map reference?, not implemented yet
+
+		for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+		{
+			// count the num of objects
+			/*if (!counted)
+			{
+				for (pugi::xml_node objectCounter = objectGroup.child("object"); object; object = object.next_sibling("object"))
+				{
+					++i;
+				}
+				counted = true;
+			}*/
+
+			colliderRect.x = object.attribute("x").as_int(0);
+			colliderRect.y = object.attribute("y").as_int(0);
+			colliderRect.h = object.attribute("height").as_int(0);
+			colliderRect.w = object.attribute("width").as_int(0);
+			// create collider type of
+			if(tmp == "Platforms")
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL, this);
+			else if (tmp == "Floor")
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER_GOD, this); // reference collider type for test
+
+			// increments counter
+			++i;
+		}
+		
+		// add object to list
+		data.mapObjects.add(newObject);
 	}
 
 	return ret;
