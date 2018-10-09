@@ -162,12 +162,19 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 	switch (c2->type) {
 	case COLLIDER_WALL:
 		//1. Determine where it has entered from
-		if (c1->rect.y + c1->rect.h < c2->rect.y + c2->rect.h/2) {
+		//Entered from above
+		if (velocity.y > 0) {
 			position.y = c2->rect.y - c1->rect.h;
 			c1->SetPos(position.x, position.y);
 			velocity.y = 0;
 			acceleration.y = 0;
 			isStanding = true;
+		}
+		else if (velocity.y < 0){
+			position.y = c2->rect.y + c2->rect.h + 1;//+1 offset so that the next frame they don't collide again (this time the velocity would be >0 and that would make it go above the platform)
+			c1->SetPos(position.x, position.y);
+			velocity.y = 0;
+			acceleration.y = 0;
 		}
 		
 		break;
