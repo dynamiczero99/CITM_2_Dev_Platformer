@@ -222,5 +222,5 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-	return !(r.x > (rect.x + rect.w) || (r.x + r.w) < rect.x || r.y > (rect.y + rect.h) || (r.y + r.h) < rect.y);
+	return !(r.x >= (rect.x + rect.w) || (r.x + r.w) <= rect.x || r.y >= (rect.y + rect.h) || (r.y + r.h) <= rect.y);
 }

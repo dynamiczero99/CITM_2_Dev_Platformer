@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="9">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="9">
  <tileset firstgid="1" name="IndustrialTileset" tilewidth="8" tileheight="8" tilecount="1296" columns="36">
   <image source="industrial-tileset.png" width="288" height="288"/>
   <terraintypes>
@@ -80,7 +80,7 @@
    </animation>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="100" height="100">
+ <layer id="1" name="Tile Layer 1" width="100" height="100">
   <data>
    <tile/>
    <tile/>
@@ -10084,18 +10084,18 @@
    <tile/>
   </data>
  </layer>
- <group name="Colliders">
-  <objectgroup name="Platforms">
+ <group id="2" name="Colliders">
+  <objectgroup id="3" name="Platforms">
    <object id="6" name="platform" x="56" y="16" width="87.3333" height="3"/>
    <object id="7" name="platform" x="296.667" y="40" width="86.3333" height="5"/>
    <object id="8" x="57" y="32.3333" width="82.3333" height="4.33333"/>
   </objectgroup>
-  <objectgroup name="Floor">
-   <object id="1" name="floor" x="56.3333" y="79.6667" width="118.667" height="22.3333"/>
-   <object id="2" name="floor" x="184.667" y="64" width="78.3333" height="22.3333"/>
+  <objectgroup id="4" name="Floor">
+   <object id="1" name="floor" x="56.3333" y="79.6667" width="128.656" height="22.3333"/>
+   <object id="2" name="floor" x="185.007" y="64" width="78.0105" height="22.3333"/>
    <object id="3" x="263" y="81" width="7.66667" height="62.6667"/>
    <object id="5" x="272.333" y="143.667" width="6.33333" height="93.3333"/>
   </objectgroup>
  </group>
- <group name="OtherGroup"/>
+ <group id="5" name="OtherGroup"/>
 </map>

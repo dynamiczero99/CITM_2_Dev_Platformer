@@ -37,19 +37,37 @@
     <move_speed_air>6</move_speed_air>
     <!-- Tiles it reaches when the character jumps -->
     <jump_height>3.2</jump_height>
-    <path>textures/engineer character/engineer-idle.png</path>
-    <animation tile_width ="16" tile_height="28" speed ="0.5">
-      <sprite x ="0" y ="0" w ="16" h="28"/>
-      <sprite x ="16" y ="0" w ="16" h="28"/>
-      <sprite x ="32" y ="0" w ="16" h="28"/>
-      <sprite x ="48" y ="0" w ="16" h="28"/>
-      <sprite x ="64" y ="0" w ="16" h="28"/>
-      <sprite x ="80" y ="0" w ="16" h="28"/>
-      <sprite x ="96" y ="0" w ="16" h="28"/>
-      <sprite x ="112" y ="0" w ="16" h="28"/>
-      <sprite x ="128" y ="0" w ="16" h="28"/>
+    <animation tile_width ="16" tile_height ="28">
+      <idle_image>textures/engineer character/engineer-idle.png</idle_image>
+      <run_image>textures/engineer character/engineer-jump.png</run_image>
+      <jump_image>textures/engineer character/engineer-run.png</jump_image>
+      <idle_animation speed ="0.25">
+        <sprite x ="0" y ="0" w ="16" h="28"/>
+        <sprite x ="16" y ="0" w ="16" h="28"/>
+        <sprite x ="32" y ="0" w ="16" h="28"/>
+        <sprite x ="48" y ="0" w ="16" h="28"/>
+        <sprite x ="64" y ="0" w ="16" h="28"/>
+        <sprite x ="80" y ="0" w ="16" h="28"/>
+        <sprite x ="96" y ="0" w ="16" h="28"/>
+        <sprite x ="112" y ="0" w ="16" h="28"/>
+        <sprite x ="128" y ="0" w ="16" h="28"/>
+      </idle_animation>
+      <run_animation speed ="0.25">
+        <sprite x ="0" y ="0" w ="16" h="28"/>
+        <sprite x ="16" y ="0" w ="16" h="28"/>
+        <sprite x ="32" y ="0" w ="16" h="28"/>
+        <sprite x ="48" y ="0" w ="16" h="28"/>
+        <sprite x ="64" y ="0" w ="16" h="28"/>
+        <sprite x ="80" y ="0" w ="16" h="28"/>
+        <sprite x ="96" y ="0" w ="16" h="28"/>
+        <sprite x ="112" y ="0" w ="16" h="28"/>
+      </run_animation>
+      <jump_animation speed ="0.0">
+        <sprite x ="0" y ="0" w ="16" h="28"/>
+      </jump_animation>
+      <fall_animation speed ="0.0">
+        <sprite x ="16" y ="0" w ="16" h="28"/>
+      </fall_animation>
     </animation>
-
   </player>
-
 </config>
