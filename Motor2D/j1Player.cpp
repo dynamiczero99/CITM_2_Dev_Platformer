@@ -34,17 +34,19 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 
 	//Animations from xml
 	path = player_node.child("path").text().as_string();
-	idleAnim = new Animation();
-	for (pugi::xml_node node_iterator = player_node.child("sprite"); node_iterator; node_iterator = node_iterator.next_sibling("sprite")) {
+	anim_tile_width = player_node.child("animation").attribute("tile_width").as_uint();
+	anim_tile_height = player_node.child("animation").attribute("tile_height").as_uint();
+	idleAnim.speed = player_node.child("animation").attribute("speed").as_float();
+	for (pugi::xml_node node_iterator = player_node.child("animation").child("sprite"); node_iterator; node_iterator = node_iterator.next_sibling("sprite")) {
 		SDL_Rect frame;
 		frame.x = node_iterator.attribute("x").as_int();
 		frame.y = node_iterator.attribute("y").as_int();
 		frame.w = node_iterator.attribute("w").as_int();
 		frame.h = node_iterator.attribute("h").as_int();
-		idleAnim->PushBack(frame);
+		idleAnim.PushBack(frame);
 	}
-	idleAnim->speed = 0.5f;
-	currentAnim = idleAnim;
+
+	currentAnim = &idleAnim;
 	return true;
 }
 
@@ -151,7 +153,6 @@ bool j1Player::PostUpdate()
 bool j1Player::CleanUp()
 {
 	App->tex->UnloadTexture(characterTex);
-	delete(idleAnim);
 	return true;
 }
 

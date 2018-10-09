@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "SDL/include/SDL_render.h"
 #include "p2SString.h"
+#include "p2Animation.h"
 
 struct SDL_Texture;
 struct SDL_Rect;
@@ -50,12 +51,15 @@ private:
 	fPoint velocity;
 	fPoint acceleration;
 	//TODO: Add acceleration (to use incorporate gravity easily)
+	SDL_Texture* currTex;
 	SDL_Texture* characterTex;
 	Animation* currentAnim;
-	Animation* idleAnim;
-	Animation* jumpAnim;
-	Animation* runAnim;
-	Animation* deathAnim;
+	Animation idleAnim;
+	Animation jumpAnim;
+	Animation runAnim;
+	Animation deathAnim;
+	uint anim_tile_width = 0;
+	uint anim_tile_height = 0;
 
 	float moveSpeedAir;//(pixels/s)
 	float moveSpeedGnd;//(pixels/s)

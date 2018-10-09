@@ -38,15 +38,18 @@
     <!-- Tiles it reaches when the character jumps -->
     <jump_height>3.2</jump_height>
     <path>textures/engineer character/engineer-idle.png</path>
-    <sprite x ="0" y ="0" w ="16" h="28"/>
-    <sprite x ="16" y ="0" w ="16" h="28"/>
-    <sprite x ="32" y ="0" w ="16" h="28"/>
-    <sprite x ="48" y ="0" w ="16" h="28"/>
-    <sprite x ="64" y ="0" w ="16" h="28"/>
-    <sprite x ="80" y ="0" w ="16" h="28"/>
-    <sprite x ="96" y ="0" w ="16" h="28"/>
-    <sprite x ="112" y ="0" w ="16" h="28"/>
-    <sprite x ="128" y ="0" w ="16" h="28"/>
+    <animation tile_width ="16" tile_height="28" speed ="0.5">
+      <sprite x ="0" y ="0" w ="16" h="28"/>
+      <sprite x ="16" y ="0" w ="16" h="28"/>
+      <sprite x ="32" y ="0" w ="16" h="28"/>
+      <sprite x ="48" y ="0" w ="16" h="28"/>
+      <sprite x ="64" y ="0" w ="16" h="28"/>
+      <sprite x ="80" y ="0" w ="16" h="28"/>
+      <sprite x ="96" y ="0" w ="16" h="28"/>
+      <sprite x ="112" y ="0" w ="16" h="28"/>
+      <sprite x ="128" y ="0" w ="16" h="28"/>
+    </animation>
+
   </player>
 
 </config>
