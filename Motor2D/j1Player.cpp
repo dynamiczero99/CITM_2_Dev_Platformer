@@ -180,8 +180,8 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			uint dist[(uint)dir::max];
 			dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (c1->rect.y);
 			dist[(uint)dir::down] = (c1->rect.y + c1->rect.h) - (c2->rect.y);
-			dist[(uint)dir::left] = (c2->rect.y + c2->rect.w) - (c1->rect.x);
-			dist[(uint)dir::right] = (c1->rect.x + c1->rect.w) - (c2->rect.y);
+			dist[(uint)dir::left] = (c2->rect.x + c2->rect.w) - (c1->rect.x);
+			dist[(uint)dir::right] = (c1->rect.x + c1->rect.w) - (c2->rect.x);
 			dir nearestDir = (dir)0u;
 			for (uint i = 0; i < (uint)dir::max; ++i) {
 				if (direction[i]) {
@@ -211,12 +211,16 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				position.x = c2->rect.x + c2->rect.w + 1;
 				c1->SetPos(position.x, position.y);
 				velocity.x = 0;
+				//Slide on platform walls
+				//velocity.y = 0;
 				acceleration.y = 0;
 				break;
 			case dir::right:
 				position.x = c2->rect.x - c1->rect.w - 1;
 				c1->SetPos(position.x, position.y);
 				velocity.x = 0;
+				//Slide on platform walls
+				//velocity.y = 0;
 				acceleration.y = 0;
 				break;
 			}
