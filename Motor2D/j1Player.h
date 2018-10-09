@@ -13,6 +13,14 @@ struct Collider;
 
 class j1Player : public j1Module
 {
+	enum class dir: uint {
+		left,
+		right,
+		up,
+		down,
+		max
+	};
+
 public:
 	j1Player();
 	// Called before render is available
@@ -65,7 +73,8 @@ private:
 	Collider* playerCol;
 	Collider* footCol;
 
-	bool platformBellow = false;
+	bool isOnPlatform = false;
+	bool checkFoot = false;
 };
 
 #endif

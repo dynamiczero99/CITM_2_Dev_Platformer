@@ -28,7 +28,7 @@
 
   <player>
     <collider_width>10</collider_width>
-    <collider_height>10</collider_height>
+    <collider_height>18</collider_height>
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>16</tile_size>
     <gravity>75</gravity>

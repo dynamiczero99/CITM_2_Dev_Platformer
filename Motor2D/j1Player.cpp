@@ -22,7 +22,7 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
 	SDL_Rect foot_collider_rect;
 	foot_collider_rect.w = 10;
-	foot_collider_rect.h = 3;
+	foot_collider_rect.h = 5;
 	footCol = App->collision->AddCollider(foot_collider_rect, COLLIDER_PLAYER, this);
 	tile_size = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
@@ -70,7 +70,7 @@ bool j1Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		flip = SDL_FLIP_HORIZONTAL;
-		if (platformBellow) {
+		if (isOnPlatform) {
 			//currentAnim = idleAnim;
 			velocity.x = -moveSpeedGnd;
 		}
@@ -81,7 +81,7 @@ bool j1Player::PreUpdate()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		flip = SDL_FLIP_NONE;
-		if (platformBellow) {
+		if (isOnPlatform) {
 			//currentAnim = idleAnim;
 			velocity.x = moveSpeedGnd;
 		}
@@ -95,9 +95,9 @@ bool j1Player::PreUpdate()
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && platformBellow) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
-		platformBellow = false;
+		isOnPlatform = false;
 		//TODO: Is standing should also turn false when the character leaves the platform
 	}
 
@@ -119,8 +119,9 @@ bool j1Player::Update(float dt)
 	deltaTime /= 1000;//1 second is 1000 miliseconds
 	lastTime = currTime;
 	//- Add gravity
-	if (!platformBellow) {
+	if (!isOnPlatform) {
 		acceleration.y = gravity;
+		checkFoot = false;
 	}
 	else {
 		//Stop the player falling when it reaches a ground collider
@@ -136,7 +137,7 @@ bool j1Player::Update(float dt)
 	playerCol->SetPos(position.x, position.y);
 	footCol->SetPos(position.x, position.y + playerCol->rect.h);
 
-	platformBellow = false;//This value is going to be changed to true if
+	isOnPlatform = false;//This value is going to be changed to true if
 
 	return true;
 }
@@ -168,28 +169,65 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 	if (c1 == playerCol) {
 		switch (c2->type) {
 		case COLLIDER_WALL:
-			//1. Determine where it has entered from
-			//Entered from above
-			if (velocity.y > 0) {
-				position.y = c2->rect.y - c1->rect.h;
-				c1->SetPos(position.x, position.y);
-				velocity.y = 0;
-				acceleration.y = 0;
-				platformBellow = true;
+			//1. Check which direction it was going to
+			bool direction[(uint)dir::max];
+			direction[(uint)dir::up]	= velocity.y < 0;
+			direction[(uint)dir::down]	= velocity.y > 0;
+			direction[(uint)dir::left]	= velocity.x < 0;
+			direction[(uint)dir::right]	= velocity.x > 0;
+			//2. Check which point (opposite to those directions) is the nearest
+			//If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
+			uint dist[(uint)dir::max];
+			dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (c1->rect.y);
+			dist[(uint)dir::down] = (c1->rect.y + c1->rect.h) - (c2->rect.y);
+			dist[(uint)dir::left] = (c2->rect.y + c2->rect.w) - (c1->rect.x);
+			dist[(uint)dir::right] = (c1->rect.x + c1->rect.w) - (c2->rect.y);
+			dir nearestDir = (dir)0u;
+			for (uint i = 0; i < (uint)dir::max; ++i) {
+				if (direction[i]) {
+					if (dist[i] < dist[(uint)nearestDir]) {
+						nearestDir = (dir)i;
+					}
+				}
 			}
-			//Entered from bellow
-			else if (velocity.y < 0) {
-				position.y = c2->rect.y + c2->rect.h + 1;//+1 offset so that the next frame they don't collide again (this time the velocity would be >0 and that would make it go above the platform)
+			//3. Move it to that point
+			//+1 offset so that the next frame they don't collide again
+			switch (nearestDir) {
+			case dir::down:
+				position.y = c2->rect.y - c1->rect.h - 1;
 				c1->SetPos(position.x, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
+				checkFoot = true;
+				isOnPlatform = true;
+				break;
+			case dir::up:
+				position.y = c2->rect.y + c2->rect.h + 1;
+				c1->SetPos(position.x, position.y);
+				velocity.y = 0;
+				acceleration.y = 0;
+				break;
+			case dir::left:
+				position.x = c2->rect.x + c2->rect.w + 1;
+				c1->SetPos(position.x, position.y);
+				velocity.x = 0;
+				acceleration.y = 0;
+				break;
+			case dir::right:
+				position.x = c2->rect.x - c1->rect.w - 1;
+				c1->SetPos(position.x, position.y);
+				velocity.x = 0;
+				acceleration.y = 0;
+				break;
 			}
 			break;
 		}
 	}
 
-	if (c1 == footCol) {
-		platformBellow = true;
+	//Only starts checking if it falls when it snaps to the platform
+	//Otherwise it would stop adding gravity the moment the foot collider touched the floor, making the character be way above what it should be
+	if (c1 == footCol && checkFoot) {
+		isOnPlatform = true;
 	}
 }
 
