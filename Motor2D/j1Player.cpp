@@ -20,6 +20,10 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	colliderRect.w = player_node.child("collider_width").text().as_int();
 	colliderRect.h = player_node.child("collider_height").text().as_int();
 	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
+	SDL_Rect foot_collider_rect;
+	foot_collider_rect.w = 10;
+	foot_collider_rect.h = 3;
+	footCol = App->collision->AddCollider(foot_collider_rect, COLLIDER_PLAYER, this);
 	tile_size = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
@@ -66,7 +70,7 @@ bool j1Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		flip = SDL_FLIP_HORIZONTAL;
-		if (isStanding) {
+		if (platformBellow) {
 			//currentAnim = idleAnim;
 			velocity.x = -moveSpeedGnd;
 		}
@@ -77,7 +81,7 @@ bool j1Player::PreUpdate()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		flip = SDL_FLIP_NONE;
-		if (isStanding) {
+		if (platformBellow) {
 			//currentAnim = idleAnim;
 			velocity.x = moveSpeedGnd;
 		}
@@ -91,9 +95,9 @@ bool j1Player::PreUpdate()
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isStanding) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && platformBellow) {
 		velocity.y = jumpSpeed;
-		isStanding = false;
+		platformBellow = false;
 		//TODO: Is standing should also turn false when the character leaves the platform
 	}
 
@@ -114,9 +118,8 @@ bool j1Player::Update(float dt)
 	deltaTime = currTime - lastTime;
 	deltaTime /= 1000;//1 second is 1000 miliseconds
 	lastTime = currTime;
-
 	//- Add gravity
-	if (!isStanding) {
+	if (!platformBellow) {
 		acceleration.y = gravity;
 	}
 	else {
@@ -131,6 +134,9 @@ bool j1Player::Update(float dt)
 	velocity = velocity + acceleration * deltaTime;
 	position = position + velocity * deltaTime;
 	playerCol->SetPos(position.x, position.y);
+	footCol->SetPos(position.x, position.y + playerCol->rect.h);
+
+	platformBellow = false;//This value is going to be changed to true if
 
 	return true;
 }
@@ -159,25 +165,31 @@ bool j1Player::Save(pugi::xml_node&) const
 }
 
 void j1Player::OnCollision(Collider* c1, Collider* c2) {
-	switch (c2->type) {
-	case COLLIDER_WALL:
-		//1. Determine where it has entered from
-		//Entered from above
-		if (velocity.y > 0) {
-			position.y = c2->rect.y - c1->rect.h;
-			c1->SetPos(position.x, position.y);
-			velocity.y = 0;
-			acceleration.y = 0;
-			isStanding = true;
+	if (c1 == playerCol) {
+		switch (c2->type) {
+		case COLLIDER_WALL:
+			//1. Determine where it has entered from
+			//Entered from above
+			if (velocity.y > 0) {
+				position.y = c2->rect.y - c1->rect.h;
+				c1->SetPos(position.x, position.y);
+				velocity.y = 0;
+				acceleration.y = 0;
+				platformBellow = true;
+			}
+			//Entered from bellow
+			else if (velocity.y < 0) {
+				position.y = c2->rect.y + c2->rect.h + 1;//+1 offset so that the next frame they don't collide again (this time the velocity would be >0 and that would make it go above the platform)
+				c1->SetPos(position.x, position.y);
+				velocity.y = 0;
+				acceleration.y = 0;
+			}
+			break;
 		}
-		else if (velocity.y < 0){
-			position.y = c2->rect.y + c2->rect.h + 1;//+1 offset so that the next frame they don't collide again (this time the velocity would be >0 and that would make it go above the platform)
-			c1->SetPos(position.x, position.y);
-			velocity.y = 0;
-			acceleration.y = 0;
-		}
-		
-		break;
+	}
+
+	if (c1 == footCol) {
+		platformBellow = true;
 	}
 }
 

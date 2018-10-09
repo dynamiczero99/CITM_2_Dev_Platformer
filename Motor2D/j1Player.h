@@ -63,8 +63,9 @@ private:
 	bool isFirstFrame = true;
 	float gravity;
 	Collider* playerCol;
+	Collider* footCol;
 
-	bool isStanding = false;
+	bool platformBellow = false;
 };
 
 #endif
