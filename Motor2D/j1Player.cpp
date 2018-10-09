@@ -45,15 +45,15 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 		frame.h = node_iterator.attribute("h").as_int();
 		idleAnim.PushBack(frame);
 	}
-
-	currentAnim = &idleAnim;
+	currAnim = &idleAnim;
 	return true;
 }
 
 bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
-	characterTex = App->tex->LoadTexture(path.GetString());
+	idleTex = App->tex->LoadTexture(path.GetString());
+	currTex = idleTex;
 
 	//General values
 	position.x = 80;
@@ -120,17 +120,11 @@ bool j1Player::Update(float dt)
 	deltaTime = currTime - lastTime;
 	deltaTime /= 1000;//1 second is 1000 miliseconds
 	lastTime = currTime;
+
 	//- Add gravity
 	if (!isOnPlatform) {
 		acceleration.y = gravity;
 		checkFoot = false;
-	}
-	else {
-		//Stop the player falling when it reaches a ground collider
-		acceleration.y = 0.0f;
-		if (velocity.y > 0) {
-			velocity.y = 0.0f;
-		}
 	}
 
 	//- Move the player
@@ -146,13 +140,13 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	App->render->Blit(characterTex, (int)position.x, (int)position.y, &currentAnim->GetCurrentFrame(), 1.0f, flip);
+	App->render->Blit(currTex, (int)position.x - anim_tile_width / 2, (int)position.y - anim_tile_height, &currAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
 
 bool j1Player::CleanUp()
 {
-	App->tex->UnloadTexture(characterTex);
+	App->tex->UnloadTexture(idleTex);
 	return true;
 }
 

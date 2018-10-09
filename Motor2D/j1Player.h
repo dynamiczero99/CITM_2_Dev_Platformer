@@ -45,15 +45,12 @@ public:
 private:
 
 private:
-	//TODO: Set the velocity in the xml
-
 	fPoint position;
 	fPoint velocity;
 	fPoint acceleration;
-	//TODO: Add acceleration (to use incorporate gravity easily)
 	SDL_Texture* currTex;
-	SDL_Texture* characterTex;
-	Animation* currentAnim;
+	SDL_Texture* idleTex;
+	Animation* currAnim;
 	Animation idleAnim;
 	Animation jumpAnim;
 	Animation runAnim;
