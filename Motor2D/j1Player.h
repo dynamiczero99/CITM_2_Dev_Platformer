@@ -106,7 +106,8 @@ private:
 	bool isOnPlatform = false;
 	bool checkFoot = false;
 
-	fPoint projectileDir;
+	fPoint projectilePos;
+	fPoint projectileVel;
 	float projectileSpeed;
 };
 

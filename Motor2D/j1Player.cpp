@@ -127,11 +127,13 @@ void j1Player::MoveProjectile()
 	if (App->input->GetMouseButton(1) == KEY_DOWN) {
 		iPoint mousePos;
 		App->input->GetMousePosition(mousePos.x, mousePos.y);
-		projectileDir.x = mousePos.x - (int)position.x;
-		projectileDir.y = mousePos.y - (int)position.y;
-		projectileDir.Normalize();
+		projectilePos = (iPoint)mousePos;
+		projectileVel.x = mousePos.x - (int)position.x;
+		projectileVel.y = mousePos.y - (int)position.y;
+		projectileVel = projectileVel.Normalize() * projectileSpeed;
 	}
 	//Move projectile
+	projectilePos = projectilePos + projectileVel;
 	//App->render->Blit(idleTex, mousePos.x, mousePos.y, &idleAnim.GetCurrentFrame());
 }
 

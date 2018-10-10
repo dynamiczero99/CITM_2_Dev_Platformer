@@ -32,8 +32,6 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
-
 	for (p2List_item<TileSet*>* tilesetIterator = data.tilesets.start; tilesetIterator != NULL; tilesetIterator = tilesetIterator->next) {
 		for (p2List_item<MapLayer*>* layerIterator = data.mapLayers.start; layerIterator != NULL; layerIterator = layerIterator->next) {
 			for (int column = 0; column < layerIterator->data->columns; ++column) {
@@ -47,16 +45,11 @@ void j1Map::Draw()
 			}
 		}
 	}
-
-	// TODO 10(old): Complete the draw function
 }
 
 iPoint j1Map::MapToWorld(int column, int row) const
 {
 	iPoint retVec(0,0);
-
-	// TODO 8(old): Create a method that translates x,y coordinates from map positions to world positions
-	// TODO 1: Add isometric map to world coordinates
 	switch (data.type) {
 	case MapTypes::MAPTYPE_ORTHOGONAL:
 		retVec.x = column * data.tile_width;
@@ -78,8 +71,6 @@ iPoint j1Map::MapToWorld(int column, int row) const
 iPoint j1Map::WorldToMap(int x, int y) const
 {
 	iPoint retVec(0,0);
-	// TODO 2: Add orthographic world to map coordinates
-	// TODO 3: Add the case for isometric maps to WorldToMap
 	switch (data.type) {
 	case MapTypes::MAPTYPE_ORTHOGONAL:
 		retVec.x = x / data.tile_width;
@@ -96,7 +87,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return retVec;
 }
 
-// TODO 7(old): Create a method that receives a tile id and returns it's Rect
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;

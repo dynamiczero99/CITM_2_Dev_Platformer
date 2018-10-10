@@ -99,6 +99,21 @@ public:
 		return (x != v.x || y != v.y);
 	}
 
+	//Casting operators--------------------------------------
+	explicit operator fPoint () {
+		fPoint retPoint;
+		retPoint.x = (float)x;
+		retPoint.y = (float)y;
+		return retPoint;
+	}
+
+	explicit operator iPoint () {
+		iPoint retPoint;
+		retPoint.x = (int)x;
+		retPoint.y = (int)y;
+		return retPoint;
+	}
+
 	// Utils ------------------------------------------------
 	bool IsZero() const
 	{

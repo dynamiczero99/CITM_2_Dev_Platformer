@@ -42,7 +42,6 @@ struct MapLayer
 		RELEASE(tileArray);
 	}
 
-	// TODO 6 (old): Short function to get the value of x,y
 	inline uint GetArrayPos(int column, int row) const
 	{
 		return(row * columns + column);
