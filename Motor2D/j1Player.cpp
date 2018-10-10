@@ -21,10 +21,10 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	colliderRect.w = player_node.child("collider_width").text().as_int();
 	colliderRect.h = player_node.child("collider_height").text().as_int();
 	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
-	SDL_Rect foot_collider_rect;
-	foot_collider_rect.w = 10;
-	foot_collider_rect.h = 5;
-	feetCol = App->collision->AddCollider(foot_collider_rect, COLLIDER_PLAYER, this);
+	SDL_Rect feetColRect;
+	feetColRect.w = player_node.child("feet_collider_width").text().as_int();
+	feetColRect.h = player_node.child("feet_collider_height").text().as_int();
+	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, this);
 	tile_size = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
@@ -32,6 +32,12 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
 	jumpSpeed = -sqrtf(gravity * tile_to_pixel(player_node.child("jump_height").text().as_float()) * 2.0f);
+
+	//Projectile
+	projectileSpeed = player_node.child("projectile").child("speed").text().as_float();
+	projectileStartHeight = player_node.child("projectile").child("start_height").text().as_uint();
+	projectileColRect.w = player_node.child("projectile").child("collider_width").text().as_int();
+	projectileColRect.h = player_node.child("projectile").child("collider_height").text().as_int();
 
 	//Animation
 	anim_tile_width = player_node.child("animation").attribute("tile_width").as_uint();
@@ -152,6 +158,10 @@ bool j1Player::PostUpdate()
 bool j1Player::CleanUp()
 {
 	App->tex->UnloadTexture(idleTex);
+	App->tex->UnloadTexture(runTex);
+	App->tex->UnloadTexture(jumpTex);
+	playerCol->to_delete = true;
+	feetCol->to_delete = true;
 	return true;
 }
 
@@ -287,15 +297,18 @@ void j1Player::MovePlayer()
 
 void j1Player::MoveProjectile()
 {
-	//if (App->input->GetMouseButton(1) == KEY_DOWN) {
-	//	iPoint mousePos;
-	//	App->input->GetMousePosition(mousePos.x, mousePos.y);
-	//	projectilePos = (iPoint)mousePos;
-	//	projectileVel.x = mousePos.x - (int)position.x;
-	//	projectileVel.y = mousePos.y - (int)position.y;
-	//	projectileVel = projectileVel.Normalize() * projectileSpeed;
-	//}
+	//Shoot the projectile
+	if (App->input->GetMouseButton(1) == KEY_DOWN) {
+		projectilePos.x = position.x;
+		projectilePos.y = position.y - projectileStartHeight;
+
+		iPoint mousePos;
+		App->input->GetMousePosition(mousePos.x, mousePos.y);
+		projectileVelocity = (fPoint)mousePos - projectilePos;
+		projectileVelocity.Normalize();
+		projectileVelocity *= projectileSpeed;
+	}
 	//Move projectile
-	projectilePos = projectilePos + projectileVel;
-	//App->render->Blit(idleTex, mousePos.x, mousePos.y, &idleAnim.GetCurrentFrame());
+	projectilePos += projectileVelocity;
+	App->render->Blit(idleTex, projectilePos.x, projectilePos.y, &idleAnim.GetCurrentFrame());
 }

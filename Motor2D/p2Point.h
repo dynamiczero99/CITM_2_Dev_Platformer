@@ -89,6 +89,12 @@ public:
 		return r;
 	}
 
+	const p2Point operator*= (const TYPE & num) {
+		x *= num;
+		y *= num;
+		return (*this);
+	}
+
 	bool operator ==(const p2Point& v) const
 	{
 		return (x == v.x && y == v.y);
@@ -100,19 +106,19 @@ public:
 	}
 
 	//Casting operators--------------------------------------
-	//explicit operator fPoint () {
-	//	fPoint retPoint;
-	//	retPoint.x = (float)x;
-	//	retPoint.y = (float)y;
-	//	return retPoint;
+	//explicit p2Point operator iPoint () {
+	//	iPoint retVec;
+	//	retVec.x = (int)x;
+	//	retVec.y = (int)y;
+	//	return retVec;
 	//}
 
-	//explicit operator iPoint () {
-	//	iPoint retPoint;
-	//	retPoint.x = (int)x;
-	//	retPoint.y = (int)y;
-	//	return retPoint;
-	//}
+	explicit operator p2Point<float> () {
+		p2Point<float> retVec;
+		retVec.x = (float)x;
+		retVec.y = (float)y;
+		return retVec;
+	}
 
 	// Utils ------------------------------------------------
 	bool IsZero() const
@@ -134,12 +140,10 @@ public:
 		return(*this);
 	}
 
-	p2Point Normalize() {
-		double module;
-		module = sqrt(x * x + y * y);
-		x = x / module;
-		y = y / module;
-		return (*this);
+	void Normalize() {
+		double module = sqrt(x * x + y * y);
+		x /= module;
+		y /= module;
 	}
 
 	// Distances ---------------------------------------------

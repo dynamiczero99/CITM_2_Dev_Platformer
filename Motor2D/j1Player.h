@@ -97,8 +97,11 @@ private:
 	bool goingDown;
 
 	//Projectile
+	SDL_Rect projectileColRect;
+	Collider* projectileCol;
+	uint projectileStartHeight;
 	fPoint projectilePos;
-	fPoint projectileVel;
+	fPoint projectileVelocity;
 	float projectileSpeed;
 };
 
