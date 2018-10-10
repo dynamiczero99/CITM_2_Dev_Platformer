@@ -10,10 +10,10 @@ public:
 	j1FadeToBlack() {};
 	~j1FadeToBlack();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
-	bool Update(float dt);
-	//bool PostUpdate();
+	//bool Update(float dt);
+	bool PostUpdate();
 	bool FadeToBlack(const char* lvlName, float time = 1.0f);
 	bool IsFading() const;
 
