@@ -33,6 +33,7 @@ struct MapLayer
 	uint columns = 0u;
 	uint rows = 0u;
 	uint* tileArray = nullptr;
+	float parallaxSpeed = 1.0f; // default
 
 	MapLayer() : tileArray(NULL)
 	{}

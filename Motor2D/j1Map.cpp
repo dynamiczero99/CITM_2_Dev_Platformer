@@ -52,10 +52,10 @@ void j1Map::Draw()
 						if (tileset->anim != nullptr)
 						{
 							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height,
-								&tileset->anim->ReturnCurrentFrame());
+								&tileset->anim->ReturnCurrentFrame(), layer->data->parallaxSpeed);
 						}
 						else
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, layer->data->parallaxSpeed);
 					}
 				}
 			}
@@ -443,7 +443,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	//Currently each tileset can only hold one animation - tiled map editor restriction
 	if (tileset_node.child("tile").child("animation")) {
 		set->anim = new Animation;
-		//}
+		
 		for (pugi::xml_node frame_node = tileset_node.child("tile").child("animation").child("frame"); frame_node; frame_node = frame_node.next_sibling()) {
 			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int() + set->firstgid));
 		}
@@ -479,6 +479,18 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		{
 			layer->tileArray[i++] = tile.attribute("gid").as_int(0);
 		}
+	}
+
+	// check custom properties from layer - test functionality // TODO, implement latest handout to do this
+	pugi::xml_node properties = node.child("properties");
+	if (properties == NULL)
+	{
+		LOG("This layer doesnt have custom properties defined");
+	}
+	else
+	{
+		layer->parallaxSpeed = properties.child("property").attribute("value").as_float();
+		LOG("%f", layer->parallaxSpeed);
 	}
 
 	return ret;
