@@ -24,7 +24,7 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	SDL_Rect foot_collider_rect;
 	foot_collider_rect.w = 10;
 	foot_collider_rect.h = 5;
-	footCol = App->collision->AddCollider(foot_collider_rect, COLLIDER_PLAYER, this);
+	feetCol = App->collision->AddCollider(foot_collider_rect, COLLIDER_PLAYER, this);
 	tile_size = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
@@ -76,37 +76,31 @@ bool j1Player::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(runTex, runAnim);
 			velocity.x = -moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = -moveSpeedAir;
 		}
 		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(runTex, runAnim);
 			velocity.x = moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = moveSpeedAir;
 		}
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 	else {
-		ChangeAnimation(idleTex, idleAnim);
 		velocity.x = 0;
 	}
 
-	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
+	// Check that it is hitting the ground to be able to jump (he could jump on the air otherwise)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
-		ChangeAnimation(jumpTex, jumpAnim);
 		isOnPlatform = false;
-		checkFoot = false;
+		checkFall = false;
 	}
 
 	return true;
@@ -114,61 +108,43 @@ bool j1Player::PreUpdate()
 
 bool j1Player::Update(float dt)
 {
-	//PHYSICS UPDATE
 	CalculateDeltaTime();
 	MovePlayer();
 	MoveProjectile();
 	return true;
 }
 
-void j1Player::MoveProjectile()
-{
-	//if (App->input->GetMouseButton(1) == KEY_DOWN) {
-	//	iPoint mousePos;
-	//	App->input->GetMousePosition(mousePos.x, mousePos.y);
-	//	projectilePos = (iPoint)mousePos;
-	//	projectileVel.x = mousePos.x - (int)position.x;
-	//	projectileVel.y = mousePos.y - (int)position.y;
-	//	projectileVel = projectileVel.Normalize() * projectileSpeed;
-	//}
-	//Move projectile
-	projectilePos = projectilePos + projectileVel;
-	//App->render->Blit(idleTex, mousePos.x, mousePos.y, &idleAnim.GetCurrentFrame());
-}
-
-void j1Player::MovePlayer()
-{
-	//Add gravity
-	if (!isOnPlatform) {
-		acceleration.y = gravity;
-		checkFoot = false;
-	}
-
-	//- Move the player
-	velocity = velocity + acceleration * deltaTime;
-	position = position + velocity * deltaTime;
-	playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-	footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
-
-	isOnPlatform = false;//This value is going to be changed to true if the character exits the platform
-}
-
-void j1Player::CalculateDeltaTime()
-{
-	if (isFirstFrame) {
-		currTime = lastTime = SDL_GetTicks();
-		isFirstFrame = false;
-	}
-	else {
-		currTime = SDL_GetTicks();
-	}
-	deltaTime = currTime - lastTime;
-	deltaTime /= 1000;//1 second is 1000 miliseconds
-	lastTime = currTime;
-}
-
 bool j1Player::PostUpdate()
 {
+	//Once the movement and the physical resolution has happened, determine the animations it must play
+
+	if (velocity.x > 0) {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+	else if (velocity.x < 0) {
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+
+	if (isOnPlatform) {
+		if(velocity.x != 0) {
+			currTex = runTex;
+			currAnim = &runAnim;
+		}
+		else {
+			currTex = idleTex;
+			currAnim = &idleAnim;
+		}
+	}
+	else {
+		currTex = jumpTex;
+		if(velocity.y <= 0){
+			currAnim = &jumpAnim;
+		}
+		else {
+			currAnim = &fallAnim;
+		}
+	}
+
 	App->render->Blit(currTex, (int)position.x - anim_tile_width / 2, (int)position.y - anim_tile_height, &currAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
@@ -199,8 +175,9 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			direction[(uint)dir::down]	= velocity.y > 0;
 			direction[(uint)dir::left]	= velocity.x < 0;
 			direction[(uint)dir::right]	= velocity.x > 0;
+
 			//2. Check which point (opposite to those directions) is the nearest
-			//If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
+			//Ex.: If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
 			uint dist[(uint)dir::max];
 			dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (position.y - playerCol->rect.h);
 			dist[(uint)dir::down] = position.y - c2->rect.y;
@@ -214,35 +191,34 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 					}
 				}
 			}
+
 			//3. Move it to that point
 			switch (nearestDir) {
 			case dir::down:
 				position.y = c2->rect.y;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
+				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
-				ChangeAnimation(idleTex, idleAnim);
-				checkFoot = true;
+				checkFall = true;
 				isOnPlatform = true;
 				break;
 			case dir::up:
 				position.y = c2->rect.y + c2->rect.h + playerCol->rect.h;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
+				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.y = 0;
-				acceleration.y = 0;
 				break;
 			case dir::left:
 				position.x = c2->rect.x + c2->rect.w + playerCol->rect.w / 2;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
+				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.x = 0;
 				break;
 			case dir::right:
 				position.x = c2->rect.x - playerCol->rect.w / 2;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
+				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.x = 0;
 				break;
 			}
@@ -252,7 +228,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 
 	//Only starts checking if it falls when it snaps to the platform
 	//Otherwise it would stop adding gravity the moment the foot collider touched the floor, making the character be way above what it should be
-	if (c1 == footCol && checkFoot) {
+	if (c1 == feetCol && checkFall) {
 		isOnPlatform = true;
 	}
 }
@@ -274,11 +250,52 @@ bool j1Player::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 	return true;
 }
 
-void j1Player::ChangeAnimation(SDL_Texture* tex, Animation &anim) {
-	if (currTex != tex) {
-		currTex = tex;
+void j1Player::CalculateDeltaTime()
+{
+	if (isFirstFrame) {
+		currTime = lastTime = SDL_GetTicks();
+		isFirstFrame = false;
 	}
-	if (currAnim != &anim) {
-		currAnim = &anim;
+	else {
+		currTime = SDL_GetTicks();
 	}
+	deltaTime = currTime - lastTime;
+	deltaTime /= 1000;//1 second is 1000 miliseconds
+	lastTime = currTime;
+}
+
+void j1Player::MovePlayer()
+{
+	//Add gravity
+	if (isOnPlatform) {
+		acceleration.y = 0;
+	}
+	else {
+		acceleration.y = gravity;
+		checkFall = false;
+	}
+
+	//- Move the player
+	velocity = velocity + acceleration * deltaTime;
+	position = position + velocity * deltaTime;
+	playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
+	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+
+	//If this value remains false after checking the collision we'll consider the player has fallen from the platform
+	isOnPlatform = false;
+}
+
+void j1Player::MoveProjectile()
+{
+	//if (App->input->GetMouseButton(1) == KEY_DOWN) {
+	//	iPoint mousePos;
+	//	App->input->GetMousePosition(mousePos.x, mousePos.y);
+	//	projectilePos = (iPoint)mousePos;
+	//	projectileVel.x = mousePos.x - (int)position.x;
+	//	projectileVel.y = mousePos.y - (int)position.y;
+	//	projectileVel = projectileVel.Normalize() * projectileSpeed;
+	//}
+	//Move projectile
+	projectilePos = projectilePos + projectileVel;
+	//App->render->Blit(idleTex, mousePos.x, mousePos.y, &idleAnim.GetCurrentFrame());
 }

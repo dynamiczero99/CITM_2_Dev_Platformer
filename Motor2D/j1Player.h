@@ -45,14 +45,32 @@ public:
 
 	inline float tile_to_pixel(uint pixel);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
-	void ChangeAnimation(SDL_Texture* tex, Animation &anim);
 
 private:
 
 private:
+	//Distances, speed and acceleration
 	fPoint position;
 	fPoint velocity;
 	fPoint acceleration;
+
+	uint tile_size;
+	float gravity;
+	float moveSpeedAir;//(pixels/s)
+	float moveSpeedGnd;//(pixels/s)
+	float jumpSpeed;//(pixels/s)
+
+	//Physics
+	Collider* playerCol;
+	Collider* feetCol;
+	bool isOnPlatform = false;
+	bool checkFall = false;
+
+	//Time
+	float deltaTime = 0;
+	Uint32 lastTime = 0;
+	Uint32 currTime = 0;
+	bool isFirstFrame = true;
 
 	//Animation
 	uint anim_tile_width = 0;
@@ -64,32 +82,21 @@ private:
 	SDL_Texture* jumpTex = nullptr;
 
 	Animation* currAnim = nullptr;
+	p2SString idle_path;
+	p2SString run_path;
+	p2SString jump_path;
 	Animation idleAnim;
 	Animation jumpAnim;
 	Animation runAnim;
 	Animation fallAnim;
 
-	float moveSpeedAir;//(pixels/s)
-	float moveSpeedGnd;//(pixels/s)
-	float jumpSpeed;//(pixels/s)
-
-	uint tile_size;
-
-	p2SString idle_path;
-	p2SString run_path;
-	p2SString jump_path;
 	SDL_RendererFlip flip;
-	float deltaTime = 0;
-	Uint32 lastTime = 0;
-	Uint32 currTime = 0;
-	bool isFirstFrame = true;
-	float gravity;
-	Collider* playerCol;
-	Collider* footCol;
+	bool movingLeft;
+	bool movingRight;
+	bool goingUp;
+	bool goingDown;
 
-	bool isOnPlatform = false;
-	bool checkFoot = false;
-
+	//Projectile
 	fPoint projectilePos;
 	fPoint projectileVel;
 	float projectileSpeed;
