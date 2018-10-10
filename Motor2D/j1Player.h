@@ -62,9 +62,9 @@ private:
 
 	//Physics
 	Collider* playerCol;
-	Collider* footCol;
+	Collider* feetCol;
 	bool isOnPlatform = false;
-	bool checkFoot = false;
+	bool checkFall = false;
 
 	//Time
 	float deltaTime = 0;
