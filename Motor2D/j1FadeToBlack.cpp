@@ -9,7 +9,7 @@
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
-bool j1FadeToBlack::Awake()
+bool j1FadeToBlack::Awake(pugi::xml_node&)
 {
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
@@ -30,7 +30,7 @@ bool j1FadeToBlack::Start()
 }
 
 // Update: draw background
-bool j1FadeToBlack::Update(float dt)
+bool j1FadeToBlack::PostUpdate()//float dt)
 {
 	if (current_step == fade_step::none)
 		return true;

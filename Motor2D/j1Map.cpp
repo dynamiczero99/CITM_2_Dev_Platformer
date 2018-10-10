@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "j1Collision.h"
 #include <math.h>
+#include "j1Scene.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -530,8 +531,9 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 bool j1Map::Reset()
 {
 	map_loaded = false;
-	App->collision->Disable();
-	App->collision->Enable();
+	App->scene->Disable();
+	App->scene->Enable();
+
 	if(CleanUp())
 		return true;
 

@@ -9,6 +9,8 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
+#include "j1Player.h"
+#include "j1Collision.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -33,6 +35,14 @@ bool j1Scene::Start()
 {
 	App->map->Load("level001.tmx");
 	//App->map->Load("iso.tmx");
+
+	if (!App->collision->IsEnabled()) App->collision->Enable();
+	
+	if (!App->player->IsEnabled()) {
+		// TODO, search a workaround to reload player info
+		App->player->Enable();
+	}
+	
 	
 	return true;
 }
@@ -65,7 +75,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 1;
 	
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-		App->fade_to_black->FadeToBlack("level002.tmx");
+		App->fade_to_black->FadeToBlack("level002.tmx", 2.0f);
 
 	App->map->Draw();
 
@@ -97,6 +107,10 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	App->collision->Disable();
+	App->player->Disable();
+
 
 	return true;
 }
