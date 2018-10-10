@@ -50,7 +50,6 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	LoadAnimation(player_node.child("animation").child("fall_animation").child("sprite"), fallAnim);
 	fallAnim.speed = player_node.child("animation").child("fall_animation").attribute("speed").as_float();
 	currAnim = &idleAnim;
-
 	return true;
 }
 
@@ -75,37 +74,37 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
-	//TODO: Control the animations from an state machine (Ryu like)
-
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(states::run_left);
+			ChangeAnimation(runTex, runAnim);
 			velocity.x = -moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(states::jump_left);//TODO: Change to fall when velocity.y > 0
+			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = -moveSpeedAir;
 		}
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(states::run_right);
+			ChangeAnimation(runTex, runAnim);
 			velocity.x = moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(states::jump_right);
+			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = moveSpeedAir;
 		}
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 	else {
-		ChangeAnimation(states::idle);
+		ChangeAnimation(idleTex, idleAnim);
 		velocity.x = 0;
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
-		ChangeAnimation(states::jump);
+		ChangeAnimation(jumpTex, jumpAnim);
 		isOnPlatform = false;
 		checkFoot = false;
 	}
@@ -141,7 +140,6 @@ void j1Player::MovePlayer()
 {
 	//Add gravity
 	if (!isOnPlatform) {
-		ChangeAnimation(states::fall);
 		acceleration.y = gravity;
 		checkFoot = false;
 	}
@@ -224,7 +222,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
-				ChangeAnimation(states::idle);
+				ChangeAnimation(idleTex, idleAnim);
 				checkFoot = true;
 				isOnPlatform = true;
 				break;
@@ -276,63 +274,11 @@ bool j1Player::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 	return true;
 }
 
-void j1Player::ChangeAnimation(states state) {
-	if (currState == state) {
-		return;
+void j1Player::ChangeAnimation(SDL_Texture* tex, Animation &anim) {
+	if (currTex != tex) {
+		currTex = tex;
 	}
-
-	switch (state) {
-	case states::idle:
-		currTex = idleTex;
-		currAnim = &idleAnim;
-		break;
-	case states::idle_right:
-		currTex = idleTex;
-		currAnim = &idleAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		break;
-	case states::idle_left:
-		currTex = idleTex;
-		currAnim = &idleAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		break;
-	case states::run_right:
-		currTex = runTex;
-		currAnim = &runAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		break;
-	case states::run_left:
-		currTex = runTex;
-		currAnim = &runAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		break;
-	case states::jump:
-		currTex = jumpTex;
-		currAnim = &jumpAnim;
-		break;
-	case states::jump_right:
-		currTex = jumpTex;
-		currAnim = &jumpAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		break;
-	case states::jump_left:
-		currTex = jumpTex;
-		currAnim = &jumpAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		break;
-	case states::fall:
-		currTex = jumpTex;
-		currAnim = &fallAnim;
-		break;
-	case states::fall_right:
-		currTex = jumpTex;
-		currAnim = &fallAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		break;
-	case states::fall_left:
-		currTex = jumpTex;
-		currAnim = &fallAnim;
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-		break;
+	if (currAnim != &anim) {
+		currAnim = &anim;
 	}
 }

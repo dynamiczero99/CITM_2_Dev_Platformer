@@ -14,20 +14,6 @@ struct Collider;
 
 class j1Player : public j1Module
 {
-	enum class states : uint {
-		idle,//Conserves the direction the character is facing
-		idle_right,
-		idle_left,
-		run_right,
-		run_left,
-		jump,//Conserves the direction the character is facing
-		jump_right,
-		jump_left,
-		fall,//Conserves the direction the character is facing
-		fall_right,
-		fall_left
-	};
-
 	enum class dir: uint {
 		left,
 		right,
@@ -59,7 +45,7 @@ public:
 
 	inline float tile_to_pixel(uint pixel);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
-	void ChangeAnimation(states state);
+	void ChangeAnimation(SDL_Texture* tex, Animation &anim);
 
 private:
 
@@ -69,8 +55,6 @@ private:
 	fPoint acceleration;
 
 	//Animation
-	states currState;
-
 	uint anim_tile_width = 0;
 	uint anim_tile_height = 0;
 
