@@ -44,7 +44,6 @@ struct MapLayer
 
 	inline uint GetArrayPos(int column, int row) const
 	{
-		//return(row * columns + column);
 		return tileArray[(columns*row) + column];
 	}
 };
@@ -67,7 +66,7 @@ struct TileSet
 	int					rows;
 	int					offset_x;
 	int					offset_y;
-	Animation*			anim;
+	Animation*			anim = nullptr;
 };
 
 enum class MapTypes
