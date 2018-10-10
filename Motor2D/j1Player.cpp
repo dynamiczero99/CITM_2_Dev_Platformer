@@ -151,7 +151,8 @@ bool j1Player::PostUpdate()
 		}
 	}
 
-	App->render->Blit(currTex, (int)position.x - anim_tile_width / 2, (int)position.y - anim_tile_height, &currAnim->GetCurrentFrame(), 1.0f, flip);
+	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, anim_tile_width, anim_tile_height);
+	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
 
@@ -209,8 +210,6 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			switch (nearestDir) {
 			case (int)dir::down:
 				position.y = c2->rect.y;
-				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
 				checkFall = true;
@@ -218,23 +217,20 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				break;
 			case (int)dir::up:
 				position.y = c2->rect.y + c2->rect.h + playerCol->rect.h;
-				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				break;
 			case (int)dir::left:
 				position.x = c2->rect.x + c2->rect.w + playerCol->rect.w / 2;
-				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.x = 0;
 				break;
 			case (int)dir::right:
 				position.x = c2->rect.x - playerCol->rect.w / 2;
-				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
-				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.x = 0;
 				break;
 			}
+			iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+			playerCol->SetPos(colPos.x, colPos.y);
+			feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 			break;
 		}
 	}
@@ -291,10 +287,11 @@ void j1Player::MovePlayer()
 	//- Move the player
 	velocity = velocity + acceleration * deltaTime;
 	position = position + velocity * deltaTime;
-	playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
+	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 
-	//If this value remains false after checking the collision we'll consider the player has fallen from the platform
+	// - If this value remains false after checking the collision we'll consider the player has fallen from the platform
 	isOnPlatform = false;
 }
 
@@ -314,4 +311,37 @@ void j1Player::MoveProjectile()
 	//Move projectile
 	projectilePos += projectileVelocity;
 	App->render->Blit(idleTex, projectilePos.x, projectilePos.y, &idleAnim.GetCurrentFrame());
+}
+
+iPoint j1Player::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
+	;
+	switch (pivot) {
+	case pivot::top_left:
+		return iPoint(x, y);
+		break;
+	case pivot::top_middle:
+		return iPoint(x - w / 2, y);
+		break;
+	case pivot::top_right:
+		return iPoint(x - w, y);
+		break;
+	case pivot::middle_left:
+		return iPoint(x, y - h / 2);
+		break;
+	case pivot::middle_middle:
+		return iPoint(x - w / 2, y - h / 2);
+		break;
+	case pivot::middle_right:
+		return iPoint(x - w, y - h / 2);
+		break;
+	case pivot::bottom_left:
+		return iPoint(x, y - h);
+		break;
+	case pivot::bottom_middle:
+		return iPoint(x - w / 2, y - h);
+		break;
+	case pivot::bottom_right:
+		return iPoint(x - w, y - h);
+		break;
+	}
 }

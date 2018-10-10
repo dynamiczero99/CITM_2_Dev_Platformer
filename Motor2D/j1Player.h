@@ -14,6 +14,18 @@ struct Collider;
 
 class j1Player : public j1Module
 {
+	enum class pivot : uint {
+		top_left,
+		top_middle,
+		top_right,
+		middle_left,
+		middle_middle,
+		middle_right,
+		bottom_left,
+		bottom_middle,
+		bottom_right
+	};
+
 	enum class dir: uint {
 		left,
 		right,
@@ -45,6 +57,8 @@ public:
 
 	inline float tile_to_pixel(uint pixel);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
+	//Returns the position it should draw (Blit) or put the collider (SetPos) considering a pivot point
+	iPoint GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h);
 
 private:
 
