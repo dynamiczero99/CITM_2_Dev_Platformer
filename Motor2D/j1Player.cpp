@@ -193,18 +193,21 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 			dist[(uint)dir::down] = position.y - c2->rect.y;
 			dist[(uint)dir::left] = (c2->rect.x + c2->rect.w) - (position.x - playerCol->rect.w/2);
 			dist[(uint)dir::right] = (position.x + playerCol->rect.w / 2) - c2->rect.x;
-			dir nearestDir = (dir)0u;
-			for (uint i = 0; i < (uint)dir::max; ++i) {
+			int nearestDir = -1;
+			for (int i = 0; i < (int)dir::max; ++i) {
 				if (direction[i]) {
-					if (dist[i] < dist[(uint)nearestDir]) {
-						nearestDir = (dir)i;
+					if (nearestDir == -1) {
+						nearestDir = i;
+					}
+					else if (dist[i] < dist[nearestDir]) {
+						nearestDir = i;
 					}
 				}
 			}
 
 			//3. Move it to that point
 			switch (nearestDir) {
-			case dir::down:
+			case (int)dir::down:
 				position.y = c2->rect.y;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
@@ -213,19 +216,19 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				checkFall = true;
 				isOnPlatform = true;
 				break;
-			case dir::up:
+			case (int)dir::up:
 				position.y = c2->rect.y + c2->rect.h + playerCol->rect.h;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				break;
-			case dir::left:
+			case (int)dir::left:
 				position.x = c2->rect.x + c2->rect.w + playerCol->rect.w / 2;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 				velocity.x = 0;
 				break;
-			case dir::right:
+			case (int)dir::right:
 				position.x = c2->rect.x - playerCol->rect.w / 2;
 				playerCol->SetPos(position.x - playerCol->rect.w / 2, position.y - playerCol->rect.h);
 				feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
