@@ -32,19 +32,54 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	for (p2List_item<TileSet*>* tilesetIterator = data.tilesets.start; tilesetIterator != NULL; tilesetIterator = tilesetIterator->next) {
-		for (p2List_item<MapLayer*>* layerIterator = data.mapLayers.start; layerIterator != NULL; layerIterator = layerIterator->next) {
-			for (int column = 0; column < layerIterator->data->columns; ++column) {
-				for (int row = 0; row < layerIterator->data->rows; ++row) {
-					uint gid = layerIterator->data->tileArray[layerIterator->data->GetArrayPos(column, row)];
-					if (gid != 0) {
-						iPoint worldPos = MapToWorld(column, row);
-						App->render->Blit(tilesetIterator->data->texture, worldPos.x, worldPos.y, &tilesetIterator->data->GetTileRect(gid));
+	p2List_item<MapLayer*>* layer = data.mapLayers.start;
+	while (layer != NULL)
+	{
+		for (int y = 0; y < data.columns; ++y)
+		{
+			for (int x = 0; x < data.rows; ++x)
+			{
+				int tile_id = layer->data->GetArrayPos(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
+					{
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
+
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
 				}
 			}
 		}
+		layer = layer->next;
 	}
+}
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	// TODO 3: Complete this method so we pick the right
+	// Tileset based on a tile id
+
+	p2List_item<TileSet*>* item = data.tilesets.start;
+
+	while (item != NULL)
+	{
+		if (item->next == nullptr)
+			return item->data;
+		else
+		{
+			if (id >= item->data->firstgid && item->next->data->firstgid > id)
+			{
+				return item->data;
+			}
+		}
+
+		item = item->next;
+	}
+
+	return nullptr;
 }
 
 iPoint j1Map::MapToWorld(int column, int row) const
@@ -380,7 +415,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		set->anim = new Animation;
 		//}
 		for (pugi::xml_node frame_node = tileset_node.child("tile").child("animation").child("frame"); frame_node; frame_node = frame_node.next_sibling()) {
-			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int()));
+			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int() + set->firstgid));
 		}
 		pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
 		set->anim->speed = speed_node.attribute("duration").as_float() * 0.01f; // divides by 100 - test

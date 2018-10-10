@@ -44,7 +44,8 @@ struct MapLayer
 
 	inline uint GetArrayPos(int column, int row) const
 	{
-		return(row * columns + column);
+		//return(row * columns + column);
+		return tileArray[(columns*row) + column];
 	}
 };
 
@@ -124,6 +125,9 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadMapColliders(pugi::xml_node& node);//, MapObjects* obj);
+	//bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 
