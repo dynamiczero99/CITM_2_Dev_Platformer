@@ -44,8 +44,8 @@ public:
 	bool PreUpdate();
 	// Called each loop iteration
 	bool Update(float dt);
-	void MoveProjectile();
-	void MovePlayer();
+	void UpdateProjectile();
+	void UpdatePlayer();
 	void CalculateDeltaTime();
 	// Called each loop iteration
 	bool PostUpdate();
@@ -68,7 +68,7 @@ private:
 	fPoint velocity;
 	fPoint acceleration;
 
-	uint tile_size;
+	uint tileSize;
 	float gravity;
 	float moveSpeedAir;//(pixels/s)
 	float moveSpeedGnd;//(pixels/s)
@@ -87,8 +87,8 @@ private:
 	bool isFirstFrame = true;
 
 	//Animation
-	uint anim_tile_width = 0;
-	uint anim_tile_height = 0;
+	uint animTileWidth = 0;
+	uint animTileHeight = 0;
 
 	SDL_Texture* currTex = nullptr;
 	SDL_Texture* idleTex = nullptr;
@@ -96,9 +96,9 @@ private:
 	SDL_Texture* jumpTex = nullptr;
 
 	Animation* currAnim = nullptr;
-	p2SString idle_path;
-	p2SString run_path;
-	p2SString jump_path;
+	p2SString idlePath;
+	p2SString runPath;
+	p2SString jumpPath;
 	Animation idleAnim;
 	Animation jumpAnim;
 	Animation runAnim;
@@ -111,6 +111,8 @@ private:
 	bool goingDown;
 
 	//Projectile
+	p2SString projectilePath;
+	SDL_Texture* projectileTex;
 	SDL_Rect projectileColRect;
 	Collider* projectileCol;
 	uint projectileStartHeight;

@@ -25,7 +25,7 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	feetColRect.w = player_node.child("feet_collider_width").text().as_int();
 	feetColRect.h = player_node.child("feet_collider_height").text().as_int();
 	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, this);
-	tile_size = player_node.child("tile_size").text().as_uint();
+	tileSize = player_node.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(player_node.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(player_node.child("move_speed_ground").text().as_float());
 	moveSpeedAir = tile_to_pixel(player_node.child("move_speed_air").text().as_float());
@@ -38,14 +38,15 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	projectileStartHeight = player_node.child("projectile").child("start_height").text().as_uint();
 	projectileColRect.w = player_node.child("projectile").child("collider_width").text().as_int();
 	projectileColRect.h = player_node.child("projectile").child("collider_height").text().as_int();
+	projectilePath = player_node.child("projectile").child("image").text().as_string();
 
 	//Animation
-	anim_tile_width = player_node.child("animation").attribute("tile_width").as_uint();
-	anim_tile_height = player_node.child("animation").attribute("tile_height").as_uint();
+	animTileWidth = player_node.child("animation").attribute("tile_width").as_uint();
+	animTileHeight = player_node.child("animation").attribute("tile_height").as_uint();
 
-	idle_path = player_node.child("animation").child("idle_image").text().as_string();
-	run_path = player_node.child("animation").child("run_image").text().as_string();
-	jump_path = player_node.child("animation").child("jump_image").text().as_string();
+	idlePath = player_node.child("animation").child("idle_image").text().as_string();
+	runPath = player_node.child("animation").child("run_image").text().as_string();
+	jumpPath = player_node.child("animation").child("jump_image").text().as_string();
 
 	LoadAnimation(player_node.child("animation").child("idle_animation").child("sprite"), idleAnim);
 	idleAnim.speed = player_node.child("animation").child("idle_animation").attribute("speed").as_float();
@@ -62,10 +63,12 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 bool j1Player::Start()
 {
 	//INFO: We can't load the texture in awake because the render is not initialized yet
-	idleTex = App->tex->LoadTexture(idle_path.GetString());
-	runTex = App->tex->LoadTexture(run_path.GetString());
-	jumpTex = App->tex->LoadTexture(jump_path.GetString());
+	idleTex = App->tex->LoadTexture(idlePath.GetString());
+	runTex = App->tex->LoadTexture(runPath.GetString());
+	jumpTex = App->tex->LoadTexture(jumpPath.GetString());
 	currTex = idleTex;
+
+	projectileTex = App->tex->LoadTexture(projectilePath.GetString());
 
 	//General values
 	position.x = 80;
@@ -115,8 +118,8 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	CalculateDeltaTime();
-	MovePlayer();
-	MoveProjectile();
+	UpdatePlayer();
+	UpdateProjectile();
 	return true;
 }
 
@@ -151,7 +154,7 @@ bool j1Player::PostUpdate()
 		}
 	}
 
-	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, anim_tile_width, anim_tile_height);
+	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
@@ -161,6 +164,7 @@ bool j1Player::CleanUp()
 	App->tex->UnloadTexture(idleTex);
 	App->tex->UnloadTexture(runTex);
 	App->tex->UnloadTexture(jumpTex);
+	App->tex->UnloadTexture(projectileTex);
 	playerCol->to_delete = true;
 	feetCol->to_delete = true;
 	return true;
@@ -244,7 +248,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 
 //We can consider that 1 tile = 1 meter to make it easier for us to imagine the different values
 inline float j1Player::tile_to_pixel(uint pixel) {
-	return pixel * tile_size;
+	return pixel * tileSize;
 }
 
 bool j1Player::LoadAnimation(pugi::xml_node &node, Animation &anim) {
@@ -273,7 +277,7 @@ void j1Player::CalculateDeltaTime()
 	lastTime = currTime;
 }
 
-void j1Player::MovePlayer()
+void j1Player::UpdatePlayer()
 {
 	//Add gravity
 	if (isOnPlatform) {
@@ -295,7 +299,7 @@ void j1Player::MovePlayer()
 	isOnPlatform = false;
 }
 
-void j1Player::MoveProjectile()
+void j1Player::UpdateProjectile()
 {
 	//Shoot the projectile
 	if (App->input->GetMouseButton(1) == KEY_DOWN) {
@@ -310,7 +314,9 @@ void j1Player::MoveProjectile()
 	}
 	//Move projectile
 	projectilePos += projectileVelocity;
-	App->render->Blit(idleTex, projectilePos.x, projectilePos.y, &idleAnim.GetCurrentFrame());
+
+	iPoint blitPos = GetPosFromPivot(pivot::middle_middle, projectilePos.x, projectilePos.y, projectileColRect.w, projectileColRect.h);
+	App->render->Blit(projectileTex, blitPos.x, blitPos.y);
 }
 
 iPoint j1Player::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {

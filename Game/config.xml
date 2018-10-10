@@ -73,9 +73,10 @@
     </animation>
     <projectile>
       <speed>5</speed>
-      <start_height>8</start_height>
+      <start_height>20</start_height>
       <collider_width>5</collider_width>
       <collider_height>5</collider_height>
+      <image>textures/projectile/projectile.png</image>
     </projectile>
   </player>
 </config>
