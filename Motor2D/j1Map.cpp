@@ -422,12 +422,8 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int() + set->firstgid));
 		}
 		pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
-		set->anim->speed = speed_node.attribute("duration").as_float() * 0.005f; // divides by 100 - test
+		set->anim->speed = speed_node.attribute("duration").as_float() * set->animSpeedFactor;
 	}
-	//pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
-	//if (speed_node) {
-	//	set->anim->speed = speed_node.text().as_float() * 0.01f; // divides by 100 - test
-	//}
 
 	return ret;
 }
