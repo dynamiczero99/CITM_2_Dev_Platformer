@@ -36,11 +36,11 @@
     <move_speed_ground>8</move_speed_ground>
     <move_speed_air>6</move_speed_air>
     <!-- Tiles it reaches when the character jumps -->
-    <jump_height>3.2</jump_height>
+    <jump_height>5</jump_height>
     <animation tile_width ="16" tile_height ="28">
       <idle_image>textures/engineer character/engineer-idle.png</idle_image>
-      <run_image>textures/engineer character/engineer-jump.png</run_image>
-      <jump_image>textures/engineer character/engineer-run.png</jump_image>
+      <run_image>textures/engineer character/engineer-run.png</run_image>
+      <jump_image>textures/engineer character/engineer-jump.png</jump_image>
       <idle_animation speed ="0.25">
         <sprite x ="0" y ="0" w ="16" h="28"/>
         <sprite x ="16" y ="0" w ="16" h="28"/>

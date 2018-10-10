@@ -49,7 +49,7 @@ bool j1Player::Awake(pugi::xml_node& player_node)
 	jumpAnim.speed = player_node.child("animation").child("jump_animation").attribute("speed").as_float();
 	LoadAnimation(player_node.child("animation").child("fall_animation").child("sprite"), fallAnim);
 	fallAnim.speed = player_node.child("animation").child("fall_animation").attribute("speed").as_float();
-	currAnim = &runAnim;
+	currAnim = &idleAnim;
 
 	return true;
 }
@@ -60,7 +60,7 @@ bool j1Player::Start()
 	idleTex = App->tex->LoadTexture(idle_path.GetString());
 	runTex = App->tex->LoadTexture(run_path.GetString());
 	jumpTex = App->tex->LoadTexture(jump_path.GetString());
-	currTex = runTex;
+	currTex = idleTex;
 
 	//General values
 	position.x = 80;
@@ -79,33 +79,33 @@ bool j1Player::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		if (isOnPlatform) {
-			//ChangeAnimation(states::run_left);
+			ChangeAnimation(states::run_left);
 			velocity.x = -moveSpeedGnd;
 		}
 		else {
-			//ChangeAnimation(states::jump_left);//TODO: Change to fall when velocity.y > 0
+			ChangeAnimation(states::jump_left);//TODO: Change to fall when velocity.y > 0
 			velocity.x = -moveSpeedAir;
 		}
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		if (isOnPlatform) {
-			//ChangeAnimation(states::run_right);
+			ChangeAnimation(states::run_right);
 			velocity.x = moveSpeedGnd;
 		}
 		else {
-			//ChangeAnimation(states::jump_right);
+			ChangeAnimation(states::jump_right);
 			velocity.x = moveSpeedAir;
 		}
 	}
 	else {
-		//ChangeAnimation(states::idle);
+		ChangeAnimation(states::idle);
 		velocity.x = 0;
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
-		//ChangeAnimation(states::jump);
+		ChangeAnimation(states::jump);
 		isOnPlatform = false;
 		checkFoot = false;
 	}
@@ -124,14 +124,14 @@ bool j1Player::Update(float dt)
 
 void j1Player::MoveProjectile()
 {
-	if (App->input->GetMouseButton(1) == KEY_DOWN) {
-		iPoint mousePos;
-		App->input->GetMousePosition(mousePos.x, mousePos.y);
-		projectilePos = (iPoint)mousePos;
-		projectileVel.x = mousePos.x - (int)position.x;
-		projectileVel.y = mousePos.y - (int)position.y;
-		projectileVel = projectileVel.Normalize() * projectileSpeed;
-	}
+	//if (App->input->GetMouseButton(1) == KEY_DOWN) {
+	//	iPoint mousePos;
+	//	App->input->GetMousePosition(mousePos.x, mousePos.y);
+	//	projectilePos = (iPoint)mousePos;
+	//	projectileVel.x = mousePos.x - (int)position.x;
+	//	projectileVel.y = mousePos.y - (int)position.y;
+	//	projectileVel = projectileVel.Normalize() * projectileSpeed;
+	//}
 	//Move projectile
 	projectilePos = projectilePos + projectileVel;
 	//App->render->Blit(idleTex, mousePos.x, mousePos.y, &idleAnim.GetCurrentFrame());
@@ -141,7 +141,7 @@ void j1Player::MovePlayer()
 {
 	//Add gravity
 	if (!isOnPlatform) {
-		//ChangeAnimation(states::fall);
+		ChangeAnimation(states::fall);
 		acceleration.y = gravity;
 		checkFoot = false;
 	}
@@ -224,7 +224,7 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
-				//ChangeAnimation(states::idle);
+				ChangeAnimation(states::idle);
 				checkFoot = true;
 				isOnPlatform = true;
 				break;
