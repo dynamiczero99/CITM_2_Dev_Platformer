@@ -519,3 +519,12 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 
 	return ret;
 }
+
+bool j1Map::Reset()
+{
+	map_loaded = false;
+	if(CleanUp())
+		return true;
+
+	return false;
+}
