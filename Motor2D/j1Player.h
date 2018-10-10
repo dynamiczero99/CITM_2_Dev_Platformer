@@ -46,6 +46,9 @@ public:
 	bool PreUpdate();
 	// Called each loop iteration
 	bool Update(float dt);
+	void MoveProjectile();
+	void MovePlayer();
+	void CalculateDeltaTime();
 	// Called each loop iteration
 	bool PostUpdate();
 	// Called before quitting
@@ -102,6 +105,9 @@ private:
 
 	bool isOnPlatform = false;
 	bool checkFoot = false;
+
+	fPoint projectileDir;
+	float projectileSpeed;
 };
 
 #endif
