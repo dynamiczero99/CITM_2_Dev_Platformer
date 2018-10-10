@@ -43,6 +43,23 @@ public:
 		return frames[(int)current_frame];
 	}
 
+	SDL_Rect& ReturnCurrentFrame()
+	{
+		return frames[(int)current_frame];
+	}
+
+	SDL_Rect& Rewind()
+	{
+		if(current_frame <= 0.0f)
+			return frames[(int)current_frame];
+		
+		if(loops > 0)
+			loops--;
+
+		current_frame -= speed;
+		return frames[(int)current_frame];
+	}
+
 	bool Finished() const
 	{
 		return loops > 0;
