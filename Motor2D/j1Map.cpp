@@ -189,6 +189,14 @@ bool j1Map::CleanUp()
 
 	while (objectItem != NULL)
 	{
+		for (uint i = 0; i < MAX_OBJECTGROUP_COLLIDERS; ++i)
+		{
+			if (objectItem->data->colliders[i] != nullptr)
+			{
+				objectItem->data->colliders[i]->to_delete = true;
+				objectItem->data->colliders[i] = nullptr;
+			}
+		}
 		RELEASE(objectItem->data);
 		objectItem = objectItem->next;
 	}

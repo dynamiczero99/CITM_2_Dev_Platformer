@@ -161,8 +161,8 @@ bool j1Player::CleanUp()
 	App->tex->UnloadTexture(idleTex);
 	App->tex->UnloadTexture(runTex);
 	App->tex->UnloadTexture(jumpTex);
-	playerCol->to_delete = true;
-	feetCol->to_delete = true;
+	//playerCol->to_delete = true;
+	//feetCol->to_delete = true;
 	return true;
 }
 

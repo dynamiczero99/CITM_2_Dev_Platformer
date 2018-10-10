@@ -108,7 +108,7 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	App->collision->Disable();
+	//App->collision->Disable();
 	App->player->Disable();
 
 
