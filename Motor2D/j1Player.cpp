@@ -76,35 +76,29 @@ bool j1Player::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(runTex, runAnim);
 			velocity.x = -moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = -moveSpeedAir;
 		}
 		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		if (isOnPlatform) {
-			ChangeAnimation(runTex, runAnim);
 			velocity.x = moveSpeedGnd;
 		}
 		else {
-			ChangeAnimation(jumpTex, jumpAnim);
 			velocity.x = moveSpeedAir;
 		}
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 	else {
-		ChangeAnimation(idleTex, idleAnim);
 		velocity.x = 0;
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air if not)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
-		ChangeAnimation(jumpTex, jumpAnim);
 		isOnPlatform = false;
 		checkFoot = false;
 	}
@@ -169,6 +163,35 @@ void j1Player::CalculateDeltaTime()
 
 bool j1Player::PostUpdate()
 {
+	//Once the movement and the physical resolution has happened, determine the animations it must play
+
+	if (velocity.x > 0) {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+	else if (velocity.x < 0) {
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+
+	if (isOnPlatform) {
+		if(velocity.x != 0) {
+			currTex = runTex;
+			currAnim = &runAnim;
+		}
+		else {
+			currTex = idleTex;
+			currAnim = &idleAnim;
+		}
+	}
+	else {
+		currTex = jumpTex;
+		if(velocity.y <= 0){
+			currAnim = &jumpAnim;
+		}
+		else {
+			currAnim = &fallAnim;
+		}
+	}
+
 	App->render->Blit(currTex, (int)position.x - anim_tile_width / 2, (int)position.y - anim_tile_height, &currAnim->GetCurrentFrame(), 1.0f, flip);
 	return true;
 }
@@ -222,7 +245,6 @@ void j1Player::OnCollision(Collider* c1, Collider* c2) {
 				footCol->SetPos(position.x - footCol->rect.w / 2, position.y);
 				velocity.y = 0;
 				acceleration.y = 0;
-				ChangeAnimation(idleTex, idleAnim);
 				checkFoot = true;
 				isOnPlatform = true;
 				break;
@@ -272,13 +294,4 @@ bool j1Player::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 		anim.PushBack(frame);
 	}
 	return true;
-}
-
-void j1Player::ChangeAnimation(SDL_Texture* tex, Animation &anim) {
-	if (currTex != tex) {
-		currTex = tex;
-	}
-	if (currAnim != &anim) {
-		currAnim = &anim;
-	}
 }
