@@ -158,9 +158,16 @@ bool j1Map::CleanUp()
 
 	while(item != NULL)
 	{
+		if (item->data->texture != nullptr)
+		{
+			App->tex->UnloadTexture(item->data->texture);
+			item->data->texture = nullptr;
+		}
+
 		RELEASE(item->data->anim);
 		RELEASE(item->data);
-		item = item->next;
+		
+	item = item->next;
 	}
 	data.tilesets.clear();
 
@@ -523,6 +530,8 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 bool j1Map::Reset()
 {
 	map_loaded = false;
+	App->collision->Disable();
+	App->collision->Enable();
 	if(CleanUp())
 		return true;
 

@@ -12,7 +12,8 @@ public:
 
 	bool Awake();
 	bool Start();
-	bool Update();
+	bool Update(float dt);
+	//bool PostUpdate();
 	bool FadeToBlack(const char* lvlName, float time = 1.0f);
 	bool IsFading() const;
 

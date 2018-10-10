@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1FadeToBlack.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -62,6 +63,9 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 1;
+	
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		App->fade_to_black->FadeToBlack("level002.tmx");
 
 	App->map->Draw();
 

@@ -30,7 +30,7 @@ bool j1FadeToBlack::Start()
 }
 
 // Update: draw background
-bool j1FadeToBlack::Update()
+bool j1FadeToBlack::Update(float dt)
 {
 	if (current_step == fade_step::none)
 		return true;
@@ -45,9 +45,9 @@ bool j1FadeToBlack::Update()
 		if (now >= total_time)
 		{
 			// clean up the current map
-			App->map->Reset();
-			// load new map
-			App->map->Load(lvl_to_load);
+			if(App->map->Reset())// load new map
+				App->map->Load(lvl_to_load);
+
 			total_time += total_time;
 			start_time = SDL_GetTicks();
 			current_step = fade_step::fade_from_black;
