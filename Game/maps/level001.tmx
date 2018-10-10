@@ -108,7 +108,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="86"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10088,7 +10088,6 @@
   <objectgroup name="Platforms">
    <object id="6" name="platform" x="56" y="16" width="87.3333" height="3"/>
    <object id="7" name="platform" x="296.667" y="40" width="86.3333" height="5"/>
-   <object id="8" x="57" y="32.3333" width="82.3333" height="4.33333"/>
   </objectgroup>
   <objectgroup name="Floor">
    <object id="1" name="floor" x="56.3333" y="79.6667" width="128.656" height="22.3333"/>

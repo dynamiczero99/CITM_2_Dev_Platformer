@@ -114,6 +114,9 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	// Reset current map
+	bool Reset();
+
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
