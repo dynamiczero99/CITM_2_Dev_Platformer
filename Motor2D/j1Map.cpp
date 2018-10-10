@@ -48,9 +48,11 @@ void j1Map::Draw()
 						SDL_Rect r = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
 
-						if(tileset->anim != nullptr)
-							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height, 
-								&tileset->anim->GetCurrentFrame());
+						if (tileset->anim != nullptr)
+						{
+							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height,
+								&tileset->anim->ReturnCurrentFrame());
+						}
 						else
 							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
@@ -58,6 +60,14 @@ void j1Map::Draw()
 			}
 		}
 		layer = layer->next;
+	}
+	// advance animation frames
+	for (p2List_item<TileSet*>* tilesets = data.tilesets.start; tilesets != NULL; tilesets = tilesets->next)
+	{
+		if (tilesets->data->anim != nullptr)
+		{
+			tilesets->data->anim->GetCurrentFrame();
+		}
 	}
 }
 
