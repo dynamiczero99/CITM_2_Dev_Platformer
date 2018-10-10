@@ -49,7 +49,8 @@ void j1Map::Draw()
 						iPoint pos = MapToWorld(x, y);
 
 						if(tileset->anim != nullptr)
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tileset->anim->GetCurrentFrame());
+							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height, 
+								&tileset->anim->GetCurrentFrame());
 						else
 							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
@@ -72,7 +73,7 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 		if (item->next == nullptr)
 			return item->data;
 		else
-		{
+		{ 
 			if (id >= item->data->firstgid && item->next->data->firstgid > id)
 			{
 				return item->data;
@@ -421,7 +422,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 			set->anim->PushBack(set->GetTileRect(frame_node.attribute("tileid").as_int() + set->firstgid));
 		}
 		pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
-		set->anim->speed = speed_node.attribute("duration").as_float() * 0.01f; // divides by 100 - test
+		set->anim->speed = speed_node.attribute("duration").as_float() * 0.005f; // divides by 100 - test
 	}
 	//pugi::xml_node speed_node = tileset_node.child("tile").child("animation").child("frame");
 	//if (speed_node) {
