@@ -20,17 +20,10 @@ bool j1Object::Awake(pugi::xml_node& node) {
 
 	object_node = node;
 
-	//Test to get the node values
-	int a;
-	a = this->object_node.child("player").child("collider_width").text().as_int();
-
 	return true;
 }
 
 bool j1Object::PreUpdate() {
-
-	int a;
-	a = object_node.child("player").child("collider_width").text().as_int();
 
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
