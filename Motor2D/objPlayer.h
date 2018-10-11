@@ -7,7 +7,7 @@
 #include "SDL/include/SDL_render.h"
 #include "p2SString.h"
 #include "p2Animation.h"
-#include "PugiXml/src/pugiconfig.hpp"
+#include "PugiXml/src/pugixml.hpp"
 
 struct SDL_Texture;
 struct SDL_Rect;

@@ -9,50 +9,52 @@
 #include "p2Animation.h"
 #include "p2Defs.h"
 #include "p2Point.h"
-#include "PugiXml/src/pugiconfig.hpp"
+#include "PugiXml/src/pugixml.hpp"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) : Gameobject(position, index) {
 	//Values from xml
 	SDL_Rect colliderRect;
-	colliderRect.w = object_node.child("player").child("collider_width").text().as_int();
-	colliderRect.h = object_node.child("player").child("collider_height").text().as_int();
+	colliderRect.w = App->config.child("object").child("player").child("collider_width").text().as_int();
+
+	colliderRect.w = App->config.child("object").child("player").child("collider_width").text().as_int();
+	colliderRect.h = App->config.child("object").child("player").child("collider_height").text().as_int();
 	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
 	SDL_Rect feetColRect;
-	feetColRect.w = object_node.child("player").child("feet_collider_width").text().as_int();
-	feetColRect.h = object_node.child("player").child("feet_collider_height").text().as_int();
+	feetColRect.w = App->config.child("object").child("player").child("feet_collider_width").text().as_int();
+	feetColRect.h = App->config.child("object").child("player").child("feet_collider_height").text().as_int();
 	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, this);
-	tileSize = object_node.child("player").child("tile_size").text().as_uint();
-	gravity = tile_to_pixel(object_node.child("player").child("gravity").text().as_float());
-	moveSpeedGnd = tile_to_pixel(object_node.child("player").child("move_speed_ground").text().as_float());
-	moveSpeedAir = tile_to_pixel(object_node.child("player").child("move_speed_air").text().as_float());
+	tileSize = App->config.child("object").child("player").child("tile_size").text().as_uint();
+	gravity = tile_to_pixel(App->config.child("object").child("player").child("gravity").text().as_float());
+	moveSpeedGnd = tile_to_pixel(App->config.child("object").child("player").child("move_speed_ground").text().as_float());
+	moveSpeedAir = tile_to_pixel(App->config.child("object").child("player").child("move_speed_air").text().as_float());
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * tile_to_pixel(object_node.child("player").child("jump_height").text().as_float()) * 2.0f);
+	jumpSpeed = -sqrtf(gravity * tile_to_pixel(App->config.child("object").child("player").child("jump_height").text().as_float()) * 2.0f);
 
 	//Projectile
-	projectileSpeed = object_node.child("player").child("projectile").child("speed").text().as_float();
-	projectileStartHeight = object_node.child("player").child("projectile").child("start_height").text().as_uint();
-	projectileColRect.w = object_node.child("player").child("projectile").child("collider_width").text().as_int();
-	projectileColRect.h = object_node.child("player").child("projectile").child("collider_height").text().as_int();
-	projectileTex = App->tex->LoadTexture(object_node.child("player").child("projectile").child("image").text().as_string());
+	projectileSpeed = App->config.child("object").child("player").child("projectile").child("speed").text().as_float();
+	projectileStartHeight = App->config.child("object").child("player").child("projectile").child("start_height").text().as_uint();
+	projectileColRect.w = App->config.child("object").child("player").child("projectile").child("collider_width").text().as_int();
+	projectileColRect.h = App->config.child("object").child("player").child("projectile").child("collider_height").text().as_int();
+	projectileTex = App->tex->LoadTexture(App->config.child("object").child("player").child("projectile").child("image").text().as_string());
 
 	//Animation
-	animTileWidth = object_node.child("player").child("animation").attribute("tile_width").as_uint();
-	animTileHeight = object_node.child("player").child("animation").attribute("tile_height").as_uint();
+	animTileWidth = App->config.child("object").child("player").child("animation").attribute("tile_width").as_uint();
+	animTileHeight = App->config.child("object").child("player").child("animation").attribute("tile_height").as_uint();
 
-	idleTex = App->tex->LoadTexture(object_node.child("player").child("animation").child("idle_image").text().as_string());
-	runTex = App->tex->LoadTexture(object_node.child("player").child("animation").child("run_image").text().as_string());
-	jumpTex = App->tex->LoadTexture(object_node.child("player").child("animation").child("jump_image").text().as_string());
+	idleTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("idle_image").text().as_string());
+	runTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("run_image").text().as_string());
+	jumpTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("jump_image").text().as_string());
 	currTex = idleTex;
 
-	LoadAnimation(object_node.child("player").child("animation").child("idle_animation").child("sprite"), idleAnim);
-	idleAnim.speed = object_node.child("player").child("animation").child("idle_animation").attribute("speed").as_float();
-	LoadAnimation(object_node.child("player").child("animation").child("run_animation").child("sprite"), runAnim);
-	runAnim.speed = object_node.child("player").child("animation").child("run_animation").attribute("speed").as_float();
-	LoadAnimation(object_node.child("player").child("animation").child("jump_animation").child("sprite"), jumpAnim);
-	jumpAnim.speed = object_node.child("player").child("animation").child("jump_animation").attribute("speed").as_float();
-	LoadAnimation(object_node.child("player").child("animation").child("fall_animation").child("sprite"), fallAnim);
-	fallAnim.speed = object_node.child("player").child("animation").child("fall_animation").attribute("speed").as_float();
+	LoadAnimation(App->config.child("object").child("player").child("animation").child("idle_animation").child("sprite"), idleAnim);
+	idleAnim.speed = App->config.child("object").child("player").child("animation").child("idle_animation").attribute("speed").as_float();
+	LoadAnimation(App->config.child("object").child("player").child("animation").child("run_animation").child("sprite"), runAnim);
+	runAnim.speed = App->config.child("object").child("player").child("animation").child("run_animation").attribute("speed").as_float();
+	LoadAnimation(App->config.child("object").child("player").child("animation").child("jump_animation").child("sprite"), jumpAnim);
+	jumpAnim.speed = App->config.child("object").child("player").child("animation").child("jump_animation").attribute("speed").as_float();
+	LoadAnimation(App->config.child("object").child("player").child("animation").child("fall_animation").child("sprite"), fallAnim);
+	fallAnim.speed = App->config.child("object").child("player").child("animation").child("fall_animation").attribute("speed").as_float();
 	currAnim = &idleAnim;
 }
 
