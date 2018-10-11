@@ -142,7 +142,7 @@
  </tileset>
  <layer name="background" width="100" height="100">
   <properties>
-   <property name="parallaxSpeed" type="float" value="0.5"/>
+   <property name="parallaxSpeed" type="float" value="0.25"/>
   </properties>
   <data>
    <tile/>
@@ -10149,7 +10149,7 @@
  </layer>
  <layer name="midground" width="100" height="100">
   <properties>
-   <property name="parallaxSpeed" type="float" value="0.25"/>
+   <property name="parallaxSpeed" type="float" value="0.5"/>
   </properties>
   <data>
    <tile gid="1309"/>

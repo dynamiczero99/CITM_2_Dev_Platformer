@@ -351,3 +351,13 @@ iPoint j1Player::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
 		break;
 	}
 }
+
+fPoint j1Player::GetPlayerPos() const
+{
+	return position;
+}
+
+fPoint j1Player::GetVelocity() const
+{
+	return velocity;
+}

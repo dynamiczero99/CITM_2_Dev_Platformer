@@ -104,7 +104,6 @@ private:
 	Animation runAnim;
 	Animation fallAnim;
 
-	SDL_RendererFlip flip;
 	bool movingLeft;
 	bool movingRight;
 	bool goingUp;
@@ -119,6 +118,13 @@ private:
 	fPoint projectilePos;
 	fPoint projectileVelocity;
 	float projectileSpeed;
+
+public:
+	SDL_RendererFlip flip;
+
+	// utils ---
+	fPoint GetPlayerPos() const;
+	fPoint GetVelocity() const;
 };
 
 #endif

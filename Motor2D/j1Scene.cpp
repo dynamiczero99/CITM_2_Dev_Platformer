@@ -11,6 +11,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Player.h"
 #include "j1Collision.h"
+#include "j1Window.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -50,6 +51,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	CameraLogic();
 	return true;
 }
 
@@ -63,21 +65,24 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 1;
+		App->render->camera.y += 6;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 1;
+		App->render->camera.y -= 6;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 1;
+		App->render->camera.x += 6;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
+		App->render->camera.x -= 6;
 	
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		App->fade_to_black->FadeToBlack("level002.tmx", 2.0f);
 
 	App->map->Draw();
+
+	// camera logic
+	//CameraLogic();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -99,7 +104,7 @@ bool j1Scene::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-
+	
 	return ret;
 }
 
@@ -113,4 +118,47 @@ bool j1Scene::CleanUp()
 
 
 	return true;
+}
+
+void j1Scene::CameraLogic()
+{
+	uint width, height = 0;
+	App->win->GetWindowSize(width, height);
+
+	float x = width * 0.25f * 1.5f;
+	float y = height * 0.33f *2.5f;
+	
+	iPoint offset = { (int)x , (int)y };
+
+	iPoint playerPivotPos;
+	playerPivotPos.x = -(int)(App->player->GetPlayerPos().x * App->win->GetScale()); // center of current player pivot
+	playerPivotPos.y = -(int)(App->player->GetPlayerPos().y * App->win->GetScale());
+
+	float targetX = (playerPivotPos.x + (int)offset.x);
+	float targetY = (playerPivotPos.y + (int)offset.y);
+
+	//App->render->camera.x = (playerPivotPos.x + (int)offset.x); 
+	//App->render->camera.y = (playerPivotPos.y + (int)offset.y);
+
+	speedx += (targetX - App->render->camera.x) / 20;
+	if (App->player->GetVelocity().y >= 0)
+		speedy += ((targetY - App->render->camera.y) / 7);
+	else
+	{
+		if (App->render->camera.y > targetY)
+		{
+			LOG("mec");
+		}
+		speedy += ((targetY - App->render->camera.y) / 10);
+	}
+	
+	App->render->camera.x = speedx;
+	App->render->camera.y = speedy;
+
+	/*if (velocity.y <= 0) {
+		currAnim = &jumpAnim;
+	}
+	else {
+		currAnim = &fallAnim;
+	}*/
 }

@@ -32,7 +32,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void CameraLogic();
+
 private:
+
+	float speedx = 0;
+	float speedy = 0;
+
 };
 
 #endif // __j1SCENE_H__
