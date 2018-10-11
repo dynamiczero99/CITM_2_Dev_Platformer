@@ -259,7 +259,7 @@ bool j1Map::Load(const char* file_name)
 			data.mapLayers.add(lay);
 	}
 
-	// Load scene colliders -----------------------------------------
+	// Load objects/scene colliders -----------------------------------------
 	pugi::xml_node objectGroup;
 	for (objectGroup = map_file.child("map").child("group"); objectGroup && ret; objectGroup = objectGroup.next_sibling("group"))
 	{
@@ -272,9 +272,13 @@ bool j1Map::Load(const char* file_name)
 			ret = LoadMapColliders(objectGroup);//, obj);
 			LOG("loading Map colliders");
 		}
-		else if (tmp == "playerStartPoint")
+		else if (tmp == "Player")
 		{
-
+			// TODO, check latest handout
+			pugi::xml_node player = objectGroup.child("objectgroup").child("object");
+			playerData.name = player.attribute("name").as_string();
+			playerData.x = player.attribute("x").as_int();
+			playerData.y = player.attribute("y").as_int();
 		}
 
 		//if (ret == true)

@@ -9,6 +9,8 @@
 #include "math.h"
 #include "p2Log.h"
 
+#include "j1Map.h"
+
 j1Player::j1Player() : j1Module()
 {
 	name.create("player");
@@ -71,8 +73,8 @@ bool j1Player::Start()
 	projectileTex = App->tex->LoadTexture(projectilePath.GetString());
 
 	//General values
-	position.x = 80;
-	position.y = 50;
+	position.x = App->map->playerData.x;//80;
+	position.y = App->map->playerData.y;//50;
 	velocity.x = 0;
 	velocity.y = 0;
 	acceleration.x = 0;

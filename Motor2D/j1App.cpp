@@ -39,9 +39,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(player);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(player);
 	AddModule(fade_to_black);
 	AddModule(collision);//Collision is the penultimate module to update because it calcules all the overlaping collisions and resolves them just before rendering
 	AddModule(render);// render last to swap buffer

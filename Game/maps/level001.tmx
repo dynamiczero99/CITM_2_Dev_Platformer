@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="9">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="11">
  <tileset firstgid="1" name="IndustrialTileset" tilewidth="8" tileheight="8" tilecount="1296" columns="36">
   <image source="industrial-tileset.png" width="288" height="288"/>
   <terraintypes>
@@ -142,7 +142,7 @@
  </tileset>
  <layer name="background" width="100" height="100">
   <properties>
-   <property name="parallaxSpeed" type="float" value="0.25"/>
+   <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
   <data>
    <tile/>
@@ -10149,7 +10149,7 @@
  </layer>
  <layer name="midground" width="100" height="100">
   <properties>
-   <property name="parallaxSpeed" type="float" value="0.5"/>
+   <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
   <data>
    <tile gid="1309"/>
@@ -30170,5 +30170,11 @@
    <object id="5" x="272.333" y="143.667" width="6.33333" height="93.3333"/>
   </objectgroup>
  </group>
- <group name="OtherGroup"/>
+ <group name="Player">
+  <objectgroup name="PlayerData">
+   <object id="9" name="StartPoint" x="223" y="58">
+    <point/>
+   </object>
+  </objectgroup>
+ </group>
 </map>

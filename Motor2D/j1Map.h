@@ -11,6 +11,12 @@
 
 struct Collider;
 
+struct PlayerData
+{
+	p2SString name;
+	int x, y = 0;
+};
+
 struct MapObjects
 {
 	p2SString name;
@@ -136,6 +142,7 @@ private:
 public:
 
 	MapData data;
+	PlayerData playerData;
 
 private:
 
