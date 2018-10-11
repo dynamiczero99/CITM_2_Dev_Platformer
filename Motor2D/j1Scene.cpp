@@ -141,16 +141,17 @@ void j1Scene::CameraLogic()
 	//App->render->camera.y = (playerPivotPos.y + (int)offset.y);
 
 	speedx += (targetX - App->render->camera.x) / 20;
-	if (App->player->GetVelocity().y >= 0)
-		speedy += ((targetY - App->render->camera.y) / 7);
+	if (App->player->GetVelocity().y > 0)
+		speedy += (((targetY - 180) - App->render->camera.y) / 25);
 	else
 	{
 		if (App->render->camera.y > targetY)
 		{
-			LOG("mec");
+			//LOG("mec: %f", App->player->GetVelocity().y);
 		}
-		speedy += ((targetY - App->render->camera.y) / 10);
+		speedy += ((targetY - App->render->camera.y) / 50);
 	}
+	//LOG("mec: %f", App->player->GetVelocity().y);
 	
 	App->render->camera.x = speedx;
 	App->render->camera.y = speedy;
