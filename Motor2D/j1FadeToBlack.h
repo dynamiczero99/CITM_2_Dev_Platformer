@@ -1,5 +1,5 @@
-#ifndef __J1FADETOBLACK_H__
-#define __J1FADETOBLACK_H__
+#ifndef __j1FADETOBLACK_H__
+#define __j1FADETOBLACK_H__
 
 #include "j1Module.h"
 #include "SDL\include\SDL_rect.h"

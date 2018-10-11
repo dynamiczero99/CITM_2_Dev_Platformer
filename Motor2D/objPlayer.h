@@ -1,19 +1,21 @@
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
+#ifndef _OBJ_PLAYER_H_
+#define _OBJ_PLAYER_H_
 
-#include "j1Module.h"
+#include "j1Object.h"
+#include "j1Collision.h"
 #include "p2Point.h"
 #include "SDL/include/SDL_render.h"
 #include "p2SString.h"
 #include "p2Animation.h"
+#include "PugiXml/src/pugiconfig.hpp"
 
 struct SDL_Texture;
 struct SDL_Rect;
 class Animation;
 struct Collider;
 
-class j1Player : public j1Module
-{
+class ObjPlayer : public Gameobject {
+private:
 	enum class pivot : uint {
 		top_left,
 		top_middle,
@@ -26,7 +28,7 @@ class j1Player : public j1Module
 		bottom_right
 	};
 
-	enum class dir: uint {
+	enum class dir : uint {
 		left,
 		right,
 		up,
@@ -35,39 +37,26 @@ class j1Player : public j1Module
 	};
 
 public:
-	j1Player();
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
-	// Called before the first frame
-	bool Start();
-	// Called each loop iteration
-	bool PreUpdate();
-	// Called each loop iteration
-	bool Update(float dt);
+	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
+	~ObjPlayer();
+
+	bool PreUpdate() override;
+	bool Update() override;
+	bool PostUpdate() override;
+	void OnCollision(Collider* c1, Collider* c2) override;
+
+	void OnCollisionPlayer(Collider * c2);
+	void OnCollisionFeet(Collider * c2);
+
 	void UpdateProjectile();
 	void UpdatePlayer();
 	void CalculateDeltaTime();
-	// Called each loop iteration
-	bool PostUpdate();
-	// Called before quitting
-	bool CleanUp();
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
-	void OnCollision(Collider* c1, Collider* c2);
-
 	inline float tile_to_pixel(uint pixel);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 	//Returns the position it should draw (Blit) or put the collider (SetPos) considering a pivot point
 	iPoint GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h);
 
-private:
-
-private:
-	//Distances, speed and acceleration
-	fPoint position;
-	fPoint velocity;
-	fPoint acceleration;
-
+	//VARIABLES
 	uint tileSize;
 	float gravity;
 	float moveSpeedAir;//(pixels/s)

@@ -25,58 +25,60 @@
   <map>
     <folder>maps/</folder>
   </map>
-
-  <player>
-    <collider_width>10</collider_width>
-    <collider_height>18</collider_height>
-    <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
-    <tile_size>16</tile_size>
-    <gravity>75</gravity>
-    <!-- Tiles it moves every second-->
-    <move_speed_ground>8</move_speed_ground>
-    <move_speed_air>6</move_speed_air>
-    <!-- Tiles it reaches when the character jumps -->
-    <jump_height>5</jump_height>
-    <feet_collider_width>10</feet_collider_width>
-    <feet_collider_height>5</feet_collider_height>
-    <animation tile_width ="16" tile_height ="28">
-      <idle_image>textures/engineer character/engineer-idle.png</idle_image>
-      <run_image>textures/engineer character/engineer-run.png</run_image>
-      <jump_image>textures/engineer character/engineer-jump.png</jump_image>
-      <idle_animation speed ="0.25">
-        <sprite x ="0" y ="0" w ="16" h="28"/>
-        <sprite x ="16" y ="0" w ="16" h="28"/>
-        <sprite x ="32" y ="0" w ="16" h="28"/>
-        <sprite x ="48" y ="0" w ="16" h="28"/>
-        <sprite x ="64" y ="0" w ="16" h="28"/>
-        <sprite x ="80" y ="0" w ="16" h="28"/>
-        <sprite x ="96" y ="0" w ="16" h="28"/>
-        <sprite x ="112" y ="0" w ="16" h="28"/>
-        <sprite x ="128" y ="0" w ="16" h="28"/>
-      </idle_animation>
-      <run_animation speed ="0.25">
-        <sprite x ="0" y ="0" w ="16" h="28"/>
-        <sprite x ="16" y ="0" w ="16" h="28"/>
-        <sprite x ="32" y ="0" w ="16" h="28"/>
-        <sprite x ="48" y ="0" w ="16" h="28"/>
-        <sprite x ="64" y ="0" w ="16" h="28"/>
-        <sprite x ="80" y ="0" w ="16" h="28"/>
-        <sprite x ="96" y ="0" w ="16" h="28"/>
-        <sprite x ="112" y ="0" w ="16" h="28"/>
-      </run_animation>
-      <jump_animation speed ="0.0">
-        <sprite x ="0" y ="0" w ="16" h="28"/>
-      </jump_animation>
-      <fall_animation speed ="0.0">
-        <sprite x ="16" y ="0" w ="16" h="28"/>
-      </fall_animation>
-    </animation>
-    <projectile>
-      <speed>5</speed>
-      <start_height>20</start_height>
-      <collider_width>5</collider_width>
-      <collider_height>5</collider_height>
-      <image>textures/projectile/projectile.png</image>
-    </projectile>
-  </player>
+  
+  <object>
+    <player>
+      <collider_width>10</collider_width>
+      <collider_height>18</collider_height>
+      <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
+      <tile_size>16</tile_size>
+      <gravity>75</gravity>
+      <!-- Tiles it moves every second-->
+      <move_speed_ground>8</move_speed_ground>
+      <move_speed_air>6</move_speed_air>
+      <!-- Tiles it reaches when the character jumps -->
+      <jump_height>5</jump_height>
+      <feet_collider_width>10</feet_collider_width>
+      <feet_collider_height>5</feet_collider_height>
+      <animation tile_width ="16" tile_height ="28">
+        <idle_image>textures/engineer character/engineer-idle.png</idle_image>
+        <run_image>textures/engineer character/engineer-run.png</run_image>
+        <jump_image>textures/engineer character/engineer-jump.png</jump_image>
+        <idle_animation speed ="0.25">
+          <sprite x ="0" y ="0" w ="16" h="28"/>
+          <sprite x ="16" y ="0" w ="16" h="28"/>
+          <sprite x ="32" y ="0" w ="16" h="28"/>
+          <sprite x ="48" y ="0" w ="16" h="28"/>
+          <sprite x ="64" y ="0" w ="16" h="28"/>
+          <sprite x ="80" y ="0" w ="16" h="28"/>
+          <sprite x ="96" y ="0" w ="16" h="28"/>
+          <sprite x ="112" y ="0" w ="16" h="28"/>
+          <sprite x ="128" y ="0" w ="16" h="28"/>
+        </idle_animation>
+        <run_animation speed ="0.25">
+          <sprite x ="0" y ="0" w ="16" h="28"/>
+          <sprite x ="16" y ="0" w ="16" h="28"/>
+          <sprite x ="32" y ="0" w ="16" h="28"/>
+          <sprite x ="48" y ="0" w ="16" h="28"/>
+          <sprite x ="64" y ="0" w ="16" h="28"/>
+          <sprite x ="80" y ="0" w ="16" h="28"/>
+          <sprite x ="96" y ="0" w ="16" h="28"/>
+          <sprite x ="112" y ="0" w ="16" h="28"/>
+        </run_animation>
+        <jump_animation speed ="0.0">
+          <sprite x ="0" y ="0" w ="16" h="28"/>
+        </jump_animation>
+        <fall_animation speed ="0.0">
+          <sprite x ="16" y ="0" w ="16" h="28"/>
+        </fall_animation>
+      </animation>
+      <projectile>
+        <speed>5</speed>
+        <start_height>20</start_height>
+        <collider_width>5</collider_width>
+        <collider_height>5</collider_height>
+        <image>textures/projectile/projectile.png</image>
+      </projectile>
+    </player>
+  </object>
 </config>
