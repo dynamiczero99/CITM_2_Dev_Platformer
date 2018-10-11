@@ -4,7 +4,6 @@
 #include "j1Window.h"
 
 #include "SDL/include/SDL.h"
-#include "PugiXml/src/pugixml.hpp"
 
 
 j1Window::j1Window() : j1Module()
