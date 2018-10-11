@@ -39,6 +39,9 @@ private:
 	float speedx = 0;
 	float speedy = 0;
 
+	bool fastSearch = false;
+	int offsetCompensation = 0;
+
 };
 
 #endif // __j1SCENE_H__

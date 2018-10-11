@@ -125,8 +125,12 @@ void j1Scene::CameraLogic()
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
 
-	float x = width * 0.25f * 1.5f;
-	float y = height * 0.33f *2.5f;
+	float x = 0.0f;
+	if (App->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+		x = width * 0.25f * 2.5f;
+	else
+		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition of 4
+	float y = height * 0.33f *2.5f; // 
 	
 	iPoint offset = { (int)x , (int)y };
 
@@ -137,12 +141,37 @@ void j1Scene::CameraLogic()
 	float targetX = (playerPivotPos.x + (int)offset.x);
 	float targetY = (playerPivotPos.y + (int)offset.y);
 
-	//App->render->camera.x = (playerPivotPos.x + (int)offset.x); 
-	//App->render->camera.y = (playerPivotPos.y + (int)offset.y);
-
 	speedx += (targetX - App->render->camera.x) / 20;
-	if (App->player->GetVelocity().y > 0)
-		speedy += (((targetY - 180) - App->render->camera.y) / 25);
+
+	if (App->render->camera.y >= targetY)
+		speedy += (targetY - App->render->camera.y) / 5;
+	else
+		speedy += (targetY - App->render->camera.y) / 50;
+
+	//LOG("mec: %f", App->player->GetVelocity().y);
+
+	//LOG("CAMERA Y: %i", App->render->camera.y);
+	//LOG("TARGET Y: %f", targetY);
+	/*if (App->player->GetVelocity().y > 0 && !fastSearch)
+	{
+		fastSearch = true;
+	}
+	if (fastSearch)
+	{
+		if (offsetCompensation > 180)
+		{
+			offsetCompensation = 180;
+		}
+
+		speedy += (((targetY - offsetCompensation) - App->render->camera.y) / 25);
+		offsetCompensation += 1;
+
+		if (playerPivotPos.y - offset.y <= -App->render->camera.y)
+		{
+			fastSearch = false;
+		}
+
+	}
 	else
 	{
 		if (App->render->camera.y > targetY)
@@ -150,8 +179,9 @@ void j1Scene::CameraLogic()
 			//LOG("mec: %f", App->player->GetVelocity().y);
 		}
 		speedy += ((targetY - App->render->camera.y) / 50);
+		offsetCompensation = 0;
 	}
-	//LOG("mec: %f", App->player->GetVelocity().y);
+	//LOG("mec: %f", App->player->GetVelocity().y);*/
 	
 	App->render->camera.x = speedx;
 	App->render->camera.y = speedy;
