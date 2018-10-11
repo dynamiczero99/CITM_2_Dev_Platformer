@@ -82,7 +82,7 @@ bool j1Scene::Update(float dt)
 	// testing teleporting camera
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 	{
-		App->player->SetPosition({ 310, 50 });
+		App->player->SetPosition({ 310, 10 });
 		teleport = true;
 	}
 
@@ -133,7 +133,7 @@ void j1Scene::CameraLogic()
 	if (App->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
 		x = width * 0.25f * 2.5f;
 	else
-		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition of 4
+		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
 	float y = height * 0.33f *2.5f; // 
 	
 	iPoint offset = { (int)x , (int)y };
@@ -151,11 +151,10 @@ void j1Scene::CameraLogic()
 		speedx += (targetX - App->render->camera.x) / 20;
 
 		if (App->render->camera.y >= targetY)
-			speedy += (targetY - App->render->camera.y) / 5;
+			speedy += (targetY - App->render->camera.y) / 3;
 		else
 			speedy += (targetY - App->render->camera.y) / 50;
 
-		
 	}
 	else
 	{
@@ -163,7 +162,6 @@ void j1Scene::CameraLogic()
 		speedx = playerPivotPos.x + width * 0.5f;
 		speedy = playerPivotPos.y + height * 0.5f;
 		teleport = false;
-
 	}
 
 	App->render->camera.x = speedx;
