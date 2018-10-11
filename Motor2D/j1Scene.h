@@ -42,6 +42,8 @@ private:
 	bool fastSearch = false;
 	int offsetCompensation = 0;
 
+	bool teleport = false; // testing var, must to be player relative
+
 };
 
 #endif // __j1SCENE_H__

@@ -79,10 +79,14 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		App->fade_to_black->FadeToBlack("level002.tmx", 2.0f);
 
-	App->map->Draw();
+	// testing teleporting camera
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+	{
+		App->player->SetPosition({ 310, 50 });
+		teleport = true;
+	}
 
-	// camera logic
-	//CameraLogic();
+	App->map->Draw();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -141,55 +145,28 @@ void j1Scene::CameraLogic()
 	float targetX = (playerPivotPos.x + (int)offset.x);
 	float targetY = (playerPivotPos.y + (int)offset.y);
 
-	speedx += (targetX - App->render->camera.x) / 20;
-
-	if (App->render->camera.y >= targetY)
-		speedy += (targetY - App->render->camera.y) / 5;
-	else
-		speedy += (targetY - App->render->camera.y) / 50;
-
-	//LOG("mec: %f", App->player->GetVelocity().y);
-
-	//LOG("CAMERA Y: %i", App->render->camera.y);
-	//LOG("TARGET Y: %f", targetY);
-	/*if (App->player->GetVelocity().y > 0 && !fastSearch)
+	if (!teleport)
 	{
-		fastSearch = true;
-	}
-	if (fastSearch)
-	{
-		if (offsetCompensation > 180)
-		{
-			offsetCompensation = 180;
-		}
 
-		speedy += (((targetY - offsetCompensation) - App->render->camera.y) / 25);
-		offsetCompensation += 1;
+		speedx += (targetX - App->render->camera.x) / 20;
 
-		if (playerPivotPos.y - offset.y <= -App->render->camera.y)
-		{
-			fastSearch = false;
-		}
+		if (App->render->camera.y >= targetY)
+			speedy += (targetY - App->render->camera.y) / 5;
+		else
+			speedy += (targetY - App->render->camera.y) / 50;
 
+		
 	}
 	else
 	{
-		if (App->render->camera.y > targetY)
-		{
-			//LOG("mec: %f", App->player->GetVelocity().y);
-		}
-		speedy += ((targetY - App->render->camera.y) / 50);
-		offsetCompensation = 0;
+		// translate the camera to center the player at the middle of screen
+		speedx = playerPivotPos.x + width * 0.5f;
+		speedy = playerPivotPos.y + height * 0.5f;
+		teleport = false;
+
 	}
-	//LOG("mec: %f", App->player->GetVelocity().y);*/
-	
+
 	App->render->camera.x = speedx;
 	App->render->camera.y = speedy;
-
-	/*if (velocity.y <= 0) {
-		currAnim = &jumpAnim;
-	}
-	else {
-		currAnim = &fallAnim;
-	}*/
+	
 }

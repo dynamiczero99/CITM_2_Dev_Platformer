@@ -361,3 +361,9 @@ fPoint j1Player::GetVelocity() const
 {
 	return velocity;
 }
+
+void j1Player::SetPosition(fPoint newPos)
+{
+	position.x = newPos.x;
+	position.y = newPos.y;
+}

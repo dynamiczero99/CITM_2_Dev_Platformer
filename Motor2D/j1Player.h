@@ -124,7 +124,8 @@ public:
 
 	// utils ---
 	fPoint GetPlayerPos() const;
-	fPoint GetVelocity() const;
+	fPoint GetVelocity() const;	
+	void SetPosition(fPoint newPosition);
 };
 
 #endif
