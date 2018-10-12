@@ -65,6 +65,7 @@ bool j1Object::CleanUp() {
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
 			//"delete" call's the object's destructor. We'll use it to reamove all allocated memory.
+			objects[i]->OnDestroy();
 			delete objects[i];
 			objects[i] = nullptr;
 		}
@@ -126,6 +127,7 @@ bool j1Object::DeleteObject(Gameobject * object) {
 	if (objects[object->index] != nullptr)
 	{
 		//"delete" calls the object's destructor. We'll use it to reamove all allocated memory.
+		objects[object->index]->OnDestroy();
 		delete objects[object->index];
 		objects[object->index] = nullptr;
 		actualObjects--;
@@ -155,6 +157,10 @@ bool Gameobject::Update() {
 }
 
 bool Gameobject::PostUpdate() {
+	return true;
+}
+
+bool Gameobject::OnDestroy() {
 	return true;
 }
 

@@ -35,6 +35,7 @@ public:
 	virtual bool PreUpdate();
 	virtual bool Update();
 	virtual bool PostUpdate();
+	virtual bool OnDestroy();
 	virtual void OnCollision(Collider * c1, Collider * c2);
 
 protected:

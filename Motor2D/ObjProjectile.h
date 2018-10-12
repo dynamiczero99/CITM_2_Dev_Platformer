@@ -11,9 +11,9 @@ struct Collider;
 class ObjProjectile : public Gameobject {
 public:
 	ObjProjectile(fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player);
-	~ObjProjectile();
 	bool Update() override;
 	bool PostUpdate() override;
+	bool OnDestroy() override;
 	void OnCollision(Collider * c1, Collider * c2) override;
 
 public:

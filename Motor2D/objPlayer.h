@@ -27,11 +27,11 @@ private:
 
 public:
 	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
-	~ObjPlayer();
 
 	bool PreUpdate() override;
 	bool Update() override;
 	bool PostUpdate() override;
+	bool OnDestroy() override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 
 	void OnCollisionPlayer(Collider * c2);

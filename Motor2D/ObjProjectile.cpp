@@ -5,6 +5,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "j1App.h"
 #include "j1Collision.h"
+#include "j1Render.h"
 
 ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), Gameobject (position, index) {
 	if (projectile_node.empty()) {
@@ -14,31 +15,32 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 	velocity = direction * projectile_node.child("speed").text().as_float();
 
 	SDL_Rect colRect;
-	colRect.x = 0;
-	colRect.y = 0;
 	colRect.w = projectile_node.child("collider_width").text().as_int();
 	colRect.h = projectile_node.child("collider_height").text().as_int();
+	iPoint colPos = GetPosFromPivot(pivot::middle_middle, position.x, position.y, colRect.w, colRect.h);
+	colRect.x = colPos.x;
+	colRect.y = colPos.y;
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_PLAYER_SHOT, this);
 }
 
-ObjProjectile::~ObjProjectile() {
+bool ObjProjectile::OnDestroy() {
 	App->collision->DeleteCollider(collider);
+	return true;
 }
 
 bool ObjProjectile::Update() {
 	position += velocity;
 	//TODO: Multiply by deltaTime
-
-	//Move projectile
-	//projectilePos += projectileVelocity;
-	//iPoint blitPos = GetPosFromPivot(pivot::middle_middle, projectilePos.x, projectilePos.y, projectileColRect.w, projectileColRect.h);
-	//App->render->Blit(projectileTex, blitPos.x, blitPos.y);
-
+	iPoint colPos = GetPosFromPivot(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
+	collider->SetPos(colPos.x, colPos.y);
 	return true;
 }
 
 bool ObjProjectile::PostUpdate() {
-	//Blit
+	//INFO: In this case the width of the sprite and the collider is the same
+	//INFO: If the sprite was animates we would get the property from Animation.rect.w & Animation.rect.h
+	iPoint blitPos = GetPosFromPivot(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
+	App->render->Blit(App->object->projectileTex, blitPos.x, blitPos.y);
 	return true;
 }
 

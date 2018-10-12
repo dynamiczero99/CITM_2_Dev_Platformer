@@ -36,7 +36,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0f);
 
 	//Shoot
-	shootHeight = playerNode.child("player").child("shoot_height").text().as_uint();
+	shootHeight = playerNode.child("shoot_height").text().as_uint();
 
 	//Animation
 	animTileWidth = playerNode.child("animation").attribute("tile_width").as_uint();
@@ -55,9 +55,10 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	currAnim = &idleAnim;
 }
 
-ObjPlayer::~ObjPlayer() {
+bool ObjPlayer::OnDestroy() {
 	App->collision->DeleteCollider(playerCol);
 	App->collision->DeleteCollider(feetCol);
+	return true;
 }
 
 bool ObjPlayer::PreUpdate() {
