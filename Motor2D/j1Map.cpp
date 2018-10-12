@@ -52,10 +52,10 @@ void j1Map::Draw()
 						if (tileset->anim != nullptr)
 						{
 							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height,
-								&tileset->anim->ReturnCurrentFrame(), layer->data->parallaxSpeed);
+								&tileset->anim->ReturnCurrentFrame(), layer->data->properties.parallaxSpeed);
 						}
 						else
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r, layer->data->parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r, layer->data->properties.parallaxSpeed);
 					}
 				}
 			}
@@ -379,6 +379,19 @@ bool j1Map::LoadMap()
 		{
 			data.type = MapTypes::MAPTYPE_UNKNOWN;
 		}
+
+		// load custom properties from map data
+		pugi::xml_node propertiesNode = map.child("properties");
+
+		if (propertiesNode == NULL)
+		{
+			LOG("Map without custom properties");
+		}
+		else
+		{
+			LoadProperties(map, data.properties);
+		}
+
 	}
 
 	return ret;
@@ -465,6 +478,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->columns = node.attribute("width").as_int();
 	layer->rows = node.attribute("height").as_int();
+	LoadProperties(node, layer->properties);
 	pugi::xml_node layer_data = node.child("data");
 
 	if(layer_data == NULL)
@@ -486,7 +500,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 
 	// check custom properties from layer - test functionality // TODO, implement latest handout to do this
-	pugi::xml_node properties = node.child("properties");
+	/*pugi::xml_node properties = node.child("properties");
 	if (properties == NULL)
 	{
 		LOG("This layer doesnt have custom properties defined");
@@ -495,7 +509,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	{
 		layer->parallaxSpeed = properties.child("property").attribute("value").as_float();
 		LOG("%f", layer->parallaxSpeed);
-	}
+	}*/
 
 	return ret;
 }
@@ -562,4 +576,29 @@ bool j1Map::Reset()
 		return true;
 
 	return false;
+}
+
+// Load a group of properties from a node and fill a list with it
+bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = true;
+
+	// TODO 6: Fill in the method to fill the custom properties from 
+	// an xml_node
+	pugi::xml_node propertiesNode = node.child("properties");
+
+	if (propertiesNode == NULL)
+	{
+		LOG("properties not found");
+		ret = false;
+	}
+	else
+	{
+		properties.draw = propertiesNode.find_child_by_attribute("name", "Draw").attribute("value").as_bool(true);
+		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(true);
+		properties.testValue = propertiesNode.find_child_by_attribute("name", "testValue").attribute("value").as_int(0);
+		properties.parallaxSpeed = propertiesNode.find_child_by_attribute("name", "parallaxSpeed").attribute("value").as_float(1.0f);
+	}
+
+	return ret;
 }

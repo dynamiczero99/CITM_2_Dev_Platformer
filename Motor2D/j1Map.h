@@ -11,6 +11,19 @@
 
 struct Collider;
 
+struct Properties
+{
+	bool draw = true;
+	bool navigation = true;
+	int testValue = 0;
+	float parallaxSpeed = 1.0f; // default value
+
+	inline bool GetDraw() const
+	{
+		return draw;
+	}
+};
+
 struct PlayerData
 {
 	p2SString name;
@@ -39,7 +52,8 @@ struct MapLayer
 	uint columns = 0u;
 	uint rows = 0u;
 	uint* tileArray = nullptr;
-	float parallaxSpeed = 1.0f; // default
+	Properties properties;
+	//float parallaxSpeed = 1.0f; // default
 
 	MapLayer() : tileArray(NULL)
 	{}
@@ -96,6 +110,8 @@ struct MapData
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	mapLayers;
 	p2List<MapObjects*> mapObjects;
+
+	Properties properties;
 	
 };
 
@@ -135,7 +151,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadMapColliders(pugi::xml_node& node);//, MapObjects* obj);
-	//bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
