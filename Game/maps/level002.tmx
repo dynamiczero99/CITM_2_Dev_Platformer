@@ -2583,7 +2583,7 @@
  </group>
  <group name="Player">
   <objectgroup name="PlayerData">
-   <object id="23" name="StartPoint" x="156.333" y="95.3333">
+   <object id="23" name="StartPoint" x="71" y="52.6667">
     <point/>
    </object>
   </objectgroup>

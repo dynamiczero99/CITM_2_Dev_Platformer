@@ -225,6 +225,16 @@ bool j1Map::CleanUp()
 	}
 	data.mapObjects.clear();
 
+	// free leveldata
+	p2List_item<Levels*>* levels;
+	levels = data.levels.start;
+	while (levels != NULL)
+	{
+		RELEASE(levels->data);
+		levels = levels->next;
+	}
+	data.levels.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
