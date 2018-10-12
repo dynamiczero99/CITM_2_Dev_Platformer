@@ -199,15 +199,20 @@ void j1Scene::DebugInput()
 			p2SString loadedLevel = App->map->data.loadedLevel.GetString();
 			p2SString compareLevel = levelData->data->name.GetString();
 
-			if (loadedLevel.GetString() == compareLevel.GetString())
+			if (loadedLevel == compareLevel)
 			{
-				//levelData = levelData->next;
-				//break;
 				LOG("coincidence");
+				levelData = levelData->next;
+
+				if (levelData == NULL)
+				{
+					levelData = App->map->data.levels.start;
+				}
+				break;
 			}
 			levelData = levelData->next;
 		}
 		
-		//App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
 	}
 }
