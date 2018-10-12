@@ -602,8 +602,8 @@ bool j1Map::Reset()
 {
 	map_loaded = false;
 	// TODO: maybe we need to search a less ugly workaround to restart scene
-	App->scene->Disable();
-	App->scene->Enable();
+	//App->scene->Disable();
+	//App->scene->Enable();
 
 	if(CleanUp())
 		return true;

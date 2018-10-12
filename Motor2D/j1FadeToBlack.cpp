@@ -6,6 +6,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Scene.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
@@ -45,8 +46,13 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 		if (now >= total_time)
 		{
 			// clean up the current map
-			if(App->map->Reset())// load new map
+			if (App->map->Reset())// load new map
+			{
 				App->map->Load(lvl_to_load);
+				// TODO: maybe we need to search a less ugly workaround to restart scene
+				App->scene->Disable();
+				App->scene->Enable();
+			}
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();

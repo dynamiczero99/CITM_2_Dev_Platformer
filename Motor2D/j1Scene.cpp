@@ -49,6 +49,13 @@ bool j1Scene::Start()
 		// TODO, search a workaround to reload player info
 		App->player->Enable();
 	}
+
+	// TODO, search a less ugly tornaround, maybe in module player?
+	// to loads its position on every new map load
+	fPoint position;
+	position.x = App->map->playerData.x;
+	position.y = App->map->playerData.y;
+	App->player->SetPosition(position);
 	
 	
 	return true;
@@ -175,7 +182,7 @@ void j1Scene::CameraLogic()
 	
 }
 
-void j1Scene::DebugInput()
+ void j1Scene::DebugInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
