@@ -2,7 +2,8 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Collision.h"
-
+#include "j1Object.h"
+#include <assert.h>
 #include "p2Log.h"
 
 j1Collision::j1Collision()
@@ -12,7 +13,7 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_WALL][COLLIDER_BOX] = true;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY_SHOT] = true;
 	//matrix[COLLIDER_WALL][COLLIDER_POWER_UP] = false;
@@ -20,7 +21,7 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SHOT] = true;
 	//matrix[COLLIDER_PLAYER][COLLIDER_POWER_UP] = false;
@@ -28,23 +29,23 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER_GOD][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_PLAYER_GOD][COLLIDER_BOX] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_ENEMY_SHOT] = false;
 	//matrix[COLLIDER_PLAYER_GOD][COLLIDER_POWER_UP] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_GOD] = false;
 	
-	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_SHOT] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_SHOT] = false;
+	matrix[COLLIDER_BOX][COLLIDER_WALL] = true;
+	matrix[COLLIDER_BOX][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_BOX][COLLIDER_BOX] = false;
+	matrix[COLLIDER_BOX][COLLIDER_PLAYER_SHOT] = true;
+	matrix[COLLIDER_BOX][COLLIDER_ENEMY_SHOT] = false;
 	//matrix[COLLIDER_ENEMY][COLLIDER_POWER_UP] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_BOX][COLLIDER_PLAYER_GOD] = false;
 
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_ENEMY_SHOT] = false;
 	//matrix[COLLIDER_PLAYER_SHOT][COLLIDER_POWER_UP] = false;
@@ -52,7 +53,7 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_BOX] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY_SHOT] = false;
 	//matrix[COLLIDER_ENEMY_SHOT][COLLIDER_POWER_UP] = false;
@@ -72,22 +73,6 @@ j1Collision::j1Collision()
 // Destructor
 j1Collision::~j1Collision()
 {}
-
-bool j1Collision::PreUpdate()
-{
-	// Remove all colliders scheduled for deletion
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-	{
-		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
-		{
-			delete colliders[i];
-			colliders[i] = nullptr;
-			actualColliders--;
-		}
-	}
-
-	return true;
-}
 
 // Called before render is available
 bool j1Collision::Update(float dt)
@@ -115,11 +100,12 @@ bool j1Collision::Update(float dt)
 
 			if (c1->CheckCollision(c2->rect) == true)
 			{
-				if (matrix[c1->type][c2->type] && c1->callback)
-					c1->callback->OnCollision(c1, c2);
-
-				if (matrix[c2->type][c1->type] && c2->callback)
-					c2->callback->OnCollision(c2, c1);
+				if (c1->callbackObj != nullptr && matrix[c1->type][c2->type]) {
+					c1->callbackObj->OnCollision(c1, c2);
+				}
+				if (c1 != nullptr && c2 != nullptr && c2->callbackObj != nullptr && matrix[c2->type][c1->type]){
+					c2->callbackObj->OnCollision(c2, c1);
+				}
 			}
 		}
 	}
@@ -158,7 +144,7 @@ void j1Collision::DebugDraw()
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
 			break;
-		case COLLIDER_ENEMY: // red
+		case COLLIDER_BOX: // red
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case COLLIDER_PLAYER_SHOT: // yellow
@@ -195,30 +181,55 @@ bool j1Collision::CleanUp()
 			}
 		}
 	}
-	else
+	else {
 		exitGameLoop = false;
+	}
 
 	return true;
 }
 
-Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback, Uint32 damage)
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Gameobject  *callbackObj)
 {
-	Collider* ret = nullptr;
+	Collider* returnCollider = nullptr;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 		{
-			ret = colliders[i] = new Collider(rect, type, callback, damage);
+			returnCollider = colliders[i] = new Collider(rect, type, callbackObj, i);
 			actualColliders++;
-			break;
+			return returnCollider;
 		}
 	}
 
-	return ret;
+	LOG("Reached maximum collider capacity, no more colliders can be added.");
+	return nullptr;
+}
+
+bool j1Collision::DeleteCollider(Collider * collider) {
+	assert(collider != nullptr);
+	assert(collider->index != -1);
+	if (collider == nullptr || collider->index == -1) {
+		LOG("Invalid collider");
+		return false;
+	}
+	//TODO: Also check if the collider index exceeds the bound of the collider array
+	if (colliders[collider->index] != nullptr)
+	{
+		delete colliders[collider->index];
+		colliders[collider->index] = nullptr;
+		actualColliders--;
+	}
+	return true;
 }
 
 // -----------------------------------------------------
+
+void Collider::SetPos(int x, int y)
+{
+	rect.x = x;
+	rect.y = y;
+}
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {

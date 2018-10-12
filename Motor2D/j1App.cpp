@@ -12,9 +12,9 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1App.h"
-#include "j1Player.h"
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
+#include "j1Object.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -29,9 +29,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
-	player = new j1Player();
 	collision = new j1Collision();
 	fade_to_black = new j1FadeToBlack();
+	object = new j1Object();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -39,9 +39,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(object);
 	AddModule(map);
 	AddModule(scene);
-	AddModule(player);
 	AddModule(fade_to_black);
 	AddModule(collision);//Collision is the penultimate module to update because it calcules all the overlaping collisions and resolves them just before rendering
 	AddModule(render);// render last to swap buffer
@@ -72,9 +72,9 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
-	pugi::xml_document	config_file;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	config_file;
+	config;
+	app_config;
 
 	bool ret = false;
 		

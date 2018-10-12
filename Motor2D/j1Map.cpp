@@ -216,8 +216,7 @@ bool j1Map::CleanUp()
 		{
 			if (objectItem->data->colliders[i] != nullptr)
 			{
-				objectItem->data->colliders[i]->to_delete = true;
-				objectItem->data->colliders[i] = nullptr;
+				App->collision->DeleteCollider(objectItem->data->colliders[i]);
 			}
 		}
 		RELEASE(objectItem->data);
@@ -596,9 +595,9 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 			colliderRect.w = object.attribute("width").as_int(0);
 			// create collider type of
 			if(tmp == "Platforms")
-				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL, this);
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL);
 			else if (tmp == "Floor")
-				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL, this); // reference collider type for test
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL); // reference collider type for test
 
 			// increments counter
 			++i;

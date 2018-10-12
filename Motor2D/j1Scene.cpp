@@ -9,7 +9,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
-#include "j1Player.h"
+#include "j1Object.h"
 #include "j1Collision.h"
 #include "j1Window.h"
 
@@ -42,22 +42,16 @@ bool j1Scene::Start()
 		firstStart = false;
 	}
 	// ----------------------------------------------------------
-
-	if (!App->collision->IsEnabled()) App->collision->Enable();
-	
-	if (!App->player->IsEnabled()) {
-		// TODO, search a workaround to reload player info
-		App->player->Enable();
-	}
+	if (!App->collision->IsEnabled()) { App->collision->Enable(); }
+	// TODO, search a workaround to reload player info
+	if (!App->object->IsEnabled()) { App->object->Enable(); }
 
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load
-	fPoint position;
-	position.x = App->map->playerData.x;
-	position.y = App->map->playerData.y;
-	App->player->SetPosition(position);
-	
-	
+	fPoint playerStartPos;
+	playerStartPos.x = App->map->playerData.x;
+	playerStartPos.y = App->map->playerData.y;
+	App->object->AddObjPlayer(playerStartPos);
 	return true;
 }
 
@@ -95,7 +89,6 @@ bool j1Scene::Update(float dt)
 	// testing teleporting camera
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 	{
-		App->player->SetPosition({ 310, 10 });
 		teleport = true;
 	}
 
@@ -131,7 +124,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	//App->collision->Disable();
-	App->player->Disable();
+	App->object->Disable();
 
 
 	return true;
