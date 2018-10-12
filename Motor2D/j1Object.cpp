@@ -2,6 +2,7 @@
 #include "j1Module.h"
 #include "j1Collision.h"
 #include "j1App.h"
+#include "j1Map.h"
 #include "j1Module.h"
 #include "p2Log.h"
 #include "j1Textures.h"
@@ -25,6 +26,10 @@ bool j1Object::Awake(pugi::xml_node& node) {
 }
 
 bool j1Object::Start() {
+	fPoint playerStartPos;
+	playerStartPos.x = App->map->playerData.x;
+	playerStartPos.y = App->map->playerData.y;
+	player = App->object->AddObjPlayer(playerStartPos);
 	//INFO: Load all textures here (we don't want each instance of an object to be loading the same texture again and again)
 	projectileTex = App->tex->LoadTexture(object_node.child("projectile_image").text().as_string());
 	playerIdleTex = App->tex->LoadTexture(object_node.child("player_idle_image").text().as_string());

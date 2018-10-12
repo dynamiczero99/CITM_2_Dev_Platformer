@@ -12,6 +12,7 @@
 #include "j1Object.h"
 #include "j1Collision.h"
 #include "j1Window.h"
+#include "ObjPlayer.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -48,10 +49,6 @@ bool j1Scene::Start()
 
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load
-	fPoint playerStartPos;
-	playerStartPos.x = App->map->playerData.x;
-	playerStartPos.y = App->map->playerData.y;
-	App->object->AddObjPlayer(playerStartPos);
 	return true;
 }
 
@@ -136,7 +133,7 @@ void j1Scene::CameraLogic()
 	App->win->GetWindowSize(width, height);
 
 	float x = 0.0f;
-	if (App->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
 		x = width * 0.25f * 2.5f;
 	else
 		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
@@ -145,8 +142,8 @@ void j1Scene::CameraLogic()
 	iPoint offset = { (int)x , (int)y };
 
 	iPoint playerPivotPos;
-	playerPivotPos.x = -(int)(App->player->GetPlayerPos().x * App->win->GetScale()); // center of current player pivot
-	playerPivotPos.y = -(int)(App->player->GetPlayerPos().y * App->win->GetScale());
+	playerPivotPos.x = -(int)(App->object->player->position.x * App->win->GetScale()); // center of current player pivot
+	playerPivotPos.y = -(int)(App->object->player->position.y * App->win->GetScale());
 
 	float targetX = (playerPivotPos.x + (int)offset.x);
 	float targetY = (playerPivotPos.y + (int)offset.y);

@@ -73,6 +73,7 @@ public:
 	SDL_Texture * playerIdleTex;
 	SDL_Texture * playerRunTex;
 	SDL_Texture * playerJumpTex;
+	ObjPlayer * player = nullptr;
 
 private:
 	Gameobject * objects [MAX_OBJECTS];
