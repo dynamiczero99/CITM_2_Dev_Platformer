@@ -39,10 +39,10 @@
     </ClCompile>
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Main.cpp" />
-    <ClCompile Include="ObjPlayer.cpp">
+    <ClCompile Include="ObjProjectile.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="ObjProjectile.cpp">
+    <ClCompile Include="ObjPlayer.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,10 +108,10 @@
     <ClInclude Include="j1Module.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ObjPlayer.h">
+    <ClInclude Include="ObjProjectile.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="ObjProjectile.h">
+    <ClInclude Include="ObjPlayer.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

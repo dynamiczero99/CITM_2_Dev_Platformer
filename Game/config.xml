@@ -27,7 +27,17 @@
   </map>
   
   <object>
+    <projectile_image>textures/projectile/projectile.png</projectile_image>
+    <player_idle_image>textures/engineer character/engineer-idle.png</player_idle_image>
+    <player_run_image>textures/engineer character/engineer-run.png</player_run_image>
+    <player_jump_image>textures/engineer character/engineer-jump.png</player_jump_image>
+    <projectile>
+      <speed>5</speed>
+      <collider_width>5</collider_width>
+      <collider_height>5</collider_height>
+    </projectile>
     <player>
+      <shoot_height>20</shoot_height>
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>
       <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
@@ -41,9 +51,6 @@
       <feet_collider_width>10</feet_collider_width>
       <feet_collider_height>5</feet_collider_height>
       <animation tile_width ="16" tile_height ="28">
-        <idle_image>textures/engineer character/engineer-idle.png</idle_image>
-        <run_image>textures/engineer character/engineer-run.png</run_image>
-        <jump_image>textures/engineer character/engineer-jump.png</jump_image>
         <idle_animation speed ="0.25">
           <sprite x ="0" y ="0" w ="16" h="28"/>
           <sprite x ="16" y ="0" w ="16" h="28"/>
@@ -72,13 +79,6 @@
           <sprite x ="16" y ="0" w ="16" h="28"/>
         </fall_animation>
       </animation>
-      <projectile>
-        <speed>5</speed>
-        <start_height>20</start_height>
-        <collider_width>5</collider_width>
-        <collider_height>5</collider_height>
-        <image>textures/projectile/projectile.png</image>
-      </projectile>
     </player>
   </object>
 </config>

@@ -42,7 +42,7 @@ bool j1Scene::Start()
 
 	//TODO: Put the intial position of the player (taken from the xml) when it is created
 	fPoint playerStartPos = fPoint(80.0f, 50.0f);
-	App->object->AddObject(OBJECT_TYPE::PLAYER, playerStartPos);
+	App->object->AddObjPlayer(playerStartPos);
 
 	return true;
 }

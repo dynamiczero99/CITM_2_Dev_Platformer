@@ -1,4 +1,3 @@
-#include "ObjPlayer.h"
 #include "j1Collision.h"
 #include "math.h"
 #include "p2Log.h"
@@ -12,13 +11,12 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "ObjProjectile.h"
 #include "j1Object.h"
+#include "ObjPlayer.h"
 
-ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) : Gameobject(position, index) {
+ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
-	if (object_node.empty())
+	if (playerNode.empty())
 		LOG("empty node");
-
-	pugi::xml_node playerNode = object_node.child("player");
 
 	//Values from xml
 	SDL_Rect colliderRect;
@@ -37,21 +35,14 @@ ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) :
 	//- It is calculated using the conservation of mechanic energy
 	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0f);
 
-	//Projectile
-	projectileSpeed = playerNode.child("projectile").child("speed").text().as_float();
-	projectileStartHeight = playerNode.child("projectile").child("start_height").text().as_uint();
-	projectileColRect.w = playerNode.child("projectile").child("collider_width").text().as_int();
-	projectileColRect.h = playerNode.child("projectile").child("collider_height").text().as_int();
-	projectileTex = App->tex->LoadTexture(playerNode.child("projectile").child("image").text().as_string());
+	//Shoot
+	shootHeight = playerNode.child("player").child("shoot_height").text().as_uint();
 
 	//Animation
 	animTileWidth = playerNode.child("animation").attribute("tile_width").as_uint();
 	animTileHeight = playerNode.child("animation").attribute("tile_height").as_uint();
 
-	idleTex = App->tex->LoadTexture(playerNode.child("animation").child("idle_image").text().as_string());
-	runTex = App->tex->LoadTexture(playerNode.child("animation").child("run_image").text().as_string());
-	jumpTex = App->tex->LoadTexture(playerNode.child("animation").child("jump_image").text().as_string());
-	currTex = idleTex;
+	currTex = App->object->playerIdleTex;
 
 	LoadAnimation(playerNode.child("animation").child("idle_animation").child("sprite"), idleAnim);
 	idleAnim.speed = playerNode.child("animation").child("idle_animation").attribute("speed").as_float();
@@ -65,10 +56,6 @@ ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) :
 }
 
 ObjPlayer::~ObjPlayer() {
-	App->tex->UnloadTexture(idleTex);
-	App->tex->UnloadTexture(runTex);
-	App->tex->UnloadTexture(jumpTex);
-	App->tex->UnloadTexture(projectileTex);
 	App->collision->DeleteCollider(playerCol);
 	App->collision->DeleteCollider(feetCol);
 }
@@ -108,8 +95,8 @@ bool ObjPlayer::PreUpdate() {
 
 bool ObjPlayer::Update() {
 	CalculateDeltaTime();
-	UpdatePlayer();
-	UpdateProjectile();
+	MovePlayer();
+	ShootProjectile();
 	return true;
 }
 
@@ -125,16 +112,16 @@ bool ObjPlayer::PostUpdate() {
 
 	if (isOnPlatform) {
 		if (velocity.x != 0) {
-			currTex = runTex;
+			currTex = App->object->playerRunTex;
 			currAnim = &runAnim;
 		}
 		else {
-			currTex = idleTex;
+			currTex = App->object->playerIdleTex;
 			currAnim = &idleAnim;
 		}
 	}
 	else {
-		currTex = jumpTex;
+		currTex = currTex = App->object->playerJumpTex;
 		if (velocity.y <= 0) {
 			currAnim = &jumpAnim;
 		}
@@ -230,18 +217,6 @@ inline float ObjPlayer::tile_to_pixel(uint pixel) {
 	return pixel * tileSize;
 }
 
-bool ObjPlayer::LoadAnimation(pugi::xml_node &node, Animation &anim) {
-	for (; node; node = node.next_sibling("sprite")) {
-		SDL_Rect frame;
-		frame.x = node.attribute("x").as_int();
-		frame.y = node.attribute("y").as_int();
-		frame.w = node.attribute("w").as_int();
-		frame.h = node.attribute("h").as_int();
-		anim.PushBack(frame);
-	}
-	return true;
-}
-
 void ObjPlayer::CalculateDeltaTime()
 {
 	if (isFirstFrame) {
@@ -256,9 +231,8 @@ void ObjPlayer::CalculateDeltaTime()
 	lastTime = currTime;
 }
 
-void ObjPlayer::UpdatePlayer()
+void ObjPlayer::MovePlayer()
 {
-	//Add gravity
 	if (isOnPlatform) {
 		acceleration.y = 0;
 	}
@@ -267,7 +241,6 @@ void ObjPlayer::UpdatePlayer()
 		checkFall = false;
 	}
 
-	//- Move the player
 	velocity = velocity + acceleration * deltaTime;
 	position = position + velocity * deltaTime;
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
@@ -278,57 +251,25 @@ void ObjPlayer::UpdatePlayer()
 	isOnPlatform = false;
 }
 
-void ObjPlayer::UpdateProjectile()
+void ObjPlayer::ShootProjectile()
 {
-	//Shoot the projectile
 	if (App->input->GetMouseButton(1) == KEY_DOWN) {
-		projectilePos.x = position.x;
-		projectilePos.y = position.y - projectileStartHeight;
+
+		if (projectile != nullptr) {
+			App->object->DeleteObject(projectile);
+		}
+
+		fPoint projectilePosition;
+		projectilePosition.x = position.x;
+		projectilePosition.y = position.y - shootHeight;
 
 		iPoint mousePos;
 		App->input->GetMousePosition(mousePos.x, mousePos.y);
-		projectileVelocity = (fPoint)mousePos - projectilePos;
-		projectileVelocity.Normalize();
-		projectileVelocity *= projectileSpeed;
 
-		ObjProjectile projectile = App->object->AddObject(OBJECT_TYPE::BOX, projectilePos);//TODO: Change to be projectile type
-	}
-	//Move projectile
-	projectilePos += projectileVelocity;
+		fPoint projectileDirection;
+		projectileDirection = (fPoint)mousePos - projectilePosition;
+		projectileDirection.Normalize();
 
-	iPoint blitPos = GetPosFromPivot(pivot::middle_middle, projectilePos.x, projectilePos.y, projectileColRect.w, projectileColRect.h);
-	App->render->Blit(projectileTex, blitPos.x, blitPos.y);
-}
-
-iPoint ObjPlayer::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
-	;
-	switch (pivot) {
-	case pivot::top_left:
-		return iPoint(x, y);
-		break;
-	case pivot::top_middle:
-		return iPoint(x - w / 2, y);
-		break;
-	case pivot::top_right:
-		return iPoint(x - w, y);
-		break;
-	case pivot::middle_left:
-		return iPoint(x, y - h / 2);
-		break;
-	case pivot::middle_middle:
-		return iPoint(x - w / 2, y - h / 2);
-		break;
-	case pivot::middle_right:
-		return iPoint(x - w, y - h / 2);
-		break;
-	case pivot::bottom_left:
-		return iPoint(x, y - h);
-		break;
-	case pivot::bottom_middle:
-		return iPoint(x - w / 2, y - h);
-		break;
-	case pivot::bottom_right:
-		return iPoint(x - w, y - h);
-		break;
+		projectile = App->object->AddObjProjectile(projectilePosition, projectileDirection, this);
 	}
 }

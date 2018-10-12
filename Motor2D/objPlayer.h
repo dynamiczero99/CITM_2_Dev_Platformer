@@ -13,21 +13,10 @@ struct SDL_Texture;
 struct SDL_Rect;
 class Animation;
 struct Collider;
+class ObjProjectile;
 
 class ObjPlayer : public Gameobject {
 private:
-	enum class pivot : uint {
-		top_left,
-		top_middle,
-		top_right,
-		middle_left,
-		middle_middle,
-		middle_right,
-		bottom_left,
-		bottom_middle,
-		bottom_right
-	};
-
 	enum class dir : uint {
 		left,
 		right,
@@ -48,13 +37,10 @@ public:
 	void OnCollisionPlayer(Collider * c2);
 	void OnCollisionFeet(Collider * c2);
 
-	void UpdateProjectile();
-	void UpdatePlayer();
+	void ShootProjectile();
+	void MovePlayer();
 	void CalculateDeltaTime();
 	inline float tile_to_pixel(uint pixel);
-	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
-	//Returns the position it should draw (Blit) or put the collider (SetPos) considering a pivot point
-	iPoint GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h);
 
 	//VARIABLES
 	uint tileSize;
@@ -80,11 +66,8 @@ public:
 	uint animTileHeight = 0;
 
 	SDL_Texture* currTex = nullptr;
-	SDL_Texture* idleTex = nullptr;
-	SDL_Texture* runTex = nullptr;
-	SDL_Texture* jumpTex = nullptr;
-
 	Animation* currAnim = nullptr;
+
 	p2SString idlePath;
 	p2SString runPath;
 	p2SString jumpPath;
@@ -99,15 +82,12 @@ public:
 	bool goingUp;
 	bool goingDown;
 
-	//Projectile
-	p2SString projectilePath;
-	SDL_Texture* projectileTex;
-	SDL_Rect projectileColRect;
-	Collider* projectileCol;
-	uint projectileStartHeight;
-	fPoint projectilePos;
-	fPoint projectileVelocity;
-	float projectileSpeed;
+	//Shoot
+	ObjProjectile * projectile = nullptr;
+	uint shootHeight;
+
+	//Position swap
+	Gameobject * swapObject = nullptr;
 };
 
 #endif
