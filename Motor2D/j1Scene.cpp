@@ -34,8 +34,10 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("level001.tmx");
-	//App->map->Load("iso.tmx");
+	// Load the first level of the list -------------------------
+	p2List_item<Levels*>* levelData = App->map->data.levels.start;
+	App->map->Load(levelData->data->name.GetString());
+	// ----------------------------------------------------------
 
 	if (!App->collision->IsEnabled()) App->collision->Enable();
 	

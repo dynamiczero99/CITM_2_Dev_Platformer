@@ -25,6 +25,29 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 	folder.create(config.child("folder").child_value());
 
+	// create a list with total num of levels
+
+	pugi::xml_node levelsNode = config.child("levels");
+	if (levelsNode == NULL)
+	{
+		LOG("num of levels not found");
+	}
+	else
+	{
+		LOG("level data found");
+
+		for (pugi::xml_node level = levelsNode.child("level"); level; level = level.next_sibling("level"))
+		{
+			Levels* newLevel = new Levels();
+			newLevel->name = level.attribute("name").as_string();
+			data.numLevels++;
+
+			data.levels.add(newLevel);
+		}
+	}
+
+	
+
 	return ret;
 }
 

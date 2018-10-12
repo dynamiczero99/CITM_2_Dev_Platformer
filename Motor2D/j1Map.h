@@ -11,6 +11,11 @@
 
 struct Collider;
 
+struct Levels
+{
+	p2SString name;
+};
+
 struct Properties
 {
 	bool draw = true;
@@ -112,6 +117,8 @@ struct MapData
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	mapLayers;
 	p2List<MapObjects*> mapObjects;
+	p2List<Levels*>		levels;
+	uint				numLevels = 0; // counter for num levels
 
 	Properties properties;
 	
