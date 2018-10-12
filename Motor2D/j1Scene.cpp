@@ -34,9 +34,13 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	// Load the first level of the list -------------------------
-	p2List_item<Levels*>* levelData = App->map->data.levels.start;
-	App->map->Load(levelData->data->name.GetString());
+	// Load the first level of the list on first game start -------------------------
+	if (firstStart)
+	{
+		p2List_item<Levels*>* levelData = App->map->data.levels.start;
+		App->map->Load(levelData->data->name.GetString());
+		firstStart = false;
+	}
 	// ----------------------------------------------------------
 
 	if (!App->collision->IsEnabled()) App->collision->Enable();
@@ -60,6 +64,9 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	// checks for debug input
+	DebugInput();
+	// ----------------------
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
@@ -77,9 +84,6 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 6;
-	
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-		App->fade_to_black->FadeToBlack("level002.tmx", 2.0f);
 
 	// testing teleporting camera
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -169,4 +173,41 @@ void j1Scene::CameraLogic()
 	App->render->camera.x = speedx;
 	App->render->camera.y = speedy;
 	
+}
+
+void j1Scene::DebugInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		// Load the first level of the list -------------------------
+		p2List_item<Levels*>* levelData = App->map->data.levels.start;
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
+	}
+
+	// START from the current level
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 2.0f);
+
+	// switch between levels
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		p2List_item<Levels*>* levelData = App->map->data.levels.start;
+
+		// check current level and loads the next, if next is null, load the first one
+		while (levelData != NULL)
+		{
+			p2SString loadedLevel = App->map->data.loadedLevel.GetString();
+			p2SString compareLevel = levelData->data->name.GetString();
+
+			if (loadedLevel.GetString() == compareLevel.GetString())
+			{
+				//levelData = levelData->next;
+				//break;
+				LOG("coincidence");
+			}
+			levelData = levelData->next;
+		}
+		
+		//App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
+	}
 }

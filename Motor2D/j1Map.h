@@ -119,6 +119,7 @@ struct MapData
 	p2List<MapObjects*> mapObjects;
 	p2List<Levels*>		levels;
 	uint				numLevels = 0; // counter for num levels
+	p2SString			loadedLevel;
 
 	Properties properties;
 	

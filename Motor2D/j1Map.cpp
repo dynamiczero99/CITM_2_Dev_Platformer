@@ -248,6 +248,9 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if(ret == true)
 	{
+		// stores the current level string name
+		data.loadedLevel.create(file_name);
+		// ------------------------------------
 		ret = LoadMap();
 	}
 
@@ -598,6 +601,7 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 bool j1Map::Reset()
 {
 	map_loaded = false;
+	// TODO: maybe we need to search a less ugly workaround to restart scene
 	App->scene->Disable();
 	App->scene->Enable();
 

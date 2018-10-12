@@ -39,10 +39,11 @@ private:
 	float speedx = 0;
 	float speedy = 0;
 
-	bool fastSearch = false;
-	int offsetCompensation = 0;
+	bool firstStart = true;
 
 	bool teleport = false; // testing var, must to be player relative
+
+	void DebugInput();
 
 };
 
