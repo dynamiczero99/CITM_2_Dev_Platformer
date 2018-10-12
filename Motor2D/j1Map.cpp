@@ -279,6 +279,9 @@ bool j1Map::Load(const char* file_name)
 			playerData.name = player.attribute("name").as_string();
 			playerData.x = player.attribute("x").as_int();
 			playerData.y = player.attribute("y").as_int();
+
+			// load custom properties
+			LoadProperties(objectGroup.child("objectgroup"), playerData.properties);
 		}
 
 		//if (ret == true)
@@ -527,6 +530,9 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 		MapObjects* newObject = new MapObjects();
 
 		newObject->name = tmp.GetString();
+
+		// Load custom properties
+		LoadProperties(objectGroup, newObject->properties);
 
 		//bool counted = false;
 

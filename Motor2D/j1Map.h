@@ -27,6 +27,7 @@ struct Properties
 struct PlayerData
 {
 	p2SString name;
+	Properties properties;
 	int x, y = 0;
 };
 
@@ -35,6 +36,7 @@ struct MapObjects
 	p2SString name;
 	uint id = 0;
 	Collider* colliders[MAX_OBJECTGROUP_COLLIDERS] = { nullptr };
+	Properties properties;
 
 	~MapObjects()
 	{

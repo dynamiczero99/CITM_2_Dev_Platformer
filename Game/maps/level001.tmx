@@ -30167,6 +30167,9 @@
    <object id="7" name="platform" x="296.667" y="40" width="86.3333" height="5"/>
   </objectgroup>
   <objectgroup name="Floor">
+   <properties>
+    <property name="testValue" type="int" value="5"/>
+   </properties>
    <object id="1" name="floor" x="56.3333" y="79.6667" width="128.656" height="22.3333"/>
    <object id="2" name="floor" x="185.007" y="64" width="78.0105" height="22.3333"/>
    <object id="3" x="263" y="81" width="7.66667" height="62.6667"/>
@@ -30175,6 +30178,9 @@
  </group>
  <group name="Player">
   <objectgroup name="PlayerData">
+   <properties>
+    <property name="testValue" type="int" value="3"/>
+   </properties>
    <object id="9" name="StartPoint" x="223" y="58">
     <point/>
    </object>
