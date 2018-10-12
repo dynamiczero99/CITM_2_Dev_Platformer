@@ -225,15 +225,18 @@ bool j1Map::CleanUp()
 	}
 	data.mapObjects.clear();
 
+	// TODO: search the way to load levelData outside awake
+	// if we free leveldata list here called by new map load
+	// levelData is lost forever
 	// free leveldata
-	p2List_item<Levels*>* levels;
+	/*p2List_item<Levels*>* levels;
 	levels = data.levels.start;
 	while (levels != NULL)
 	{
 		RELEASE(levels->data);
 		levels = levels->next;
 	}
-	data.levels.clear();
+	data.levels.clear();*/
 
 	// Clean up the pugui tree
 	map_file.reset();
