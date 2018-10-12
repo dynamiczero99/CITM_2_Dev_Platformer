@@ -65,7 +65,41 @@ typedef struct SDL_Rect
 {
     int x, y;
     int w, h;
+
+	int GetTop();
+	int GetBottom();
+	int GetLeft();
+	int GetRight();
 } SDL_Rect;
+
+/**
+*  \brief Returns the top point of the rectangle
+*/
+SDL_FORCE_INLINE int SDL_Rect::GetTop() {
+	return y;
+}
+
+/**
+*  \brief Returns the bottom point of the rectangle
+*/
+SDL_FORCE_INLINE int SDL_Rect::GetBottom() {
+	return y + h;
+}
+
+/**
+*  \brief Returns the left point of the rectangle
+*/
+SDL_FORCE_INLINE int SDL_Rect::GetLeft() {
+	return x;
+}
+
+/**
+*  \brief Returns the right point of the rectangle
+*/
+SDL_FORCE_INLINE int SDL_Rect::GetRight() {
+	return x + w;
+}
+
 
 /**
  *  \brief Returns true if point resides inside a rectangle.

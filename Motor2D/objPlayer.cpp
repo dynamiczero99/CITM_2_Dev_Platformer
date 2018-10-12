@@ -159,10 +159,10 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		//2. Check which point (opposite to those directions) is the nearest
 		//Ex.: If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
 		uint dist[(uint)dir::max];
-		dist[(uint)dir::up] = (c2->rect.y + c2->rect.h) - (position.y - playerCol->rect.h);
-		dist[(uint)dir::down] = position.y - c2->rect.y;
-		dist[(uint)dir::left] = (c2->rect.x + c2->rect.w) - (position.x - playerCol->rect.w / 2);
-		dist[(uint)dir::right] = (position.x + playerCol->rect.w / 2) - c2->rect.x;
+		dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+		dist[(uint)dir::down] = playerCol->rect.GetBottom()- c2->rect.GetTop();
+		dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+		dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
 		int nearestDir = -1;
 		for (int i = 0; i < (int)dir::max; ++i) {
 			if (direction[i]) {
@@ -176,24 +176,25 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		}
 
 		//3. Move it to that point
+		//INFO: Keep in mind that the player uses a pivot::bottom-middle
 		switch (nearestDir) {
 		case (int)dir::down:
-			position.y = c2->rect.y;
+			position.y = c2->rect.GetTop();
 			velocity.y = 0;
 			acceleration.y = 0;
 			checkFall = true;
 			isOnPlatform = true;
 			break;
 		case (int)dir::up:
-			position.y = c2->rect.y + c2->rect.h + playerCol->rect.h;
+			position.y = c2->rect.GetBottom() + playerCol->rect.h;
 			velocity.y = 0;
 			break;
 		case (int)dir::left:
-			position.x = c2->rect.x + c2->rect.w + playerCol->rect.w / 2;
+			position.x = c2->rect.GetRight() + playerCol->rect.w / 2;
 			velocity.x = 0;
 			break;
 		case (int)dir::right:
-			position.x = c2->rect.x - playerCol->rect.w / 2;
+			position.x = c2->rect.GetLeft() - playerCol->rect.w / 2;
 			velocity.x = 0;
 			break;
 		}
