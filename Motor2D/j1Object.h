@@ -53,7 +53,6 @@ public:
 private:
 	Gameobject * objects [MAX_OBJECTS];
 	uint actualObjects = 0;
-	//pugi::xml_document doc;
 	pugi::xml_node object_node;
 };
 

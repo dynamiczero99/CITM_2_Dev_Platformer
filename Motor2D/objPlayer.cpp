@@ -1,4 +1,4 @@
-#include "objPlayer.h"
+#include "ObjPlayer.h"
 #include "j1Collision.h"
 #include "math.h"
 #include "p2Log.h"
@@ -10,10 +10,12 @@
 #include "p2Defs.h"
 #include "p2Point.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "ObjProjectile.h"
+#include "j1Object.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) : Gameobject(position, index) {
 
-	if (object_node.empty()) 
+	if (object_node.empty())
 		LOG("empty node");
 
 	pugi::xml_node playerNode = object_node.child("player");
@@ -60,52 +62,6 @@ ObjPlayer::ObjPlayer(pugi::xml_node & object_node, fPoint position, int index) :
 	LoadAnimation(playerNode.child("animation").child("fall_animation").child("sprite"), fallAnim);
 	fallAnim.speed = playerNode.child("animation").child("fall_animation").attribute("speed").as_float();
 	currAnim = &idleAnim;
-
-	/*//Values from xml
-	SDL_Rect colliderRect;
-	//colliderRect.w = App->config.child("object").child("player").child("collider_width").text().as_int();
-	colliderRect.w = object_node.child("player").child("collider_width").text().as_int();
-
-	//colliderRect.w = App->config.child("object").child("player").child("collider_width").text().as_int();
-	colliderRect.h = App->config.child("object").child("player").child("collider_height").text().as_int();
-	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
-	SDL_Rect feetColRect;
-	feetColRect.w = App->config.child("object").child("player").child("feet_collider_width").text().as_int();
-	feetColRect.h = App->config.child("object").child("player").child("feet_collider_height").text().as_int();
-	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, this);
-	tileSize = App->config.child("object").child("player").child("tile_size").text().as_uint();
-	gravity = tile_to_pixel(App->config.child("object").child("player").child("gravity").text().as_float());
-	moveSpeedGnd = tile_to_pixel(App->config.child("object").child("player").child("move_speed_ground").text().as_float());
-	moveSpeedAir = tile_to_pixel(App->config.child("object").child("player").child("move_speed_air").text().as_float());
-	//- This formula traduces gives us the speed necessary to reach a certain height
-	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * tile_to_pixel(App->config.child("object").child("player").child("jump_height").text().as_float()) * 2.0f);
-
-	//Projectile
-	projectileSpeed = App->config.child("object").child("player").child("projectile").child("speed").text().as_float();
-	projectileStartHeight = App->config.child("object").child("player").child("projectile").child("start_height").text().as_uint();
-	projectileColRect.w = App->config.child("object").child("player").child("projectile").child("collider_width").text().as_int();
-	projectileColRect.h = App->config.child("object").child("player").child("projectile").child("collider_height").text().as_int();
-	projectileTex = App->tex->LoadTexture(App->config.child("object").child("player").child("projectile").child("image").text().as_string());
-
-	//Animation
-	animTileWidth = App->config.child("object").child("player").child("animation").attribute("tile_width").as_uint();
-	animTileHeight = App->config.child("object").child("player").child("animation").attribute("tile_height").as_uint();
-
-	idleTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("idle_image").text().as_string());
-	runTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("run_image").text().as_string());
-	jumpTex = App->tex->LoadTexture(App->config.child("object").child("player").child("animation").child("jump_image").text().as_string());
-	currTex = idleTex;
-
-	LoadAnimation(App->config.child("object").child("player").child("animation").child("idle_animation").child("sprite"), idleAnim);
-	idleAnim.speed = App->config.child("object").child("player").child("animation").child("idle_animation").attribute("speed").as_float();
-	LoadAnimation(App->config.child("object").child("player").child("animation").child("run_animation").child("sprite"), runAnim);
-	runAnim.speed = App->config.child("object").child("player").child("animation").child("run_animation").attribute("speed").as_float();
-	LoadAnimation(App->config.child("object").child("player").child("animation").child("jump_animation").child("sprite"), jumpAnim);
-	jumpAnim.speed = App->config.child("object").child("player").child("animation").child("jump_animation").attribute("speed").as_float();
-	LoadAnimation(App->config.child("object").child("player").child("animation").child("fall_animation").child("sprite"), fallAnim);
-	fallAnim.speed = App->config.child("object").child("player").child("animation").child("fall_animation").attribute("speed").as_float();
-	currAnim = &idleAnim;*/
 }
 
 ObjPlayer::~ObjPlayer() {
@@ -334,6 +290,8 @@ void ObjPlayer::UpdateProjectile()
 		projectileVelocity = (fPoint)mousePos - projectilePos;
 		projectileVelocity.Normalize();
 		projectileVelocity *= projectileSpeed;
+
+		ObjProjectile projectile = App->object->AddObject(OBJECT_TYPE::BOX, projectilePos);//TODO: Change to be projectile type
 	}
 	//Move projectile
 	projectilePos += projectileVelocity;

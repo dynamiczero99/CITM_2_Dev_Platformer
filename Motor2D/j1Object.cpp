@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "p2Log.h"
 //Objects
-#include "objPlayer.h"
+#include "ObjPlayer.h"
 #include "PugiXml/src/pugixml.hpp"
 
 j1Object::j1Object() : j1Module() {

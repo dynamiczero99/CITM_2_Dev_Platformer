@@ -90,11 +90,11 @@ public:
 	j1FadeToBlack*		fade_to_black = nullptr;
 	j1Object*			object = nullptr;
 
+private:
+
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
-
-private:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
