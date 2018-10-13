@@ -140,6 +140,28 @@ bool j1Object::DeleteObject(Gameobject * object) {
 	return true;
 }
 
+bool j1Object::Load(pugi::xml_node& node)
+{
+	for (int i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+			objects[i]->Load(node);
+	}
+
+	return true;
+}
+
+bool j1Object::Save(pugi::xml_node& node) const
+{
+	for (int i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+			objects[i]->Save(node);
+	}
+
+	return true;
+}
+
 //Gameobject class methods -------------------------------------------
 
 Gameobject::Gameobject(fPoint position, int index) :
@@ -215,5 +237,15 @@ bool Gameobject::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 		frame.h = node.attribute("h").as_int();
 		anim.PushBack(frame);
 	}
+	return true;
+}
+
+bool Gameobject::Load(pugi::xml_node& node)
+{
+	return true;
+}
+
+bool Gameobject::Save(pugi::xml_node& node) const
+{
 	return true;
 }

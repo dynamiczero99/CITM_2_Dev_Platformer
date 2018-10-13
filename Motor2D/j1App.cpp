@@ -285,6 +285,7 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
+	load_game.create(file);
 	want_to_load = true;
 }
 
@@ -368,6 +369,8 @@ bool j1App::SavegameNow() const
 
 		// we are done, so write data to disk
 //		fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+
+		data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	}
 	else

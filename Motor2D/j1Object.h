@@ -38,6 +38,9 @@ public:
 	virtual bool OnDestroy();
 	virtual void OnCollision(Collider * c1, Collider * c2);
 
+	virtual bool Load(pugi::xml_node&);
+	virtual bool Save(pugi::xml_node&) const;
+
 protected:
 	//Returns the position it should draw (Blit) or put the collider (SetPos) considering a pivot point
 	iPoint GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h);
@@ -60,8 +63,8 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	//bool Load(pugi::xml_node&);
-	//bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
 	int FindEmptyPosition();
 
 	ObjPlayer * AddObjPlayer(fPoint position);

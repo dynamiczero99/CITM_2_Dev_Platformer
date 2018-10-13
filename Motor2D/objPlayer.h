@@ -28,6 +28,9 @@ private:
 public:
 	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
 
+	bool Load(pugi::xml_node& loadNode);
+	bool Save(pugi::xml_node& saveNode) const;
+
 	bool PreUpdate() override;
 	bool Update() override;
 	bool PostUpdate() override;

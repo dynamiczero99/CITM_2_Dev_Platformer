@@ -47,7 +47,6 @@ bool j1Map::Awake(pugi::xml_node& config)
 	}
 
 	
-
 	return ret;
 }
 

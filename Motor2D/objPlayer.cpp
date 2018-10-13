@@ -275,3 +275,22 @@ void ObjPlayer::ShootProjectile()
 		projectile = App->object->AddObjProjectile(projectilePosition, projectileDirection, this);
 	}
 }
+
+bool ObjPlayer::Load(pugi::xml_node& loadNode)
+{
+
+	position.x = loadNode.child("Player").attribute("x").as_float();
+	position.y = loadNode.child("Player").attribute("y").as_float();
+
+	return true;
+}
+
+bool ObjPlayer::Save(pugi::xml_node& saveNode) const
+{
+	pugi::xml_node player = saveNode.append_child("Player");
+
+	player.append_attribute("x") = position.x;
+	player.append_attribute("y") = position.y;
+
+	return true;
+}
