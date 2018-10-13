@@ -31,6 +31,8 @@ bool ObjBox::OnDestroy() {
 
 bool ObjBox::Update() {
 	//Move the block down
+	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	collider->SetPos(colPos.x, colPos.y);
 	return true;
 }
 
