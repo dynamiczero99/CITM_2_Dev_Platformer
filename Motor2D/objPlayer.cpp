@@ -299,9 +299,9 @@ void ObjPlayer::GodMovement() {
 }
 
 void ObjPlayer::LimitFallVelocity() {
-	//if (velocity.y > maxFallVelocity) {
-	//	velocity.y = maxFallVelocity;
-	//}
+	if (velocity.y > maxFallVelocity) {
+		velocity.y = maxFallVelocity;
+	}
 }
 
 void ObjPlayer::ShootProjectile()

@@ -16,15 +16,6 @@ struct Collider;
 class ObjProjectile;
 
 class ObjPlayer : public Gameobject {
-private:
-	enum class dir : uint {
-		left,
-		right,
-		up,
-		down,
-		max
-	};
-
 public:
 	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
 

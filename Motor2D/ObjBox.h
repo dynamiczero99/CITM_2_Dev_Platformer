@@ -27,6 +27,7 @@ private:
 	uint animTileWidth = 0u;
 	uint animTileHeight = 0u;
 	Collider * collider;
+	float gravity = 0.0f;
 };
 
 #endif
