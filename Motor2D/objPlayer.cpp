@@ -325,17 +325,25 @@ void ObjPlayer::ShootProjectile()
 		App->input->GetMousePosition(mousePos.x, mousePos.y);
 		//INFO: Get the world position, not the screen position
 
-		float swapX;
+		fPoint swap;
 		if(App->render->camera.x < 0)
-			swapX = -(App->render->camera.x) / App->win->GetScale();
+			swap.x = -(App->render->camera.x) / App->win->GetScale();
 		else
 		{
-			swapX = App->render->camera.x / App->win->GetScale();
-			swapX = -swapX;
+			swap.x = App->render->camera.x / App->win->GetScale();
+			swap.x = -swap.x;
+		}
+		if (App->render->camera.y > 0)
+		{
+			swap.y = (App->render->camera.y) / App->win->GetScale();
+		}
+		else
+		{
+			swap.y = -App->render->camera.y / App->win->GetScale();
 		}
 	
-		mousePos.x += swapX;
-		mousePos.y -= App->render->camera.y / App->win->GetScale();
+		mousePos.x += swap.x;
+		mousePos.y += swap.y;
 
 		fPoint projectileDirection;
 		projectileDirection = (fPoint)mousePos - projectilePosition;

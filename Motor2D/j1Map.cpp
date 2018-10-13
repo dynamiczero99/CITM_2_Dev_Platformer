@@ -680,9 +680,6 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 			}
 		}
 		
-		
-
-		
 	}
 
 	return true;
