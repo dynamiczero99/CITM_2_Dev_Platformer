@@ -325,10 +325,9 @@ void ObjPlayer::ShootProjectile()
 		iPoint mousePos;
 		App->input->GetMousePosition(mousePos.x, mousePos.y);
 		//INFO: Get the world position, not the screen position
-		mousePos.x += App->render->camera.x;
-		mousePos.y += App->render->camera.y;
-		//mousePos *= App->win->GetScale();
-
+		mousePos.x += -App->render->camera.x / App->win->GetScale();
+		mousePos.y -= App->render->camera.y / App->win->GetScale();;
+		// ----------------------------------------------------
 		fPoint projectileDirection;
 		projectileDirection = (fPoint)mousePos - projectilePosition;
 		projectileDirection.Normalize();
