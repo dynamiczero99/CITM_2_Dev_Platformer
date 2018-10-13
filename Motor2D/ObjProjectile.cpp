@@ -6,6 +6,7 @@
 #include "j1App.h"
 #include "j1Collision.h"
 #include "j1Render.h"
+#include "ObjBox.h"
 
 ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), Gameobject (position, index) {
 	if (projectile_node.empty()) {
@@ -51,6 +52,8 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 		//TODO: Play SFX
 		if (player != nullptr) {
 			player->swapObject = c2->callbackObj;
+			ObjBox * box = (ObjBox*)c2->callbackObj;
+			box->currAnim = &box->activeAnim;
 		}
 		break;
 	}

@@ -13,15 +13,19 @@ public:
 	ObjBox(fPoint position, int index, pugi::xml_node &object_node);
 	bool Update() override;
 	bool PostUpdate() override;
+	bool OnDestroy() override;
 
 	void OnCollision(Collider * c1, Collider * c2) override;
+
+public:
+	Animation inactiveAnim;
+	Animation activeAnim;
+	Animation * currAnim;
 
 private:
 	uint animTileWidth = 0u;
 	uint animTileHeight = 0u;
-	Animation inactiveAnim;
-	Animation activeAnim;
-	Animation * currAnim;
+	Collider * collider;
 };
 
 #endif

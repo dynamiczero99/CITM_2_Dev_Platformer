@@ -12,6 +12,7 @@
 #include "ObjProjectile.h"
 #include "j1Object.h"
 #include "ObjPlayer.h"
+#include "j1Window.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
@@ -98,6 +99,7 @@ bool ObjPlayer::Update() {
 	CalculateDeltaTime();
 	MovePlayer();
 	ShootProjectile();
+	SwapPosition();
 	return true;
 }
 
@@ -270,12 +272,23 @@ void ObjPlayer::ShootProjectile()
 		//INFO: Get the world position, not the screen position
 		mousePos.x += App->render->camera.x;
 		mousePos.y += App->render->camera.y;
+		//mousePos *= App->win->GetScale();
 
 		fPoint projectileDirection;
 		projectileDirection = (fPoint)mousePos - projectilePosition;
 		projectileDirection.Normalize();
 
 		projectile = App->object->AddObjProjectile(projectilePosition, projectileDirection, this);
+	}
+}
+
+void ObjPlayer::SwapPosition() {
+	if (App->input->GetMouseButton(3) == KEY_DOWN) {
+		if (swapObject != nullptr) {
+			fPoint auxPos = position;
+			position = swapObject->position;
+			swapObject->position = auxPos;
+		}
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "j1Object.h"
 #include "p2Point.h"
 #include "j1Render.h"
+#include "j1Collision.h"
 #include "j1App.h"
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
@@ -14,6 +15,18 @@ ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobjec
 	LoadAnimation(box_node.child("animation").child("active_animation").child("sprite"), activeAnim);
 	inactiveAnim.speed = box_node.child("animation").child("active_animation").attribute("speed").as_float();
 	currAnim = &inactiveAnim;
+	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	SDL_Rect colRect;
+	colRect.w = animTileWidth;
+	colRect.h = animTileHeight;
+	colRect.x = colPos.x;
+	colRect.y = colPos.y;
+	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+}
+
+bool ObjBox::OnDestroy() {
+	App->collision->DeleteCollider(collider);
+	return true;
 }
 
 bool ObjBox::Update() {

@@ -40,11 +40,16 @@ public:
 	void OnCollisionPlayer(Collider * c2);
 	void OnCollisionFeet(Collider * c2);
 
-	void ShootProjectile();
-	void MovePlayer();
+
+private:
 	void CalculateDeltaTime();
+	void MovePlayer();
+	void ShootProjectile();
+	void SwapPosition();
+
 	inline float tile_to_pixel(uint pixel);
 
+public:
 	//VARIABLES
 	uint tileSize;
 	float gravity;

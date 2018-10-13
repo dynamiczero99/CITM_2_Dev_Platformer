@@ -95,6 +95,12 @@ public:
 		return (*this);
 	}
 
+	const p2Point operator/= (const TYPE & num) {
+		x /= num;
+		y /= num;
+		return (*this);
+	}
+
 	bool operator ==(const p2Point& v) const
 	{
 		return (x == v.x && y == v.y);
