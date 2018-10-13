@@ -314,6 +314,7 @@ void ObjPlayer::ShootProjectile()
 
 		if (swapObject != nullptr) {
 			swapObject->MarkObject(false);
+			swapObject = nullptr;
 		}
 
 		fPoint projectilePosition;
@@ -350,6 +351,8 @@ void ObjPlayer::SwapPosition() {
 			fPoint auxPos = position;
 			position = swapObject->position;
 			swapObject->position = auxPos;
+			swapObject->MarkObject(false);
+			swapObject = nullptr;
 		}
 	}
 }
