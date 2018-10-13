@@ -42,6 +42,7 @@
       <collider_height>5</collider_height>
     </projectile>
     <box>
+      <gravity>1200</gravity>
       <animation tile_width ="16" tile_height ="16">
         <inactive_animation speed ="0">
           <sprite x ="112" y ="208" w ="16" h="16"/>

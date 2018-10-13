@@ -18,6 +18,14 @@ class Animation;
 
 class Gameobject {
 protected:
+	enum class dir : uint {
+		left,
+		right,
+		up,
+		down,
+		max
+	};
+
 	enum class pivot : uint {
 		top_left,
 		top_middle,

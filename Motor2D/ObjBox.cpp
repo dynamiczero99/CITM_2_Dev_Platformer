@@ -14,6 +14,7 @@ ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobjec
 	inactiveAnim.speed = box_node.child("animation").child("inactive_animation").attribute("speed").as_float();
 	LoadAnimation(box_node.child("animation").child("active_animation").child("sprite"), activeAnim);
 	inactiveAnim.speed = box_node.child("animation").child("active_animation").attribute("speed").as_float();
+	gravity = box_node.child("gravity").text().as_float();
 	currAnim = &inactiveAnim;
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	SDL_Rect colRect;
@@ -40,7 +41,9 @@ void ObjBox::MarkObject(bool mark)
 }
 
 bool ObjBox::Update() {
-	//TODO: Move the block down
+	acceleration.y = gravity;
+	velocity = velocity + acceleration * App->GetDeltaTime();
+	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;
@@ -53,5 +56,12 @@ bool ObjBox::PostUpdate() {
 }
 
 void ObjBox::OnCollision(Collider * c1, Collider * c2) {
-	//TODO: Same collision as player
+	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
+		//Boxes can only move down at the moment
+		position.y = c2->rect.GetTop();
+		velocity.y = 0;
+		acceleration.y = 0;
+		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
+		c1->SetPos(colPos.x, colPos.y);
+	}
 }
