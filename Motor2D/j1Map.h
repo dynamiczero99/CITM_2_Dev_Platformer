@@ -150,6 +150,9 @@ public:
 	// Reset current map
 	bool Reset();
 
+	//bool Load(pugi::xml_node& node);
+	//bool Save(pugi::xml_node& node) const;
+
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;

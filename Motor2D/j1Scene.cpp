@@ -216,8 +216,20 @@ void j1Scene::CameraLogic()
 
  bool j1Scene::Load(pugi::xml_node& loadNode)
  {
-	 cameraPos.x = loadNode.child("Camera").attribute("x").as_float();
-	 cameraPos.y = loadNode.child("Camera").attribute("y").as_float();
+	 LOG("Loading scene data from saved game");
+
+	 cameraPos.x = loadNode.child("camera").attribute("x").as_float();
+	 cameraPos.y = loadNode.child("camera").attribute("y").as_float();
+
+	 pugi::xml_node levelCheck = loadNode.child("current_level");
+	 p2SString name = levelCheck.attribute("name").as_string();
+	 if (name != App->map->data.loadedLevel.GetString())
+	 {
+		 LOG("map is different: loading %s", name.GetString());
+		 App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
+	 }
+	 else
+		 LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());
 
 	 return true;
  }
@@ -227,7 +239,9 @@ void j1Scene::CameraLogic()
 	pugi::xml_node camNode =  saveNode.append_child("Camera");
 	camNode.append_attribute("x") = cameraPos.x;
 	camNode.append_attribute("y") = cameraPos.y;
-
-
+	
+	pugi::xml_node currentLevelNode = saveNode.append_child("current_level");//(App->map->data.loadedLevel.GetString());
+	currentLevelNode.append_attribute("name") = App->map->data.loadedLevel.GetString();
+	
 	 return true;
  }
