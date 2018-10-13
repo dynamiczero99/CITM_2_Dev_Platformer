@@ -134,7 +134,6 @@ bool ObjPlayer::Update() {
 		GodMovement();
 	}
 	ShootProjectile();
-	SwapPosition();
 	return true;
 }
 
@@ -154,8 +153,9 @@ void ObjPlayer::ToggleGodMode()
 }
 
 bool ObjPlayer::PostUpdate() {
-	//Once the movement and the physical resolution has happened, determine the animations it must play
+	SwapPosition();
 
+	//Once the movement and the physical resolution has happened, determine the animations it must play
 	if (velocity.x > 0) {
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
