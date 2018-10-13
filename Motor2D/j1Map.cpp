@@ -673,8 +673,8 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 				if (gameobject_name == "normalBox")
 				{
-
-					App->object->AddObjBox({ object.attribute("x").as_float(), object.attribute("y").as_float() });
+					//Box have their pivot point on ther bottom - middle
+					App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float()});
 				}
 
 			}

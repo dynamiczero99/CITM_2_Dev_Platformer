@@ -22691,7 +22691,7 @@
  </group>
  <group id="11" name="GameObjects">
   <objectgroup id="12" name="GameObjects">
-   <object id="21" name="normalBox" x="865" y="246" width="20" height="20"/>
+   <object id="21" name="normalBox" x="864.273" y="259.273" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
