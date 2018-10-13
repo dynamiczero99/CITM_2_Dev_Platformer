@@ -16,42 +16,48 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WALL][COLLIDER_BOX] = true;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_GOD] = true;
-	matrix[COLLIDER_WALL][COLLIDER_DEATHZONE] = false;
+	matrix[COLLIDER_WALL][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_WALL][COLLIDER_WIN_ZONE] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_GOD] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_DEATHZONE] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_DEATH_ZONE] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_WIN_ZONE] = true;
 
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_BOX] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_GOD] = false;
-	matrix[COLLIDER_PLAYER_GOD][COLLIDER_DEATHZONE] = false;
+	matrix[COLLIDER_PLAYER_GOD][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WIN_ZONE] = true;
 	
 	matrix[COLLIDER_BOX][COLLIDER_WALL] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_BOX][COLLIDER_BOX] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER_SHOT] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER_GOD] = true;
-	matrix[COLLIDER_BOX][COLLIDER_DEATHZONE] = false;
+	matrix[COLLIDER_BOX][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_BOX][COLLIDER_WIN_ZONE] = false;
 
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_GOD] = false;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_DEATHZONE] = false;
+	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WIN_ZONE] = false;
 
-	matrix[COLLIDER_DEATHZONE][COLLIDER_WALL] = false;
-	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER_GOD] = false;
-	matrix[COLLIDER_DEATHZONE][COLLIDER_BOX] = false;
-	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER_SHOT] = false;
-	matrix[COLLIDER_DEATHZONE][COLLIDER_DEATHZONE] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_BOX] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_WIN_ZONE] = false;
 
 	actualColliders = 0;
 }
@@ -139,9 +145,13 @@ void j1Collision::DebugDraw()
 		case COLLIDER_PLAYER_GOD: //pink
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
-		case COLLIDER_DEATHZONE:
+		case COLLIDER_DEATH_ZONE:
 			// secret purple
 			App->render->DrawQuad(colliders[i]->rect, 95, 0, 232, alpha);
+			break;
+		case COLLIDER_WIN_ZONE: // other yellow
+			App->render->DrawQuad(colliders[i]->rect, 250, 255, 0, alpha);
+			break;
 		}
 	}
 }
