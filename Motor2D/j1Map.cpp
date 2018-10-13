@@ -58,9 +58,9 @@ void j1Map::Draw()
 	p2List_item<MapLayer*>* layer = data.mapLayers.start;
 	while (layer != NULL)
 	{
-		for (int y = 0; y < data.columns; ++y)
+		for (int y = 0; y < data.rows; ++y)
 		{
-			for (int x = 0; x < data.rows; ++x)
+			for (int x = 0; x < data.columns; ++x)
 			{
 				int tile_id = layer->data->GetArrayPos(x, y);
 				if (tile_id > 0)
