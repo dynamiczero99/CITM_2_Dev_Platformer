@@ -7,6 +7,7 @@
 #include "j1Collision.h"
 #include <math.h>
 #include "j1Scene.h"
+#include "j1Object.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -320,9 +321,11 @@ bool j1Map::Load(const char* file_name)
 			// load custom properties
 			LoadProperties(objectGroup.child("objectgroup"), playerData.properties);
 		}
+		else if (tmp == "GameObjects")
+		{
+			LoadGameObjects(objectGroup);
+		}
 
-		//if (ret == true)
-			//data.mapObjects.add(obj);
 	}
 
 	if(ret == true)
@@ -645,4 +648,40 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	}
 
 	return ret;
+}
+
+bool j1Map::LoadGameObjects(pugi::xml_node& node)
+{
+	// iterate all objectgroups
+	for (pugi::xml_node objectGroup = node.child("objectgroup"); objectGroup; objectGroup = objectGroup.next_sibling("objectgroup"))
+	{
+		p2SString tmp = objectGroup.attribute("name").as_string();
+		LOG("%s", tmp.GetString());
+		// Load custom properties
+		//LoadProperties(objectGroup, newObject->properties);
+
+		if (tmp == "GameObjects")
+		{
+			// iterate all objects
+			for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+			{
+
+				p2SString gameobject_name = object.attribute("name").as_string();
+				LOG("%s", gameobject_name.GetString());
+
+				if (gameobject_name == "normalBox")
+				{
+
+					App->object->AddObjBox({ object.attribute("x").as_float(), object.attribute("y").as_float() });
+				}
+
+			}
+		}
+		
+		
+
+		
+	}
+
+	return true;
 }

@@ -165,6 +165,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadMapColliders(pugi::xml_node& node);//, MapObjects* obj);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool LoadGameObjects(pugi::xml_node& node);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
