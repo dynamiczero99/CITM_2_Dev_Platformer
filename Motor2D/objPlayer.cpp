@@ -97,7 +97,6 @@ bool ObjPlayer::PreUpdate() {
 }
 
 bool ObjPlayer::Update() {
-	CalculateDeltaTime();
 	MovePlayer();
 	ShootProjectile();
 	SwapPosition();
@@ -222,20 +221,6 @@ inline float ObjPlayer::tile_to_pixel(uint pixel) {
 	return pixel * tileSize;
 }
 
-void ObjPlayer::CalculateDeltaTime()
-{
-	if (isFirstFrame) {
-		currTime = lastTime = SDL_GetTicks();
-		isFirstFrame = false;
-	}
-	else {
-		currTime = SDL_GetTicks();
-	}
-	deltaTime = currTime - lastTime;
-	deltaTime /= 1000;//1 second is 1000 miliseconds
-	lastTime = currTime;
-}
-
 void ObjPlayer::MovePlayer()
 {
 	if (isOnPlatform) {
@@ -246,8 +231,8 @@ void ObjPlayer::MovePlayer()
 		checkFall = false;
 	}
 
-	velocity = velocity + acceleration * deltaTime;
-	position = position + velocity * deltaTime;
+	velocity = velocity + acceleration * App->GetDeltaTime();
+	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);

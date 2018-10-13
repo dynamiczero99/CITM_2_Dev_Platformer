@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "j1Module.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "SDL/include/SDL_stdinc.h"
 
 // Modules
 class j1Window;
@@ -52,6 +53,9 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
+	//Get the number of seconds since the previous update
+	float GetDeltaTime() const;
+
 private:
 
 	// Load config file
@@ -76,6 +80,10 @@ private:
 	bool LoadGameNow();
 	bool SavegameNow() const;
 
+	//The first frame always takes some more time to process so we need to account for that
+	void DeltaTimeCorrection();
+	void CalculateDeltaTime();
+
 public:
 
 	// Modules
@@ -89,6 +97,8 @@ public:
 	j1Collision*		collision = nullptr;
 	j1FadeToBlack*		fade_to_black = nullptr;
 	j1Object*			object = nullptr;
+
+
 
 private:
 
@@ -109,6 +119,10 @@ private:
 	bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
+
+	Uint32 currTime;
+	Uint32 lastTime;
+	float deltaTime;
 };
 
 extern j1App* App;

@@ -117,6 +117,8 @@ bool j1App::Start()
 		item = item->next;
 	}
 
+	DeltaTimeCorrection();
+
 	return ret;
 }
 
@@ -125,6 +127,7 @@ bool j1App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
+	CalculateDeltaTime();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
@@ -176,11 +179,9 @@ void j1App::FinishUpdate()
 bool j1App::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(p2List_item<j1Module*>* item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
@@ -198,11 +199,9 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(p2List_item<j1Module*>* item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
@@ -220,10 +219,9 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(p2List_item<j1Module*>* item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
@@ -241,8 +239,7 @@ bool j1App::PostUpdate()
 bool j1App::CleanUp()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.end;
+	p2List_item<j1Module*>* item = modules.end;
 
 	while(item != NULL && ret == true)
 	{
@@ -303,6 +300,11 @@ void j1App::SaveGame(const char* file) const
 void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
+}
+
+float j1App::GetDeltaTime() const
+{
+	return deltaTime;
 }
 
 bool j1App::LoadGameNow()
@@ -379,4 +381,17 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::DeltaTimeCorrection()
+{
+	//CalculateDeltaTime() executes on the preupdate, so just before that, in the start, we make the lastTime equal the current time so that when it substracts with currTime it will be basically the same
+	lastTime = SDL_GetTicks();
+}
+
+void j1App::CalculateDeltaTime()
+{
+	currTime = SDL_GetTicks();
+	deltaTime = (currTime - lastTime) / 1000.0f;//INFO: 1 second is 1000 miliseconds
+	lastTime = currTime;
 }

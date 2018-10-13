@@ -43,7 +43,6 @@ public:
 	void SetSwapObject(Gameobject * markedObject);
 
 private:
-	void CalculateDeltaTime();
 	void MovePlayer();
 	void ShootProjectile();
 	void SwapPosition();
@@ -63,12 +62,6 @@ public:
 	Collider* feetCol;
 	bool isOnPlatform = false;
 	bool checkFall = false;
-
-	//Time
-	float deltaTime = 0;
-	Uint32 lastTime = 0;
-	Uint32 currTime = 0;
-	bool isFirstFrame = true;
 
 	//Animation
 	uint animTileWidth = 0;
