@@ -602,6 +602,8 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL);
 			else if (tmp == "Floor")
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL); // reference collider type for test
+			else if (tmp == "Death")
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_DEATHZONE);
 
 			// increments counter
 			++i;
