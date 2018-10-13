@@ -12,6 +12,7 @@ struct Collider;
 enum COLLIDER_TYPE;
 class ObjPlayer;
 class ObjProjectile;
+class ObjBox;
 struct SDL_Texture;
 class Animation;
 
@@ -68,7 +69,8 @@ public:
 	int FindEmptyPosition();
 
 	ObjPlayer * AddObjPlayer(fPoint position);
-	ObjProjectile * AddObjProjectile(fPoint position, fPoint velocity, ObjPlayer * objPlayer);
+	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
+	ObjBox * AddObjBox(fPoint position);
 	bool DeleteObject(Gameobject * object);
 
 public:
@@ -76,6 +78,7 @@ public:
 	SDL_Texture * playerIdleTex;
 	SDL_Texture * playerRunTex;
 	SDL_Texture * playerJumpTex;
+	SDL_Texture * robotTex;
 	ObjPlayer * player = nullptr;
 
 private:

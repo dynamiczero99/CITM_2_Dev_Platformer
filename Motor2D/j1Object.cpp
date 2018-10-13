@@ -6,10 +6,11 @@
 #include "j1Module.h"
 #include "p2Log.h"
 #include "j1Textures.h"
+#include "PugiXml/src/pugixml.hpp"
 //Objects
 #include "ObjPlayer.h"
 #include "ObjProjectile.h"
-#include "PugiXml/src/pugixml.hpp"
+#include "ObjBox.h"
 
 j1Object::j1Object() : j1Module() {
 	name.create("object");
@@ -26,15 +27,19 @@ bool j1Object::Awake(pugi::xml_node& node) {
 }
 
 bool j1Object::Start() {
-	fPoint playerStartPos;
-	playerStartPos.x = App->map->playerData.x;
-	playerStartPos.y = App->map->playerData.y;
-	player = App->object->AddObjPlayer(playerStartPos);
 	//INFO: Load all textures here (we don't want each instance of an object to be loading the same texture again and again)
 	projectileTex = App->tex->LoadTexture(object_node.child("projectile_image").text().as_string());
 	playerIdleTex = App->tex->LoadTexture(object_node.child("player_idle_image").text().as_string());
 	playerRunTex = App->tex->LoadTexture(object_node.child("player_run_image").text().as_string());
 	playerJumpTex = App->tex->LoadTexture(object_node.child("player_jump_image").text().as_string());
+	robotTex = App->tex->LoadTexture(object_node.child("robot_image").text().as_string());
+	//Add objects
+	fPoint playerStartPos;
+	playerStartPos.x = App->map->playerData.x;
+	playerStartPos.y = App->map->playerData.y;
+	player = App->object->AddObjPlayer(playerStartPos);
+	fPoint boxStartPos = fPoint (80.0f, 50.0f);//TODO: Not hardcoded position, get the positon from the map
+	App->object->AddObjBox(boxStartPos);
 	return true;
 }
 
@@ -79,6 +84,7 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(playerRunTex);
 	App->tex->UnloadTexture(playerJumpTex);
 	App->tex->UnloadTexture(projectileTex);
+	App->tex->UnloadTexture(robotTex);
 	return true;
 }
 
@@ -111,11 +117,20 @@ ObjPlayer * j1Object::AddObjPlayer(fPoint position) {
 	return ret;
 }
 
-ObjProjectile * j1Object::AddObjProjectile(fPoint position, fPoint velocity, ObjPlayer * objPlayer) {
+ObjProjectile * j1Object::AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer) {
 	int index = FindEmptyPosition();
 	ObjProjectile * ret = nullptr;
 	if (index != -1) {
-		objects[index] = ret = new ObjProjectile (position, index, object_node.child("projectile"), velocity, objPlayer);
+		objects[index] = ret = new ObjProjectile (position, index, object_node.child("projectile"), direction, objPlayer);
+	}
+	return ret;
+}
+
+ObjBox * j1Object::AddObjBox (fPoint position) {
+	int index = FindEmptyPosition();
+	ObjBox * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjBox(position, index, object_node.child("box"));
 	}
 	return ret;
 }

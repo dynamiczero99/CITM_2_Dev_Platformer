@@ -35,11 +35,22 @@
     <player_idle_image>textures/engineer character/engineer-idle.png</player_idle_image>
     <player_run_image>textures/engineer character/engineer-run.png</player_run_image>
     <player_jump_image>textures/engineer character/engineer-jump.png</player_jump_image>
+    <robot_image>textures/robot_tileset.png</robot_image>
     <projectile>
       <speed>5</speed>
       <collider_width>5</collider_width>
       <collider_height>5</collider_height>
     </projectile>
+    <box>
+      <animation tile_width ="16" tile_height ="16">
+        <inactive_animation speed ="0">
+          <sprite x ="112" y ="208" w ="16" h="16"/>
+        </inactive_animation>
+        <active_animation speed ="0">
+          <sprite x ="128" y ="208" w ="16" h="16"/>
+        </active_animation>
+      </animation>
+    </box>
     <player>
       <shoot_height>20</shoot_height>
       <collider_width>10</collider_width>

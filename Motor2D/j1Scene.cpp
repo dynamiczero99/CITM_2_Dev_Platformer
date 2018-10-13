@@ -90,17 +90,6 @@ bool j1Scene::Update(float dt)
 	}
 
 	App->map->Draw();
-
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-					App->map->data.columns, App->map->data.rows,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(),
-					map_coordinates.x, map_coordinates.y);
-
-	App->win->SetTitle(title.GetString());
 	return true;
 }
 

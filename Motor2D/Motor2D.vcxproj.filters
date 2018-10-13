@@ -45,6 +45,9 @@
     <ClCompile Include="ObjPlayer.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ObjBox.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -112,6 +115,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="ObjPlayer.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjBox.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
