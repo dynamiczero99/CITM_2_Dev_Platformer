@@ -151,24 +151,24 @@ void j1Scene::CameraLogic()
 	if (!teleport)
 	{
 
-		speedx += (targetX - App->render->camera.x) / 20;
+		cameraPos.x += (targetX - App->render->camera.x) / 20;
 
 		if (App->render->camera.y >= targetY)
-			speedy += (targetY - App->render->camera.y) / 3;
+			cameraPos.y += (targetY - App->render->camera.y) / 3;
 		else
-			speedy += (targetY - App->render->camera.y) / 50;
+			cameraPos.y += (targetY - App->render->camera.y) / 50;
 
 	}
 	else
 	{
 		// translate the camera to center the player at the middle of screen
-		speedx = playerPivotPos.x + width * 0.5f;
-		speedy = playerPivotPos.y + height * 0.5f;
+		cameraPos.x = playerPivotPos.x + width * 0.5f;
+		cameraPos.y = playerPivotPos.y + height * 0.5f;
 		teleport = false;
 	}
 
-	App->render->camera.x = speedx;
-	App->render->camera.y = speedy;
+	App->render->camera.x = cameraPos.x;
+	App->render->camera.y = cameraPos.y;
 	
 }
 
@@ -213,3 +213,14 @@ void j1Scene::CameraLogic()
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
 	}
 }
+
+ bool j1Scene::Load(pugi::xml_node& loadNode)
+ {
+	 return true;
+ }
+
+ bool j1Scene::Save(pugi::xml_node& saveNode) const
+ {
+
+	 return true;
+ }

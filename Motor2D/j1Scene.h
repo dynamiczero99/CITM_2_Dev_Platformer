@@ -34,10 +34,13 @@ public:
 
 	void CameraLogic();
 
+	bool Load(pugi::xml_node& node);
+	bool Save(pugi::xml_node& node) const;
+
 private:
 
-	float speedx = 0;
-	float speedy = 0;
+	fPoint cameraPos = { 0,0 };
+	
 
 	bool firstStart = true;
 

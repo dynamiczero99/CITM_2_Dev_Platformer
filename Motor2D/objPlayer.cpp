@@ -281,6 +281,17 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 
 	position.x = loadNode.child("Player").attribute("x").as_float();
 	position.y = loadNode.child("Player").attribute("y").as_float();
+	velocity.x = loadNode.child("Player").attribute("velocity_x").as_float();
+	velocity.y = loadNode.child("Player").attribute("velocity_y").as_float();
+	
+	p2SString flipDir = loadNode.child("Player").attribute("flip_direction").as_string();
+	// check facing direction
+	if (flipDir == "true")
+	{
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 
 	return true;
 }
@@ -291,6 +302,12 @@ bool ObjPlayer::Save(pugi::xml_node& saveNode) const
 
 	player.append_attribute("x") = position.x;
 	player.append_attribute("y") = position.y;
+	player.append_attribute("velocity_x") = velocity.x;
+	player.append_attribute("velocity_y") = velocity.y;
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+		player.append_attribute("flip_direction") = "true";
+	else
+		player.append_attribute("flip_direction") = "false";
 
 	return true;
 }
