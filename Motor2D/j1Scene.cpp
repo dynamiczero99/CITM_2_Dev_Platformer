@@ -49,6 +49,9 @@ bool j1Scene::Start()
 
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load
+
+	searchValidCameraPos();
+
 	return true;
 }
 
@@ -200,16 +203,6 @@ void j1Scene::CameraLogic()
 	 cameraPos.x = loadNode.child("camera").attribute("x").as_float();
 	 cameraPos.y = loadNode.child("camera").attribute("y").as_float();
 
-	 /*pugi::xml_node levelCheck = loadNode.child("current_level");
-	 p2SString name = levelCheck.attribute("name").as_string();
-	 if (name != App->map->data.loadedLevel.GetString())
-	 {
-		 LOG("map is different: loading %s", name.GetString());
-		 App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
-	 }
-	 else
-		 LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());*/
-
 	 return true;
  }
 
@@ -219,8 +212,35 @@ void j1Scene::CameraLogic()
 	camNode.append_attribute("x") = cameraPos.x;
 	camNode.append_attribute("y") = cameraPos.y;
 	
-	pugi::xml_node currentLevelNode = saveNode.append_child("current_level");//(App->map->data.loadedLevel.GetString());
+	pugi::xml_node currentLevelNode = saveNode.append_child("current_level");
 	currentLevelNode.append_attribute("name") = App->map->data.loadedLevel.GetString();
 	
 	 return true;
  }
+
+ bool j1Scene::searchValidCameraPos()
+ {
+	 // update offset
+	 uint width, height = 0;
+	 App->win->GetWindowSize(width, height);
+
+	 float x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
+	 float y = height * 0.33f *2.5f; // 
+
+	 iPoint offset = { (int)x , (int)y };
+	 // -------------
+	 fPoint startPosition;
+	 startPosition.x = App->map->playerData.x;
+	 startPosition.y = App->map->playerData.y;
+
+	 App->render->camera.x = cameraPos.x = (-startPosition.x * App->win->GetScale()) + offset.x;
+	 App->render->camera.y = cameraPos.y = (-startPosition.y * App->win->GetScale()) + offset.y;
+
+
+	 return true;
+ }
+
+ /*iPoint j1Scene::UpdateCameraOffset()
+ {
+
+ }*/
