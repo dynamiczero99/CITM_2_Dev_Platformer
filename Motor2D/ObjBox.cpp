@@ -29,8 +29,18 @@ bool ObjBox::OnDestroy() {
 	return true;
 }
 
+void ObjBox::MarkObject(bool mark)
+{
+	if (mark) {
+		currAnim = &activeAnim;
+	}
+	else {
+		currAnim = &inactiveAnim;
+	}
+}
+
 bool ObjBox::Update() {
-	//Move the block down
+	//TODO: Move the block down
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;
@@ -43,5 +53,5 @@ bool ObjBox::PostUpdate() {
 }
 
 void ObjBox::OnCollision(Collider * c1, Collider * c2) {
-	//Same collision as player
+	//TODO: Same collision as player
 }

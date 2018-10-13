@@ -265,9 +265,7 @@ void ObjPlayer::ShootProjectile()
 		}
 
 		if (swapObject != nullptr) {
-			//TODO: if it's of type box
-			ObjBox * auxObj = (ObjBox*)swapObject;
-			auxObj->currAnim = &auxObj->inactiveAnim;
+			swapObject->MarkObject(false);
 		}
 
 		fPoint projectilePosition;

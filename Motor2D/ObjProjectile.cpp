@@ -51,9 +51,8 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 		//TODO: Mark that box visually
 		//TODO: Play SFX
 		if (player != nullptr) {
+			c2->callbackObj->MarkObject(true);
 			player->SetSwapObject(c2->callbackObj);
-			ObjBox * box = (ObjBox*)c2->callbackObj;
-			box->currAnim = &box->activeAnim;
 		}
 		break;
 	}

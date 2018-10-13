@@ -14,6 +14,7 @@ public:
 	bool Update() override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;
+	void MarkObject(bool mark) override;
 
 	void OnCollision(Collider * c1, Collider * c2) override;
 

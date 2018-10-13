@@ -38,6 +38,7 @@ public:
 	virtual bool PostUpdate();
 	virtual bool OnDestroy();
 	virtual void OnCollision(Collider * c1, Collider * c2);
+	virtual void MarkObject(bool mark);
 
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;

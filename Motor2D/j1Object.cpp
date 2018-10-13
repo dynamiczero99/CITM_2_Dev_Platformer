@@ -210,6 +210,10 @@ void Gameobject::OnCollision(Collider * c1, Collider * c2) {
 
 }
 
+void Gameobject::MarkObject(bool mark) {
+
+}
+
 iPoint Gameobject::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
 	;
 	switch (pivot) {
