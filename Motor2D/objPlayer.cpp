@@ -199,8 +199,7 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 
 void ObjPlayer::OnCollisionPlayer(Collider * c2)
 {
-	switch (c2->type) {
-	case COLLIDER_WALL:
+	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
 		//1. Check which direction it was going to
 		bool direction[(uint)dir::max];
 		direction[(uint)dir::up] = velocity.y < 0;
@@ -253,7 +252,6 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 		playerCol->SetPos(colPos.x, colPos.y);
 		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
-		break;
 	}
 }
 

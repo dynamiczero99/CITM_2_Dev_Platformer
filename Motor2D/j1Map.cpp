@@ -55,6 +55,8 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
+	int mapBlitOffset = 50;//TODO: Get this from the xml
+
 	p2List_item<MapLayer*>* layer = data.mapLayers.start;
 	while (layer != NULL)
 	{
@@ -73,11 +75,11 @@ void j1Map::Draw()
 
 						if (tileset->anim != nullptr)
 						{
-							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height,
-								&tileset->anim->ReturnCurrentFrame(), layer->data->properties.parallaxSpeed);
+							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height, &tileset->anim->ReturnCurrentFrame(), layer->data->properties.parallaxSpeed);
 						}
-						else
+						else {
 							App->render->Blit(tileset->texture, pos.x, pos.y, &r, layer->data->properties.parallaxSpeed);
+						}
 					}
 				}
 			}
