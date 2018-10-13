@@ -370,8 +370,9 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 	{
 		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
-	else
+	else {
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
 
 	return true;
 }

@@ -322,7 +322,6 @@ bool j1App::LoadGameNow()
 
 		root = data.child("game_state");
 
-		p2List_item<j1Module*>* item = modules.start;
 		ret = true;
 
 		// check if the current level is the same of the one we want to load -----
@@ -339,6 +338,7 @@ bool j1App::LoadGameNow()
 
 		// ------------------------------------------------------------------------
 
+		p2List_item<j1Module*>* item = modules.start;
 		while(item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));

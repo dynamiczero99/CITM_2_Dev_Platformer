@@ -65,11 +65,13 @@ bool j1Scene::Update(float dt)
 	// checks for debug input
 	DebugInput();
 	// ----------------------
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
 		App->LoadGame("savegame.xml");
+	}
 
-	if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
 		App->SaveGame("savegame.xml");
+	}
 
 	// testing teleporting camera
 	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
