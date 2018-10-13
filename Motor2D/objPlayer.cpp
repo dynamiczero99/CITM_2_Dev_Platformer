@@ -226,6 +226,18 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 			}
 		}
 
+		//2.5 If the player isn't moving (which is sometimes the case when he swaps) we also need to make it exit from the nearest point
+		if (nearestDir == -1) {
+			for (int i = 0; i < (int)dir::max; ++i) {
+				if (nearestDir == -1) {
+					nearestDir = i;
+				}
+				else if (dist[i] < dist[nearestDir]) {
+					nearestDir = i;
+				}
+			}
+		}
+
 		//3. Move it to that point
 		//INFO: Keep in mind that the player uses a pivot::bottom-middle
 		switch (nearestDir) {
