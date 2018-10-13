@@ -59,6 +59,14 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_DEATH_ZONE] = false;
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_WIN_ZONE] = false;
 
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_BOX] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_WIN_ZONE] = false;
+
 	actualColliders = 0;
 }
 
