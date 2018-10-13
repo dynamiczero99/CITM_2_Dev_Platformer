@@ -47,7 +47,7 @@
           <sprite x ="112" y ="208" w ="16" h="16"/>
         </inactive_animation>
         <active_animation speed ="0">
-          <sprite x ="128" y ="208" w ="16" h="16"/>
+          <sprite x ="144" y ="208" w ="16" h="16"/>
         </active_animation>
       </animation>
     </box>
