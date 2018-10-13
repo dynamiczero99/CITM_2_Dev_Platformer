@@ -216,11 +216,18 @@ void j1Scene::CameraLogic()
 
  bool j1Scene::Load(pugi::xml_node& loadNode)
  {
+	 cameraPos.x = loadNode.child("Camera").attribute("x").as_float();
+	 cameraPos.y = loadNode.child("Camera").attribute("y").as_float();
+
 	 return true;
  }
 
  bool j1Scene::Save(pugi::xml_node& saveNode) const
  {
+	pugi::xml_node camNode =  saveNode.append_child("Camera");
+	camNode.append_attribute("x") = cameraPos.x;
+	camNode.append_attribute("y") = cameraPos.y;
+
 
 	 return true;
  }
