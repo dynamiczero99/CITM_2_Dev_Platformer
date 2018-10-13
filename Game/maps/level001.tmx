@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="50" tilewidth="8" tileheight="8" infinite="0" nextobjectid="23">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="50" tilewidth="8" tileheight="8" infinite="0" nextlayerid="13" nextobjectid="23">
  <properties>
   <property name="testValue" type="int" value="2"/>
  </properties>
@@ -143,7 +143,7 @@
  <tileset firstgid="2701" name="paralax-background" tilewidth="8" tileheight="8" tilecount="96" columns="8">
   <image source="../textures/paralax/paralax-background.png" width="64" height="96"/>
  </tileset>
- <layer name="background" width="150" height="50">
+ <layer id="1" name="background" width="150" height="50">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -7650,7 +7650,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="midground" width="150" height="50">
+ <layer id="2" name="midground" width="150" height="50">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -15157,7 +15157,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="foreground" width="150" height="50">
+ <layer id="3" name="foreground" width="150" height="50">
   <data>
    <tile/>
    <tile/>
@@ -22661,15 +22661,15 @@
    <tile/>
   </data>
  </layer>
- <group name="Colliders">
-  <objectgroup name="Trigger">
+ <group id="4" name="Colliders">
+  <objectgroup id="5" name="Trigger">
    <object id="22" name="Trigger" type="next_level" x="970" y="139" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup name="Death">
+  <objectgroup id="6" name="Death">
    <object id="19" name="death" x="542.333" y="312" width="588" height="30"/>
   </objectgroup>
-  <objectgroup name="Platforms"/>
-  <objectgroup name="Floor">
+  <objectgroup id="7" name="Platforms"/>
+  <objectgroup id="8" name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -22679,8 +22679,8 @@
    <object id="17" x="88" y="16" width="215" height="287"/>
   </objectgroup>
  </group>
- <group name="Player">
-  <objectgroup name="PlayerData">
+ <group id="9" name="Player">
+  <objectgroup id="10" name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -22689,9 +22689,9 @@
    </object>
   </objectgroup>
  </group>
- <group name="GameObjects">
-  <objectgroup name="GameObjects">
-   <object id="21" name="normalBox" x="565" y="246" width="20" height="20"/>
+ <group id="11" name="GameObjects">
+  <objectgroup id="12" name="GameObjects">
+   <object id="21" name="normalBox" x="865" y="246" width="20" height="20"/>
   </objectgroup>
  </group>
 </map>
