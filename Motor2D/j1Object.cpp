@@ -150,6 +150,7 @@ bool j1Object::DeleteObject(Gameobject * object) {
 		objects[object->index]->OnDestroy();
 		delete objects[object->index];
 		objects[object->index] = nullptr;
+		object = nullptr;
 		actualObjects--;
 	}
 	return true;
