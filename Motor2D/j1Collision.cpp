@@ -16,30 +16,42 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WALL][COLLIDER_BOX] = true;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER_GOD] = true;
+	matrix[COLLIDER_WALL][COLLIDER_DEATHZONE] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_DEATHZONE] = true;
 
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_BOX] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_PLAYER_GOD][COLLIDER_DEATHZONE] = false;
 	
 	matrix[COLLIDER_BOX][COLLIDER_WALL] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_BOX][COLLIDER_BOX] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER_SHOT] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER_GOD] = true;
+	matrix[COLLIDER_BOX][COLLIDER_DEATHZONE] = false;
 
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_BOX] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_SHOT] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_DEATHZONE] = false;
+
+	matrix[COLLIDER_DEATHZONE][COLLIDER_WALL] = false;
+	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_DEATHZONE][COLLIDER_BOX] = false;
+	matrix[COLLIDER_DEATHZONE][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_DEATHZONE][COLLIDER_DEATHZONE] = false;
 
 	actualColliders = 0;
 }
@@ -127,8 +139,9 @@ void j1Collision::DebugDraw()
 		case COLLIDER_PLAYER_GOD: //pink
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
-		// secret purple
-		//App->render->DrawQuad(colliders[i]->rect, 95, 0, 232, alpha);
+		case COLLIDER_DEATHZONE:
+			// secret purple
+			App->render->DrawQuad(colliders[i]->rect, 95, 0, 232, alpha);
 		}
 	}
 }
