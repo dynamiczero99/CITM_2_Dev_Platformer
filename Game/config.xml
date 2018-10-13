@@ -65,6 +65,7 @@
       <jump_height>5</jump_height>
       <feet_collider_width>10</feet_collider_width>
       <feet_collider_height>5</feet_collider_height>
+      <maximum_fall_velocity>750</maximum_fall_velocity>
       <animation tile_width ="16" tile_height ="28">
         <idle_animation speed ="0.25">
           <sprite x ="0" y ="0" w ="16" h="28"/>

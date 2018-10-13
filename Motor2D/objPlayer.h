@@ -44,6 +44,7 @@ public:
 
 private:
 	void MovePlayer();
+	void LimitFallVelocity();
 	void ShootProjectile();
 	void SwapPosition();
 
@@ -90,6 +91,7 @@ public:
 
 private:
 	//Position swap
+	float maxFallVelocity = 0.0f;
 	Gameobject * swapObject = nullptr;
 };
 

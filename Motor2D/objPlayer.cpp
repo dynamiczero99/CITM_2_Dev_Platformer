@@ -20,7 +20,6 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	if (playerNode.empty())
 		LOG("empty node");
 
-	//Values from xml
 	SDL_Rect colliderRect;
 	colliderRect.w = playerNode.child("collider_width").text().as_int();
 	colliderRect.h = playerNode.child("collider_height").text().as_int();
@@ -36,8 +35,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
 	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0f);
-
-	//Shoot
+	maxFallVelocity = playerNode.child("maximum_fall_velocity").text().as_float();
 	shootHeight = playerNode.child("shoot_height").text().as_uint();
 
 	//Animation
@@ -232,6 +230,7 @@ void ObjPlayer::MovePlayer()
 	}
 
 	velocity = velocity + acceleration * App->GetDeltaTime();
+	LimitFallVelocity();
 	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
@@ -239,6 +238,12 @@ void ObjPlayer::MovePlayer()
 
 	// - If this value remains false after checking the collision we'll consider the player has fallen from the platform
 	isOnPlatform = false;
+}
+
+void ObjPlayer::LimitFallVelocity() {
+	//if (velocity.y > maxFallVelocity) {
+	//	velocity.y = maxFallVelocity;
+	//}
 }
 
 void ObjPlayer::ShootProjectile()
