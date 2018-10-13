@@ -62,6 +62,41 @@ bool ObjPlayer::OnDestroy() {
 }
 
 bool ObjPlayer::PreUpdate() {
+	ToggleGodMode();
+	if (!godMode) {
+		StandardControls();
+	}
+	else {
+		GodControls();
+	}
+	return true;
+}
+
+void ObjPlayer::GodControls()
+{
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
+		velocity.x = -moveSpeedGnd;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+		velocity.x = moveSpeedGnd;
+	}
+	else {
+		velocity.x = 0;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE) {
+		velocity.y = moveSpeedGnd;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE) {
+		velocity.y = -moveSpeedGnd;
+	}
+	else {
+		velocity.y = 0;
+	}
+}
+
+void ObjPlayer::StandardControls()
+{
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		if (isOnPlatform) {
 			velocity.x = -moveSpeedGnd;
@@ -83,22 +118,39 @@ bool ObjPlayer::PreUpdate() {
 	else {
 		velocity.x = 0;
 	}
-
 	// Check that it is hitting the ground to be able to jump (he could jump on the air otherwise)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
 		isOnPlatform = false;
 		checkFall = false;
 	}
-
-	return true;
 }
 
 bool ObjPlayer::Update() {
-	MovePlayer();
+	if (!godMode) {
+		StandardMovement();
+	}
+	else {
+		GodMovement();
+	}
 	ShootProjectile();
 	SwapPosition();
 	return true;
+}
+
+void ObjPlayer::ToggleGodMode()
+{
+	acceleration = fPoint(0.0f, 0.0f);
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (godMode) {
+			playerCol->type = COLLIDER_TYPE::COLLIDER_PLAYER;
+			godMode = false;
+		}
+		else {
+			playerCol->type = COLLIDER_TYPE::COLLIDER_PLAYER_GOD;
+			godMode = true;
+		}
+	}
 }
 
 bool ObjPlayer::PostUpdate() {
@@ -219,7 +271,7 @@ inline float ObjPlayer::tile_to_pixel(uint pixel) {
 	return pixel * tileSize;
 }
 
-void ObjPlayer::MovePlayer()
+void ObjPlayer::StandardMovement()
 {
 	if (isOnPlatform) {
 		acceleration.y = 0;
@@ -238,6 +290,14 @@ void ObjPlayer::MovePlayer()
 
 	// - If this value remains false after checking the collision we'll consider the player has fallen from the platform
 	isOnPlatform = false;
+}
+
+void ObjPlayer::GodMovement() {
+	velocity = velocity + acceleration * App->GetDeltaTime();
+	position = position + velocity * App->GetDeltaTime();
+	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	playerCol->SetPos(colPos.x, colPos.y);
+	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }
 
 void ObjPlayer::LimitFallVelocity() {

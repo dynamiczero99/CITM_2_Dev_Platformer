@@ -32,7 +32,9 @@ public:
 	bool Save(pugi::xml_node& saveNode) const;
 
 	bool PreUpdate() override;
+
 	bool Update() override;
+	
 	bool PostUpdate() override;
 	bool OnDestroy() override;
 	void OnCollision(Collider* c1, Collider* c2) override;
@@ -43,7 +45,11 @@ public:
 	void SetSwapObject(Gameobject * markedObject);
 
 private:
-	void MovePlayer();
+	void ToggleGodMode();
+	void StandardControls();
+	void GodControls();
+	void StandardMovement();
+	void GodMovement();
 	void LimitFallVelocity();
 	void ShootProjectile();
 	void SwapPosition();
@@ -93,6 +99,9 @@ private:
 	//Position swap
 	float maxFallVelocity = 0.0f;
 	Gameobject * swapObject = nullptr;
+
+	//God mode
+	bool godMode = false;
 };
 
 #endif
