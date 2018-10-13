@@ -45,12 +45,13 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 	{
 		if (now >= total_time)
 		{
+			App->scene->Disable();
 			// clean up the current map
 			if (App->map->Reset())// load new map
 			{
 				App->map->Load(lvl_to_load);
 				// TODO: maybe we need to search a less ugly workaround to restart scene
-				App->scene->Disable();
+				//App->scene->Disable();
 				App->scene->Enable();
 			}
 

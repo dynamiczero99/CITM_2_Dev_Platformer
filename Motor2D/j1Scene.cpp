@@ -198,7 +198,7 @@ void j1Scene::CameraLogic()
 	 cameraPos.x = loadNode.child("camera").attribute("x").as_float();
 	 cameraPos.y = loadNode.child("camera").attribute("y").as_float();
 
-	 pugi::xml_node levelCheck = loadNode.child("current_level");
+	 /*pugi::xml_node levelCheck = loadNode.child("current_level");
 	 p2SString name = levelCheck.attribute("name").as_string();
 	 if (name != App->map->data.loadedLevel.GetString())
 	 {
@@ -206,14 +206,14 @@ void j1Scene::CameraLogic()
 		 App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
 	 }
 	 else
-		 LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());
+		 LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());*/
 
 	 return true;
  }
 
  bool j1Scene::Save(pugi::xml_node& saveNode) const
  {
-	pugi::xml_node camNode =  saveNode.append_child("Camera");
+	pugi::xml_node camNode =  saveNode.append_child("camera");
 	camNode.append_attribute("x") = cameraPos.x;
 	camNode.append_attribute("y") = cameraPos.y;
 	

@@ -325,6 +325,20 @@ bool j1App::LoadGameNow()
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;
 
+		// check if the current level is the same of the one we want to load -----
+
+		pugi::xml_node levelCheck = root.child("scene").child("current_level");
+		p2SString name = levelCheck.attribute("name").as_string();
+		if (name != App->map->data.loadedLevel.GetString())
+		{
+			LOG("map is different: loading %s", name.GetString());
+			App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
+		}
+		else
+			LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());
+
+		// ------------------------------------------------------------------------
+
 		while(item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
