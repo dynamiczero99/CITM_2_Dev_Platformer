@@ -13,6 +13,7 @@
 #include "j1Object.h"
 #include "ObjPlayer.h"
 #include "j1Window.h"
+#include "ObjBox.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
@@ -263,6 +264,12 @@ void ObjPlayer::ShootProjectile()
 			App->object->DeleteObject(projectile);
 		}
 
+		if (swapObject != nullptr) {
+			//TODO: if it's of type box
+			ObjBox * auxObj = (ObjBox*)swapObject;
+			auxObj->currAnim = &auxObj->inactiveAnim;
+		}
+
 		fPoint projectilePosition;
 		projectilePosition.x = position.x;
 		projectilePosition.y = position.y - shootHeight;
@@ -310,6 +317,11 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 
 	return true;
+}
+
+void ObjPlayer::SetSwapObject(Gameobject * markedObject) {
+	App->object->DeleteObject(projectile);
+	swapObject = markedObject;
 }
 
 bool ObjPlayer::Save(pugi::xml_node& saveNode) const

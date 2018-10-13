@@ -40,6 +40,7 @@ public:
 	void OnCollisionPlayer(Collider * c2);
 	void OnCollisionFeet(Collider * c2);
 
+	void SetSwapObject(Gameobject * markedObject);
 
 private:
 	void CalculateDeltaTime();
@@ -94,6 +95,7 @@ public:
 	ObjProjectile * projectile = nullptr;
 	uint shootHeight;
 
+private:
 	//Position swap
 	Gameobject * swapObject = nullptr;
 };
