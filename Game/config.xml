@@ -56,13 +56,13 @@
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>
       <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
-      <tile_size>16</tile_size>
-      <gravity>75</gravity>
+      <tile_size>8</tile_size>
+      <gravity>150</gravity>
       <!-- Tiles it moves every second-->
-      <move_speed_ground>8</move_speed_ground>
-      <move_speed_air>6</move_speed_air>
+      <move_speed_ground>16</move_speed_ground>
+      <move_speed_air>12</move_speed_air>
       <!-- Tiles it reaches when the character jumps -->
-      <jump_height>5</jump_height>
+      <jump_height>8</jump_height>
       <feet_collider_width>10</feet_collider_width>
       <feet_collider_height>5</feet_collider_height>
       <maximum_fall_velocity>750</maximum_fall_velocity>

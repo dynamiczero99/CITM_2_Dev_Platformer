@@ -266,7 +266,7 @@ void ObjPlayer::OnCollisionFeet(Collider * c2)
 	}
 }
 
-//We can consider that 1 tile = 1 meter to make it easier for us to imagine the different values
+//We can use this variable to make it easier for us to understand the different distance the player can move or jump while building levels in the tiled editor
 inline float ObjPlayer::tile_to_pixel(uint pixel) {
 	return pixel * tileSize;
 }
