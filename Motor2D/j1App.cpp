@@ -282,6 +282,8 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
+
+
 	load_game.create(file);
 	want_to_load = true;
 }
@@ -331,7 +333,16 @@ bool j1App::LoadGameNow()
 		if (name != App->map->data.loadedLevel.GetString())
 		{
 			LOG("map is different: loading %s", name.GetString());
-			App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
+			//App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
+			
+			App->scene->Disable();
+			// clean up the current map
+			if (App->map->Reset())// load new map
+			{
+				App->map->Load(name.GetString());
+				App->scene->Enable();
+			}
+
 		}
 		else
 			LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());
