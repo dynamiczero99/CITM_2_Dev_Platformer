@@ -287,6 +287,29 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 	else if (c2->type == COLLIDER_DEATH_ZONE) {
 		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 	}
+	else if (c2->type == COLLIDER_WIN_ZONE) {
+
+		p2List_item<Levels*>* item = App->map->data.levels.start;
+
+		while (item != NULL)
+		{
+			if (item->data->name == App->map->data.loadedLevel)
+			{
+				LOG("coincidence");
+				item = item->next;
+				if (item == NULL)
+				{
+					item = App->map->data.levels.start;
+					break;
+				}
+				else
+					break;
+			}
+			item = item->next;
+		}
+
+		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 1.0f);
+	}
 }
 
 void ObjPlayer::OnCollisionFeet(Collider * c2)
