@@ -61,7 +61,8 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	teleport = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "teleport").attribute("value").as_string());
 	jump = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "jump").attribute("value").as_string());
 	shoot = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "shoot").attribute("value").as_string());
-	//die = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "die").attribute("value").as_string());
+	death = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "death").attribute("value").as_string());
+	win = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "win").attribute("value").as_string());
 
 
 }
@@ -285,6 +286,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 	}
 	else if (c2->type == COLLIDER_DEATH_ZONE) {
+		App->audio->PlayFx(death);
 		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 	}
 	else if (c2->type == COLLIDER_WIN_ZONE) {
@@ -308,6 +310,8 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 			item = item->next;
 		}
 
+		// play win round sfx
+		//App->audio->PlayFx(win);
 		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 1.0f);
 	}
 }
