@@ -79,12 +79,6 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("savegame.xml");
 	}
 
-	// testing teleporting camera
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-	{
-		teleport = true;
-	}
-
 	App->map->Draw();
 	return true;
 }
