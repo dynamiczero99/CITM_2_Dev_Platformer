@@ -106,7 +106,8 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	//App->collision->Disable();
-	App->object->Disable();
+	if(App->object->IsEnabled())
+		App->object->Disable();
 
 
 	return true;
