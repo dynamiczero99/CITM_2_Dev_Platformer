@@ -34,6 +34,7 @@ bool ObjBox::OnDestroy() {
 void ObjBox::MarkObject(bool mark)
 {
 	if (mark) {
+		activated = true;
 		currAnim = &activeAnim;
 	}
 	else {
@@ -42,7 +43,9 @@ void ObjBox::MarkObject(bool mark)
 }
 
 bool ObjBox::Update() {
-	acceleration.y = gravity;
+	if (activated) {
+		acceleration.y = gravity;
+	}
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);

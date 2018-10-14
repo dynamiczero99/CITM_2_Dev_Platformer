@@ -287,7 +287,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 	}
 	else if (c2->type == COLLIDER_DEATH_ZONE) {
 		App->audio->PlayFx(death);
-		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5f);
+		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 	}
 	else if (c2->type == COLLIDER_WIN_ZONE) {
 
@@ -312,7 +312,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 
 		// play win round sfx
 		//App->audio->PlayFx(win);
-		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5f);
+		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 1.0f);
 	}
 }
 
