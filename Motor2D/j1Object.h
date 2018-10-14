@@ -12,11 +12,18 @@
 class ObjPlayer;
 class ObjProjectile;
 class ObjBox;
+class ObjTrigger;
 
 struct Collider;
 enum COLLIDER_TYPE;
 struct SDL_Texture;
 class Animation;
+
+enum triggerAction {
+	none,
+	next_level,
+	death
+};
 
 class Gameobject {
 protected:
@@ -65,8 +72,6 @@ public:
 	int index = -1;	//The position in the objects module array
 };
 
-#include "ObjTrigger.h"
-
 class j1Object : public j1Module
 {
 public:
@@ -84,7 +89,7 @@ public:
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
 	ObjBox * AddObjBox(fPoint position);
-	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action);// ObjTrigger::triggerAction action);
+	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action);
 	bool DeleteObject(Gameobject * object);
 
 public:

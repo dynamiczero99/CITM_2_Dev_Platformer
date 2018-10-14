@@ -6,20 +6,7 @@
 
 struct Collider;
 
-enum triggerAction {
-	none,
-	next_level,
-	death
-};
-
 class ObjTrigger : public Gameobject {
-public:
-	/*enum triggerAction{
-		none,
-		next_level,
-		death
-	};*/
-
 public:
 	ObjTrigger(fPoint position, int index, triggerAction action);
 	void OnCollision(Collider * c1, Collider * c2) override;
