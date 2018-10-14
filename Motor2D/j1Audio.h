@@ -33,6 +33,7 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
 	bool UnloadSFX();
+	bool UnloadDesiredSFX(uint id);
 
 private:
 

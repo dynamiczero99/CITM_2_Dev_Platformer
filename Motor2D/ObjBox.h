@@ -21,12 +21,12 @@ public:
 public:
 	Animation inactiveAnim;
 	Animation activeAnim;
-	Animation * currAnim;
+	Animation * currAnim = nullptr;
 
 private:
 	uint animTileWidth = 0u;
 	uint animTileHeight = 0u;
-	Collider * collider;
+	Collider * collider = nullptr;
 	float gravity = 0.0f;
 };
 

@@ -56,8 +56,8 @@ public:
 	float jumpSpeed;//(pixels/s)
 
 	//Physics
-	Collider* playerCol;
-	Collider* feetCol;
+	Collider* playerCol = nullptr;
+	Collider* feetCol = nullptr;
 	bool isOnPlatform = false;
 	bool checkFall = false;
 

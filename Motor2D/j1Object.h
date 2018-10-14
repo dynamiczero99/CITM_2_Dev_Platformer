@@ -83,17 +83,19 @@ public:
 	bool DeleteObject(Gameobject * object);
 
 public:
-	SDL_Texture * projectileTex;
-	SDL_Texture * playerIdleTex;
-	SDL_Texture * playerRunTex;
-	SDL_Texture * playerJumpTex;
-	SDL_Texture * robotTex;
+	SDL_Texture * projectileTex = nullptr;
+	SDL_Texture * playerIdleTex = nullptr;
+	SDL_Texture * playerRunTex = nullptr;
+	SDL_Texture * playerJumpTex = nullptr;
+	SDL_Texture * robotTex = nullptr;
 	ObjPlayer * player = nullptr;
 
 private:
 	Gameobject * objects [MAX_OBJECTS];
 	uint actualObjects = 0;
 	pugi::xml_node object_node;
+	// sfx id
+	uint impactBoxSFX = 0;
 };
 
 #endif

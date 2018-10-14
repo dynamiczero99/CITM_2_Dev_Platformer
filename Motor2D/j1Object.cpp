@@ -11,6 +11,8 @@
 #include "ObjPlayer.h"
 #include "ObjProjectile.h"
 #include "ObjBox.h"
+// Audio
+#include "j1Audio.h"
 
 j1Object::j1Object() : j1Module() {
 	name.create("object");
@@ -40,6 +42,10 @@ bool j1Object::Start() {
 	player = App->object->AddObjPlayer(playerStartPos);
 	fPoint boxStartPos = fPoint (80.0f, 50.0f);//TODO: Not hardcoded position, get the positon from the map
 	App->object->AddObjBox(boxStartPos);
+
+	// load general sfx for objects
+	//impactBoxSFX = App->audio->LoadFx(object_node.child("projectile").find_child_by_attribute("name", "impact").attribute("value").as_string());
+
 	return true;
 }
 
@@ -85,6 +91,10 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(playerJumpTex);
 	App->tex->UnloadTexture(projectileTex);
 	App->tex->UnloadTexture(robotTex);
+	// unload sfx
+	//App->audio->UnloadDesiredSFX(impactBoxSFX);
+	//App->audio->UnloadSFX();
+
 	return true;
 }
 

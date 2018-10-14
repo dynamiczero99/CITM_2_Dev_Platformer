@@ -17,8 +17,8 @@ public:
 	void OnCollision(Collider * c1, Collider * c2) override;
 
 public:
-	Collider * collider;
-	ObjPlayer * player;
+	Collider * collider = nullptr;
+	ObjPlayer * player = nullptr;
 	uint impactSound = 0;
 };
 

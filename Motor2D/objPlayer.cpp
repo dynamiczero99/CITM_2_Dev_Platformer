@@ -59,7 +59,9 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	teleport = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "teleport").attribute("value").as_string());
 	jump = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "jump").attribute("value").as_string());
 	shoot = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "shoot").attribute("value").as_string());
-	die = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "die").attribute("value").as_string());
+	//die = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "die").attribute("value").as_string());
+
+
 }
 
 bool ObjPlayer::OnDestroy() {

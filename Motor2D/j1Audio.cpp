@@ -194,3 +194,23 @@ bool j1Audio::UnloadSFX()
 
 	return true;
 }
+
+bool j1Audio::UnloadDesiredSFX(uint id)
+{
+	bool ret = false;
+
+	p2List_item<Mix_Chunk*>* item;
+	for (item = fx.start; item != NULL; item = item->next)
+	{
+		if (item->data == fx[id - 1])
+		{
+			Mix_FreeChunk(item->data);
+			item->data = NULL;
+			ret = true;
+		}
+	}
+	//Mix_FreeChunk(fx[id - 1]);
+	fx.del(item);
+
+	return ret;
+}
