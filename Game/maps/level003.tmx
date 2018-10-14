@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="35">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="13" nextobjectid="35">
  <properties>
   <property name="background_music" value="song22.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -142,7 +142,7 @@
    </animation>
   </tile>
  </tileset>
- <layer name="background" width="150" height="100">
+ <layer id="1" name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15149,7 +15149,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="midground" width="150" height="100">
+ <layer id="2" name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30156,7 +30156,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="foreground" width="150" height="100">
+ <layer id="3" name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -45160,15 +45160,15 @@
    <tile/>
   </data>
  </layer>
- <group name="Colliders">
-  <objectgroup name="Win">
+ <group id="4" name="Colliders">
+  <objectgroup id="5" name="Win">
    <object id="22" name="Win" type="next_level" x="330.5" y="117.5" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup name="Death">
+  <objectgroup id="6" name="Death">
    <object id="19" name="death" x="0" y="456" width="1200" height="40"/>
   </objectgroup>
-  <objectgroup name="Platforms"/>
-  <objectgroup name="Floor">
+  <objectgroup id="7" name="Platforms"/>
+  <objectgroup id="8" name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -45183,8 +45183,8 @@
    <object id="34" name="floor" x="648" y="256" width="24" height="24"/>
   </objectgroup>
  </group>
- <group name="Player">
-  <objectgroup name="PlayerData">
+ <group id="9" name="Player">
+  <objectgroup id="10" name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -45193,9 +45193,9 @@
    </object>
   </objectgroup>
  </group>
- <group name="GameObjects">
-  <objectgroup name="GameObjects">
-   <object id="21" name="normalBox" x="792" y="288" width="16" height="16"/>
+ <group id="11" name="GameObjects">
+  <objectgroup id="12" name="GameObjects">
+   <object id="21" name="normalBox" x="792" y="295" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>

@@ -69,9 +69,6 @@ public:
 	SDL_Texture* currTex = nullptr;
 	Animation* currAnim = nullptr;
 
-	p2SString idlePath;
-	p2SString runPath;
-	p2SString jumpPath;
 	Animation idleAnim;
 	Animation jumpAnim;
 	Animation runAnim;

@@ -45202,7 +45202,7 @@
    <object id="27" name="animation" type="event" x="546" y="209.5" width="38.5" height="38.5"/>
   </objectgroup>
   <objectgroup id="13" name="GameObjects">
-   <object id="21" name="normalBox" x="864.273" y="259.273" width="16" height="16"/>
+   <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>

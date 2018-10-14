@@ -45172,7 +45172,7 @@
  </group>
  <group id="11" name="GameObjects">
   <objectgroup id="12" name="GameObjects">
-   <object id="21" name="normalBox" x="592" y="472" width="16" height="16"/>
+   <object id="21" name="normalBox" x="592" y="479" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
