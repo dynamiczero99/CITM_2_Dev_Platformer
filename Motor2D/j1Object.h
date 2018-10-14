@@ -89,13 +89,14 @@ public:
 	SDL_Texture * playerJumpTex = nullptr;
 	SDL_Texture * robotTex = nullptr;
 	ObjPlayer * player = nullptr;
+	// sfx id
+	uint impactBoxSFX = 0;
 
 private:
 	Gameobject * objects [MAX_OBJECTS];
 	uint actualObjects = 0;
 	pugi::xml_node object_node;
-	// sfx id
-	uint impactBoxSFX = 0;
+	
 };
 
 #endif

@@ -24,14 +24,12 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 	colRect.y = colPos.y;
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_PLAYER_SHOT, this);
 	
-	// loads sfx relative to projectile
-	//TODO: CHECK why, if we load the sfx from here, and oncolision with box is true, the next projectile goes to crash
-	impactSound = App->audio->LoadFx(projectile_node.find_child_by_attribute("name", "impact").attribute("value").as_string());
+	// loads sfx relative to projectile ---
+	
 }
 
 bool ObjProjectile::OnDestroy() {
 	App->collision->DeleteCollider(collider);
-	App->audio->UnloadDesiredSFX(impactSound);
 	return true;
 }
 
@@ -54,7 +52,7 @@ bool ObjProjectile::PostUpdate() {
 void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 	switch (c2->type) {
 	case COLLIDER_TYPE::COLLIDER_BOX:
-		App->audio->PlayFx(impactSound);
+		App->audio->PlayFx(App->object->impactBoxSFX);
 		if (player != nullptr) {
 			c2->callbackObj->MarkObject(true);
 			player->SetSwapObject(c2->callbackObj);

@@ -42,7 +42,7 @@ bool j1Object::Start() {
 	player = App->object->AddObjPlayer(playerStartPos);
 
 	// load general sfx for objects
-	//impactBoxSFX = App->audio->LoadFx(object_node.child("projectile").find_child_by_attribute("name", "impact").attribute("value").as_string());
+	impactBoxSFX = App->audio->LoadFx(object_node.child("projectile").find_child_by_attribute("name", "impact").attribute("value").as_string());
 
 	return true;
 }
@@ -90,8 +90,11 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(projectileTex);
 	App->tex->UnloadTexture(robotTex);
 	// unload sfx
-	//App->audio->UnloadDesiredSFX(impactBoxSFX);
-	//App->audio->UnloadSFX();
+	App->audio->UnloadDesiredSFX(impactBoxSFX); // unload a desired sfx
+	//App->audio->UnloadSFX(); // unload all sfx on audio sfx list
+
+	// "disable" the module
+	active = false;
 
 	return true;
 }
