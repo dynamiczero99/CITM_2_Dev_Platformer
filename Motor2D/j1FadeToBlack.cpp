@@ -12,6 +12,8 @@
 
 bool j1FadeToBlack::Awake(pugi::xml_node&)
 {
+	name.create("FadeToBlack");
+
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
 
