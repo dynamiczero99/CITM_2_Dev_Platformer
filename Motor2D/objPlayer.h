@@ -98,8 +98,9 @@ private:
 	// sound effects id relative to player
 	uint teleport = 0;
 	uint shoot = 0;
-	uint die = 0;
+	uint death = 0;
 	uint jump = 0;
+	uint win = 0;
 };
 
 #endif
