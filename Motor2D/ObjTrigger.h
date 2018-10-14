@@ -15,11 +15,14 @@ enum triggerAction {
 
 class ObjTrigger : public Gameobject {
 public:
-	ObjTrigger(fPoint position, int index, triggerAction action);
+	ObjTrigger(fPoint position, int index, triggerAction action, iPoint rectSize);
 	void OnCollision(Collider * c1, Collider * c2) override;
+	bool OnDestroy();
 
 private:
 	triggerAction action = triggerAction::none;
+	SDL_Rect colRect;
+	Collider* collider = nullptr;
 };
 
 #endif

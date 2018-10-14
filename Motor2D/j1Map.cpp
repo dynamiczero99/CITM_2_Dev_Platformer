@@ -698,11 +698,18 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 				if (gameobject_type == "event")
 				{
-					// create objtrigger event
-					App->object->AddObjTrigger({ object.find_child_by_attribute("name", "animation").attribute("x").as_float(),
-												 object.find_child_by_attribute("name", "animation").attribute("x").as_float()},
-												 triggerAction::animation);
+					p2SString event_type = object.attribute("name").as_string();
 
+					if (event_type == "animation")
+					{
+						LOG("there is one animation trigger");
+						// create objtrigger event
+						App->object->AddObjTrigger({ object.attribute("x").as_float(),
+													 object.attribute("y").as_float() },
+													 triggerAction::animation,
+							{ object.attribute("width").as_int(), object.attribute("width").as_int() });
+					}
+					
 				}
 				
 			}

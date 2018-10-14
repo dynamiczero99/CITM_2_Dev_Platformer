@@ -146,12 +146,12 @@ ObjBox * j1Object::AddObjBox (fPoint position) {
 	return ret;
 }
 
-ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action) //triggerAction::none)
+ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize) //triggerAction::none)
 {
 	int index = FindEmptyPosition();
 	ObjTrigger * ret = nullptr;
 	if (index != -1) {
-		objects[index] = ret = new ObjTrigger(position, index, action);
+		objects[index] = ret = new ObjTrigger(position, index, action, rectSize);
 	}
 	return ret;
 }
