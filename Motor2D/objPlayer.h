@@ -93,6 +93,12 @@ private:
 
 	//God mode
 	bool godMode = false;
+
+	// sound effects id relative to player
+	uint teleport = 0;
+	uint shoot = 0;
+	uint die = 0;
+	uint jump = 0;
 };
 
 #endif

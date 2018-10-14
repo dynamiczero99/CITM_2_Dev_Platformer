@@ -24,6 +24,7 @@ struct Properties
 	float parallaxSpeed = 1.0f; // default value
 	// music
 	p2SString music_name;
+	p2SString fx_name;
 
 	inline bool GetDraw() const
 	{

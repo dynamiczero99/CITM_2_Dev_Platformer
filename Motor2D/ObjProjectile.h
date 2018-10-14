@@ -19,6 +19,7 @@ public:
 public:
 	Collider * collider;
 	ObjPlayer * player;
+	uint impactSound = 0;
 };
 
 #endif

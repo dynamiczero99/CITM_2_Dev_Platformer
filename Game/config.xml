@@ -45,6 +45,7 @@
       <speed>5</speed>
       <collider_width>5</collider_width>
       <collider_height>5</collider_height>
+	  <sfx name="impact" value="impactSound.wav"/>
     </projectile>
     <box>
       <gravity>1200</gravity>
@@ -58,6 +59,10 @@
       </animation>
     </box>
     <player>
+	  <sfx name="teleport" value="teleport2.wav"/>
+	  <sfx name="shoot" value="shoot01.wav"/>
+	  <sfx name="die" value="die.wav"/>
+	  <sfx name="jump" value="jump2.wav"/>
       <shoot_height>20</shoot_height>
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>

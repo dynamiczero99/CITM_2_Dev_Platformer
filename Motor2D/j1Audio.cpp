@@ -147,7 +147,9 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	p2SString tmp("%s%s", fx_folder.GetString(), path);
+
+	Mix_Chunk* chunk = Mix_LoadWAV(tmp.GetString());
 
 	if(chunk == NULL)
 	{
@@ -176,4 +178,19 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+bool j1Audio::UnloadSFX()
+{
+	// unload all sfx loaded
+	p2List_item<Mix_Chunk*>* item;
+	for (item = fx.start; item != NULL; item = item->next)
+	{
+		Mix_FreeChunk(item->data);
+		item->data = NULL;
+	}
+
+	fx.clear();
+
+	return true;
 }

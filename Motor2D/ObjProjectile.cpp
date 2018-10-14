@@ -7,6 +7,7 @@
 #include "j1Collision.h"
 #include "j1Render.h"
 #include "ObjBox.h"
+#include "j1Audio.h"
 
 ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), Gameobject (position, index) {
 	if (projectile_node.empty()) {
@@ -22,10 +23,14 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 	colRect.x = colPos.x;
 	colRect.y = colPos.y;
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_PLAYER_SHOT, this);
+
+	// loads sfx relative to projectile
+	//impactSound = App->audio->LoadFx(projectile_node.find_child_by_attribute("name", "impact").attribute("value").as_string());
 }
 
 bool ObjProjectile::OnDestroy() {
 	App->collision->DeleteCollider(collider);
+
 	return true;
 }
 
@@ -50,6 +55,7 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 	case COLLIDER_TYPE::COLLIDER_BOX:
 		//TODO: Mark that box visually
 		//TODO: Play SFX
+		//App->audio->PlayFx(impactSound);
 		if (player != nullptr) {
 			c2->callbackObj->MarkObject(true);
 			player->SetSwapObject(c2->callbackObj);

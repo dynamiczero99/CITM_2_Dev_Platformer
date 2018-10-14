@@ -14,6 +14,7 @@
 #include "ObjPlayer.h"
 #include "j1Window.h"
 #include "ObjBox.h"
+#include "j1Audio.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
@@ -53,11 +54,21 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	LoadAnimation(playerNode.child("animation").child("fall_animation").child("sprite"), fallAnim);
 	fallAnim.speed = playerNode.child("animation").child("fall_animation").attribute("speed").as_float();
 	currAnim = &idleAnim;
+
+	// sound effects
+	teleport = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "teleport").attribute("value").as_string());
+	jump = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "jump").attribute("value").as_string());
+	shoot = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "shoot").attribute("value").as_string());
+	die = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "die").attribute("value").as_string());
 }
 
 bool ObjPlayer::OnDestroy() {
 	App->collision->DeleteCollider(playerCol);
 	App->collision->DeleteCollider(feetCol);
+
+	// free the sfx
+	App->audio->UnloadSFX(); // unload all list of sfx loaded
+
 	return true;
 }
 
@@ -123,6 +134,8 @@ void ObjPlayer::StandardControls()
 		velocity.y = jumpSpeed;
 		isOnPlatform = false;
 		checkFall = false;
+		// play sfx
+		App->audio->PlayFx(jump);
 	}
 }
 
@@ -365,6 +378,9 @@ void ObjPlayer::ShootProjectile()
 		projectileDirection.Normalize();
 
 		projectile = App->object->AddObjProjectile(projectilePosition, projectileDirection, this);
+
+		// play sfx
+		App->audio->PlayFx(shoot);
 	}
 }
 
@@ -376,6 +392,8 @@ void ObjPlayer::SwapPosition() {
 			swapObject->position = auxPos;
 			swapObject->MarkObject(false);
 			swapObject = nullptr;
+			// play sfx
+			App->audio->PlayFx(teleport);
 		}
 	}
 }
