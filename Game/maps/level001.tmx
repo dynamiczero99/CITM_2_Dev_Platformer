@@ -142,6 +142,9 @@
  <tileset firstgid="1413" name="Keyboard Black" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="../textures/controls/Keyboard Black.png" width="256" height="256"/>
  </tileset>
+ <tileset firstgid="1669" name="mouse_pixelart" tilewidth="15" tileheight="22" tilecount="2" columns="2">
+  <image source="../textures/mouse_pixelart.png" width="30" height="22"/>
+ </tileset>
  <layer id="1" name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
@@ -34452,6 +34455,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1669"/>
    <tile/>
    <tile/>
    <tile/>
@@ -34467,8 +34471,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1670"/>
    <tile/>
    <tile/>
    <tile/>
