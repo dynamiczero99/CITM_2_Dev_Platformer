@@ -15,6 +15,8 @@
 #include "j1Window.h"
 #include "ObjBox.h"
 #include "j1Audio.h"
+#include "j1Map.h"
+#include "j1FadeToBlack.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
@@ -281,6 +283,9 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 		playerCol->SetPos(colPos.x, colPos.y);
 		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+	}
+	else if (c2->type == COLLIDER_DEATH_ZONE) {
+		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 	}
 }
 
