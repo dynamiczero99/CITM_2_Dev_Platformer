@@ -66,7 +66,9 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 
 bool ObjPlayer::OnDestroy() {
 	App->collision->DeleteCollider(playerCol);
+	playerCol = nullptr;
 	App->collision->DeleteCollider(feetCol);
+	feetCol = nullptr;
 
 	// free the sfx
 	App->audio->UnloadSFX(); // unload all list of sfx loaded
@@ -337,6 +339,7 @@ void ObjPlayer::ShootProjectile()
 
 		if (projectile != nullptr) {
 			App->object->DeleteObject(projectile);
+			projectile = nullptr;
 		}
 
 		if (swapObject != nullptr) {
@@ -423,6 +426,7 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 
 void ObjPlayer::SetSwapObject(Gameobject * markedObject) {
 	App->object->DeleteObject(projectile);
+	projectile = nullptr;
 	swapObject = markedObject;
 }
 
