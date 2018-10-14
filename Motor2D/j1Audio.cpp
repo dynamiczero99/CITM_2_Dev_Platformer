@@ -205,12 +205,12 @@ bool j1Audio::UnloadDesiredSFX(uint id)
 		if (item->data == fx[id - 1])
 		{
 			Mix_FreeChunk(item->data);
+			fx.del(item);
 			item->data = NULL;
 			ret = true;
 		}
 	}
 	//Mix_FreeChunk(fx[id - 1]);
-	fx.del(item);
-
+	
 	return ret;
 }
