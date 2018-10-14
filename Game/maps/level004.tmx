@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="40">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="48">
  <properties>
   <property name="background_music" value="song22.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -45125,21 +45125,24 @@
  </layer>
  <group id="4" name="Colliders">
   <objectgroup id="5" name="Win">
-   <object id="22" name="Trigger" type="next_level" x="744" y="152" width="20.5" height="137.5"/>
+   <object id="22" name="Trigger" type="next_level" x="456" y="248" width="20.5" height="137.5"/>
   </objectgroup>
   <objectgroup id="6" name="Death">
-   <object id="19" name="death" x="32" y="456" width="1200" height="40"/>
+   <object id="19" name="death" x="24" y="608" width="1200" height="40"/>
   </objectgroup>
   <objectgroup id="7" name="Platforms"/>
   <objectgroup id="8" name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
-   <object id="2" name="floor" x="304" y="408" width="305" height="23"/>
-   <object id="35" name="floor" x="608" y="368" width="48" height="63"/>
-   <object id="36" name="floor" x="656" y="304" width="216" height="127"/>
-   <object id="38" name="floor" x="280" y="64" width="24" height="367"/>
-   <object id="39" name="floor" x="848" y="64" width="24" height="240"/>
+   <object id="2" name="floor" x="584" y="544" width="80" height="23"/>
+   <object id="40" name="floor" x="544" y="496" width="40" height="71"/>
+   <object id="41" name="floor" x="664" y="480" width="40" height="87"/>
+   <object id="42" name="floor" x="704" y="416" width="40" height="152"/>
+   <object id="43" name="floor" x="504" y="448" width="40" height="120"/>
+   <object id="44" name="floor" x="424" y="384" width="80" height="184"/>
+   <object id="46" name="floor" x="744" y="128" width="40" height="440"/>
+   <object id="47" name="floor" x="384" y="128" width="40" height="440"/>
   </objectgroup>
  </group>
  <group id="9" name="Player">
@@ -45147,14 +45150,14 @@
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
-   <object id="9" name="StartPoint" x="376" y="400">
+   <object id="9" name="StartPoint" x="624" y="528">
     <point/>
    </object>
   </objectgroup>
  </group>
  <group id="11" name="GameObjects">
   <objectgroup id="12" name="GameObjects">
-   <object id="21" name="normalBox" x="584" y="392" width="16" height="16"/>
+   <object id="21" name="normalBox" x="544" y="480" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
