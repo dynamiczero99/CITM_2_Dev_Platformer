@@ -685,6 +685,26 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 			}
 		}
+		if (tmp == "Triggers")
+		{
+			LOG("Trigger found");
+
+			// iterate all objects
+			for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+			{
+				p2SString gameobject_type = object.attribute("type").as_string();
+				//LOG("%s", gameobject_type.GetString());
+
+				if (gameobject_type == "event")
+				{
+					// create objtrigger event
+					//object.find_child_by_attribute("name", "animation").attribute("x").as_int();
+
+				}
+				
+			}
+
+		}
 		
 	}
 
