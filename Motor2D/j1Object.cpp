@@ -7,12 +7,12 @@
 #include "p2Log.h"
 #include "j1Textures.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "j1Audio.h"
 //Objects
 #include "ObjPlayer.h"
 #include "ObjProjectile.h"
 #include "ObjBox.h"
-// Audio
-#include "j1Audio.h"
+#include "ObjTrigger.h"
 
 j1Object::j1Object() : j1Module() {
 	name.create("object");
@@ -142,6 +142,16 @@ ObjBox * j1Object::AddObjBox (fPoint position) {
 	ObjBox * ret = nullptr;
 	if (index != -1) {
 		objects[index] = ret = new ObjBox(position, index, object_node.child("box"));
+	}
+	return ret;
+}
+
+ObjTrigger * j1Object::AddObjTrigger(fPoint position, ObjTrigger::triggerAction action)
+{
+	int index = FindEmptyPosition();
+	ObjTrigger * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjTrigger(position, index, action);
 	}
 	return ret;
 }

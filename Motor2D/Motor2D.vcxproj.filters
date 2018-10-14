@@ -48,6 +48,9 @@
     <ClCompile Include="ObjBox.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ObjTrigger.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -118,6 +121,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="ObjBox.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjTrigger.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
