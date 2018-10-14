@@ -6,6 +6,13 @@
 
 struct Collider;
 
+enum triggerAction {
+	none,
+	next_level,
+	death
+};
+
+
 class ObjTrigger : public Gameobject {
 public:
 	ObjTrigger(fPoint position, int index, triggerAction action);

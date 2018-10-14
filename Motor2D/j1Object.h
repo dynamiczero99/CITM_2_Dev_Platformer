@@ -18,12 +18,7 @@ struct Collider;
 enum COLLIDER_TYPE;
 struct SDL_Texture;
 class Animation;
-
-enum triggerAction {
-	none,
-	next_level,
-	death
-};
+enum triggerAction;
 
 class Gameobject {
 protected:
