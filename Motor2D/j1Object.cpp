@@ -146,7 +146,7 @@ ObjBox * j1Object::AddObjBox (fPoint position) {
 	return ret;
 }
 
-ObjTrigger * j1Object::AddObjTrigger(fPoint position, ObjTrigger::triggerAction action)
+ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action) //triggerAction::none)
 {
 	int index = FindEmptyPosition();
 	ObjTrigger * ret = nullptr;

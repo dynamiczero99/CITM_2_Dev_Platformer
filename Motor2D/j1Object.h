@@ -84,7 +84,7 @@ public:
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
 	ObjBox * AddObjBox(fPoint position);
-	ObjTrigger * AddObjTrigger(fPoint position, ObjTrigger::triggerAction action);
+	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action);// ObjTrigger::triggerAction action);
 	bool DeleteObject(Gameobject * object);
 
 public:
