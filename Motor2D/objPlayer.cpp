@@ -300,6 +300,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 				if (item == NULL)
 				{
 					item = App->map->data.levels.start;
+					break;
 				}
 				else
 					break;
