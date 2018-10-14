@@ -8,8 +8,8 @@ struct Collider;
 
 enum triggerAction {
 	none,
-	next_level,
-	death
+	animation,
+	undefined
 };
 
 

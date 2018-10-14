@@ -8,11 +8,11 @@ ObjTrigger::ObjTrigger(fPoint position, int index, triggerAction action) : actio
 
 void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER) {
-		switch (action) {
+		/*switch (action) {
 		case triggerAction::next_level:
 			break;
 		case triggerAction::death:
 			break;
-		}
+		}*/
 	}
 }

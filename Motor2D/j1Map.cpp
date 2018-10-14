@@ -8,6 +8,7 @@
 #include <math.h>
 #include "j1Scene.h"
 #include "j1Object.h"
+#include "ObjTrigger.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -698,7 +699,9 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 				if (gameobject_type == "event")
 				{
 					// create objtrigger event
-					//object.find_child_by_attribute("name", "animation").attribute("x").as_int();
+					App->object->AddObjTrigger({ object.find_child_by_attribute("name", "animation").attribute("x").as_float(),
+												 object.find_child_by_attribute("name", "animation").attribute("x").as_float()},
+												 triggerAction::animation);
 
 				}
 				
