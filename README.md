@@ -27,8 +27,7 @@ Buch: https://opengameart.org/content/sci-fi-interior-tiles
 
 OmegaGrim: https://hyohnoo.itch.io/keyboard-controller-keys
 
-- Audio from:
-  - Music themes:
+- Music from:
   
 cynicmusic: https://opengameart.org/content/mysterious-ambience-song21
 
@@ -36,7 +35,7 @@ benjobanjo: https://opengameart.org/content/rpg-map-screen
 
 Brandon Morris: https://opengameart.org/content/loading-screen-loop
 
-  - SFX:
+- SFX from:
   
 Ogrebane: https://opengameart.org/content/teleport-spell
 
