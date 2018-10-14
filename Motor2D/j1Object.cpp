@@ -40,8 +40,6 @@ bool j1Object::Start() {
 	playerStartPos.x = App->map->playerData.x;
 	playerStartPos.y = App->map->playerData.y;
 	player = App->object->AddObjPlayer(playerStartPos);
-	fPoint boxStartPos = fPoint (80.0f, 50.0f);//TODO: Not hardcoded position, get the positon from the map
-	App->object->AddObjBox(boxStartPos);
 
 	// load general sfx for objects
 	//impactBoxSFX = App->audio->LoadFx(object_node.child("projectile").find_child_by_attribute("name", "impact").attribute("value").as_string());
