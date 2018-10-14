@@ -6,6 +6,7 @@
 #include "j1App.h"
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "p2Log.h"
 
 ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobject(position, index) {
 	animTileWidth = box_node.child("animation").attribute("tile_width").as_uint();
@@ -46,6 +47,7 @@ bool ObjBox::Update() {
 	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
+	LOG("%f", position.y);
 	return true;
 }
 
@@ -58,12 +60,11 @@ bool ObjBox::PostUpdate() {
 void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
 		uint dist[(uint)dir::max];
-		dist[(uint)dir::up] = c2->rect.GetBottom() - c1->rect.GetTop();
 		dist[(uint)dir::down] = c1->rect.GetBottom() - c2->rect.GetTop();
 		dist[(uint)dir::left] = c2->rect.GetRight() - c1->rect.GetLeft();
 		dist[(uint)dir::right] = c1->rect.GetRight() - c2->rect.GetLeft();
 		int nearestDir = -1;
-		for (int i = 0; i < (int)dir::max; ++i) {
+		for (int i = 0; i < (int)dir::max - 1; ++i) {
 			if (nearestDir == -1) {
 				nearestDir = i;
 			}
@@ -76,10 +77,6 @@ void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 			position.y = c2->rect.GetTop();
 			velocity.y = 0;
 			acceleration.y = 0;
-			break;
-		case (int)dir::up:
-			position.y = c2->rect.GetBottom() + c1->rect.h;
-			velocity.y = 0;
 			break;
 		case (int)dir::left:
 			position.x = c2->rect.GetRight() + c1->rect.w / 2;

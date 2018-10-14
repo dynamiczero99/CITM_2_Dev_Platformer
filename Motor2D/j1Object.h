@@ -6,7 +6,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "PugiXml/src/pugixml.hpp"
 
-#define MAX_OBJECTS 50
+#define MAX_OBJECTS 300
 
 //Objects
 class ObjPlayer;
@@ -25,8 +25,8 @@ protected:
 	enum class dir : uint {
 		left,
 		right,
-		up,
 		down,
+		up,
 		max
 	};
 
