@@ -31,6 +31,10 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	// create folders name path
+	music_folder.create(config.child("music_folder").child_value());
+	fx_folder.create(config.child("fx_folder").child_value());
+
 	// load support for the JPG and PNG image formats
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
@@ -87,6 +91,8 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	if(!active)
 		return false;
 
+	p2SString tmp("%s%s", music_folder.GetString(), path);
+
 	if(music != NULL)
 	{
 		if(fade_time > 0.0f)
@@ -102,7 +108,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	music = Mix_LoadMUS(tmp.GetString());
 
 	if(music == NULL)
 	{
