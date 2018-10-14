@@ -34,6 +34,7 @@ public:
 	void OnCollisionFeet(Collider * c2);
 
 	void SetSwapObject(Gameobject * markedObject);
+	void DestroyProjectile();
 
 private:
 	void ToggleGodMode();

@@ -445,3 +445,8 @@ bool ObjPlayer::Save(pugi::xml_node& saveNode) const
 
 	return true;
 }
+
+void ObjPlayer::DestroyProjectile() {
+	App->object->DeleteObject(projectile);
+	projectile = nullptr;
+}

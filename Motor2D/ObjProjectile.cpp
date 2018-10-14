@@ -58,5 +58,10 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 			player->SetSwapObject(c2->callbackObj);
 		}
 		break;
+	case COLLIDER_TYPE::COLLIDER_WALL:
+		player->DestroyProjectile();
+		break;
 	}
+
+
 }
