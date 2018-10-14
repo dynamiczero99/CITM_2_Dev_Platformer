@@ -122,6 +122,52 @@
    </animation>
   </tile>
  </tileset>
+ <tileset firstgid="1403" name="straight-pipe" tilewidth="16" tileheight="16" tilecount="8" columns="8">
+  <image source="../textures/pipes/straight-pipe.png" width="128" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="1411" name="console-turn-on" tilewidth="16" tileheight="16" tilecount="10" columns="10">
+  <image source="../textures/console/console-turn-on.png" width="160" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="1421" name="corner-pipe" tilewidth="16" tileheight="16" tilecount="7" columns="7">
+  <image source="../textures/pipes/corner-pipe.png" width="112" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
  <layer name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
@@ -37723,17 +37769,17 @@
    <tile gid="565"/>
    <tile gid="567"/>
    <tile gid="572"/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1421"/>
    <tile/>
    <tile gid="601"/>
    <tile gid="570"/>
@@ -38262,93 +38308,93 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
+   <tile gid="1403"/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1403"/>
    <tile/>
    <tile/>
    <tile/>
