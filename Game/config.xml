@@ -32,8 +32,8 @@
 	<levels>
     <level name="level001.tmx"/>
     <level name="level002.tmx"/>
-		<level name="level003.tmx"/>
-  	<level name="level004.tmx"/>
+    <level name="level003.tmx"/>
+    <level name="level004.tmx"/>
 	</levels>
   </map>
   

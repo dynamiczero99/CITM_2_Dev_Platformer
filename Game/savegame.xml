@@ -6,15 +6,15 @@
 	<audio />
 	<map />
 	<scene>
-		<camera x="-382.049194" y="-111.232132" />
+		<camera x="-1063.44971" y="-591.333191" />
 		<current_level name="level002.tmx" />
 	</scene>
 	<object>
-		<Player x="255.488068" y="248" velocity_x="0" velocity_y="0" flip_direction="false" />
+		<Player x="482.751923" y="408" velocity_x="0" velocity_y="0" flip_direction="false" />
 	</object>
 	<:anonymous />
 	<:anonymous />
 	<renderer>
-		<camera x="-382" y="-111" />
+		<camera x="-1063" y="-591" />
 	</renderer>
 </game_state>
