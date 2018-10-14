@@ -60214,14 +60214,14 @@
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
-   <object id="9" name="StartPoint" x="376" y="392">
+   <object id="9" name="StartPoint" x="376" y="384">
     <point/>
    </object>
   </objectgroup>
  </group>
  <group id="12" name="GameObjects">
   <objectgroup id="13" name="GameObjects">
-   <object id="21" name="normalBox" x="584" y="392" width="16" height="16"/>
+   <object id="21" name="normalBox" x="584" y="384" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
