@@ -77,7 +77,7 @@ public:
 	Animation runAnim;
 	Animation fallAnim;
 
-	SDL_RendererFlip flip;
+	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	bool movingLeft;
 	bool movingRight;
 	bool goingUp;
