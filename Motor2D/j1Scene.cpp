@@ -71,11 +71,11 @@ bool j1Scene::Update(float dt)
 	// checks for debug input
 	DebugInput();
 	// ----------------------
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		App->LoadGame("savegame.xml");
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		App->SaveGame("savegame.xml");
 	}
 
