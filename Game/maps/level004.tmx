@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="50">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="50">
  <properties>
   <property name="background_music" value="song22.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -105,7 +105,24 @@
   <tile id="34" terrain="0,0,1,1"/>
   <tile id="35" terrain="0,1,1,1"/>
  </tileset>
- <layer id="13" name="background" width="150" height="100">
+ <tileset firstgid="1393" name="console-turn-on" tilewidth="16" tileheight="16" tilecount="10" columns="10">
+  <image source="../textures/console/console-turn-on.png" width="160" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15112,7 +15129,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="14" name="midground" width="150" height="100">
+ <layer name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30119,7 +30136,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="15" name="foreground" width="150" height="100">
+ <layer name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -37840,7 +37857,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="1393"/>
    <tile/>
    <tile/>
    <tile/>
@@ -45123,15 +45140,15 @@
    <tile/>
   </data>
  </layer>
- <group id="4" name="Colliders">
-  <objectgroup id="5" name="Win">
+ <group name="Colliders">
+  <objectgroup name="Win">
    <object id="22" name="Trigger" type="next_level" x="552" y="272" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup id="6" name="Death">
+  <objectgroup name="Death">
    <object id="19" name="death" x="24" y="608" width="1200" height="40"/>
   </objectgroup>
-  <objectgroup id="7" name="Platforms"/>
-  <objectgroup id="8" name="Floor">
+  <objectgroup name="Platforms"/>
+  <objectgroup name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -45143,8 +45160,8 @@
    <object id="49" name="floor" x="584" y="416" width="40" height="8"/>
   </objectgroup>
  </group>
- <group id="9" name="Player">
-  <objectgroup id="10" name="PlayerData">
+ <group name="Player">
+  <objectgroup name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -45153,8 +45170,8 @@
    </object>
   </objectgroup>
  </group>
- <group id="11" name="GameObjects">
-  <objectgroup id="12" name="GameObjects">
+ <group name="GameObjects">
+  <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="584" y="480" width="16" height="16"/>
   </objectgroup>
  </group>
