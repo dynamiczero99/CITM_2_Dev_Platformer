@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="50" tilewidth="8" tileheight="8" infinite="0" nextlayerid="13" nextobjectid="24">
  <properties>
+  <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
  </properties>
  <tileset firstgid="1" name="IndustrialTileset" tilewidth="8" tileheight="8" tilecount="1296" columns="36">

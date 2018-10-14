@@ -52,6 +52,11 @@ bool j1Scene::Start()
 
 	searchValidCameraPos();
 
+	// loads music
+
+	App->audio->PlayMusic(App->map->data.properties.music_name.GetString());
+
+
 	return true;
 }
 

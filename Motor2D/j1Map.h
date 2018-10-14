@@ -22,6 +22,8 @@ struct Properties
 	bool navigation = true;
 	int testValue = 0;
 	float parallaxSpeed = 1.0f; // default value
+	// music
+	p2SString music_name;
 
 	inline bool GetDraw() const
 	{
