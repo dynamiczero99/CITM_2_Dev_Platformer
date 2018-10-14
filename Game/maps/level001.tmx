@@ -105,6 +105,40 @@
   <tile id="34" terrain="0,0,1,1"/>
   <tile id="35" terrain="0,1,1,1"/>
  </tileset>
+ <tileset firstgid="1393" name="console-turn-on" tilewidth="16" tileheight="16" tilecount="10" columns="10">
+  <image source="../textures/console/console-turn-on.png" width="160" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="9" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="1403" name="console-turn-on_left" tilewidth="16" tileheight="16" tilecount="10" columns="10">
+  <image source="../textures/console/console-turn-on_left.png" width="160" height="16"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="8" duration="100"/>
+    <frame tileid="7" duration="100"/>
+    <frame tileid="6" duration="100"/>
+    <frame tileid="5" duration="100"/>
+    <frame tileid="4" duration="100"/>
+    <frame tileid="3" duration="100"/>
+    <frame tileid="2" duration="100"/>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="0" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
  <layer name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
@@ -35347,7 +35381,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="1403"/>
    <tile/>
    <tile/>
    <tile/>
@@ -45158,7 +45192,7 @@
  </group>
  <group name="GameObjects">
   <objectgroup name="Triggers">
-   <object id="27" name="animation" type="event" x="537" y="220" width="38.5" height="38.5"/>
+   <object id="27" name="animation" type="event" x="546" y="209.5" width="38.5" height="38.5"/>
   </objectgroup>
   <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864.273" y="259.273" width="16" height="16"/>

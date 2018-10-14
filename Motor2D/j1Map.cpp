@@ -703,7 +703,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 					if (event_type == "animation")
 					{
 						LOG("there is one animation trigger");
-						// create objtrigger event
+						// create objtrigger event animation
 						App->object->AddObjTrigger({ object.attribute("x").as_float(),
 													 object.attribute("y").as_float() },
 													 triggerAction::animation,
