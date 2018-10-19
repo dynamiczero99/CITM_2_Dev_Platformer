@@ -10,12 +10,13 @@
 #include "j1Audio.h"
 
 ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), Gameobject (position, index) {
+	acceleration = fPoint(0.0f, 0.0f);
+
 	if (projectile_node.empty()) {
 		LOG("Empty node");
 	}
 
 	velocity = direction * projectile_node.child("speed").text().as_float();
-
 	SDL_Rect colRect;
 	colRect.w = projectile_node.child("collider_width").text().as_int();
 	colRect.h = projectile_node.child("collider_height").text().as_int();
@@ -23,6 +24,8 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 	colRect.x = colPos.x;
 	colRect.y = colPos.y;
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_PLAYER_SHOT, this);
+
+
 	
 	// loads sfx relative to projectile ---
 	

@@ -204,8 +204,6 @@ bool j1Object::Save(pugi::xml_node& node) const
 Gameobject::Gameobject(fPoint position, int index) :
 	position(position),
 	index(index) {
-	//velocity = fPoint(0.0f, 0.0f);
-	//acceleration = fPoint(0.0f, 0.0f);
 }
 
 Gameobject::~Gameobject () {

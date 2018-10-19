@@ -9,6 +9,9 @@
 #include "p2Log.h"
 
 ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobject(position, index) {
+	velocity = fPoint(0.0f, 0.0f);
+	acceleration = fPoint(0.0f, 0.0f);
+
 	animTileWidth = box_node.child("animation").attribute("tile_width").as_uint();
 	animTileHeight = box_node.child("animation").attribute("tile_height").as_uint();
 	LoadAnimation(box_node.child("animation").child("inactive_animation").child("sprite"), inactiveAnim);

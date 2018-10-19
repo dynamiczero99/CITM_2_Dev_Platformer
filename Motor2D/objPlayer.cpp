@@ -20,6 +20,9 @@
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
+	velocity = fPoint(0.0f, 0.0f);
+	acceleration = fPoint(0.0f, 0.0f);
+
 	if (playerNode.empty())
 		LOG("empty node");
 
