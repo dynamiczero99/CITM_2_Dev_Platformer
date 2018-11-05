@@ -58,6 +58,11 @@ bool j1Scene::Start()
 	return true;
 }
 
+bool j1Scene::PreUpdate() {
+	CameraLogic();
+	return true;
+}
+
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
@@ -80,9 +85,6 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate()
 {
 	bool ret = true;
-
-	//Move the camera after the character has moved and the collision of the character has been solved
-	CameraLogic();
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

@@ -20,6 +20,8 @@ public:
 	// Called before the first frame
 	bool Start();
 
+	bool PreUpdate();
+
 	// Called each loop iteration
 	bool Update(float dt);
 

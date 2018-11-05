@@ -240,6 +240,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
 
 		int nearestDir = (int)dir::invalid;
+
 		for (int i = 0; i < (int)dir::max; ++i) {
 			if (direction[i] && dist[i] < dist[nearestDir]) {
 				nearestDir = i;
