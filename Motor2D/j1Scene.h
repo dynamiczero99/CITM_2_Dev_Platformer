@@ -41,7 +41,6 @@ public:
 private:
 
 	fPoint cameraPos = { 0,0 };
-	
 
 	bool firstStart = true;
 
