@@ -19,7 +19,7 @@ public:
 public:
 	Collider * collider = nullptr;
 	ObjPlayer * player = nullptr;
-	uint impactSound = 0;
+	uint impactSound = 0u;
 };
 
 #endif
