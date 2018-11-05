@@ -50,7 +50,6 @@ bool ObjBox::Update() {
 	position = position + velocity * App->GetDeltaTime();
 	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
-	LOG("%f", position.y);
 	return true;
 }
 

@@ -369,7 +369,7 @@ void ObjPlayer::LimitFallVelocity() {
 }
 
 void ObjPlayer::ShootProjectile()
-{
+{	
 	if (App->input->GetMouseButton(1) == KEY_DOWN) {
 
 		if (projectile != nullptr) {
@@ -382,44 +382,28 @@ void ObjPlayer::ShootProjectile()
 			swapObject = nullptr;
 		}
 
-		fPoint projectilePosition;
-		projectilePosition.x = position.x;
-		projectilePosition.y = position.y - shootHeight;
+		fPoint sourcePosProjectile;
+		sourcePosProjectile.x = position.x;
+		sourcePosProjectile.y = position.y - shootHeight;
 
+		//INFO: Get the world position, not the screen position
 		iPoint mousePos;
 		App->input->GetMousePosition(mousePos.x, mousePos.y);
-		//INFO: Get the world position, not the screen position
 
-		// workaround to get correct values ------
-		fPoint swap;
-		if(App->render->camera.x < 0)
-			swap.x = -(App->render->camera.x) / App->win->GetScale();
-		else
-		{
-			swap.x = App->render->camera.x / App->win->GetScale();
-			swap.x = -swap.x;
-		}
-		if (App->render->camera.y > 0)
-		{
-			swap.y = App->render->camera.y / App->win->GetScale();
-			swap.y = -swap.y;
-		}
-		else
-		{
-			swap.y = -App->render->camera.y / App->win->GetScale();
-		}
-	
-		mousePos.x += swap.x;
-		mousePos.y += swap.y;
-		// ----------------------------------------
+		iPoint cameraPos;
+		cameraPos.x = -App->render->camera.x / (int)App->win->GetScale();
+		cameraPos.y = -App->render->camera.y / (int)App->win->GetScale();
+
+		iPoint targetPosProjectile;
+		targetPosProjectile = cameraPos + mousePos;
 
 		fPoint projectileDirection;
-		projectileDirection = (fPoint)mousePos - projectilePosition;
+		projectileDirection = (fPoint)targetPosProjectile - sourcePosProjectile;
 		projectileDirection.Normalize();
 
-		projectile = App->object->AddObjProjectile(projectilePosition, projectileDirection, this);
+		projectile = App->object->AddObjProjectile(sourcePosProjectile, projectileDirection, this);
 
-		// play sfx
+		//Play sfx
 		App->audio->PlayFx(shoot);
 	}
 }
