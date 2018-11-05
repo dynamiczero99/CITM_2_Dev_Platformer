@@ -105,14 +105,16 @@ bool j1Scene::CleanUp()
 
 void j1Scene::CameraLogic()
 {
-	uint width, height = 0;
+	uint width, height = 0u;
 	App->win->GetWindowSize(width, height);
 
 	float x = 0.0f;
-	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
 		x = width * 0.25f * 2.5f;
-	else
+	}
+	else {
 		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
+	}
 	float y = height * 0.33f *2.5f; // 
 	
 	iPoint offset = { (int)x , (int)y };

@@ -22,7 +22,8 @@ enum triggerAction;
 
 class Gameobject {
 protected:
-	enum class dir : uint {
+	enum class dir : int {
+		invalid = -1,
 		left,
 		right,
 		down,

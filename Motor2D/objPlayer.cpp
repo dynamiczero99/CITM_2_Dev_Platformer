@@ -232,30 +232,24 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 
 		//2. Check which point (opposite to those directions) is the nearest
 		//Ex.: If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
-		uint dist[(uint)dir::max];
-		dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-		dist[(uint)dir::down] = playerCol->rect.GetBottom()- c2->rect.GetTop();
-		dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-		dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
-		int nearestDir = -1;
+		int dist[(int)dir::max];
+		dist[(int)dir::invalid] = INT_MAX;
+		dist[(int)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+		dist[(int)dir::down] = playerCol->rect.GetBottom()- c2->rect.GetTop();
+		dist[(int)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+		dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+
+		int nearestDir = (int)dir::invalid;
 		for (int i = 0; i < (int)dir::max; ++i) {
-			if (direction[i]) {
-				if (nearestDir == -1) {
-					nearestDir = i;
-				}
-				else if (dist[i] < dist[nearestDir]) {
-					nearestDir = i;
-				}
+			if (direction[i] && dist[i] < dist[nearestDir]) {
+				nearestDir = i;
 			}
 		}
 
 		//2.5 If the player isn't moving (which is sometimes the case when he swaps) we also need to make it exit from the nearest point
-		if (nearestDir == -1) {
+		if (nearestDir == (int)dir::invalid) {
 			for (int i = 0; i < (int)dir::max; ++i) {
-				if (nearestDir == -1) {
-					nearestDir = i;
-				}
-				else if (dist[i] < dist[nearestDir]) {
+				if (dist[i] < dist[nearestDir]) {
 					nearestDir = i;
 				}
 			}
