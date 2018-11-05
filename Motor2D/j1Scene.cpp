@@ -58,6 +58,11 @@ bool j1Scene::Start()
 	return true;
 }
 
+bool j1Scene::PreUpdate() {
+	CameraLogic();
+	return true;
+}
+
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
@@ -81,9 +86,6 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	//Move the camera after the character has moved and the collision of the character has been solved
-	CameraLogic();
-
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 	
@@ -105,14 +107,16 @@ bool j1Scene::CleanUp()
 
 void j1Scene::CameraLogic()
 {
-	uint width, height = 0;
+	uint width, height = 0u;
 	App->win->GetWindowSize(width, height);
 
 	float x = 0.0f;
-	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
 		x = width * 0.25f * 2.5f;
-	else
+	}
+	else {
 		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
+	}
 	float y = height * 0.33f *2.5f; // 
 	
 	iPoint offset = { (int)x , (int)y };

@@ -45,12 +45,14 @@ private:
 	void LimitFallVelocity();
 	void ShootProjectile();
 	void SwapPosition();
+	int GetSmallestDirFiltered(Collider * c2);
+	int GetSmallestDir(Collider * c2);
 
 	inline float tile_to_pixel(uint pixel);
 
 public:
-	//VARIABLES
-	uint tileSize;
+	//Variables
+	uint tileSize = 0u;
 	float gravity = 0.0f;
 	float moveSpeedAir = 0.0f;//(pixels/s)
 	float moveSpeedGnd = 0.0f;//(pixels/s)
@@ -93,11 +95,11 @@ private:
 	bool godMode = false;
 
 	// sound effects id relative to player
-	uint teleport = 0;
-	uint shoot = 0;
-	uint death = 0;
-	uint jump = 0;
-	uint win = 0;
+	uint teleport = 0u;
+	uint shoot = 0u;
+	uint death = 0u;
+	uint jump = 0u;
+	uint win = 0u;
 };
 
 #endif

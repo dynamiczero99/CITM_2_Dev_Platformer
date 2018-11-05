@@ -20,8 +20,8 @@
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
 
-	velocity = fPoint(0.0f, 0.0f);
-	acceleration = fPoint(0.0f, 0.0f);
+	velocity = fPoint(0.0F, 0.0F);
+	acceleration = fPoint(0.0F, 0.0F);
 
 	if (playerNode.empty())
 		LOG("empty node");
@@ -162,7 +162,7 @@ bool ObjPlayer::Update() {
 
 void ObjPlayer::ToggleGodMode()
 {
-	acceleration = fPoint(0.0f, 0.0f);
+	acceleration = fPoint(0.0F, 0.0F);
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		if (godMode) {
 			playerCol->type = COLLIDER_TYPE::COLLIDER_PLAYER;
@@ -197,7 +197,7 @@ bool ObjPlayer::PostUpdate() {
 		}
 	}
 	else {
-		currTex = currTex = App->object->playerJumpTex;
+		currTex = App->object->playerJumpTex;
 		if (velocity.y <= 0) {
 			currAnim = &jumpAnim;
 		}
@@ -220,50 +220,65 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 	}
 }
 
+//Returns the direction that has the smallest distance inside the other collider
+int ObjPlayer::GetSmallestDir(Collider * c2) {
+	int smallestDir = -1;
+
+	int dist[(int)dir::max];
+	dist[(int)dir::invalid] = INT_MAX;
+	dist[(int)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+	dist[(int)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
+	dist[(int)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+	dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+
+	for (int i = 0; i < (int)dir::max; ++i) {
+		if (dist[i] < dist[smallestDir]) {
+			smallestDir = i;
+		}
+	}
+
+	return smallestDir;
+}
+
+//Returns the direction that the player is moving to and has the smallest distance inside the other collider
+//Returns -1 if the players isn't moving to any direction
+int ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
+	int smallestDir = -1;
+
+	bool direction[(uint)dir::max];
+	direction[(uint)dir::up] = velocity.y < 0;
+	direction[(uint)dir::down] = velocity.y > 0;
+	direction[(uint)dir::left] = velocity.x < 0;
+	direction[(uint)dir::right] = velocity.x > 0;
+
+	int dist[(int)dir::max];
+	dist[(int)dir::invalid] = INT_MAX;
+	dist[(int)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+	dist[(int)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
+	dist[(int)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+	dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+
+	for (int i = 0; i < (int)dir::max; ++i) {
+		if (direction[i] && dist[i] < dist[smallestDir]) {
+			smallestDir = i;
+		}
+	}
+
+	return smallestDir;
+}
+
 void ObjPlayer::OnCollisionPlayer(Collider * c2)
 {
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
-		//1. Check which direction it was going to
-		bool direction[(uint)dir::max];
-		direction[(uint)dir::up] = velocity.y < 0;
-		direction[(uint)dir::down] = velocity.y > 0;
-		direction[(uint)dir::left] = velocity.x < 0;
-		direction[(uint)dir::right] = velocity.x > 0;
 
-		//2. Check which point (opposite to those directions) is the nearest
-		//Ex.: If it has entered in the direction "up" the distance is from the character to the bottom of the other collider
-		uint dist[(uint)dir::max];
-		dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-		dist[(uint)dir::down] = playerCol->rect.GetBottom()- c2->rect.GetTop();
-		dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-		dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
-		int nearestDir = -1;
-		for (int i = 0; i < (int)dir::max; ++i) {
-			if (direction[i]) {
-				if (nearestDir == -1) {
-					nearestDir = i;
-				}
-				else if (dist[i] < dist[nearestDir]) {
-					nearestDir = i;
-				}
-			}
+		int smallestDir = GetSmallestDirFiltered(c2);
+
+		if (smallestDir == -1) {
+			smallestDir = GetSmallestDir(c2);
 		}
 
-		//2.5 If the player isn't moving (which is sometimes the case when he swaps) we also need to make it exit from the nearest point
-		if (nearestDir == -1) {
-			for (int i = 0; i < (int)dir::max; ++i) {
-				if (nearestDir == -1) {
-					nearestDir = i;
-				}
-				else if (dist[i] < dist[nearestDir]) {
-					nearestDir = i;
-				}
-			}
-		}
-
-		//3. Move it to that point
 		//INFO: Keep in mind that the player uses a pivot::bottom-middle
-		switch (nearestDir) {
+		switch (smallestDir) {
 		case (int)dir::down:
 			position.y = c2->rect.GetTop();
 			velocity.y = 0;
@@ -283,6 +298,9 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 			position.x = c2->rect.GetLeft() - playerCol->rect.w / 2;
 			velocity.x = 0;
 			break;
+		default:
+			LOG("Error getting the direction the player must exit on the collsion.");
+			break;
 		}
 		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 		playerCol->SetPos(colPos.x, colPos.y);
@@ -290,7 +308,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 	}
 	else if (c2->type == COLLIDER_DEATH_ZONE) {
 		App->audio->PlayFx(death);
-		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5f);
+		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5F);
 	}
 	else if (c2->type == COLLIDER_WIN_ZONE) {
 
@@ -305,17 +323,15 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 				if (item == NULL)
 				{
 					item = App->map->data.levels.start;
-					break;
 				}
-				else
-					break;
+				break;
 			}
 			item = item->next;
 		}
 
 		// play win round sfx
 		//App->audio->PlayFx(win);
-		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5f);
+		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5F);
 	}
 }
 
@@ -409,16 +425,13 @@ void ObjPlayer::ShootProjectile()
 }
 
 void ObjPlayer::SwapPosition() {
-	if (App->input->GetMouseButton(3) == KEY_DOWN) {
-		if (swapObject != nullptr) {
-			fPoint auxPos = position;
-			position = swapObject->position;
-			swapObject->position = auxPos;
-			swapObject->MarkObject(false);
-			swapObject = nullptr;
-			// play sfx
-			App->audio->PlayFx(teleport);
-		}
+	if (App->input->GetMouseButton(3) == KEY_DOWN && swapObject != nullptr) {
+		fPoint auxPos = position;
+		position = swapObject->position;
+		swapObject->position = auxPos;
+		swapObject->MarkObject(false);
+		swapObject = nullptr;
+		App->audio->PlayFx(teleport);
 	}
 }
 

@@ -20,6 +20,8 @@ public:
 	// Called before the first frame
 	bool Start();
 
+	bool PreUpdate();
+
 	// Called each loop iteration
 	bool Update(float dt);
 
@@ -39,7 +41,6 @@ public:
 private:
 
 	fPoint cameraPos = { 0,0 };
-	
 
 	bool firstStart = true;
 

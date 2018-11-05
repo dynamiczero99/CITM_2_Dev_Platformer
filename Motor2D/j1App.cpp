@@ -306,8 +306,7 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 
 float j1App::GetDeltaTime() const
 {
-	return (1.0f / 60.0f);
-	//return deltaTime;
+	return deltaTime;
 }
 
 bool j1App::LoadGameNow()
@@ -418,6 +417,6 @@ void j1App::DeltaTimeCorrection()
 void j1App::CalculateDeltaTime()
 {
 	currTime = SDL_GetTicks();
-	deltaTime = (currTime - lastTime) / 1000.0f;//INFO: 1 second is 1000 miliseconds
+	deltaTime = (currTime - lastTime) / 1000.0F;//INFO: 1 second is 1000 miliseconds
 	lastTime = currTime;
 }
