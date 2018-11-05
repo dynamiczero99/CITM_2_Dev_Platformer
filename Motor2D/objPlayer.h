@@ -51,10 +51,10 @@ private:
 public:
 	//VARIABLES
 	uint tileSize;
-	float gravity;
-	float moveSpeedAir;//(pixels/s)
-	float moveSpeedGnd;//(pixels/s)
-	float jumpSpeed;//(pixels/s)
+	float gravity = 0.0f;
+	float moveSpeedAir = 0.0f;//(pixels/s)
+	float moveSpeedGnd = 0.0f;//(pixels/s)
+	float jumpSpeed = 0.0f;//(pixels/s)
 
 	//Physics
 	Collider* playerCol = nullptr;
@@ -75,14 +75,14 @@ public:
 	Animation fallAnim;
 
 	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
-	bool movingLeft;
-	bool movingRight;
-	bool goingUp;
-	bool goingDown;
+	bool movingLeft = false;
+	bool movingRight = false;
+	bool goingUp = false;
+	bool goingDown = false;
 
 	//Shoot
 	ObjProjectile * projectile = nullptr;
-	uint shootHeight;
+	uint shootHeight = 0u;
 
 private:
 	//Position swap
