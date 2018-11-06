@@ -57,8 +57,11 @@ public:
 	virtual bool Save(pugi::xml_node&) const;
 
 protected:
-	//Returns the position it should draw (Blit) or put the collider (SetPos) considering a pivot point
-	iPoint GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h);
+	//Returns the top-left position of a rectangle considering a pivot point
+	//Used to draw (Blit) or put the collider (SetPos)
+	iPoint GetRectPos(pivot pivot, int x, int y, uint w, uint h);
+	//Returns the pivot position specifing a rectangle
+	iPoint GetPivotPos(pivot pivot, int x, int y, uint w, uint h);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 
 public:

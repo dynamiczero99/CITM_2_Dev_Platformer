@@ -205,7 +205,7 @@ bool ObjPlayer::PostUpdate() {
 		}
 	}
 
-	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 	return true;
 }
@@ -301,7 +301,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 			LOG("Error getting the direction the player must exit on the collsion.");
 			break;
 		}
-		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+		iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 		playerCol->SetPos(colPos.x, colPos.y);
 		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 	}
@@ -361,7 +361,7 @@ void ObjPlayer::StandardMovement()
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	LimitFallVelocity();
 	position = position + velocity * App->GetDeltaTime();
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 
@@ -372,7 +372,7 @@ void ObjPlayer::StandardMovement()
 void ObjPlayer::GodMovement() {
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	position = position + velocity * App->GetDeltaTime();
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }

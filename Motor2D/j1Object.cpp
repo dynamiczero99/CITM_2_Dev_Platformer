@@ -226,16 +226,52 @@ bool Gameobject::OnDestroy() {
 	return true;
 }
 
+//Virtual method rewritten in each gameobject that does something when it collides
 void Gameobject::OnCollision(Collider * c1, Collider * c2) {
-
 }
 
+//Virtual method rewritten in each gameobject that is able to be marked
 void Gameobject::MarkObject(bool mark) {
-
 }
 
-iPoint Gameobject::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
-	;
+//Method that returns the pivot position of the object from the top left position of a rectangle
+iPoint Gameobject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
+	switch (pivot) {
+	case pivot::top_left:
+		return iPoint(x, y);
+		break;
+	case pivot::top_middle:
+		return iPoint(x + w/2, y);
+		break;
+	case pivot::top_right:
+		return iPoint(x + w, y);
+		break;
+	case pivot::middle_left:
+		return iPoint(x, y + h/2);
+		break;
+	case pivot::middle_middle:
+		return iPoint(x + w/2, y + h/2);
+		break;
+	case pivot::middle_right:
+		return iPoint(x + w, y + h/2);
+		break;
+	case pivot::bottom_left:
+		return iPoint(x, y + h);
+		break;
+	case pivot::bottom_middle:
+		return iPoint(x + w/2, y + h);
+		break;
+	case pivot::bottom_right:
+		return iPoint(x + w, y + h);
+		break;
+	default:
+		LOG("Error reading the pivot");
+		break;
+	}
+}
+
+//Method that returns the top-left position considering the pivot point of the object
+iPoint Gameobject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
 	switch (pivot) {
 	case pivot::top_left:
 		return iPoint(x, y);
@@ -263,6 +299,9 @@ iPoint Gameobject::GetPosFromPivot(pivot pivot, int x, int y, uint w, uint h) {
 		break;
 	case pivot::bottom_right:
 		return iPoint(x - w, y - h);
+		break;
+	default:
+		LOG("Error reading the pivot");
 		break;
 	}
 }
