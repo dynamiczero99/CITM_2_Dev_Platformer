@@ -196,6 +196,8 @@ bool j1Object::Save(pugi::xml_node& node) const
 			objects[i]->Save(node);
 	}
 
+
+
 	return true;
 }
 
