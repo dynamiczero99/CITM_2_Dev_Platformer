@@ -241,25 +241,25 @@ iPoint Gameobject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
 		return iPoint(x, y);
 		break;
 	case pivot::top_middle:
-		return iPoint(x + w/2, y);
+		return iPoint(x + w / 2, y);
 		break;
 	case pivot::top_right:
 		return iPoint(x + w, y);
 		break;
 	case pivot::middle_left:
-		return iPoint(x, y + h/2);
+		return iPoint(x, y + h / 2);
 		break;
 	case pivot::middle_middle:
-		return iPoint(x + w/2, y + h/2);
+		return iPoint(x + w / 2, y + h / 2);
 		break;
 	case pivot::middle_right:
-		return iPoint(x + w, y + h/2);
+		return iPoint(x + w, y + h / 2);
 		break;
 	case pivot::bottom_left:
 		return iPoint(x, y + h);
 		break;
 	case pivot::bottom_middle:
-		return iPoint(x + w/2, y + h);
+		return iPoint(x + w / 2, y + h);
 		break;
 	case pivot::bottom_right:
 		return iPoint(x + w, y + h);
