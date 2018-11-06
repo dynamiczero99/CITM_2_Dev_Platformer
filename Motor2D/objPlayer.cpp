@@ -221,16 +221,16 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 
 //Returns the direction that has the smallest distance inside the other collider
 int ObjPlayer::GetSmallestDir(Collider * c2) {
-	int smallestDir = -1;
+	int smallestDir = (uint)dir::invalid;
 
-	int dist[(int)dir::max];
-	dist[(int)dir::invalid] = INT_MAX;
-	dist[(int)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-	dist[(int)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
-	dist[(int)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-	dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+	int dist[(uint)dir::max];
+	dist[(uint)dir::invalid] = INT_MAX;
+	dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+	dist[(uint)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
+	dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+	dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
 
-	for (int i = 0; i < (int)dir::max; ++i) {
+	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (dist[i] < dist[smallestDir]) {
 			smallestDir = i;
 		}
@@ -242,22 +242,24 @@ int ObjPlayer::GetSmallestDir(Collider * c2) {
 //Returns the direction that the player is moving to and has the smallest distance inside the other collider
 //Returns -1 if the players isn't moving to any direction
 int ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
-	int smallestDir = -1;
+
+	int smallestDir = (uint)dir::invalid;
 
 	bool direction[(uint)dir::max];
+	direction[(uint)dir::invalid] = true;
 	direction[(uint)dir::up] = velocity.y < 0;
 	direction[(uint)dir::down] = velocity.y > 0;
 	direction[(uint)dir::left] = velocity.x < 0;
 	direction[(uint)dir::right] = velocity.x > 0;
 
-	int dist[(int)dir::max];
-	dist[(int)dir::invalid] = INT_MAX;
-	dist[(int)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-	dist[(int)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
-	dist[(int)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-	dist[(int)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+	int dist[(uint)dir::max];
+	dist[(uint)dir::invalid] = INT_MAX;
+	dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
+	dist[(uint)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
+	dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
+	dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
 
-	for (int i = 0; i < (int)dir::max; ++i) {
+	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (direction[i] && dist[i] < dist[smallestDir]) {
 			smallestDir = i;
 		}
