@@ -225,10 +225,10 @@ int ObjPlayer::GetSmallestDir(Collider * c2) {
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
-	dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-	dist[(uint)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
-	dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-	dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - playerCol->rect.GetTop());
+	dist[(uint)dir::down] = LimitDistance(playerCol->rect.GetBottom() - c2->rect.GetTop());
+	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - playerCol->rect.GetLeft());
+	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (dist[i] < dist[smallestDir]) {
@@ -237,6 +237,14 @@ int ObjPlayer::GetSmallestDir(Collider * c2) {
 	}
 
 	return smallestDir;
+}
+
+//If it gets a negative distance, it means that the player is not colliding with the rectangle in that side
+int ObjPlayer::LimitDistance(int distance) {
+	if (distance < 0) {
+		return INT_MAX;
+	}
+	return distance;
 }
 
 //Returns the direction that the player is moving to and has the smallest distance inside the other collider
@@ -254,10 +262,10 @@ int ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
-	dist[(uint)dir::up] = c2->rect.GetBottom() - playerCol->rect.GetTop();
-	dist[(uint)dir::down] = playerCol->rect.GetBottom() - c2->rect.GetTop();
-	dist[(uint)dir::left] = c2->rect.GetRight() - playerCol->rect.GetLeft();
-	dist[(uint)dir::right] = playerCol->rect.GetRight() - c2->rect.GetLeft();
+	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - playerCol->rect.GetTop());
+	dist[(uint)dir::down] = LimitDistance(playerCol->rect.GetBottom() - c2->rect.GetTop());
+	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - playerCol->rect.GetLeft());
+	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (direction[i] && dist[i] < dist[smallestDir]) {
@@ -274,7 +282,7 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 
 		int smallestDir = GetSmallestDirFiltered(c2);
 
-		if (smallestDir == -1) {
+		if (smallestDir == (uint)dir::invalid) {
 			smallestDir = GetSmallestDir(c2);
 		}
 

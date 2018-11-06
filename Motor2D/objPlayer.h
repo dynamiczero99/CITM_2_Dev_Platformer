@@ -47,7 +47,7 @@ private:
 	void SwapPosition();
 	int GetSmallestDirFiltered(Collider * c2);
 	int GetSmallestDir(Collider * c2);
-
+	int LimitDistance(int distance);
 	inline float tile_to_pixel(uint pixel);
 
 public:
