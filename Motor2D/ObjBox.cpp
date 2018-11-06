@@ -98,3 +98,24 @@ void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 		c1->SetPos(colPos.x, colPos.y);
 	}
 }
+
+bool ObjBox::Load(pugi::xml_node& node)
+{
+
+	return true;
+}
+
+bool ObjBox::Save(pugi::xml_node& node) const
+{
+	LOG("Saving obj box");
+
+	pugi::xml_node boxNode = node.append_child("Box");
+
+	boxNode.append_attribute("x") = position.x;
+	boxNode.append_attribute("y") = position.y;
+	boxNode.append_attribute("velocity_x") = velocity.x;
+	boxNode.append_attribute("velocity_y") = velocity.y;
+
+
+	return true;
+}

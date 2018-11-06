@@ -306,7 +306,8 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 
 float j1App::GetDeltaTime() const
 {
-	return deltaTime;
+	//return deltaTime;
+	return (1.0f / 60.0f);
 }
 
 bool j1App::LoadGameNow()

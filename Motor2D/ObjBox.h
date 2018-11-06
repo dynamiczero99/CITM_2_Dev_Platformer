@@ -18,6 +18,9 @@ public:
 
 	void OnCollision(Collider * c1, Collider * c2) override;
 
+	bool Load(pugi::xml_node& loadNode);
+	bool Save(pugi::xml_node& saveNode) const;
+
 public:
 	Animation inactiveAnim;
 	Animation activeAnim;
