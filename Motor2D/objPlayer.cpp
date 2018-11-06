@@ -40,7 +40,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	moveSpeedAir = tile_to_pixel(playerNode.child("move_speed_air").text().as_float());
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0f);
+	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0F);
 	maxFallVelocity = playerNode.child("maximum_fall_velocity").text().as_float();
 	shootHeight = playerNode.child("shoot_height").text().as_uint();
 
@@ -144,7 +144,6 @@ void ObjPlayer::StandardControls()
 		velocity.y = jumpSpeed;
 		isOnPlatform = false;
 		checkFall = false;
-		// play sfx
 		App->audio->PlayFx(jump);
 	}
 }
@@ -206,8 +205,8 @@ bool ObjPlayer::PostUpdate() {
 		}
 	}
 
-	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
-	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0f, flip);
+	iPoint blitPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 	return true;
 }
 
@@ -280,29 +279,29 @@ void ObjPlayer::OnCollisionPlayer(Collider * c2)
 		//INFO: Keep in mind that the player uses a pivot::bottom-middle
 		switch (smallestDir) {
 		case (int)dir::down:
-			position.y = c2->rect.GetTop();
+			position.y = (float)c2->rect.GetTop();
 			velocity.y = 0;
 			acceleration.y = 0;
 			checkFall = true;
 			isOnPlatform = true;
 			break;
 		case (int)dir::up:
-			position.y = c2->rect.GetBottom() + playerCol->rect.h;
+			position.y = (float)(c2->rect.GetBottom() + playerCol->rect.h);
 			velocity.y = 0;
 			break;
 		case (int)dir::left:
-			position.x = c2->rect.GetRight() + playerCol->rect.w / 2;
+			position.x = (float)(c2->rect.GetRight() + playerCol->rect.w / 2);
 			velocity.x = 0;
 			break;
 		case (int)dir::right:
-			position.x = c2->rect.GetLeft() - playerCol->rect.w / 2;
+			position.x = (float)(c2->rect.GetLeft() - playerCol->rect.w / 2);
 			velocity.x = 0;
 			break;
 		default:
 			LOG("Error getting the direction the player must exit on the collsion.");
 			break;
 		}
-		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+		iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 		playerCol->SetPos(colPos.x, colPos.y);
 		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 	}
@@ -362,7 +361,7 @@ void ObjPlayer::StandardMovement()
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	LimitFallVelocity();
 	position = position + velocity * App->GetDeltaTime();
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 
@@ -373,7 +372,7 @@ void ObjPlayer::StandardMovement()
 void ObjPlayer::GodMovement() {
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	position = position + velocity * App->GetDeltaTime();
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }

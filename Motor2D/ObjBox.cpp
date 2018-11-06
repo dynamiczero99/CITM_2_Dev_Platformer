@@ -20,7 +20,7 @@ ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobjec
 	inactiveAnim.speed = box_node.child("animation").child("active_animation").attribute("speed").as_float();
 	gravity = box_node.child("gravity").text().as_float();
 	currAnim = &inactiveAnim;
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	SDL_Rect colRect;
 	colRect.w = animTileWidth;
 	colRect.h = animTileHeight;
@@ -48,13 +48,13 @@ bool ObjBox::Update() {
 	acceleration.y = gravity;
 	velocity = velocity + acceleration * App->GetDeltaTime();
 	position = position + velocity * App->GetDeltaTime();
-	iPoint colPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;
 }
 
 bool ObjBox::PostUpdate() {
-	iPoint blitPos = GetPosFromPivot(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	App->render->Blit(App->object->robotTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
 	return true;
 }
@@ -88,8 +88,13 @@ void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 			position.x = c2->rect.GetLeft() - c1->rect.w / 2;
 			velocity.x = 0;
 			break;
+		case (int)dir::up:
+			break;
+		default:
+			LOG("Error checking box collsion");
+			break;
 		}
-		iPoint colPos = GetPosFromPivot(pivot::bottom_middle, (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
+		iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
 		c1->SetPos(colPos.x, colPos.y);
 	}
 }
