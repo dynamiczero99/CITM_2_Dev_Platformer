@@ -8,7 +8,7 @@
 
 struct Collider;
 
-class ObjBox : public Gameobject {
+class ObjBox : public GameObject {
 public:
 	ObjBox(fPoint position, int index, pugi::xml_node &object_node);
 	bool Update() override;

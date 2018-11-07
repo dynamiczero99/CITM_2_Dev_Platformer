@@ -20,7 +20,7 @@ struct SDL_Texture;
 class Animation;
 enum triggerAction;
 
-class Gameobject {
+class GameObject {
 protected:
 	enum class dir : uint {
 		invalid,
@@ -44,8 +44,8 @@ protected:
 	};
 
 public:
-	Gameobject(fPoint position, int index);
-	~Gameobject();
+	GameObject(fPoint position, int index);
+	~GameObject();
 	virtual bool PreUpdate();
 	virtual bool Update();
 	virtual bool PostUpdate();
@@ -89,7 +89,7 @@ public:
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
 	ObjBox * AddObjBox(fPoint position);
 	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize);
-	bool DeleteObject(Gameobject * object);
+	bool DeleteObject(GameObject * object);
 
 public:
 	SDL_Texture * projectileTex = nullptr;
@@ -102,7 +102,7 @@ public:
 	uint impactBoxSFX = 0;
 
 private:
-	Gameobject * objects [MAX_OBJECTS];
+	GameObject * objects [MAX_OBJECTS];
 	uint actualObjects = 0;
 	pugi::xml_node object_node;
 	

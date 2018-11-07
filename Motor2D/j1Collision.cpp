@@ -208,7 +208,7 @@ bool j1Collision::CleanUp()
 	return true;
 }
 
-Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Gameobject  *callbackObj)
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, GameObject  *callbackObj)
 {
 	Collider* returnCollider = nullptr;
 

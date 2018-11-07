@@ -9,7 +9,7 @@
 #include "ObjBox.h"
 #include "j1Audio.h"
 
-ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), Gameobject (position, index) {
+ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player) : player(player), GameObject (position, index) {
 	acceleration = fPoint(0.0f, 0.0f);
 
 	if (projectile_node.empty()) {

@@ -18,7 +18,7 @@
 #include "j1Map.h"
 #include "j1FadeToBlack.h"
 
-ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : Gameobject(position, index) {
+ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : GameObject(position, index) {
 
 	velocity = fPoint(0.0F, 0.0F);
 	acceleration = fPoint(0.0F, 0.0F);
@@ -212,7 +212,15 @@ bool ObjPlayer::PostUpdate() {
 
 void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 	if (c1 == playerCol) {
-		OnCollisionPlayer(c2);
+		if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
+			SolveCollision(c2);
+		}
+		else if (c2->type == COLLIDER_DEATH_ZONE) {
+			CollideDeathZone();
+		}
+		else if (c2->type == COLLIDER_WIN_ZONE) {
+			CollideWinZone();
+		}
 	}
 	else if (c1 == feetCol) {
 		OnCollisionFeet(c2);
@@ -220,8 +228,8 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 }
 
 //Returns the direction that has the smallest distance inside the other collider
-int ObjPlayer::GetSmallestDir(Collider * c2) {
-	int smallestDir = (uint)dir::invalid;
+GameObject::dir ObjPlayer::GetSmallestDir(Collider * c2) {
+	GameObject::dir smallestDir = dir::invalid;
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
@@ -231,8 +239,8 @@ int ObjPlayer::GetSmallestDir(Collider * c2) {
 	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
-		if (dist[i] < dist[smallestDir]) {
-			smallestDir = i;
+		if (dist[i] < dist[(uint)smallestDir]) {
+			smallestDir = (GameObject::dir)i;
 		}
 	}
 
@@ -249,9 +257,9 @@ int ObjPlayer::LimitDistance(int distance) {
 
 //Returns the direction that the player is moving to and has the smallest distance inside the other collider
 //Returns -1 if the players isn't moving to any direction
-int ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
+GameObject::dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 
-	int smallestDir = (uint)dir::invalid;
+	GameObject::dir smallestDir = dir::invalid;
 
 	bool direction[(uint)dir::max];
 	direction[(uint)dir::invalid] = true;
@@ -268,80 +276,81 @@ int ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
-		if (direction[i] && dist[i] < dist[smallestDir]) {
-			smallestDir = i;
+		if (direction[i] && dist[i] < dist[(uint)smallestDir]) {
+			smallestDir = (GameObject::dir)i;
 		}
 	}
 
 	return smallestDir;
 }
 
-void ObjPlayer::OnCollisionPlayer(Collider * c2)
-{
-	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
-
-		int smallestDir = GetSmallestDirFiltered(c2);
-
-		if (smallestDir == (uint)dir::invalid) {
-			smallestDir = GetSmallestDir(c2);
-		}
-
-		//INFO: Keep in mind that the player uses a pivot::bottom-middle
-		switch (smallestDir) {
-		case (int)dir::down:
-			position.y = (float)c2->rect.GetTop();
-			velocity.y = 0;
-			acceleration.y = 0;
-			checkFall = true;
-			isOnPlatform = true;
-			break;
-		case (int)dir::up:
-			position.y = (float)(c2->rect.GetBottom() + playerCol->rect.h);
-			velocity.y = 0;
-			break;
-		case (int)dir::left:
-			position.x = (float)(c2->rect.GetRight() + playerCol->rect.w / 2);
-			velocity.x = 0;
-			break;
-		case (int)dir::right:
-			position.x = (float)(c2->rect.GetLeft() - playerCol->rect.w / 2);
-			velocity.x = 0;
-			break;
-		default:
-			LOG("Error getting the direction the player must exit on the collsion.");
-			break;
-		}
-		iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
-		playerCol->SetPos(colPos.x, colPos.y);
-		feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+void ObjPlayer::SolveCollision(Collider * c2) {
+	GameObject::dir smallestDir;
+	if (!velocity.IsZero()) {
+		//Exit the collision from the smallest distance the player is moving
+		smallestDir = GetSmallestDirFiltered(c2);
 	}
-	else if (c2->type == COLLIDER_DEATH_ZONE) {
-		App->audio->PlayFx(death);
-		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5F);
+	else {
+		//In the exceptional case that the player is colliding but wasn't moving, simply exit the collision from the smallest distance
+		smallestDir = GetSmallestDir(c2);
 	}
-	else if (c2->type == COLLIDER_WIN_ZONE) {
 
-		p2List_item<Levels*>* item = App->map->data.levels.start;
+	//INFO: Keep in mind that the player uses a pivot::bottom-middle
+	switch (smallestDir) {
+	case dir::down:
+		position.y = (float)c2->rect.GetTop();
+		velocity.y = 0;
+		acceleration.y = 0;
+		checkFall = true;
+		isOnPlatform = true;
+		break;
+	case dir::up:
+		position.y = (float)(c2->rect.GetBottom() + playerCol->rect.h);
+		velocity.y = 0;
+		break;
+	case dir::left:
+		position.x = (float)(c2->rect.GetRight() + playerCol->rect.w / 2);
+		velocity.x = 0;
+		break;
+	case dir::right:
+		position.x = (float)(c2->rect.GetLeft() - playerCol->rect.w / 2);
+		velocity.x = 0;
+		break;
+	default:
+		LOG("Error getting the direction the player must exit on the collsion.");
+		break;
+	}
+	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	playerCol->SetPos(colPos.x, colPos.y);
+	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+}
 
-		while (item != NULL)
+void ObjPlayer::CollideDeathZone() {
+	App->audio->PlayFx(death);
+	App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5F);
+}
+
+void ObjPlayer::CollideWinZone() {
+	p2List_item<Levels*>* item = App->map->data.levels.start;
+
+	while (item != NULL)
+	{
+		if (item->data->name == App->map->data.loadedLevel)
 		{
-			if (item->data->name == App->map->data.loadedLevel)
-			{
-				LOG("coincidence");
-				item = item->next;
-				if (item == NULL)
-				{
-					item = App->map->data.levels.start;
-				}
-				break;
-			}
+			LOG("coincidence");
 			item = item->next;
+			if (item == NULL)
+			{
+				item = App->map->data.levels.start;
+			}
+			break;
 		}
-
-		// play win round sfx
-		//App->audio->PlayFx(win);
-		App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5F);
+		item = item->next;
 	}
+
+	// play win round sfx
+	//App->audio->PlayFx(win);
+	App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5F);
 }
 
 void ObjPlayer::OnCollisionFeet(Collider * c2)
@@ -478,7 +487,7 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 	return true;
 }
 
-void ObjPlayer::SetSwapObject(Gameobject * markedObject) {
+void ObjPlayer::SetSwapObject(GameObject * markedObject) {
 	App->object->DeleteObject(projectile);
 	projectile = nullptr;
 	swapObject = markedObject;

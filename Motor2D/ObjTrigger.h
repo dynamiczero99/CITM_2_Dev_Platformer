@@ -13,7 +13,7 @@ enum triggerAction {
 };
 
 
-class ObjTrigger : public Gameobject {
+class ObjTrigger : public GameObject {
 public:
 	ObjTrigger(fPoint position, int index, triggerAction action, iPoint rectSize);
 	void OnCollision(Collider * c1, Collider * c2) override;

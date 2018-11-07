@@ -157,7 +157,7 @@ ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action, iPoi
 }
 
 
-bool j1Object::DeleteObject(Gameobject * object) {
+bool j1Object::DeleteObject(GameObject * object) {
 	assert(object != nullptr);
 	assert(object->index != -1);
 	if (object == nullptr || object->index == -1) {
@@ -211,41 +211,41 @@ bool j1Object::Save(pugi::xml_node& node) const
 
 //Gameobject class methods -------------------------------------------
 
-Gameobject::Gameobject(fPoint position, int index) :
+GameObject::GameObject(fPoint position, int index) :
 	position(position),
 	index(index) {
 }
 
-Gameobject::~Gameobject () {
+GameObject::~GameObject () {
 
 }
 
-bool Gameobject::PreUpdate() {
+bool GameObject::PreUpdate() {
 	return true;
 }
 
-bool Gameobject::Update() {
+bool GameObject::Update() {
 	return true;
 }
 
-bool Gameobject::PostUpdate() {
+bool GameObject::PostUpdate() {
 	return true;
 }
 
-bool Gameobject::OnDestroy() {
+bool GameObject::OnDestroy() {
 	return true;
 }
 
 //Virtual method rewritten in each gameobject that does something when it collides
-void Gameobject::OnCollision(Collider * c1, Collider * c2) {
+void GameObject::OnCollision(Collider * c1, Collider * c2) {
 }
 
 //Virtual method rewritten in each gameobject that is able to be marked
-void Gameobject::MarkObject(bool mark) {
+void GameObject::MarkObject(bool mark) {
 }
 
 //Method that returns the pivot position of the object from the top left position of a rectangle
-iPoint Gameobject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
+iPoint GameObject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
 	switch (pivot) {
 	case pivot::top_left:
 		return iPoint(x, y);
@@ -281,7 +281,7 @@ iPoint Gameobject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
 }
 
 //Method that returns the top-left position considering the pivot point of the object
-iPoint Gameobject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
+iPoint GameObject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
 	switch (pivot) {
 	case pivot::top_left:
 		return iPoint(x, y);
@@ -316,7 +316,7 @@ iPoint Gameobject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
 	}
 }
 
-bool Gameobject::LoadAnimation(pugi::xml_node &node, Animation &anim) {
+bool GameObject::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 	for (; node; node = node.next_sibling("sprite")) {
 		SDL_Rect frame;
 		frame.x = node.attribute("x").as_int();
@@ -328,12 +328,12 @@ bool Gameobject::LoadAnimation(pugi::xml_node &node, Animation &anim) {
 	return true;
 }
 
-bool Gameobject::Load(pugi::xml_node& node)
+bool GameObject::Load(pugi::xml_node& node)
 {
 	return true;
 }
 
-bool Gameobject::Save(pugi::xml_node& node) const
+bool GameObject::Save(pugi::xml_node& node) const
 {
 	return true;
 }

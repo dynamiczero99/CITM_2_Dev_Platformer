@@ -6,7 +6,7 @@
 #include "j1Module.h"
 #include "SDL/include/SDL_rect.h"
 
-class Gameobject;
+class GameObject;
 
 enum COLLIDER_TYPE
 {
@@ -26,13 +26,13 @@ struct Collider
 {
 	SDL_Rect rect;
 	COLLIDER_TYPE type;
-	Gameobject * callbackObj = nullptr;
+	GameObject * callbackObj = nullptr;
 
 	//The position in the collider module array
 	int index = -1;
 
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, Gameobject * callbackObj, int index) : rect(rectangle), type(type), callbackObj(callbackObj), index(index) {}
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, GameObject * callbackObj, int index) : rect(rectangle), type(type), callbackObj(callbackObj), index(index) {}
 	void SetPos(int x, int y);
 	bool CheckCollision(const SDL_Rect& r) const;
 };
@@ -64,7 +64,7 @@ public:
 	// counter of presents colliders on scene
 	int actualColliders;
 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Gameobject * callbackObj = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, GameObject * callbackObj = nullptr);
 	bool DeleteCollider(Collider * collider);
 
 	void DebugDraw();

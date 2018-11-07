@@ -8,7 +8,7 @@
 class ObjPlayer;
 struct Collider;
 
-class ObjProjectile : public Gameobject {
+class ObjProjectile : public GameObject {
 public:
 	ObjProjectile(fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player);
 	bool Update() override;

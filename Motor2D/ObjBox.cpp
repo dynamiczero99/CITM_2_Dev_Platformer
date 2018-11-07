@@ -8,7 +8,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2Log.h"
 
-ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : Gameobject(position, index) {
+ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : GameObject(position, index) {
 	velocity = fPoint(0.0f, 0.0f);
 	acceleration = fPoint(0.0f, 0.0f);
 

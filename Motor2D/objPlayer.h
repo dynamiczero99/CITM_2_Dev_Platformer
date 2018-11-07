@@ -15,7 +15,7 @@ class Animation;
 struct Collider;
 class ObjProjectile;
 
-class ObjPlayer : public Gameobject {
+class ObjPlayer : public GameObject {
 public:
 	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
 
@@ -30,10 +30,7 @@ public:
 	bool OnDestroy() override;
 	void OnCollision(Collider* c1, Collider* c2) override;
 
-	void OnCollisionPlayer(Collider * c2);
-	void OnCollisionFeet(Collider * c2);
-
-	void SetSwapObject(Gameobject * markedObject);
+	void SetSwapObject(GameObject * markedObject);
 	void DestroyProjectile();
 
 private:
@@ -42,12 +39,22 @@ private:
 	void GodControls();
 	void StandardMovement();
 	void GodMovement();
+
 	void LimitFallVelocity();
 	void ShootProjectile();
 	void SwapPosition();
-	int GetSmallestDirFiltered(Collider * c2);
-	int GetSmallestDir(Collider * c2);
+
+	void OnCollisionPlayer(Collider * c2);
+	void OnCollisionFeet(Collider * c2);
+
+	void SolveCollision(Collider * c2);
+	void CollideDeathZone();
+	void CollideWinZone();
+
 	int LimitDistance(int distance);
+	GameObject::dir GetSmallestDirFiltered(Collider * c2);
+	GameObject::dir GetSmallestDir(Collider * c2);
+
 	inline float tile_to_pixel(uint pixel);
 
 public:
@@ -89,7 +96,7 @@ public:
 private:
 	//Position swap
 	float maxFallVelocity = 0.0f;
-	Gameobject * swapObject = nullptr;
+	GameObject * swapObject = nullptr;
 
 	//God mode
 	bool godMode = false;
