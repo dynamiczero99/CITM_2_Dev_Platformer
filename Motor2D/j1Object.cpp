@@ -185,6 +185,14 @@ bool j1Object::Load(pugi::xml_node& node)
 			objects[i]->Load(node);
 	}
 
+	// and check if the scene has gameObjects to load
+	// boxes
+	for (pugi::xml_node boxes = node.child("Box"); boxes; boxes = boxes.next_sibling("Box"))
+	{
+		LOG("node found");
+		App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+	}
+
 	return true;
 }
 

@@ -51,13 +51,17 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 			// clean up the current map
 			if (App->map->Reset())// load new map
 			{
+				if (App->want_to_load) // if the call comes from a loadgame
+					App->readyToLoad = true; // active to call all virtual loads
+
+				// now map knows if the call is from a load game call
 				App->map->Load(lvl_to_load);
+
 				// TODO: maybe we need to search a less ugly workaround to restart scene
 				//App->scene->Disable();
 				App->scene->Enable();
 
-				if(App->want_to_load) // if the call comes from a loadgame
-					App->readyToLoad = true; // active to call all virtual loads
+			
 			}
 
 			total_time += total_time;

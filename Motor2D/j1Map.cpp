@@ -671,7 +671,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 		if (tmp == "GameObjects") // gameobjects maybe needs load from save, check this
 		{
-			if (!loadFromSaveGame)
+			if (!App->readyToLoad) // if the new map is loaded from save game, load gameobjects from savegame file
 			{
 				// iterate all objects
 				for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
