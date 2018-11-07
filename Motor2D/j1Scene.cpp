@@ -59,7 +59,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	//debug_tex = App->tex->Load("maps/path2.png");
+	debug_tex = App->tex->LoadTexture("maps/calculatedPathTex.png");
 
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load
@@ -74,6 +74,31 @@ bool j1Scene::Start()
 
 bool j1Scene::PreUpdate() {
 	CameraLogic();
+
+	// debug pathfing ------------------
+	static iPoint origin;
+	static bool origin_selected = false;
+
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (origin_selected == true)
+		{
+			App->pathfinding->CreatePath(origin, p);
+			origin_selected = false;
+		}
+		else
+		{
+			origin = p;
+			origin_selected = true;
+		}
+	}
+	 // ---------------------------------
+
 	return true;
 }
 
@@ -92,6 +117,24 @@ bool j1Scene::Update(float dt)
 	}
 
 	App->map->Draw();
+
+	// Debug pathfinding ------------------------------
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+	p = App->map->MapToWorld(p.x, p.y);
+
+	App->render->Blit(debug_tex, p.x, p.y);
+
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		App->render->Blit(debug_tex, pos.x, pos.y);
+	}
+
 	return true;
 }
 
