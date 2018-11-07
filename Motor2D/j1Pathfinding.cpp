@@ -165,10 +165,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	PathList openList;
 	PathList closedList;
-	PathNode originNode(0, origin.DistanceTo(destination), origin, nullptr);
-	openList.list.add(originNode);
+	openList.list.add(PathNode (0, origin.DistanceTo(destination), origin, nullptr));
 
-	while (openList.list.count() > 0) {
+	while (openList.list.Count() > 0) {
 		p2List_item<PathNode> * lowestNode = openList.GetNodeLowestScore();
 
 		PathNode * currNode = &closedList.list.add(lowestNode->data)->data;
@@ -176,14 +175,12 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 		if (currNode->pos == destination) {
 			last_path.Clear();
-			PathNode * pathIterator = currNode;
-			while (pathIterator != nullptr && pathIterator->pos != origin) {
+			for (PathNode * pathIterator = currNode; pathIterator != nullptr && pathIterator->pos != origin; pathIterator = pathIterator->parent) {
 				last_path.PushBack(pathIterator->pos);
-				pathIterator = pathIterator->parent;
 			}
 			last_path.Flip();
 			LOG("Succesful path: The algorithm has found a path from the origin(%i, %i) to the destination(%i, %i)", origin.x, origin.y, destination.x, destination.y);
-			return last_path.GetCapacity();
+			return last_path.Count();
 		}
 
 		PathList adjacentNodes;
