@@ -13,6 +13,7 @@
 #include "j1Collision.h"
 #include "j1Window.h"
 #include "ObjPlayer.h"
+#include "j1Pathfinding.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -46,6 +47,19 @@ bool j1Scene::Start()
 	if (!App->collision->IsEnabled()) { App->collision->Enable(); }
 	// TODO, search a workaround to reload player info
 	if (!App->object->IsEnabled()) { App->object->Enable(); }
+
+	// create walkability map
+	if (App->map->map_loaded)
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
+
+	//debug_tex = App->tex->Load("maps/path2.png");
 
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load

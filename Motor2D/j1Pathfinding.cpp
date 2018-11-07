@@ -167,7 +167,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	PathList closedList;
 	openList.list.add(PathNode (0, origin.DistanceTo(destination), origin, nullptr));
 
-	while (openList.list.Count() > 0) {
+	while (openList.list.count() > 0) {
 		p2List_item<PathNode> * lowestNode = openList.GetNodeLowestScore();
 
 		PathNode * currNode = &closedList.list.add(lowestNode->data)->data;

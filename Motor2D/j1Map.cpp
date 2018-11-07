@@ -720,3 +720,51 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 	return true;
 }
+
+bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	p2List_item<MapLayer*>* item;
+	item = data.mapLayers.start;
+
+	for (item = data.mapLayers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.navigation == false)
+			continue;
+
+		uchar* map = new uchar[layer->rows*layer->columns];
+		memset(map, 1, layer->rows*layer->columns);
+
+		for (int y = 0; y < data.columns; ++y)
+		{
+			for (int x = 0; x < data.rows; ++x)
+			{
+				int i = (y*layer->rows) + x;
+
+				int tile_id = layer->GetArrayPos(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					/*TileType* ts = tileset->GetTileType(tile_id);
+					if(ts != NULL)
+					{
+						map[i] = ts->properties.Get("walkable", 1);
+					}*/
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.rows;
+		height = data.columns;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
+}
