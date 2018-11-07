@@ -61,6 +61,13 @@
         </active_animation>
       </animation>
     </box>
+    <enemy_flying>
+      <animation tile_width ="14" tile_height ="26">
+        <idle_animation speed = "0">
+          <sprite x ="210" y ="22" w ="14" h ="26"/>
+        </idle_animation>
+      </animation>
+    </enemy_flying>
     <player>
 	  <sfx name="teleport" value="teleport2.wav"/>
 	  <sfx name="shoot" value="shoot01.wav"/>

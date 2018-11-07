@@ -13,6 +13,7 @@
 #include "ObjProjectile.h"
 #include "ObjBox.h"
 #include "ObjTrigger.h"
+#include "ObjEnemyFlying.h"
 
 j1Object::j1Object() : j1Module() {
 	name.create("object");
@@ -156,15 +157,21 @@ ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action, iPoi
 	return ret;
 }
 
+ObjEnemyFlying * j1Object::AddObjEnemyFlying(fPoint position) {
+	int index = FindEmptyPosition();
+	ObjEnemyFlying * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjEnemyFlying(position, index, object_node.child("enemy_flying"));
+	}
+	return ret;
+}
+
 
 bool j1Object::DeleteObject(GameObject * object) {
-	assert(object != nullptr);
-	assert(object->index != -1);
-	if (object == nullptr || object->index == -1) {
+	if (object == nullptr || object->index == -1 || object->index >= COLLIDER_MAX) {
 		LOG("Invalid collider index");
 		return false;
 	}
-	//TODO: Also check if the collider index exceeds the bound of the collider array
 	if (objects[object->index] != nullptr)
 	{
 		//"delete" calls the object's destructor. We'll use it to reamove all allocated memory.

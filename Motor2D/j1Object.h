@@ -65,9 +65,9 @@ protected:
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 
 public:
-	fPoint position;
-	fPoint velocity;
-	fPoint acceleration;
+	fPoint position = fPoint(0.0F, 0.0F);
+	fPoint velocity = fPoint(0.0F, 0.0F);
+	fPoint acceleration = fPoint(0.0F, 0.0F);
 	int index = -1;	//The position in the objects module array
 };
 
@@ -89,6 +89,7 @@ public:
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
 	ObjBox * AddObjBox(fPoint position);
 	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize);
+	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);
 	bool DeleteObject(GameObject * object);
 
 public:
