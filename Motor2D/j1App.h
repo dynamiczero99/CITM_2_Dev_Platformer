@@ -17,6 +17,7 @@ class j1Map;
 class j1Collision;
 class j1FadeToBlack;
 class j1Object;
+class j1PathFinding;
 
 class j1App
 {
@@ -99,6 +100,7 @@ public:
 	j1Collision*		collision = nullptr;
 	j1FadeToBlack*		fade_to_black = nullptr;
 	j1Object*			object = nullptr;
+	j1PathFinding*		pathfinding = nullptr;
 
 	// save relative
 	bool readyToLoad = false;

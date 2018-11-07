@@ -51,6 +51,9 @@
     <ClCompile Include="ObjTrigger.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="ObjTrigger.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
