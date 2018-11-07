@@ -31,6 +31,8 @@ struct PathNode
 	int GetF() const;
 	// Calculate the F for a specific destination tile
 	void SetGandH(const iPoint& destination);
+	// Find walkable adjacents
+	void FindWalkableAdjacents(PathList &list, const iPoint destination);
 
 	// -----------
 	int g;
