@@ -56,6 +56,8 @@ public:
 	//Get the number of seconds since the previous update
 	float GetDeltaTime() const;
 
+	bool GetLevelToLoadName(p2SString& name) const;
+
 private:
 
 	// Load config file
@@ -98,6 +100,9 @@ public:
 	j1FadeToBlack*		fade_to_black = nullptr;
 	j1Object*			object = nullptr;
 
+	// save relative
+	bool readyToLoad = false;
+	bool want_to_load = false;
 
 
 private:
@@ -116,13 +121,14 @@ private:
 	p2SString			organization;
 
 	mutable bool		want_to_save;
-	bool				want_to_load;
+	//bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
 	Uint32 currTime;
 	Uint32 lastTime;
 	float deltaTime;
+
 };
 
 extern j1App* App;

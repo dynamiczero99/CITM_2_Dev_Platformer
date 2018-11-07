@@ -172,6 +172,8 @@ private:
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
+	bool loadFromSaveGame = false;
+
 public:
 
 	MapData data;

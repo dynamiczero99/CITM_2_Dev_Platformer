@@ -55,6 +55,9 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 				// TODO: maybe we need to search a less ugly workaround to restart scene
 				//App->scene->Disable();
 				App->scene->Enable();
+
+				if(App->want_to_load) // if the call comes from a loadgame
+					App->readyToLoad = true; // active to call all virtual loads
 			}
 
 			total_time += total_time;

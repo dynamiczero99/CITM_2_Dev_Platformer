@@ -171,8 +171,23 @@ void j1App::FinishUpdate()
 	if(want_to_save == true)
 		SavegameNow();
 
-	if(want_to_load == true)
-		LoadGameNow();
+	if (want_to_load == true)
+	{
+		if (!readyToLoad)
+		{
+			p2SString level_name;
+			if (GetLevelToLoadName(level_name))
+				App->fade_to_black->FadeToBlack(level_name.GetString());
+			else
+			{
+				LOG("Load game failed");
+				want_to_load = false;
+			}
+		}
+		else
+			LoadGameNow();
+	}
+		
 }
 
 // Call modules before each loop iteration
@@ -327,29 +342,6 @@ bool j1App::LoadGameNow()
 
 		ret = true;
 
-		// check if the current level is the same of the one we want to load -----
-
-		pugi::xml_node levelCheck = root.child("scene").child("current_level");
-		p2SString name = levelCheck.attribute("name").as_string();
-		if (name != App->map->data.loadedLevel.GetString())
-		{
-			LOG("map is different: loading %s", name.GetString());
-			//App->fade_to_black->FadeToBlack(name.GetString(), 2.0f);
-			
-			App->scene->Disable();
-			// clean up the current map
-			if (App->map->Reset())// load new map
-			{
-				App->map->Load(name.GetString());
-				App->scene->Enable();
-			}
-
-		}
-		else
-			LOG("map is the same %s %s", name.GetString(), App->map->data.loadedLevel.GetString());
-
-		// ------------------------------------------------------------------------
-
 		p2List_item<j1Module*>* item = modules.start;
 		while(item != NULL && ret == true)
 		{
@@ -367,6 +359,8 @@ bool j1App::LoadGameNow()
 		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
 
 	want_to_load = false;
+	readyToLoad = false;
+
 	return ret;
 }
 
@@ -420,4 +414,33 @@ void j1App::CalculateDeltaTime()
 	currTime = SDL_GetTicks();
 	deltaTime = (currTime - lastTime) / 1000.0F;//INFO: 1 second is 1000 miliseconds
 	lastTime = currTime;
+}
+
+bool j1App::GetLevelToLoadName(p2SString& level_name) const
+{
+
+	pugi::xml_document data;
+	pugi::xml_node root;
+
+	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+
+	if (result != NULL)
+	{
+		LOG("Loading new Game State from %s...", load_game.GetString());
+
+		root = data.child("game_state");
+
+		pugi::xml_node levelCheck = root.child("scene").child("current_level");
+		p2SString name = levelCheck.attribute("name").as_string();
+
+		if (name != NULL) level_name = name;
+
+		return true;
+	}
+	else
+	{
+		LOG("Failed to find load game file");
+		return false;
+	}
+
 }

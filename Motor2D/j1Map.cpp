@@ -669,21 +669,24 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 		// Load custom properties
 		//LoadProperties(objectGroup, newObject->properties);
 
-		if (tmp == "GameObjects")
+		if (tmp == "GameObjects") // gameobjects maybe needs load from save, check this
 		{
-			// iterate all objects
-			for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+			if (!loadFromSaveGame)
 			{
-
-				p2SString gameobject_name = object.attribute("name").as_string();
-				LOG("%s", gameobject_name.GetString());
-
-				if (gameobject_name == "normalBox")
+				// iterate all objects
+				for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
 				{
-					//Box have their pivot point on ther bottom - middle
-					App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float()});
-				}
 
+					p2SString gameobject_name = object.attribute("name").as_string();
+					LOG("%s", gameobject_name.GetString());
+
+					if (gameobject_name == "normalBox")
+					{
+						//Box have their pivot point on ther bottom - middle
+						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
+					}
+
+				}
 			}
 		}
 		if (tmp == "Triggers")
