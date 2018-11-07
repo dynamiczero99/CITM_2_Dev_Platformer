@@ -158,8 +158,8 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	if (!IsWalkable(origin) || !IsWalkable(destination)) {
-		LOG("Invalid origin or destination: Origin or destination are not walkable.");
+	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
+		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
 		return -1;
 	}
 
