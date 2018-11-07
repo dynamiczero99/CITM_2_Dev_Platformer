@@ -13,6 +13,7 @@ class ObjPlayer;
 class ObjProjectile;
 class ObjBox;
 class ObjTrigger;
+class ObjEnemyFlying;
 
 struct Collider;
 enum COLLIDER_TYPE;
@@ -100,11 +101,13 @@ public:
 	SDL_Texture * robotTex = nullptr;
 	ObjPlayer * player = nullptr;
 	// sfx id
-	uint impactBoxSFX = 0;
+	uint impactBoxSFX = 0u;
+	// marked box for load method pointer
+	ObjBox* object_box_markedOnLoad = nullptr;
 
 private:
 	GameObject * objects [MAX_OBJECTS];
-	uint actualObjects = 0;
+	uint actualObjects = 0u;
 	pugi::xml_node object_node;
 	
 };
