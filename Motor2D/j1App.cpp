@@ -177,7 +177,7 @@ void j1App::FinishUpdate()
 		{
 			p2SString level_name;
 			if (GetLevelToLoadName(level_name))
-				App->fade_to_black->FadeToBlack(level_name.GetString());
+				App->fade_to_black->FadeToBlack(level_name.GetString(), 0.5f);
 			else
 			{
 				LOG("Load game failed");

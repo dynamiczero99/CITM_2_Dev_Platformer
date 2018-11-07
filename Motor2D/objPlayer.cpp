@@ -474,6 +474,13 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 
 		projectile = App->object->AddObjProjectile({ projectiles.attribute("x").as_float(), projectiles.attribute("y").as_float() }, direction, this);
 	}
+	// player checks if we have a marked box on savegame too
+	if (App->object->object_box_markedOnLoad != nullptr)
+	{
+		swapObject = App->object->object_box_markedOnLoad;
+		// and "release" the previous pointer
+		App->object->object_box_markedOnLoad = nullptr;
+	}
 
 	return true;
 }

@@ -179,18 +179,26 @@ bool j1Object::DeleteObject(Gameobject * object) {
 
 bool j1Object::Load(pugi::xml_node& node)
 {
-	for (int i = 0; i < MAX_OBJECTS; ++i)
-	{
-		if (objects[i] != nullptr)
-			objects[i]->Load(node);
-	}
-
-	// and check if the scene has gameObjects to load
+	// check if the scene has gameObjects to load
 	// boxes
 	for (pugi::xml_node boxes = node.child("Box"); boxes; boxes = boxes.next_sibling("Box"))
 	{
 		LOG("node found");
-		App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+		// check if the box has the attribute marked, we only can have 1 marked box at a time
+		if (boxes.attribute("isMarked"))
+		{
+			object_box_markedOnLoad = App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+			object_box_markedOnLoad->MarkObject(true);
+		}
+		else
+			App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+	}
+
+	// and load the rest of data
+	for (int i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+			objects[i]->Load(node);
 	}
 
 	return true;

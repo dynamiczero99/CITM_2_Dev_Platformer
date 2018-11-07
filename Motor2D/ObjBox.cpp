@@ -115,6 +115,8 @@ bool ObjBox::Save(pugi::xml_node& node) const
 	boxNode.append_attribute("y") = position.y;
 	boxNode.append_attribute("velocity_x") = velocity.x;
 	boxNode.append_attribute("velocity_y") = velocity.y;
+	if(currAnim == &activeAnim)
+		boxNode.append_attribute("isMarked") = true;
 
 
 	return true;
