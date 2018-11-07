@@ -6,17 +6,18 @@
 	<audio />
 	<map />
 	<scene>
-		<camera x="-2228.19995" y="-207.580002" />
+		<camera x="-972.049866" y="-207.333313" />
 		<current_level name="test_level.tmx" />
 	</scene>
 	<object>
-		<Player x="872" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
-		<Box x="767.333618" y="280" velocity_x="0" velocity_y="0" />
-		<Box x="571.200806" y="280" velocity_x="0" velocity_y="0" />
+		<Box x="872" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
+		<Box x="746" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
+		<Player x="452.266602" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
+		<Projectile x="459.620605" y="220.681885" velocity_x="0.919253111" velocity_y="-4.91477108" />
 	</object>
 	<FadeToBlack />
 	<Collision />
 	<renderer>
-		<camera x="-2228" y="-207" />
+		<camera x="-972" y="-207" />
 	</renderer>
 </game_state>

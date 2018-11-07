@@ -462,6 +462,19 @@ bool ObjPlayer::Load(pugi::xml_node& loadNode)
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 
+	// player checks if we have alive projectile too
+	// projectile
+	for (pugi::xml_node projectiles = loadNode.child("Projectile"); projectiles; projectiles = projectiles.next_sibling("Projectile"))
+	{
+		LOG("node found");
+		fPoint direction;
+		direction.x = projectiles.attribute("velocity_x").as_float();
+		direction.y = projectiles.attribute("velocity_y").as_float();
+		direction.Normalize();
+
+		projectile = App->object->AddObjProjectile({ projectiles.attribute("x").as_float(), projectiles.attribute("y").as_float() }, direction, this);
+	}
+
 	return true;
 }
 

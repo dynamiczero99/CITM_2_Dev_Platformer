@@ -68,3 +68,17 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 
 
 }
+
+bool ObjProjectile::Save(pugi::xml_node& node) const
+{
+	LOG("Saving obj projectile");
+
+	pugi::xml_node projectileNode = node.append_child("Projectile");
+
+	projectileNode.append_attribute("x") = position.x;
+	projectileNode.append_attribute("y") = position.y;
+	projectileNode.append_attribute("velocity_x") = velocity.x;
+	projectileNode.append_attribute("velocity_y") = velocity.y;
+
+	return true;
+}

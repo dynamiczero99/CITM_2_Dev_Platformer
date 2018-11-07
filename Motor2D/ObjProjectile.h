@@ -16,6 +16,8 @@ public:
 	bool OnDestroy() override;
 	void OnCollision(Collider * c1, Collider * c2) override;
 
+	bool Save(pugi::xml_node& saveNode) const;
+
 public:
 	Collider * collider = nullptr;
 	ObjPlayer * player = nullptr;
