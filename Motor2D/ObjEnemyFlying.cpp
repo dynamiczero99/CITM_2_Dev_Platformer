@@ -45,6 +45,8 @@ bool ObjEnemyFlying::Update() {
 	}
 	// --------------------------------------------------------------------------
 
+	followPath();
+
 	return true;
 }
 
@@ -90,7 +92,9 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 void ObjEnemyFlying::followPath()
 {
-
+	iPoint enemyPos, nextNodePos;
+	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
+	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
 
 }
 

@@ -119,8 +119,22 @@ bool j1Scene::Update(float dt)
 
 	App->map->Draw();
 
-	// Debug pathfinding ------------------------------
+	// debug window coords. --------------------------
 	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint map_coordinates = App->render->ScreenToWorld(x, y);
+	map_coordinates = App->map->WorldToMap(map_coordinates.x, map_coordinates.y);
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
+		App->map->data.columns, App->map->data.rows,
+		App->map->data.tile_width, App->map->data.tile_height,
+		App->map->data.tilesets.Count(),
+		map_coordinates.x, map_coordinates.y);
+
+	App->win->SetTitle(title.GetString());
+	// ------------------------------------------------
+	
+	// Debug pathfinding ------------------------------
+	//int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
@@ -128,13 +142,12 @@ bool j1Scene::Update(float dt)
 
 	App->render->Blit(debug_tex, p.x, p.y);
 
-	//const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
 	for (uint i = 0; i < last_path.Count(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
+	// ------------------------------------------------
 
 	return true;
 }
