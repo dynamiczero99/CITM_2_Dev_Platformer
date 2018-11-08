@@ -57,6 +57,8 @@ bool ObjEnemyFlying::PostUpdate() {
 
 	// testing path
 	if (SDL_GetTicks() > start_time + frequency_time)
+	//static bool cmon = false;
+	//if(!cmon)
 	{
 		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
@@ -66,6 +68,7 @@ bool ObjEnemyFlying::PostUpdate() {
 		CopyLastGeneratedPath();
 
 		start_time = SDL_GetTicks();
+		//cmon = true;
 	}
 	
 	return true;
@@ -94,22 +97,33 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 void ObjEnemyFlying::followPath()
 {
 	iPoint enemyPos, nextNodePos;
-	nextNodePos = *last_path.At(0u);
+	nextNodePos = *last_path.At(last_path.Count() - 1);
 	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
-	//LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
+	
+	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
 
-	if(enemyPos != nextNodePos)
+	if(enemyPos == nextNodePos)
 		last_path.Pop(nextNodePos);
 	
-	//LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
+	LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
 
+	if (enemyPos != nextNodePos)
+	{
+		// re calculate map positions to world positions
+		/*enemyPos = App->map->MapToWorld(enemyPos.x, enemyPos.y);
+		nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);*/
 
-	iPoint velocity_vector = enemyPos - nextNodePos;
-	velocity_vector.Normalize();
+		// get velocity vector
+		fPoint velocity_vector;
+		velocity_vector.x = enemyPos.x - nextNodePos.x;
+		velocity_vector.y = enemyPos.y - nextNodePos.y;
+		velocity_vector.Normalize();
 
-	int speed_factor = 2;
+		float speed_factor = 1.5F;
 
-	
+		position.x -= velocity_vector.x * speed_factor;
+		position.y -= velocity_vector.y * speed_factor;
+	}
 	
 }
 
