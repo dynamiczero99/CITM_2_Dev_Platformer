@@ -687,21 +687,6 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 					}
 
 				}
-
-				// iterate all objects
-				for (pugi::xml_node object = objectGroup.child("enemy_flying"); object; object = object.next_sibling("enemy_flying"))
-				{
-
-					p2SString gameobject_name = object.attribute("name").as_string();
-					LOG("%s", gameobject_name.GetString());
-
-					if (gameobject_name == "normalBox")
-					{
-						//Box have their pivot point on ther bottom - middle
-						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
-					}
-
-				}
 			}
 		}
 		if (tmp == "Triggers")
