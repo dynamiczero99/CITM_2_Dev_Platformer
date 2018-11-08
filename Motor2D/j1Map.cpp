@@ -634,8 +634,6 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
 	bool ret = true;
 
-	// TODO 6: Fill in the method to fill the custom properties from 
-	// an xml_node
 	pugi::xml_node propertiesNode = node.child("properties");
 
 	if (propertiesNode == NULL)
@@ -648,7 +646,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 		properties.draw = propertiesNode.find_child_by_attribute("name", "Draw").attribute("value").as_bool(true);
 		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(true);
 		properties.testValue = propertiesNode.find_child_by_attribute("name", "testValue").attribute("value").as_int(0);
-		properties.parallaxSpeed = propertiesNode.find_child_by_attribute("name", "parallaxSpeed").attribute("value").as_float(1.0f);
+		properties.parallaxSpeed = propertiesNode.find_child_by_attribute("name", "parallaxSpeed").attribute("value").as_float(1.0F);
 		properties.music_name = propertiesNode.find_child_by_attribute("name", "background_music").attribute("value").as_string();
 		//properties.fx_name = propertiesNode.find_child_by_attribute("name", "background_music").attribute("value").as_string();
 	}
@@ -672,6 +670,21 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 			{
 				// iterate all objects
 				for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+				{
+
+					p2SString gameobject_name = object.attribute("name").as_string();
+					LOG("%s", gameobject_name.GetString());
+
+					if (gameobject_name == "normalBox")
+					{
+						//Box have their pivot point on ther bottom - middle
+						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
+					}
+
+				}
+
+				// iterate all objects
+				for (pugi::xml_node object = objectGroup.child("enemy_flying"); object; object = object.next_sibling("enemy_flying"))
 				{
 
 					p2SString gameobject_name = object.attribute("name").as_string();

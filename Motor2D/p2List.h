@@ -61,7 +61,7 @@ public:
 	/**
 	* Get Size
 	*/
-	unsigned int count() const
+	unsigned int Count() const
 	{
 		return size;
 	}

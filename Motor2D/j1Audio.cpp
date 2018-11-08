@@ -158,7 +158,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 	else
 	{
 		fx.add(chunk);
-		ret = fx.count();
+		ret = fx.Count();
 	}
 
 	return ret;
@@ -172,7 +172,7 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.Count())
 	{
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
