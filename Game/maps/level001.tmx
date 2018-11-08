@@ -45168,7 +45168,7 @@
    <object id="22" name="Trigger" type="next_level" x="1010.5" y="139" width="20.5" height="137.5"/>
   </objectgroup>
   <objectgroup id="6" name="Death">
-   <object id="19" name="death" x="0" y="303" width="1200" height="40"/>
+   <object id="19" name="death" x="0" y="303" width="1200" height="497"/>
   </objectgroup>
   <objectgroup id="7" name="Platforms">
    <object id="24" x="881" y="303" width="294" height="496"/>

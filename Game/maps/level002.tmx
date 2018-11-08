@@ -60195,7 +60195,7 @@
    <object id="22" name="Trigger" type="next_level" x="744" y="152" width="20.5" height="137.5"/>
   </objectgroup>
   <objectgroup id="7" name="Death">
-   <object id="19" name="death" x="32" y="456" width="1200" height="40"/>
+   <object id="19" name="death" x="0" y="456" width="1200" height="344"/>
   </objectgroup>
   <objectgroup id="8" name="Platforms"/>
   <objectgroup id="9" name="Floor">
@@ -60206,7 +60206,7 @@
    <object id="35" name="floor" x="608" y="368" width="48" height="63"/>
    <object id="36" name="floor" x="656" y="304" width="216" height="127"/>
    <object id="38" name="floor" x="280" y="64" width="24" height="367"/>
-   <object id="39" name="floor" x="848" y="64" width="24" height="240"/>
+   <object id="39" name="floor" x="848" y="168" width="24" height="136"/>
   </objectgroup>
  </group>
  <group id="10" name="Player">

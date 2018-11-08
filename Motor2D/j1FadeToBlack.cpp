@@ -87,19 +87,19 @@ bool j1FadeToBlack::FadeToBlack(const char* lvlName, float time)
 		lvl_to_load = lvlName;
 		ret = true;
 	}
-	else if (current_step == fade_step::fade_to_black) {
-		total_time = (Uint32)(time * 1000.0F);
-		start_time = SDL_GetTicks() - fadePerCent * (total_time * 0.5F);
-		lvl_to_load = lvlName;
-		ret = true;
-	}
-	else if (current_step == fade_step::fade_from_black) {
-		current_step = fade_step::fade_to_black;
-		total_time = (Uint32)(time * 1000.0F);
-		start_time = SDL_GetTicks() - fadePerCent * (total_time * 0.5F);
-		lvl_to_load = lvlName;
-		ret = true;
-	}
+	//else if (current_step == fade_step::fade_to_black) {
+	//	total_time = (Uint32)(time * 1000.0F);
+	//	start_time = SDL_GetTicks() - fadePerCent * (total_time * 0.5F);
+	//	lvl_to_load = lvlName;
+	//	ret = true;
+	//}
+	//else if (current_step == fade_step::fade_from_black) {
+	//	current_step = fade_step::fade_to_black;
+	//	total_time = (Uint32)(time * 1000.0F);
+	//	start_time = SDL_GetTicks() - fadePerCent * (total_time * 0.5F);
+	//	lvl_to_load = lvlName;
+	//	ret = true;
+	//}
 
 	return ret;
 }
