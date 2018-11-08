@@ -181,7 +181,7 @@ void j1App::FinishUpdate()
 			p2SString level_name;
 			if (GetLevelToLoadName(level_name))
 			{
-				App->fade_to_black->FadeToBlack(level_name.GetString(), 1.0f);
+				App->fade_to_black->FadeToBlack(level_name.GetString(), 2.0f);
 				prepareToLoad = true;
 			}
 			else

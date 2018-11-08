@@ -14,7 +14,7 @@ public:
 	bool Start();
 	//bool Update(float dt);
 	bool PostUpdate();
-	bool FadeToBlack(const char* lvlName, float time = 1.0f);
+	bool FadeToBlack(const char* lvlName, float time = 2.0f);
 	bool IsFading() const;
 
 private:

@@ -327,7 +327,7 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 
 void ObjPlayer::CollideDeathZone() {
 	App->audio->PlayFx(death);
-	App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 0.5F);
+	App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 2.0f);
 }
 
 void ObjPlayer::CollideWinZone() {
@@ -350,7 +350,7 @@ void ObjPlayer::CollideWinZone() {
 
 	// play win round sfx
 	//App->audio->PlayFx(win);
-	App->fade_to_black->FadeToBlack(item->data->name.GetString(), 0.5F);
+	App->fade_to_black->FadeToBlack(item->data->name.GetString(), 2.0f);
 }
 
 void ObjPlayer::OnCollisionFeet(Collider * c2)

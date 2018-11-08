@@ -67,6 +67,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 		}
 	}
 
+	LOG("Fade percent: %f", fadePerCent);
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadePerCent * 255.0F));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 

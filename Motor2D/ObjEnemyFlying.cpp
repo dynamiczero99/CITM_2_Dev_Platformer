@@ -96,12 +96,12 @@ void ObjEnemyFlying::followPath()
 	iPoint enemyPos, nextNodePos;
 	nextNodePos = *last_path.At(0u);
 	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
-	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
+	//LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
 
 	if(enemyPos != nextNodePos)
 		last_path.Pop(nextNodePos);
 	
-	LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
+	//LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
 
 
 	iPoint velocity_vector = enemyPos - nextNodePos;
