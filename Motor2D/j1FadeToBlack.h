@@ -18,10 +18,6 @@ public:
 	bool IsFading() const;
 
 private:
-	float FadeToBlackPerCent();
-	float FadeFromBlackPerCent();
-
-private:
 
 	enum fade_step
 	{
