@@ -61,7 +61,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 			current_step = fade_step::fade_from_black;
 		}
 
-		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MIN(1.0F, (fadePerCent * 2.0F)) * 255.0F));
+		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MIN(0.5F, fadePerCent) * 2.0F * 255.0F));
 
 		break;
 	case fade_step::fade_from_black:
@@ -69,7 +69,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 			current_step = fade_step::none;
 		}
 
-		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MAX(0.0F, 1.0F - ((fadePerCent-0.5F) * 2.0F)) * 255.0F));
+		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MAX(0.0F, 0.5F - (fadePerCent-0.5F)) * 2.0F * 255.0F));
 
 		break;
 	}
