@@ -433,7 +433,7 @@ bool j1App::GetLevelToLoadName(p2SString& level_name) const
 
 	if (result != NULL)
 	{
-		LOG("Loading new Game State from %s...", load_game.GetString());
+		LOG("Returning level to load name %s...", load_game.GetString());
 
 		root = data.child("game_state");
 

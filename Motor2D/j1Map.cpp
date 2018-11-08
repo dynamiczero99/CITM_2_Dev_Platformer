@@ -738,8 +738,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		if (layer->properties.navigation == false)
 			continue;
 
-		uchar* map = new uchar[layer->rows*layer->rows];
-		memset(map, 1, layer->rows*layer->rows);
+		uchar* map = new uchar[layer->columns*layer->rows];
+		memset(map, 1, layer->columns*layer->rows);
 
 		for (int y = 0; y < data.rows; ++y)
 		{
