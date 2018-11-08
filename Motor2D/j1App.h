@@ -103,6 +103,7 @@ public:
 	j1PathFinding*		pathfinding = nullptr;
 
 	// save relative
+	bool prepareToLoad = false;
 	bool readyToLoad = false;
 	bool want_to_load = false;
 

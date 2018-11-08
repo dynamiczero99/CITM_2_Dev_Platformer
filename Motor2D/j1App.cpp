@@ -176,19 +176,23 @@ void j1App::FinishUpdate()
 
 	if (want_to_load == true)
 	{
-		if (!readyToLoad)
+		if (!prepareToLoad)
 		{
 			p2SString level_name;
 			if (GetLevelToLoadName(level_name))
-				App->fade_to_black->FadeToBlack(level_name.GetString(), 0.5f);
+				App->fade_to_black->FadeToBlack(level_name.GetString(), 1.0f);
 			else
 			{
 				LOG("Load game failed");
 				want_to_load = false;
 			}
+			prepareToLoad = true;
 		}
-		else
+		else if (readyToLoad)
+		{
 			LoadGameNow();
+			prepareToLoad = false;
+		}
 	}
 		
 }

@@ -7,17 +7,17 @@
 	<map />
 	<pathfinding />
 	<scene>
-		<camera x="-1385.34998" y="-171.066696" />
+		<camera x="-779.251038" y="-143.773315" />
 		<current_level name="test_level.tmx" />
 	</scene>
 	<object>
-		<Player x="616.532959" y="219.4245" velocity_x="96" velocity_y="-31.9183636" flip_direction="false" />
-		<Box x="872" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
-		<Box x="746" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
+		<Player x="388.266693" y="266.848999" velocity_x="0" velocity_y="328.081665" flip_direction="false" />
+		<Box x="872" y="280" velocity_x="0" velocity_y="0" />
+		<Box x="746" y="280" velocity_x="0" velocity_y="0" />
 	</object>
 	<FadeToBlack />
 	<Collision />
 	<renderer>
-		<camera x="-1385" y="-171" />
+		<camera x="-779" y="-143" />
 	</renderer>
 </game_state>

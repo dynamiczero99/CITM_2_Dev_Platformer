@@ -49,7 +49,7 @@ bool j1Scene::Start()
 	if (!App->object->IsEnabled()) { App->object->Enable(); }
 
 	// create walkability map
-	if (App->map->map_loaded)
+	/*if (App->map->map_loaded)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -57,7 +57,7 @@ bool j1Scene::Start()
 			App->pathfinding->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
-	}
+	}*/
 
 	debug_tex = App->tex->LoadTexture("maps/calculatedPathTex.png");
 
