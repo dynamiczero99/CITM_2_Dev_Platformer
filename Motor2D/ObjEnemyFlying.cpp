@@ -36,6 +36,16 @@ void ObjEnemyFlying::MarkObject(bool mark)
 bool ObjEnemyFlying::Update() {
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
+
+	// pathfinding debug draw
+	//const p2DynArray<iPoint>* path = last_path.
+
+	for (uint i = 0; i < last_path.Count() ; ++i)
+	{
+		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
+		App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
+	}
+
 	return true;
 }
 
@@ -50,6 +60,8 @@ bool ObjEnemyFlying::PostUpdate() {
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 
 		App->pathfinding->CreatePath(thisPos, playerPos);
+
+		CopyLastGeneratedPath();
 
 		start_time = SDL_GetTicks();
 	}
@@ -80,4 +92,16 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 void ObjEnemyFlying::followPath()
 {
 
+
+}
+
+void ObjEnemyFlying::CopyLastGeneratedPath()
+{
+	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
+
+	last_path.Clear();
+	for (uint i = 0; i < pathToCopy->Count(); ++i)
+	{
+		last_path.PushBack(*pathToCopy->At(i));
+	}
 }

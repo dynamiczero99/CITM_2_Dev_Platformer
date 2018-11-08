@@ -44,6 +44,7 @@
     <player_run_image>textures/engineer character/engineer-run.png</player_run_image>
     <player_jump_image>textures/engineer character/engineer-jump.png</player_jump_image>
     <robot_image>textures/robot_tileset.png</robot_image>
+	<debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
     <projectile>
       <speed>5</speed>
       <collider_width>5</collider_width>

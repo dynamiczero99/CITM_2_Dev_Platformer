@@ -31,6 +31,7 @@ private:
 
 	// pathfinding relatives
 	p2DynArray<iPoint> last_path = NULL;
+	void CopyLastGeneratedPath();
 
 	void followPath();
 

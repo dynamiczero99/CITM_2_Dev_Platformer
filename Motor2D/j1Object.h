@@ -99,6 +99,7 @@ public:
 	SDL_Texture * playerRunTex = nullptr;
 	SDL_Texture * playerJumpTex = nullptr;
 	SDL_Texture * robotTilesetTex = nullptr;
+	SDL_Texture * debugEnemyPathTex = nullptr;
 	ObjPlayer * player = nullptr;
 	// sfx id
 	uint impactBoxSFX = 0u;
