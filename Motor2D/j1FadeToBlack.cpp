@@ -41,7 +41,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 	Uint32 now = SDL_GetTicks() - start_time;
 	
 	if (current_step == fade_step::fade_to_black) {
-		fadePerCent = MIN(1.0F, ((float)now * 2.0F) / (float)total_time);
+		fadePerCent = MIN(1.0F, (float)now * 2.0F / (float)total_time);
 		if (now >= total_time * 0.5F)
 		{
 			//Change scenes
@@ -61,7 +61,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadePerCent * 255.0F));
 	}
 	else if (current_step == fade_step::fade_from_black) {
-		fadePerCent = MAX(0.0F, 1.0F - (((float)now * 2.0F / (float)total_time) - 1.0F));
+		fadePerCent = MAX(0.0F, 2.0F - (float)now * 2.0F / (float)total_time);
 		if (now >= total_time) {
 			current_step = fade_step::none;
 			fadePerCent = 0.0F;
