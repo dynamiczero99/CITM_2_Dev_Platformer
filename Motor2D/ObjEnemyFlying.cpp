@@ -45,7 +45,8 @@ bool ObjEnemyFlying::Update() {
 	}
 	// --------------------------------------------------------------------------
 
-	followPath();
+	if(last_path.Count() > 0)
+		followPath();
 
 	return true;
 }
@@ -93,9 +94,23 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 void ObjEnemyFlying::followPath()
 {
 	iPoint enemyPos, nextNodePos;
+	nextNodePos = *last_path.At(0u);
 	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
 	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
 
+	if(enemyPos != nextNodePos)
+		last_path.Pop(nextNodePos);
+	
+	LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
+
+
+	iPoint velocity_vector = enemyPos - nextNodePos;
+	velocity_vector.Normalize();
+
+	int speed_factor = 2;
+
+	
+	
 }
 
 void ObjEnemyFlying::CopyLastGeneratedPath()
@@ -107,4 +122,5 @@ void ObjEnemyFlying::CopyLastGeneratedPath()
 	{
 		last_path.PushBack(*pathToCopy->At(i));
 	}
+	last_path.Flip();
 }

@@ -197,6 +197,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			for (PathNode * pathIterator = currNode; pathIterator != nullptr && pathIterator->pos != origin; pathIterator = pathIterator->parent) {
 				last_path.PushBack(pathIterator->pos);
 			}
+			// adds start node too
+			last_path.PushBack(closedList.list.start->data.pos);
 			last_path.Flip();
 			LOG("Succesful path: The algorithm has found a path from the origin(%i, %i) to the destination(%i, %i)", origin.x, origin.y, destination.x, destination.y);
 			return last_path.Count();
