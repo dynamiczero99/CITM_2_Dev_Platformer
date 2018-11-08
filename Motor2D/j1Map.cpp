@@ -646,7 +646,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	else
 	{
 		properties.draw = propertiesNode.find_child_by_attribute("name", "Draw").attribute("value").as_bool(true);
-		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(true);
+		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(false);
 		properties.testValue = propertiesNode.find_child_by_attribute("name", "testValue").attribute("value").as_int(0);
 		properties.parallaxSpeed = propertiesNode.find_child_by_attribute("name", "parallaxSpeed").attribute("value").as_float(1.0f);
 		properties.music_name = propertiesNode.find_child_by_attribute("name", "background_music").attribute("value").as_string();
@@ -734,21 +734,21 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		if (layer->properties.navigation == false)
 			continue;
 
-		uchar* map = new uchar[layer->rows*layer->columns];
-		memset(map, 1, layer->rows*layer->columns);
+		uchar* map = new uchar[layer->rows*layer->rows];
+		memset(map, 1, layer->rows*layer->rows);
 
-		for (int y = 0; y < data.columns; ++y)
+		for (int y = 0; y < data.rows; ++y)
 		{
-			for (int x = 0; x < data.rows; ++x)
+			for (int x = 0; x < data.columns; ++x)
 			{
-				int i = (y*layer->rows) + x;
+				int i = (y*layer->columns) + x;
 
 				int tile_id = layer->GetArrayPos(x, y);
 				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
 
 				if (tileset != NULL)
 				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 1 : 0;
 					/*TileType* ts = tileset->GetTileType(tile_id);
 					if(ts != NULL)
 					{
@@ -759,8 +759,8 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 		}
 
 		*buffer = map;
-		width = data.rows;
-		height = data.columns;
+		width = data.columns;
+		height = data.rows;
 		ret = true;
 
 		break;
