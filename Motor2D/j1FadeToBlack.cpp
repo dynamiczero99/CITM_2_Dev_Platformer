@@ -14,7 +14,7 @@ bool j1FadeToBlack::Awake(pugi::xml_node&)
 {
 	name.create("FadeToBlack");
 
-	uint width, height = 0;
+	uint width, height = 0u;
 	App->win->GetWindowSize(width, height);
 
 	screen = { 0, 0, (int)width * (int)App->win->GetScale(), (int)height * (int)App->win->GetScale() };
@@ -44,7 +44,6 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 	switch (current_step)
 	{
 	case fade_step::fade_to_black:
-	{
 		if (now >= total_time)
 		{
 			App->scene->Disable();
@@ -54,31 +53,29 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 				if (App->want_to_load) // if the call comes from a loadgame
 					App->readyToLoad = true; // active to call all virtual loads
 
-				// now map knows if the call is from a load game call
-				if(App->map->Load(lvl_to_load))
+											 // now map knows if the call is from a load game call
+				if (App->map->Load(lvl_to_load))
 					App->scene->Enable();
 				// TODO: maybe we need to search a less ugly workaround to restart scene
 				//App->scene->Disable();
-			
+
 			}
 
 			total_time += total_time;
 			start_time = SDL_GetTicks();
 			current_step = fade_step::fade_from_black;
 		}
-	} break;
-
+		break;
 	case fade_step::fade_from_black:
-	{
-		normalized = 1.0f - normalized;
+		normalized = 1.0F - normalized;
 
 		if (now >= total_time)
 			current_step = fade_step::none;
-	} break;
+		break;
 	}
 
 	// Finally render the black square with alpha on the screen
-	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0F));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
 	return true;
@@ -93,11 +90,17 @@ bool j1FadeToBlack::FadeToBlack(const char* lvlName, float time)
 	{
 		current_step = fade_step::fade_to_black;
 		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time * 0.5f * 1000.0f);
+		total_time = (Uint32)(time * 0.5F * 1000.0F);
 		//to_enable = module_on;
 		//to_disable = module_off;
 		lvl_to_load = lvlName;
 		ret = true;
+	}
+	else if (current_step == fade_step::fade_from_black) {
+		current_step = fade_step::fade_to_black;
+	}
+	else if (current_step == fade_step::fade_to_black) {
+
 	}
 
 	return ret;
