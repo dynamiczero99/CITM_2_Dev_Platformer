@@ -90,6 +90,7 @@ bool j1Scene::PreUpdate() {
 		{
 			App->pathfinding->CreatePath(origin, p);
 			origin_selected = false;
+			CopyLastGeneratedPath();
 		}
 		else
 		{
@@ -127,11 +128,11 @@ bool j1Scene::Update(float dt)
 
 	App->render->Blit(debug_tex, p.x, p.y);
 
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	//const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
-	for (uint i = 0; i < path->Count(); ++i)
+	for (uint i = 0; i < last_path.Count(); ++i)
 	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
 	}
 
@@ -299,3 +300,15 @@ void j1Scene::CameraLogic()
  {
 
  }*/
+
+ // debug path generation with mouse
+ void j1Scene::CopyLastGeneratedPath()
+ {
+	 const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
+
+	 last_path.Clear();
+	 for (uint i = 0; i < pathToCopy->Count(); ++i)
+	 {
+		 last_path.PushBack(*pathToCopy->At(i));
+	 }
+ }

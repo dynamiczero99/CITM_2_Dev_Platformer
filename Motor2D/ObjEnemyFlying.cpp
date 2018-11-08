@@ -37,14 +37,13 @@ bool ObjEnemyFlying::Update() {
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 
-	// pathfinding debug draw
-	//const p2DynArray<iPoint>* path = last_path.
-
+	// pathfinding debug draw ---------------------------------------------------
 	for (uint i = 0; i < last_path.Count() ; ++i)
 	{
 		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
 		App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
 	}
+	// --------------------------------------------------------------------------
 
 	return true;
 }

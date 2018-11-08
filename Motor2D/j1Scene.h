@@ -2,6 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "p2DynArray.h"
 
 struct SDL_Texture;
 
@@ -49,6 +50,10 @@ private:
 	void DebugInput();
 
 	SDL_Texture* debug_tex = nullptr;
+
+	// debug path generation with mouse
+	p2DynArray<iPoint> last_path = NULL;
+	void CopyLastGeneratedPath();
 
 };
 
