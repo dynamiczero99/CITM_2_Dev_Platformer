@@ -55,7 +55,7 @@ bool ObjBox::Update() {
 
 bool ObjBox::PostUpdate() {
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
-	App->render->Blit(App->object->robotTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
+	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
 	return true;
 }
 

@@ -48,6 +48,8 @@ private:
 
 	void DebugInput();
 
+	SDL_Texture* debug_tex = nullptr;
+
 };
 
 #endif // __j1SCENE_H__

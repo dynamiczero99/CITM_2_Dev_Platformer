@@ -7,12 +7,17 @@
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "p2Log.h"
+#include "j1Pathfinding.h"
+#include"objPlayer.h"
+#include "j1Map.h"
 
 ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) {
 	LoadAnimation(enemy_node.child("animation").child("idle_animation").child("sprite"), idleAnim);
 	currAnim = &idleAnim;
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 10, 10};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+
+	
 }
 
 bool ObjEnemyFlying::OnDestroy() {
@@ -36,7 +41,19 @@ bool ObjEnemyFlying::Update() {
 
 bool ObjEnemyFlying::PostUpdate() {
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
-	App->render->Blit(App->object->robotTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
+	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
+
+	// testing path
+	if (SDL_GetTicks() > start_time + frequency_time)
+	{
+		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
+		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+
+		App->pathfinding->CreatePath(thisPos, playerPos);
+
+		start_time = SDL_GetTicks();
+	}
+	
 	return true;
 }
 
@@ -58,4 +75,9 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 
 	return true;
+}
+
+void ObjEnemyFlying::followPath()
+{
+
 }

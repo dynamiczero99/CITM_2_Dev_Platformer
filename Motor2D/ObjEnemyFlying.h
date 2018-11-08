@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "p2DynArray.h"
 
 struct Collider;
 
@@ -27,6 +28,16 @@ private:
 	uint animTileWidth = 0u;
 	uint animTileHeight = 0u;
 	Collider * collider = nullptr;
+
+	// pathfinding relatives
+	p2DynArray<iPoint> last_path = NULL;
+
+	void followPath();
+
+	// provisional timer
+	Uint32 start_time = 0;
+	Uint32 frequency_time = 1000;
+
 };
 
 #endif

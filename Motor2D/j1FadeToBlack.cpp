@@ -55,12 +55,10 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 					App->readyToLoad = true; // active to call all virtual loads
 
 				// now map knows if the call is from a load game call
-				App->map->Load(lvl_to_load);
-
+				if(App->map->Load(lvl_to_load))
+					App->scene->Enable();
 				// TODO: maybe we need to search a less ugly workaround to restart scene
 				//App->scene->Disable();
-				App->scene->Enable();
-
 			
 			}
 

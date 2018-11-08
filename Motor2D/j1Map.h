@@ -19,7 +19,7 @@ struct Levels
 struct Properties
 {
 	bool draw = true;
-	bool navigation = true;
+	bool navigation = false;
 	int testValue = 0;
 	float parallaxSpeed = 1.0f; // default value
 	// music
@@ -159,6 +159,7 @@ public:
 	// Coordinate translation methods
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 private:
 
@@ -170,6 +171,7 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool LoadGameObjects(pugi::xml_node& node);
 
+
 	TileSet* GetTilesetFromTileId(int id) const;
 
 	bool loadFromSaveGame = false;
@@ -178,12 +180,12 @@ public:
 
 	MapData data;
 	PlayerData playerData;
+	bool				map_loaded;
 
 private:
 
 	pugi::xml_document	map_file;
 	p2SString			folder;
-	bool				map_loaded;
 };
 
 #endif // __j1MAP_H__

@@ -644,7 +644,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	else
 	{
 		properties.draw = propertiesNode.find_child_by_attribute("name", "Draw").attribute("value").as_bool(true);
-		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(true);
+		properties.navigation = propertiesNode.find_child_by_attribute("name", "Navigation").attribute("value").as_bool(false);
 		properties.testValue = propertiesNode.find_child_by_attribute("name", "testValue").attribute("value").as_int(0);
 		properties.parallaxSpeed = propertiesNode.find_child_by_attribute("name", "parallaxSpeed").attribute("value").as_float(1.0F);
 		properties.music_name = propertiesNode.find_child_by_attribute("name", "background_music").attribute("value").as_string();
@@ -679,6 +679,11 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 					{
 						//Box have their pivot point on ther bottom - middle
 						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
+					}
+
+					if (gameobject_name == "flyingEnemy")
+					{
+						App->object->AddObjEnemyFlying({object.attribute("x").as_float(), object.attribute("y").as_float()});
 					}
 
 				}
@@ -732,4 +737,52 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 	}
 
 	return true;
+}
+
+bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	p2List_item<MapLayer*>* item;
+	item = data.mapLayers.start;
+
+	for (item = data.mapLayers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.navigation == false)
+			continue;
+
+		uchar* map = new uchar[layer->rows*layer->rows];
+		memset(map, 1, layer->rows*layer->rows);
+
+		for (int y = 0; y < data.rows; ++y)
+		{
+			for (int x = 0; x < data.columns; ++x)
+			{
+				int i = (y*layer->columns) + x;
+
+				int tile_id = layer->GetArrayPos(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 1 : 0;
+					/*TileType* ts = tileset->GetTileType(tile_id);
+					if(ts != NULL)
+					{
+						map[i] = ts->properties.Get("walkable", 1);
+					}*/
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.columns;
+		height = data.rows;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
 }
