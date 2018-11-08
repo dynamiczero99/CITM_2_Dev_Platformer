@@ -433,16 +433,23 @@ bool j1App::GetLevelToLoadName(p2SString& level_name) const
 
 	if (result != NULL)
 	{
-		LOG("Returning level to load name %s...", load_game.GetString());
-
 		root = data.child("game_state");
 
 		pugi::xml_node levelCheck = root.child("scene").child("current_level");
 		p2SString name = levelCheck.attribute("name").as_string();
 
-		if (name != NULL) level_name = name;
+		if (name != NULL)
+		{
+			LOG("Returning level to load %s from file %s...", name.GetString(), load_game.GetString());
 
-		return true;
+			level_name = name;
+			return true;
+		}
+		else
+		{
+			LOG("level name not found");
+			return false;
+		}
 	}
 	else
 	{
