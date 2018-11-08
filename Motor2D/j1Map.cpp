@@ -623,8 +623,9 @@ bool j1Map::Reset()
 	//App->scene->Disable();
 	//App->scene->Enable();
 
-	if(CleanUp())
+	if (CleanUp()) {
 		return true;
+	}
 
 	return false;
 }

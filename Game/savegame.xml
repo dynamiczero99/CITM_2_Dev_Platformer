@@ -5,18 +5,20 @@
 	<textures />
 	<audio />
 	<map />
+	<pathfinding />
 	<scene>
-		<camera x="-1909.00061" y="-208.326538" />
+		<camera x="-965.599792" y="-207.333313" />
 		<current_level name="test_level.tmx" />
 	</scene>
 	<object>
-		<Player x="764.533447" y="280.333344" velocity_x="0" velocity_y="0" flip_direction="false" />
-		<Box x="740.266296" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
-		<Box x="874.133362" y="280" velocity_x="0" velocity_y="0" isMarked="true" />
+		<Box x="872" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
+		<Box x="746" y="280.333344" velocity_x="0" velocity_y="20.0000019" />
+		<EnemyFlying x="561.5" y="108" velocity_x="0" velocity_y="0" />
+		<Player x="450.13327" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
 	</object>
 	<FadeToBlack />
 	<Collision />
 	<renderer>
-		<camera x="-1909" y="-208" />
+		<camera x="-965" y="-207" />
 	</renderer>
 </game_state>
