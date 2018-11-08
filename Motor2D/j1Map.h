@@ -19,7 +19,7 @@ struct Levels
 struct Properties
 {
 	bool draw = true;
-	bool navigation = true;
+	bool navigation = false;
 	int testValue = 0;
 	float parallaxSpeed = 1.0f; // default value
 	// music

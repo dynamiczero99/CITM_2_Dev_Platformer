@@ -151,6 +151,25 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 	cell.create(pos.x - 1, pos.y);
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+
+	// diagonals test
+	// top left
+	cell.create(pos.x - 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	// top right
+	cell.create(pos.x + 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	// bottom left
+	cell.create(pos.x - 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	// bottom right
+	cell.create(pos.x + 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+
 }
 
 // ----------------------------------------------------------------------------------

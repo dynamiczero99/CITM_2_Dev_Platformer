@@ -32,6 +32,8 @@ private:
 	// pathfinding relatives
 	p2DynArray<iPoint> last_path = NULL;
 
+	void followPath();
+
 	// provisional timer
 	Uint32 start_time = 0;
 	Uint32 frequency_time = 1000;

@@ -76,3 +76,8 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	return true;
 }
+
+void ObjEnemyFlying::followPath()
+{
+
+}
