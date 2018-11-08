@@ -18,6 +18,10 @@ public:
 	bool IsFading() const;
 
 private:
+	float FadeToBlackPerCent();
+	float FadeFromBlackPerCent();
+
+private:
 
 	enum fade_step
 	{
@@ -29,6 +33,7 @@ private:
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
 	SDL_Rect screen;
+	float fadePerCent = 0.0F;
 	//j1Module* to_enable = nullptr;
 	//j1Module* to_disable = nullptr;
 	const char* lvl_to_load = nullptr;

@@ -32,6 +32,16 @@ bool j1FadeToBlack::Start()
 	return true;
 }
 
+//Returns a number from 0 to 1 while going to black
+float j1FadeToBlack::FadeToBlackPerCent() {
+	return (MIN(0.5F, fadePerCent) * 2.0F);
+}
+
+//Returns a number from 0 to 1 while going transparent
+float j1FadeToBlack::FadeFromBlackPerCent() {
+	return (MAX(0.0F, 0.5F - (fadePerCent - 0.5F)) * 2.0F);
+}
+
 // Update: draw background
 bool j1FadeToBlack::PostUpdate()//float dt)
 {
@@ -39,11 +49,9 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 		return true;
 
 	Uint32 now = SDL_GetTicks() - start_time;
-	float fadePerCent = (float)now / (float)total_time;
-
-	switch (current_step)
-	{
-	case fade_step::fade_to_black:
+	fadePerCent = (float)now / (float)total_time;
+	
+	if (current_step == fade_step::fade_to_black) {
 		if (now >= total_time * 0.5F)
 		{
 			//Change scenes
@@ -60,18 +68,14 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 			}
 			current_step = fade_step::fade_from_black;
 		}
-
-		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MIN(0.5F, fadePerCent) * 2.0F * 255.0F));
-
-		break;
-	case fade_step::fade_from_black:
+		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(FadeToBlackPerCent() * 255.0F));
+	}
+	else if (current_step == fade_step::fade_from_black) {
 		if (now >= total_time) {
 			current_step = fade_step::none;
+			fadePerCent = 0.0F;
 		}
-
-		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(MAX(0.0F, 0.5F - (fadePerCent-0.5F)) * 2.0F * 255.0F));
-
-		break;
+		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(FadeFromBlackPerCent() * 255.0F));
 	}
 
 	SDL_RenderFillRect(App->render->renderer, &screen);
@@ -87,17 +91,24 @@ bool j1FadeToBlack::FadeToBlack(const char* lvlName, float time)
 	if (current_step == fade_step::none)
 	{
 		current_step = fade_step::fade_to_black;
-		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 1000.0F);
+		start_time = SDL_GetTicks();
 		lvl_to_load = lvlName;
 		ret = true;
 	}
-	//else if (current_step == fade_step::fade_from_black) {
-	//	current_step = fade_step::fade_to_black;
-	//}
-	//else if (current_step == fade_step::fade_to_black) {
-
-	//}
+	else if (current_step == fade_step::fade_to_black) {
+		total_time = (Uint32)(time * 1000.0F);
+		start_time = SDL_GetTicks() - FadeToBlackPerCent() * total_time;
+		lvl_to_load = lvlName;
+		ret = true;
+	}
+	else if (current_step == fade_step::fade_from_black) {
+		current_step = fade_step::fade_to_black;
+		total_time = (Uint32)(time * 1000.0F);
+		start_time = SDL_GetTicks() - FadeFromBlackPerCent() * total_time;
+		lvl_to_load = lvlName;
+		ret = true;
+	}
 
 	return ret;
 }
