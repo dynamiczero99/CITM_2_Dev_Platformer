@@ -683,6 +683,11 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
 					}
 
+					if (gameobject_name == "flyingEnemy")
+					{
+						App->object->AddObjEnemyFlying({object.attribute("x").as_float(), object.attribute("y").as_float()});
+					}
+
 				}
 			}
 		}

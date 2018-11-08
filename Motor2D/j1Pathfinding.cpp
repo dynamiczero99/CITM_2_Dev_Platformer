@@ -126,7 +126,7 @@ int PathNode::GetF() const
 void PathNode::SetGandH(const iPoint& destination)
 {
 	g = parent->g + COST_TO_MOVE;
-	h = pos.DistanceTo(destination);
+	h = pos.DistanceManhattan(destination);
 }
 
 void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destination)
@@ -135,22 +135,22 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 	// north
 	cell.create(pos.x, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceTo(destination), cell, this));
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
 	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceTo(destination), cell, this));
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceTo(destination), cell, this));
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
 	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceTo(destination), cell, this));
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 }
 
 // ----------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	PathList openList;
 	PathList closedList;
-	openList.list.add(PathNode (0, origin.DistanceTo(destination), origin, nullptr));
+	openList.list.add(PathNode (0, origin.DistanceManhattan(destination), origin, nullptr));
 
 	while (openList.list.count() > 0) {
 		p2List_item<PathNode> * lowestNode = openList.GetNodeLowestScore();

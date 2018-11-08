@@ -35,7 +35,7 @@ bool j1Object::Start() {
 	playerIdleTex = App->tex->LoadTexture(object_node.child("player_idle_image").text().as_string());
 	playerRunTex = App->tex->LoadTexture(object_node.child("player_run_image").text().as_string());
 	playerJumpTex = App->tex->LoadTexture(object_node.child("player_jump_image").text().as_string());
-	robotTex = App->tex->LoadTexture(object_node.child("robot_image").text().as_string());
+	robotTilesetTex = App->tex->LoadTexture(object_node.child("robot_image").text().as_string());
 	//Add objects
 	fPoint playerStartPos;
 	playerStartPos.x = App->map->playerData.x;
@@ -89,7 +89,7 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(playerRunTex);
 	App->tex->UnloadTexture(playerJumpTex);
 	App->tex->UnloadTexture(projectileTex);
-	App->tex->UnloadTexture(robotTex);
+	App->tex->UnloadTexture(robotTilesetTex);
 	// unload sfx
 	App->audio->UnloadDesiredSFX(impactBoxSFX); // unload a desired sfx
 	//App->audio->UnloadSFX(); // unload all sfx on audio sfx list
