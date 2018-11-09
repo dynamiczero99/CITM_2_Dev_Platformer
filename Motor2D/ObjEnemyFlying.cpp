@@ -98,20 +98,28 @@ void ObjEnemyFlying::followPath()
 {
 	iPoint enemyPos, nextNodePos;
 	nextNodePos = *last_path.At(last_path.Count() - 1);
+	//nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);// +iPoint(4, 4); // get the center of node in world coords.
 	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
+	//enemyPos.x = (int)position.x; // get the "center" of enemy
+	//enemyPos.y = (int)position.y;
 	
 	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
 
-	if(enemyPos == nextNodePos)
+	iPoint areaPoint = { 2,2 };
+	if (!(enemyPos.x >= (nextNodePos.x + areaPoint.x) || (enemyPos.x + 5) <= nextNodePos.x ||
+		enemyPos.y >= (nextNodePos.y + areaPoint.y) || (enemyPos.y + 5) <= nextNodePos.y )) 
+	{ 
 		last_path.Pop(nextNodePos);
+	}
+			
 	
 	LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
 
 	if (enemyPos != nextNodePos)
 	{
 		// re calculate map positions to world positions
-		/*enemyPos = App->map->MapToWorld(enemyPos.x, enemyPos.y);
-		nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);*/
+		//enemyPos = App->map->MapToWorld(enemyPos.x, enemyPos.y);
+		//nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 
 		// get velocity vector
 		fPoint velocity_vector;
@@ -119,7 +127,7 @@ void ObjEnemyFlying::followPath()
 		velocity_vector.y = enemyPos.y - nextNodePos.y;
 		velocity_vector.Normalize();
 
-		float speed_factor = 1.5F;
+		float speed_factor = 1.0F;
 
 		position.x -= velocity_vector.x * speed_factor;
 		position.y -= velocity_vector.y * speed_factor;
