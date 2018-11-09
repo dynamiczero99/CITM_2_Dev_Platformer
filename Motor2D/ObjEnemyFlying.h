@@ -31,7 +31,10 @@ private:
 
 	// pathfinding relatives
 	p2DynArray<iPoint> last_path = NULL;
+	iPoint GetNextWorldNode();
+	void MoveToWorldNode(const iPoint& node);
 	void CopyLastGeneratedPath();
+	iPoint GetMapPosition() const;
 
 	void followPath();
 

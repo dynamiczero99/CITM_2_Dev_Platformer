@@ -45,8 +45,8 @@ bool ObjEnemyFlying::Update() {
 	}
 	// --------------------------------------------------------------------------
 
-	if(last_path.Count() > 0)
-		followPath();
+	/*if(last_path.Count() > 0)
+		followPath();*/
 
 	return true;
 }
@@ -56,9 +56,9 @@ bool ObjEnemyFlying::PostUpdate() {
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
 
 	// testing path
-	if (SDL_GetTicks() > start_time + frequency_time)
-	//static bool cmon = false;
-	//if(!cmon)
+	//if (SDL_GetTicks() > start_time + frequency_time)
+	static bool cmon = false;
+	if(!cmon)
 	{
 		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
@@ -68,8 +68,11 @@ bool ObjEnemyFlying::PostUpdate() {
 		CopyLastGeneratedPath();
 
 		start_time = SDL_GetTicks();
-		//cmon = true;
+		cmon = true;
 	}
+
+	if (last_path.Count() > 0)
+		followPath();
 	
 	return true;
 }
@@ -96,43 +99,58 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 void ObjEnemyFlying::followPath()
 {
-	iPoint enemyPos, nextNodePos;
-	nextNodePos = *last_path.At(last_path.Count() - 1);
-	//nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);// +iPoint(4, 4); // get the center of node in world coords.
-	enemyPos = App->map->WorldToMap((int)position.x, (int)position.y);
-	//enemyPos.x = (int)position.x; // get the "center" of enemy
-	//enemyPos.y = (int)position.y;
-	
-	LOG("enemy tile pos %i,%i", enemyPos.x, enemyPos.y);
+	iPoint nextNode = GetNextWorldNode();
+	//iPoint thisPos = GetMapPosition();
 
-	iPoint areaPoint = { 2,2 };
-	if (!(enemyPos.x >= (nextNodePos.x + areaPoint.x) || (enemyPos.x + 5) <= nextNodePos.x ||
-		enemyPos.y >= (nextNodePos.y + areaPoint.y) || (enemyPos.y + 5) <= nextNodePos.y )) 
-	{ 
-		last_path.Pop(nextNodePos);
-	}
-			
-	
-	LOG("nextNode: %i,%i", nextNodePos.x, nextNodePos.y);
+	LOG("next world node: %i,%i", nextNode.x, nextNode.y);
+	LOG("this position: %i,%i", (int)position.x, (int)position.y);
 
-	if (enemyPos != nextNodePos)
+	MoveToWorldNode(nextNode);
+
+}
+
+iPoint ObjEnemyFlying::GetMapPosition() const
+{
+	return App->map->WorldToMap(position.x, position.y);
+}
+
+
+void ObjEnemyFlying::MoveToWorldNode(const iPoint& node)
+{
+	fPoint velocity_vector;
+	velocity_vector.x = (int)node.x;
+	velocity_vector.y = (int)node.y;
+
+	velocity_vector -= position;
+	velocity_vector.Normalize();
+
+	LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
+
+	position.x += velocity_vector.x * 1.5f;
+	position.y += velocity_vector.y * 1.0f;
+
+}
+
+iPoint ObjEnemyFlying::GetNextWorldNode()
+{
+	// get the enemy pos (this position) on map coords. (tile coords.)
+	iPoint thisPos;
+	thisPos = App->map->WorldToMap(position.x, position.y);
+
+	// get the nextNodePos, the last on dyn array (the first pop out) || copylastgenerated path flip the order
+	iPoint nextNodePos = *last_path.At(last_path.Count() - 1);
+
+	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
+	if (thisPos == nextNodePos)
 	{
-		// re calculate map positions to world positions
-		//enemyPos = App->map->MapToWorld(enemyPos.x, enemyPos.y);
-		//nextNodePos = App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
-
-		// get velocity vector
-		fPoint velocity_vector;
-		velocity_vector.x = enemyPos.x - nextNodePos.x;
-		velocity_vector.y = enemyPos.y - nextNodePos.y;
-		velocity_vector.Normalize();
-
-		float speed_factor = 1.0F;
-
-		position.x -= velocity_vector.x * speed_factor;
-		position.y -= velocity_vector.y * speed_factor;
+		last_path.Pop(nextNodePos);
+		LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
-	
+
+	if (last_path.Count() > 0)
+		return App->map->MapToWorld(last_path.At(last_path.Count() - 1)->x, last_path.At(last_path.Count() - 1)->y);
+	else
+		return thisPos;
 }
 
 void ObjEnemyFlying::CopyLastGeneratedPath()
