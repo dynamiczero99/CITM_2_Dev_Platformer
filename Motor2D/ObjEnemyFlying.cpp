@@ -56,9 +56,9 @@ bool ObjEnemyFlying::PostUpdate() {
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
 
 	// testing path
-	//if (SDL_GetTicks() > start_time + frequency_time)
-	static bool cmon = false;
-	if(!cmon)
+	if (SDL_GetTicks() > start_time + frequency_time)
+	//static bool cmon = false;
+	//if(!cmon)
 	{
 		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
@@ -68,7 +68,7 @@ bool ObjEnemyFlying::PostUpdate() {
 		CopyLastGeneratedPath();
 
 		start_time = SDL_GetTicks();
-		cmon = true;
+		//cmon = true;
 	}
 
 	if (last_path.Count() > 0)
@@ -127,7 +127,7 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node)
 	LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
 
 	position.x += velocity_vector.x * 1.5f;
-	position.y += velocity_vector.y * 1.0f;
+	position.y += velocity_vector.y * 1.5f;
 
 }
 
@@ -135,20 +135,23 @@ iPoint ObjEnemyFlying::GetNextWorldNode()
 {
 	// get the enemy pos (this position) on map coords. (tile coords.)
 	iPoint thisPos;
-	thisPos = App->map->WorldToMap(position.x, position.y);
+	thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 
 	// get the nextNodePos, the last on dyn array (the first pop out) || copylastgenerated path flip the order
 	iPoint nextNodePos = *last_path.At(last_path.Count() - 1);
 
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
-	if (thisPos == nextNodePos)
+	//if (thisPos == nextNodePos)
+		iPoint areaPoint = { 1,1 };
+	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x ||
+		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 2) <= nextNodePos.y))
 	{
 		last_path.Pop(nextNodePos);
 		LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
 	if (last_path.Count() > 0)
-		return App->map->MapToWorld(last_path.At(last_path.Count() - 1)->x, last_path.At(last_path.Count() - 1)->y);
+		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);//last_path.At(last_path.Count() - 1)->x, last_path.At(last_path.Count() - 1)->y);
 	else
 		return thisPos;
 }
