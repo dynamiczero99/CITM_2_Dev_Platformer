@@ -36,9 +36,8 @@ bool ObjProjectile::OnDestroy() {
 	return true;
 }
 
-bool ObjProjectile::Update() {
-	position += velocity;
-	//TODO: Multiply by deltaTime
+bool ObjProjectile::Update(float dt) {
+	position += velocity * dt;
 	iPoint colPos = GetRectPos(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;

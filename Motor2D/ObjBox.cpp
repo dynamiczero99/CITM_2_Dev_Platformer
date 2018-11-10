@@ -44,10 +44,10 @@ void ObjBox::MarkObject(bool mark)
 	}
 }
 
-bool ObjBox::Update() {
+bool ObjBox::Update(float dt) {
 	acceleration.y = gravity;
-	velocity = velocity + acceleration * App->GetDeltaTime();
-	position = position + velocity * App->GetDeltaTime();
+	velocity = velocity + acceleration * dt;
+	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;

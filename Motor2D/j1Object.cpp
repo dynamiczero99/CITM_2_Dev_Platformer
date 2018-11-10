@@ -62,7 +62,7 @@ bool j1Object::PreUpdate() {
 bool j1Object::Update(float dt) {
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
-			objects[i]->Update();
+			objects[i]->Update(dt);
 		}
 	}
 	return true;
@@ -241,7 +241,7 @@ bool GameObject::PreUpdate() {
 	return true;
 }
 
-bool GameObject::Update() {
+bool GameObject::Update(float dt) {
 	return true;
 }
 

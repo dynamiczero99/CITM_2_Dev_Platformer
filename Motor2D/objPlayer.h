@@ -24,7 +24,7 @@ public:
 
 	bool PreUpdate() override;
 
-	bool Update() override;
+	bool Update(float dt) override;
 	
 	bool PostUpdate() override;
 	bool OnDestroy() override;
@@ -37,8 +37,8 @@ private:
 	void ToggleGodMode();
 	void StandardControls();
 	void GodControls();
-	void StandardMovement();
-	void GodMovement();
+	void StandardMovement(float dt);
+	void GodMovement(float dt);
 
 	void LimitFallVelocity();
 	void ShootProjectile();

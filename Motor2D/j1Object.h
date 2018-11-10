@@ -48,7 +48,7 @@ public:
 	GameObject(fPoint position, int index);
 	~GameObject();
 	virtual bool PreUpdate();
-	virtual bool Update();
+	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool OnDestroy();
 	virtual void OnCollision(Collider * c1, Collider * c2);

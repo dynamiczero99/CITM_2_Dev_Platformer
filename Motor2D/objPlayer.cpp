@@ -148,12 +148,12 @@ void ObjPlayer::StandardControls()
 	}
 }
 
-bool ObjPlayer::Update() {
+bool ObjPlayer::Update(float dt) {
 	if (!godMode) {
-		StandardMovement();
+		StandardMovement(dt);
 	}
 	else {
-		GodMovement();
+		GodMovement(dt);
 	}
 	ShootProjectile();
 	return true;
@@ -360,7 +360,7 @@ inline float ObjPlayer::tile_to_pixel(uint pixel) {
 	return pixel * tileSize;
 }
 
-void ObjPlayer::StandardMovement()
+void ObjPlayer::StandardMovement(float dt)
 {
 	//Evaluate the result we got from last frame's OnCollision()
 	if (!isOnPlatform) {
@@ -368,9 +368,9 @@ void ObjPlayer::StandardMovement()
 		checkFallPlatform = false;
 	}
 
-	velocity = velocity + acceleration * App->GetDeltaTime();
-	LimitFallVelocity();
-	position = position + velocity * App->GetDeltaTime();
+	velocity = velocity + acceleration * dt;
+	//LimitFallVelocity();
+	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
@@ -379,9 +379,9 @@ void ObjPlayer::StandardMovement()
 	isOnPlatform = false;
 }
 
-void ObjPlayer::GodMovement() {
-	velocity = velocity + acceleration * App->GetDeltaTime();
-	position = position + velocity * App->GetDeltaTime();
+void ObjPlayer::GodMovement(float dt) {
+	velocity = velocity + acceleration * dt;
+	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);

@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="30">
     <title>Swap game</title>
     <organization>UPC</organization>
   </app>
@@ -30,11 +30,14 @@
   <map>
     <folder>maps/</folder>
 	<levels>
-	<level name="test_level.tmx"/>
+    <!--
+    <level name="test_level.tmx"/>
+    -->
     <level name="level001.tmx"/>
     <level name="level002.tmx"/>
     <level name="level003.tmx"/>
     <level name="level004.tmx"/>
+
 	</levels>
   </map>
   
@@ -52,7 +55,7 @@
 	  <sfx name="impact" value="impactSound.wav"/>
     </projectile>
     <box>
-      <gravity>1200</gravity>
+      <gravity>0</gravity>
       <animation tile_width ="16" tile_height ="16">
         <inactive_animation speed ="0">
           <sprite x ="112" y ="208" w ="16" h="16"/>
