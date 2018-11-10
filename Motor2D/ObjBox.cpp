@@ -14,9 +14,9 @@ ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : GameObjec
 
 	animTileWidth = box_node.child("animation").attribute("tile_width").as_uint();
 	animTileHeight = box_node.child("animation").attribute("tile_height").as_uint();
-	LoadAnimation(box_node.child("animation").child("inactive_animation").child("sprite"), inactiveAnim);
+	LoadAnimation(box_node.child("animation").child("inactive_animation"), inactiveAnim);
 	inactiveAnim.speed = box_node.child("animation").child("inactive_animation").attribute("speed").as_float();
-	LoadAnimation(box_node.child("animation").child("active_animation").child("sprite"), activeAnim);
+	LoadAnimation(box_node.child("animation").child("active_animation"), activeAnim);
 	inactiveAnim.speed = box_node.child("animation").child("active_animation").attribute("speed").as_float();
 	gravity = box_node.child("gravity").text().as_float();
 	currAnim = &inactiveAnim;

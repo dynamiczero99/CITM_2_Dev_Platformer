@@ -8,11 +8,11 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2Log.h"
 #include "j1Pathfinding.h"
-#include"objPlayer.h"
+#include "ObjPlayer.h"
 #include "j1Map.h"
 
 ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) {
-	LoadAnimation(enemy_node.child("animation").child("idle_animation").child("sprite"), idleAnim);
+	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
 	currAnim = &idleAnim;
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
