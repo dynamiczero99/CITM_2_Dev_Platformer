@@ -14,7 +14,7 @@
 ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) {
 	LoadAnimation(enemy_node.child("animation").child("idle_animation").child("sprite"), idleAnim);
 	currAnim = &idleAnim;
-	SDL_Rect colRect = {(int)position.x, (int)position.y, 10, 10};
+	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
 	
@@ -141,17 +141,16 @@ iPoint ObjEnemyFlying::GetNextWorldNode()
 	iPoint nextNodePos = *last_path.At(last_path.Count() - 1);
 
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
-	//if (thisPos == nextNodePos)
-		iPoint areaPoint = { 1,1 };
-	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x ||
-		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 2) <= nextNodePos.y))
+	iPoint areaPoint = { 1,1 }; // tile values
+	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x || // enemy tile width 
+		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
 	{
 		last_path.Pop(nextNodePos);
 		LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
 	if (last_path.Count() > 0)
-		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);//last_path.At(last_path.Count() - 1)->x, last_path.At(last_path.Count() - 1)->y);
+		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 	else
 		return thisPos;
 }
