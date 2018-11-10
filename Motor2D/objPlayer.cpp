@@ -369,7 +369,7 @@ void ObjPlayer::StandardMovement(float dt)
 	}
 
 	velocity = velocity + acceleration * dt;
-	//LimitFallVelocity();
+	LimitFallVelocity();
 	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
