@@ -18,7 +18,7 @@ ObjBox::ObjBox(fPoint position, int index, pugi::xml_node &box_node) : GameObjec
 	inactiveAnim.speed = box_node.child("animation").child("inactive_animation").attribute("speed").as_float();
 	LoadAnimation(box_node.child("animation").child("active_animation"), activeAnim);
 	inactiveAnim.speed = box_node.child("animation").child("active_animation").attribute("speed").as_float();
-	gravity = box_node.child("gravity").text().as_float();
+	gravity = tile_to_pixel(box_node.child("gravity").text().as_float());
 	currAnim = &inactiveAnim;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	SDL_Rect colRect;

@@ -57,6 +57,7 @@ public:
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
 
+
 protected:
 	//Returns the top-left position of a rectangle considering a pivot point
 	//Used to draw (Blit) or put the collider (SetPos)
@@ -64,6 +65,7 @@ protected:
 	//Returns the pivot position specifing a rectangle
 	iPoint GetPivotPos(pivot pivot, int x, int y, uint w, uint h);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
+	float tile_to_pixel (uint pixel);
 
 public:
 	fPoint position = fPoint(0.0F, 0.0F);
@@ -105,6 +107,7 @@ public:
 	uint impactBoxSFX = 0u;
 	// marked box for load method pointer
 	ObjBox* object_box_markedOnLoad = nullptr;
+	uint tileSize = 0u;
 
 private:
 	GameObject * objects [MAX_OBJECTS];

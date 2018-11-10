@@ -55,11 +55,8 @@ private:
 	GameObject::dir GetSmallestDirFiltered(Collider * c2);
 	GameObject::dir GetSmallestDir(Collider * c2);
 
-	inline float tile_to_pixel(uint pixel);
-
 public:
 	//Variables
-	uint tileSize = 0u;
 	float gravity = 0.0f;
 	float moveSpeedAir = 0.0f;//(pixels/s)
 	float moveSpeedGnd = 0.0f;//(pixels/s)

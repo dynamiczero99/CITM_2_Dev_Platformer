@@ -228,10 +228,10 @@ void j1App::FinishUpdate()
 
 	//- Cap the framerate
 	uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
-	LOG("Should wait: %i", delay);
-	j1PerfTimer delayTimer;
+	//LOG("Should wait: %i", delay);
+	//j1PerfTimer delayTimer;
 	SDL_Delay(delay);
-	LOG("Has waited:  %f", delayTimer.ReadMs());
+	//LOG("Has waited:  %f", delayTimer.ReadMs());
 }
 
 // Call modules before each loop iteration

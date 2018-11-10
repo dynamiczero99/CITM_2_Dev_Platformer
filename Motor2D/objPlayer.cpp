@@ -34,7 +34,6 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	feetColRect.w = playerNode.child("feet_collider_width").text().as_int();
 	feetColRect.h = playerNode.child("feet_collider_height").text().as_int();
 	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, ColorRGB(255,255,255), this);
-	tileSize = playerNode.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(playerNode.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(playerNode.child("move_speed_ground").text().as_float());
 	moveSpeedAir = tile_to_pixel(playerNode.child("move_speed_air").text().as_float());
@@ -97,9 +96,11 @@ void ObjPlayer::GodControls()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		velocity.x = -moveSpeedGnd;
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		velocity.x = moveSpeedGnd;
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 	else {
 		velocity.x = 0;
@@ -352,11 +353,6 @@ void ObjPlayer::OnCollisionFeet(Collider * c2)
 	if (checkFallPlatform) {
 		isOnPlatform = true;
 	}
-}
-
-//We can use this variable to make it easier for us to understand the different distance the player can move or jump while building levels in the tiled editor
-inline float ObjPlayer::tile_to_pixel(uint pixel) {
-	return pixel * tileSize;
 }
 
 void ObjPlayer::StandardMovement(float dt)
