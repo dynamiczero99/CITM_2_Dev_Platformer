@@ -16,7 +16,7 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 		LOG("Empty node");
 	}
 
-	velocity = direction * projectile_node.child("speed").text().as_float();
+	velocity = direction * tile_to_pixel(projectile_node.child("speed").text().as_float());
 	SDL_Rect colRect;
 	colRect.w = projectile_node.child("collider_width").text().as_int();
 	colRect.h = projectile_node.child("collider_height").text().as_int();
