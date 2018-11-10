@@ -43,9 +43,11 @@ bool ObjEnemyFlying::PreUpdate()
 		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 
-		App->pathfinding->CreatePath(thisPos, playerPos);
-
-		CopyLastGeneratedPath();
+		
+		if (App->pathfinding->CreatePath(thisPos, playerPos) > 0)
+		{
+			CopyLastGeneratedPath();
+		}
 
 		start_time = SDL_GetTicks();
 		//cmon = true;
