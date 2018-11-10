@@ -143,7 +143,7 @@ void ObjPlayer::StandardControls()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isOnPlatform) {
 		velocity.y = jumpSpeed;
 		isOnPlatform = false;
-		checkFall = false;
+		checkFallPlatform = false;
 		App->audio->PlayFx(jump);
 	}
 }
@@ -178,13 +178,6 @@ bool ObjPlayer::PostUpdate() {
 	SwapPosition();
 
 	//Once the movement and the physical resolution has happened, determine the animations it must play
-	if (velocity.x > 0) {
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-	}
-	else if (velocity.x < 0) {
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-	}
-
 	if (isOnPlatform) {
 		if (velocity.x != 0) {
 			currTex = App->object->playerRunTex;
@@ -301,8 +294,8 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 		position.y = (float)c2->rect.GetTop();
 		velocity.y = 0;
 		acceleration.y = 0;
-		checkFall = true;
 		isOnPlatform = true;
+		checkFallPlatform = true;
 		break;
 	case dir::up:
 		position.y = (float)(c2->rect.GetBottom() + playerCol->rect.h);
@@ -357,7 +350,7 @@ void ObjPlayer::OnCollisionFeet(Collider * c2)
 {
 	//Only starts checking if it falls when it snaps to the platform
 	//Otherwise it would stop adding gravity the moment the foot collider touched the floor, making the character be way above what it should be
-	if (checkFall) {
+	if (checkFallPlatform) {
 		isOnPlatform = true;
 	}
 }
@@ -369,12 +362,10 @@ inline float ObjPlayer::tile_to_pixel(uint pixel) {
 
 void ObjPlayer::StandardMovement()
 {
-	if (isOnPlatform) {
-		acceleration.y = 0;
-	}
-	else {
+	//Evaluate the result we got from last frame's OnCollision()
+	if (!isOnPlatform) {
 		acceleration.y = gravity;
-		checkFall = false;
+		checkFallPlatform = false;
 	}
 
 	velocity = velocity + acceleration * App->GetDeltaTime();
@@ -455,7 +446,6 @@ void ObjPlayer::SwapPosition() {
 
 bool ObjPlayer::Load(pugi::xml_node& loadNode)
 {
-
 	position.x = loadNode.child("Player").attribute("x").as_float();
 	position.y = loadNode.child("Player").attribute("y").as_float();
 	velocity.x = loadNode.child("Player").attribute("velocity_x").as_float();

@@ -69,7 +69,7 @@ public:
 	Collider* playerCol = nullptr;
 	Collider* feetCol = nullptr;
 	bool isOnPlatform = false;
-	bool checkFall = false;
+	bool checkFallPlatform = false;
 
 	//Animation
 	uint animTileWidth = 0;

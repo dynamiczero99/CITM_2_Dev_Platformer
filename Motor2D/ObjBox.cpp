@@ -62,33 +62,34 @@ bool ObjBox::PostUpdate() {
 void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
 		uint dist[(uint)dir::max];
-		dist[(uint)dir::down] = c1->rect.GetBottom() - c2->rect.GetTop();
+		dist[(uint)dir::invalid] = INT_MAX;
 		dist[(uint)dir::left] = c2->rect.GetRight() - c1->rect.GetLeft();
 		dist[(uint)dir::right] = c1->rect.GetRight() - c2->rect.GetLeft();
-		int nearestDir = -1;
-		for (int i = 0; i < (int)dir::max - 1; ++i) {
-			if (nearestDir == -1) {
-				nearestDir = i;
-			}
-			else if (dist[i] < dist[nearestDir]) {
-				nearestDir = i;
+		dist[(uint)dir::down] = c1->rect.GetBottom() - c2->rect.GetTop();
+		dist[(uint)dir::up] = c2->rect.GetBottom() - c1->rect.GetTop();
+		dir nearestDir = dir::invalid;
+		for (int i = 1; i < (int)dir::max; ++i) {
+			if (dist[i] < dist[(uint)nearestDir]) {
+				nearestDir =  (dir)i;
 			}
 		}
 		switch (nearestDir) {
-		case (int)dir::down:
+		case dir::down:
 			position.y = c2->rect.GetTop();
 			velocity.y = 0;
 			acceleration.y = 0;
 			break;
-		case (int)dir::left:
+		case dir::left:
 			position.x = c2->rect.GetRight() + c1->rect.w / 2;
 			velocity.x = 0;
 			break;
-		case (int)dir::right:
+		case dir::right:
 			position.x = c2->rect.GetLeft() - c1->rect.w / 2;
 			velocity.x = 0;
 			break;
-		case (int)dir::up:
+		case dir::up:
+			//position.y = c2->rect.GetBottom() + c1->rect.h;
+			//velocity.y = 0;
 			break;
 		default:
 			LOG("Error checking box collsion");
