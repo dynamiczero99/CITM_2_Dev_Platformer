@@ -13,6 +13,7 @@ class ObjEnemyFlying : public GameObject {
 public:
 	ObjEnemyFlying(fPoint position, int index, pugi::xml_node &object_node);
 	bool Update() override;
+	bool PreUpdate() override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;
 	void MarkObject(bool mark) override;
