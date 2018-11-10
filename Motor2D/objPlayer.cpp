@@ -330,7 +330,6 @@ void ObjPlayer::CollideWinZone() {
 	{
 		if (item->data->name == App->map->data.loadedLevel)
 		{
-			LOG("coincidence");
 			item = item->next;
 			if (item == NULL)
 			{
@@ -374,6 +373,8 @@ void ObjPlayer::StandardMovement(float dt)
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+
+	//LOG("Player position: %f, %f", position.x, position.y);
 
 	// - If this value remains false after checking the collision we'll consider the player has fallen from the platform
 	isOnPlatform = false;
