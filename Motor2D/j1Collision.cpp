@@ -85,6 +85,15 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_TRIGGER][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_TRIGGER][COLLIDER_TRIGGER] = false;
 
+	colliderColor[COLLIDER_WALL] = ColorRGB(0, 0, 255);
+	colliderColor[COLLIDER_PLAYER] = ColorRGB(0, 255, 0);
+	colliderColor[COLLIDER_PLAYER_SHOT] = ColorRGB(255, 0, 0);
+	colliderColor[COLLIDER_BOX] = ColorRGB(255, 255, 0);
+	colliderColor[COLLIDER_PLAYER_GOD] = ColorRGB(255, 0, 255);
+	colliderColor[COLLIDER_DEATH_ZONE] = ColorRGB(95, 0, 232);
+	colliderColor[COLLIDER_WIN_ZONE] = ColorRGB(250, 255, 0);
+	colliderColor[COLLIDER_TRIGGER] = ColorRGB(239, 89, 232);
+
 	actualColliders = 0;
 }
 
@@ -139,50 +148,23 @@ bool j1Collision::PostUpdate() {
 
 void j1Collision::DebugDraw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
 		debug = !debug;
+	}
 
-	if (debug == false)
+	if (debug == false) {
 		return;
+	}
 
 	Uint8 alpha = 80;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] == nullptr)
+		if (colliders[i] == nullptr) {
 			continue;
-
-		switch (colliders[i]->type)
-		{
-		case COLLIDER_NONE: // white
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-			break;
-		case COLLIDER_WALL: // blue
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
-			break;
-		case COLLIDER_PLAYER: // green
-			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
-			break;
-		case COLLIDER_BOX: // red
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
-			break;
-		case COLLIDER_PLAYER_SHOT: // yellow
-			App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
-			break;
-		case COLLIDER_PLAYER_GOD: //pink
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
-			break;
-		case COLLIDER_DEATH_ZONE:
-			// secret purple
-			App->render->DrawQuad(colliders[i]->rect, 95, 0, 232, alpha);
-			break;
-		case COLLIDER_WIN_ZONE: // other yellow
-			App->render->DrawQuad(colliders[i]->rect, 250, 255, 0, alpha);
-			break;
-		case COLLIDER_TRIGGER:
-			App->render->DrawQuad(colliders[i]->rect, 239, 89, 232, alpha);
-			break;
 		}
+		App->render->DrawQuad(colliders[i]->rect, colliders[i]->color.r, colliders[i]->color.g, colliders[i]->color.b, alpha);
 	}
+
 }
 
 // Called before quitting
@@ -210,20 +192,27 @@ bool j1Collision::CleanUp()
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, GameObject  *callbackObj)
 {
+	ColorRGB color = colliderColor[type];
+	return AddCollider(rect, type, color, callbackObj);	
+}
+
+
+Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, ColorRGB color, GameObject  *callbackObj)
+{
 	Collider* returnCollider = nullptr;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
 		{
-			returnCollider = colliders[i] = new Collider(rect, type, callbackObj, i);
+			returnCollider = colliders[i] = new Collider(rect, type, callbackObj, color, i);
 			actualColliders++;
 			return returnCollider;
 		}
 	}
 
 	LOG("Reached maximum collider capacity, no more colliders can be added.");
-	return nullptr;
+	return returnCollider;
 }
 
 bool j1Collision::DeleteCollider(Collider * collider) {

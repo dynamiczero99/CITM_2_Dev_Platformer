@@ -33,7 +33,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	SDL_Rect feetColRect;
 	feetColRect.w = playerNode.child("feet_collider_width").text().as_int();
 	feetColRect.h = playerNode.child("feet_collider_height").text().as_int();
-	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, this);
+	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, ColorRGB(255,255,255), this);
 	tileSize = playerNode.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(playerNode.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(playerNode.child("move_speed_ground").text().as_float());

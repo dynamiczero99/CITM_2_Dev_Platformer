@@ -5,6 +5,7 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL_rect.h"
+#include "j1Render.h"
 
 class GameObject;
 
@@ -27,12 +28,13 @@ struct Collider
 	SDL_Rect rect;
 	COLLIDER_TYPE type;
 	GameObject * callbackObj = nullptr;
+	ColorRGB color;
 
 	//The position in the collider module array
 	int index = -1;
 
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, GameObject * callbackObj, int index) : rect(rectangle), type(type), callbackObj(callbackObj), index(index) {}
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, GameObject * callbackObj, ColorRGB color, int index) : rect(rectangle), type(type), callbackObj(callbackObj), color(color), index(index) {}
 	void SetPos(int x, int y);
 	bool CheckCollision(const SDL_Rect& r) const;
 };
@@ -64,7 +66,9 @@ public:
 	// counter of presents colliders on scene
 	int actualColliders;
 
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, ColorRGB color, GameObject * callbackObj = nullptr);
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, GameObject * callbackObj = nullptr);
+
 	bool DeleteCollider(Collider * collider);
 
 	void DebugDraw();
@@ -75,6 +79,7 @@ private:
 
 	Collider * colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
+	ColorRGB colliderColor[COLLIDER_MAX];
 	bool debug = false;
 };
 

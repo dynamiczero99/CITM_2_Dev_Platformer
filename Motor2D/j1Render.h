@@ -5,6 +5,23 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct ColorRGB {
+	ColorRGB(){}
+	ColorRGB(Uint8 r, Uint8 g, Uint8 b) : r(r), g(g), b(b) {}
+	Uint8 r = 0u;
+	Uint8 g = 0u;
+	Uint8 b = 0u;
+};
+
+struct ColorRGBA {
+	ColorRGBA(){}
+	ColorRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : r(r), g(g), b(b), a(a) {}
+	Uint8 r = 0u;
+	Uint8 g = 0u;
+	Uint8 b = 0u;
+	Uint8 a = 0u;
+};
+
 class j1Render : public j1Module
 {
 public:
