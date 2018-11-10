@@ -43,10 +43,12 @@ bool ObjEnemyFlying::PreUpdate()
 		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 
-		
-		if (App->pathfinding->CreatePath(thisPos, playerPos) > 0)
+		if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
 		{
-			CopyLastGeneratedPath();
+			if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
+			{
+				CopyLastGeneratedPath();
+			}
 		}
 
 		start_time = SDL_GetTicks();
