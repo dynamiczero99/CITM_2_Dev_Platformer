@@ -105,7 +105,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		// and if we have a previous still non traveled path, finish them
 		if (last_path.Count() > 0)
 		{
-			followPath();
+			followPath(dt);
 			// updates last valid pos
 			lastValidPos = position;
 		}
@@ -113,7 +113,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		{
 			// idle default movement
 			// moves on x desired tiles from lastvalid position
-			idleMovement();
+			idleMovement(dt);
 
 		}
 		break;
@@ -121,7 +121,7 @@ bool ObjEnemyFlying::Update(float dt) {
 	case FOLLOWING:
 		// pathfinding
 		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE)) // minimum distance to stop follow
-			followPath();
+			followPath(dt);
 		else
 		{
 			enemy_state = enemyState::SEARCHING;
@@ -143,7 +143,7 @@ bool ObjEnemyFlying::Update(float dt) {
 	return true;
 }
 
-void ObjEnemyFlying::idleMovement()
+void ObjEnemyFlying::idleMovement(float dt)
 {
 	//static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
 	static uint posIndex = 0;
@@ -158,8 +158,8 @@ void ObjEnemyFlying::idleMovement()
 	move.y = movement_vec.y;
 	move.Normalize();
 
-	position.x += move.x;
-	position.y += move.y;
+	position.x += move.x * dt * 25.0f;
+	position.y += move.y * dt * 25.0f;
 	
 	// check if we arrived at target
 	if (App->map->WorldToMap(position.x, position.y) == targetTile)
@@ -174,7 +174,7 @@ void ObjEnemyFlying::idleMovement()
 			// and generate new random path
 			idlePath.Clear();
 			for (uint i = 0; i < 6; ++i)
-				idlePath.PushBack({ GetRandomValue(-3, 3), GetRandomValue(-3, 3) });
+				idlePath.PushBack({ GetRandomValue(-3, 3), GetRandomValue(-3,3) });
 		}
 
 	}
@@ -205,7 +205,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
 	{
-		MoveToWorldNode(GetNextWorldNode());
+		MoveToWorldNode(GetNextWorldNode(), 1.0f); // i dont care dt for save, as more delta, more fast is the travel simulation
 	}
 	
 	iPoint pos = App->map->WorldToMap((int)position.x,(int)position.y); // stick to map coords.
@@ -223,7 +223,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 	return true;
 }
 
-void ObjEnemyFlying::followPath()
+void ObjEnemyFlying::followPath(float dt)
 {
 	iPoint nextNode = GetNextWorldNode();
 	//iPoint thisPos = GetMapPosition();
@@ -231,7 +231,7 @@ void ObjEnemyFlying::followPath()
 	//LOG("next world node: %i,%i", nextNode.x, nextNode.y);
 	//LOG("this position: %i,%i", (int)position.x, (int)position.y);
 
-	MoveToWorldNode(nextNode);
+	MoveToWorldNode(nextNode, dt);
 
 }
 
@@ -241,7 +241,7 @@ iPoint ObjEnemyFlying::GetMapPosition() const
 }
 
 
-void ObjEnemyFlying::MoveToWorldNode(const iPoint& node) const
+void ObjEnemyFlying::MoveToWorldNode(const iPoint& node, float dt) const
 {
 	fPoint velocity_vector;
 	velocity_vector.x = (int)node.x;
@@ -252,8 +252,8 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node) const
 
 	//LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
 
-	position.x += velocity_vector.x * 1.5f;
-	position.y += velocity_vector.y * 1.5f;
+	position.x += velocity_vector.x * dt * 40.0f;
+	position.y += velocity_vector.y * dt * 40.0f;
 
 }
 

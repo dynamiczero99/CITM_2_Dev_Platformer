@@ -12,12 +12,12 @@
 	</scene>
 	<object>
 		<Box x="872" y="280" velocity_x="0" velocity_y="0" />
-		<FlyingEnemy x="544" y="192" velocity_x="0" velocity_y="0" />
-		<FlyingEnemy x="520" y="160" velocity_x="0" velocity_y="0" />
-		<FlyingEnemy x="536" y="184" velocity_x="0" velocity_y="0" />
+		<FlyingEnemy x="376" y="128" velocity_x="0" velocity_y="0" />
 		<Box x="480" y="249" velocity_x="0" velocity_y="0" />
 		<Box x="481" y="280" velocity_x="0" velocity_y="0" />
 		<Box x="480.5" y="264" velocity_x="0" velocity_y="0" />
+		<FlyingEnemy x="480" y="192" velocity_x="0" velocity_y="0" />
+		<FlyingEnemy x="720" y="192" velocity_x="0" velocity_y="0" />
 		<Player x="384" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
 	</object>
 	<FadeToBlack />
