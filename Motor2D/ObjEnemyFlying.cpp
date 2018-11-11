@@ -90,8 +90,20 @@ bool ObjEnemyFlying::Update(float dt) {
 		}
 		// and if we have a previous still non traveled path, finish them
 		if (last_path.Count() > 0)
+		{
 			followPath();
+			// updates last valid pos
+			lastValidPos = position;
+		}
+		else
+		{
+			// idle default movement
+			// moves on x desired tiles from lastvalid position
+			idleMovement();
+
+		}
 		break;
+
 	case FOLLOWING:
 		// pathfinding
 		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE)) // minimum distance to stop follow
@@ -99,6 +111,8 @@ bool ObjEnemyFlying::Update(float dt) {
 		else
 		{
 			enemy_state = enemyState::SEARCHING;
+			// updates last valid pos
+			lastValidPos = position;
 		}
 		break;
 	}
@@ -113,6 +127,36 @@ bool ObjEnemyFlying::Update(float dt) {
 
 
 	return true;
+}
+
+void ObjEnemyFlying::idleMovement()
+{
+	static iPoint nextTravelPos = { 3,0 };
+	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
+	
+	iPoint targetTile = lastValid + nextTravelPos;
+
+	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y);
+
+	fPoint move;
+	move.x = movement_vec.x;
+	move.y = movement_vec.y;
+
+	move.Normalize();
+
+	static int speedDir = 1;
+
+	// check if we arrived at target
+	if (App->map->WorldToMap(position.x, position.y) == targetTile)
+	{
+		//LOG("targetreached %i,%i", targetTile.x, targetTile.y);
+		nextTravelPos.x = -nextTravelPos.x;
+		nextTravelPos.y = -nextTravelPos.y;
+		speedDir = -speedDir;
+	}
+	else
+		position.x += move.x * speedDir;
+
 }
 
 bool ObjEnemyFlying::PostUpdate() {

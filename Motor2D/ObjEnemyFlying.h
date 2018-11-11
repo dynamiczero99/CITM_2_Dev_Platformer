@@ -42,22 +42,29 @@ private:
 	uint animTileHeight = 0u;
 	Collider * collider = nullptr;
 
-	// pathfinding relatives
-	mutable p2DynArray<iPoint> last_path = NULL;
+	// pathfinding relatives ----------------
+	//functions --
 	iPoint GetNextWorldNode() const;
+	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node) const;
 	void CopyLastGeneratedPath();
-	iPoint GetMapPosition() const;
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
-
 	void followPath();
 
-	// provisional timer
+	// variables --
+	mutable p2DynArray<iPoint> last_path = NULL;
+	fPoint lastValidPos = { 0.0F,0.0F };
+
+	// provisional timer --
 	Uint32 start_time = 0;
 	Uint32 frequency_time = 1500;
+	// --------------------------------------
 
 	//enemy state machine
 	enemyState enemy_state = enemyState::SEARCHING; // default state
+
+	// idle movement
+	void idleMovement();
 
 };
 
