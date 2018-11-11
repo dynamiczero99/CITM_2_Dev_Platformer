@@ -221,9 +221,12 @@ void j1App::FinishUpdate()
 	float avg_fps = float(frame_count) / seconds_since_startup;
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+		capFrames = !capFrames;
+	}
+
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
-		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 	p2SString capFramesString;
 	if (capFrames) {
 		capFramesString = "ON";
@@ -244,11 +247,13 @@ void j1App::FinishUpdate()
 	App->win->SetTitle(title);
 
 	//- Cap the framerate
-	uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
-	//LOG("Should wait: %i", delay);
-	//j1PerfTimer delayTimer;
-	SDL_Delay(delay);
-	//LOG("Has waited:  %f", delayTimer.ReadMs());
+	if (capFrames) {
+		uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
+		//LOG("Should wait: %i", delay);
+		//j1PerfTimer delayTimer;
+		SDL_Delay(delay);
+		//LOG("Has waited:  %f", delayTimer.ReadMs());
+	}
 }
 
 // Call modules before each loop iteration

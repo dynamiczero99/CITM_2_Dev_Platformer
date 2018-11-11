@@ -101,6 +101,7 @@ public:
 	bool prepareToLoad = false;
 	bool readyToLoad = false;
 	bool want_to_load = false;
+
 	bool vsync = false;
 
 private:
