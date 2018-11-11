@@ -104,6 +104,8 @@ public:
 
 	bool vsync = false;
 
+	bool longTransition = false;
+
 private:
 
 	pugi::xml_document	config_file;
@@ -130,6 +132,7 @@ private:
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 	uint32				capTime = 0;
+	uint32				framerateCap = 0;
 	float				dt = 0.0f;
 	bool				capFrames = true;
 };

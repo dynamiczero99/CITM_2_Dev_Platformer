@@ -88,7 +88,7 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
-
+		framerateCap = app_config.attribute("framerate_cap").as_int();
 		capTime = 1000 / app_config.attribute("framerate_cap").as_int();
 	}
 
@@ -126,6 +126,10 @@ bool j1App::Start()
 	startup_time.Start();
 
 	PERF_PEEK(ptimer);
+
+	// Account for the first frame taking more than usual
+	// Without this the player and the boxes to fall through the floor
+	longTransition = true;
 
 	return ret;
 }
@@ -172,9 +176,14 @@ void j1App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
+	if (longTransition) {
+		dt = 1.0f / (float)framerateCap;
+		longTransition = false;
+	}
+	else {
+		dt = frame_time.ReadSec();
+	}
 
-	// TODO 4: Calculate the dt: differential time since last frame
-	dt = frame_time.ReadSec();
 	frame_time.Start();
 }
 

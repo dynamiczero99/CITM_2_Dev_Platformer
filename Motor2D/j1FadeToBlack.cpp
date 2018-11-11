@@ -56,6 +56,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 					App->scene->Enable();
 				}
 			}
+			App->longTransition = true;
 			current_step = fade_step::fade_from_black;
 		}
 	}
