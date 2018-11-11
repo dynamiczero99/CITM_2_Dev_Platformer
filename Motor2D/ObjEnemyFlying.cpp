@@ -132,31 +132,28 @@ bool ObjEnemyFlying::Update(float dt) {
 
 void ObjEnemyFlying::idleMovement()
 {
-	static iPoint nextTravelPos = { 3,0 };
+	static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
 	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
 	
 	iPoint targetTile = lastValid + nextTravelPos;
 
-	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y);
+	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y) - iPoint((int)position.x, (int)position.y);
 
 	fPoint move;
 	move.x = movement_vec.x;
 	move.y = movement_vec.y;
-
 	move.Normalize();
 
-	static int speedDir = 1;
-
+	position.x += move.x;
+	position.y += move.y;
+	
 	// check if we arrived at target
 	if (App->map->WorldToMap(position.x, position.y) == targetTile)
 	{
 		LOG("targetreached %i,%i", targetTile.x, targetTile.y);
-		nextTravelPos.x = -nextTravelPos.x;
-		nextTravelPos.y = -nextTravelPos.y;
-		speedDir = -speedDir;
+		nextTravelPos *= -1;
+
 	}
-	else
-		position.x += move.x * speedDir;
 
 }
 
