@@ -224,6 +224,23 @@ void j1App::FinishUpdate()
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
+	p2SString capFramesString;
+	if (capFrames) {
+		capFramesString = "ON";
+	}
+	else {
+		capFramesString = "OFF";
+	}
+	p2SString vsyncString;
+	if (vsync) {
+		vsyncString = "ON";
+	}
+	else {
+		vsyncString = "OFF";
+	}
+
+	sprintf_s(title, 256, "SWAP GAME || Last sec frames: %i | Av.FPS: %.2f | Last frame ms: %02u | Framerate cap: %s | Vsync: %s",
+		frames_on_last_update, avg_fps, last_frame_ms, capFramesString.GetString(), vsyncString.GetString());
 	App->win->SetTitle(title);
 
 	//- Cap the framerate

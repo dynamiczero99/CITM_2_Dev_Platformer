@@ -101,7 +101,7 @@ public:
 	bool prepareToLoad = false;
 	bool readyToLoad = false;
 	bool want_to_load = false;
-
+	bool vsync = false;
 
 private:
 
@@ -130,6 +130,7 @@ private:
 	uint32				prev_last_sec_frame_count = 0;
 	uint32				capTime = 0;
 	float				dt = 0.0f;
+	bool				capFrames = true;
 };
 
 extern j1App* App;
