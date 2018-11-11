@@ -66,7 +66,7 @@ protected:
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 
 public:
-	fPoint position = fPoint(0.0F, 0.0F);
+	mutable fPoint position = fPoint(0.0F, 0.0F);
 	fPoint velocity = fPoint(0.0F, 0.0F);
 	fPoint acceleration = fPoint(0.0F, 0.0F);
 	int index = -1;	//The position in the objects module array

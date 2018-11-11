@@ -95,10 +95,12 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	pugi::xml_node flyingEnemy = node.append_child("FlyingEnemy");
 
-	//while (App->pathfinding->CreatePath({ (int)position.x, (int)position.y }, { 0,0 }) < 0) // force to have a real walkable path
-	//{
-	//	MoveToWorldNode(GetNextWorldNode());
-	//}
+	fPoint temporalPos = position; // stores the actual position to return enemy at
+
+	while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
+	{
+		MoveToWorldNode(GetNextWorldNode());
+	}
 	
 	iPoint pos = App->map->WorldToMap((int)position.x,(int)position.y); // stick to map coords.
 	pos = App->map->MapToWorld(pos.x, pos.y); // and save in world coords to easy load
@@ -107,6 +109,10 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 	flyingEnemy.append_attribute("y") = pos.y;
 	flyingEnemy.append_attribute("velocity_x") = velocity.x;
 	flyingEnemy.append_attribute("velocity_y") = velocity.y;
+
+	// restores the previous pos to enemy
+
+	position = temporalPos;
 
 	return true;
 }
@@ -129,7 +135,7 @@ iPoint ObjEnemyFlying::GetMapPosition() const
 }
 
 
-void ObjEnemyFlying::MoveToWorldNode(const iPoint& node)
+void ObjEnemyFlying::MoveToWorldNode(const iPoint& node) const
 {
 	fPoint velocity_vector;
 	velocity_vector.x = (int)node.x;
@@ -145,7 +151,7 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node)
 
 }
 
-iPoint ObjEnemyFlying::GetNextWorldNode()
+iPoint ObjEnemyFlying::GetNextWorldNode() const
 {
 	// get the enemy pos (this position) on map coords. (tile coords.)
 	iPoint thisPos;
