@@ -73,7 +73,6 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	LOG("Camera pos: %i, %i", camera.x, camera.y);
 	CameraDebug(dt);
 	return true;
 }
@@ -227,8 +226,23 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.w *= scale;
 	rect.h *= scale;
 
-	////If one of the vertices of the "bounding box" of the sprite is currently on the screen, attempt to render
-	//if (rect.GetLeft() > -camera.GetRight() || rect.GetRight() < -camera.GetLeft() || rect.GetTop() > -camera.GetBottom() || rect.GetBottom() < -camera.GetTop()) {
+	//iPoint cameraPos;
+	//cameraPos.x = -App->render->camera.x / (int)scale;
+	//cameraPos.y = -App->render->camera.y / (int)scale;
+
+	//if (rect.GetLeft() > cameraPos.x + camera.w) {
+	//	return false;
+	//}
+
+	//if (rect.GetRight() < cameraPos.x) {
+	//	return false;
+	//}
+
+	//if (rect.GetTop() > cameraPos.y + camera.h) {
+	//	return false;
+	//}
+
+	//if (rect.GetBottom() < cameraPos.y) {
 	//	return false;
 	//}
 
