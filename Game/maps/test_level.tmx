@@ -60215,7 +60215,7 @@
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="29" name="flyingEnemy" x="403" y="79" width="16" height="16"/>
    <object id="31" name="flyingEnemy" x="356" y="85.5" width="16" height="16"/>
-   <object id="32" name="flyingEnemy" x="379" y="136.5" width="16" height="16"/>
+   <object id="32" name="flyingEnemy" x="517" y="243.5" width="16" height="16"/>
    <object id="34" name="normalBox" x="472" y="216" width="16" height="16"/>
    <object id="35" name="normalBox" x="473" y="259" width="16" height="16"/>
    <object id="36" name="normalBox" x="472.5" y="239.5" width="16" height="16"/>

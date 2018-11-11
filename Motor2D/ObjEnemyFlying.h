@@ -7,9 +7,21 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2DynArray.h"
 
+// TODO: config.xml, testing for now
+#define MIN_DISTANCE 25
+#define MAX_DISTANCE 35
+
 struct Collider;
 
 class ObjEnemyFlying : public GameObject {
+protected:
+	enum enemyState
+	{
+		SEARCHING, // represents idle state, searching a player in manhattan range
+		FOLLOWING, // player is in range and has a viable path
+		DEATH
+	};
+
 public:
 	ObjEnemyFlying(fPoint position, int index, pugi::xml_node &object_node);
 	bool Update(float dt) override;
@@ -36,12 +48,16 @@ private:
 	void MoveToWorldNode(const iPoint& node) const;
 	void CopyLastGeneratedPath();
 	iPoint GetMapPosition() const;
+	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 
 	void followPath();
 
 	// provisional timer
 	Uint32 start_time = 0;
-	Uint32 frequency_time = 1000;
+	Uint32 frequency_time = 1500;
+
+	//enemy state machine
+	enemyState enemy_state = enemyState::SEARCHING; // default state
 
 };
 
