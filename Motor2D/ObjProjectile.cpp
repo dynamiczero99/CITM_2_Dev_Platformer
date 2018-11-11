@@ -16,7 +16,7 @@ ObjProjectile::ObjProjectile (fPoint position, int index, pugi::xml_node & proje
 		LOG("Empty node");
 	}
 
-	velocity = direction * projectile_node.child("speed").text().as_float();
+	velocity = direction * tile_to_pixel(projectile_node.child("speed").text().as_float());
 	SDL_Rect colRect;
 	colRect.w = projectile_node.child("collider_width").text().as_int();
 	colRect.h = projectile_node.child("collider_height").text().as_int();
@@ -36,9 +36,8 @@ bool ObjProjectile::OnDestroy() {
 	return true;
 }
 
-bool ObjProjectile::Update() {
-	position += velocity;
-	//TODO: Multiply by deltaTime
+bool ObjProjectile::Update(float dt) {
+	position += velocity * dt;
 	iPoint colPos = GetRectPos(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;

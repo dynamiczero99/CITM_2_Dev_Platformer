@@ -20,8 +20,7 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
-	want_to_save = want_to_load = false;
+	PERF_START(ptimer);
 
 	input = new j1Input();
 	win = new j1Window();
@@ -49,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);//Collision is the penultimate module to update because it calcules all the overlaping collisions and resolves them just before rendering
 	AddModule(render);// render last to swap buffer
 
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -75,12 +75,10 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
-	config_file;
-	config;
-	app_config;
+	PERF_START(ptimer);
 
 	bool ret = false;
-		
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -90,6 +88,8 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		framerateCap = app_config.attribute("framerate_cap").as_int();
+		capTime = 1000 / app_config.attribute("framerate_cap").as_int();
 	}
 
 	if(ret == true)
@@ -104,12 +104,16 @@ bool j1App::Awake()
 		}
 	}
 
+	PERF_PEEK(ptimer);
+
 	return ret;
 }
 
 // Called before the first frame
 bool j1App::Start()
 {
+	PERF_START(ptimer);
+
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -119,8 +123,13 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+	startup_time.Start();
 
-	DeltaTimeCorrection();
+	PERF_PEEK(ptimer);
+
+	// Account for the first frame taking more than usual
+	// Without this the player and the boxes to fall through the floor
+	longTransition = true;
 
 	return ret;
 }
@@ -130,7 +139,6 @@ bool j1App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
-	CalculateDeltaTime();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
@@ -166,13 +174,26 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
+	if (longTransition) {
+		dt = 1.0f / (float)framerateCap;
+		longTransition = false;
+	}
+	else {
+		dt = frame_time.ReadSec();
+	}
+
+	frame_time.Start();
 }
 
 // ---------------------------------------------
 void j1App::FinishUpdate()
 {
-	if(want_to_save == true)
+	//Save and load
+	if (want_to_save == true) {
 		SavegameNow();
+	}
 
 	if (want_to_load == true)
 	{
@@ -196,7 +217,52 @@ void j1App::FinishUpdate()
 			prepareToLoad = false;
 		}
 	}
-		
+
+	//Framerate
+	//- Calculations
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+	float seconds_since_startup = startup_time.ReadSec();
+	float avg_fps = float(frame_count) / seconds_since_startup;
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+		capFrames = !capFrames;
+	}
+
+	static char title[256];
+	p2SString capFramesString;
+	if (capFrames) {
+		capFramesString = "ON";
+	}
+	else {
+		capFramesString = "OFF";
+	}
+	p2SString vsyncString;
+	if (vsync) {
+		vsyncString = "ON";
+	}
+	else {
+		vsyncString = "OFF";
+	}
+
+	sprintf_s(title, 256, "SWAP GAME || Last sec frames: %i | Av.FPS: %.2f | Last frame ms: %02u | Framerate cap: %s | Vsync: %s",
+		frames_on_last_update, avg_fps, last_frame_ms, capFramesString.GetString(), vsyncString.GetString());
+	App->win->SetTitle(title);
+
+	//- Cap the framerate
+	if (capFrames) {
+		uint32 delay = MAX(0, (int)capTime - (int)last_frame_ms);
+		//LOG("Should wait: %i", delay);
+		//j1PerfTimer delayTimer;
+		SDL_Delay(delay);
+		//LOG("Has waited:  %f", delayTimer.ReadMs());
+	}
 }
 
 // Call modules before each loop iteration
@@ -262,6 +328,8 @@ bool j1App::PostUpdate()
 // Called before quitting
 bool j1App::CleanUp()
 {
+	PERF_START(ptimer);
+
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.end;
 
@@ -270,6 +338,8 @@ bool j1App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
+
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -326,12 +396,6 @@ void j1App::SaveGame(const char* file) const
 void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
-}
-
-float j1App::GetDeltaTime() const
-{
-	//return deltaTime;
-	return (1.0f / 60.0f);
 }
 
 bool j1App::LoadGameNow()
@@ -410,19 +474,6 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
-}
-
-void j1App::DeltaTimeCorrection()
-{
-	//CalculateDeltaTime() executes on the preupdate, so just before that, in the start, we make the lastTime equal the current time so that when it substracts with currTime it will be basically the same
-	lastTime = SDL_GetTicks();
-}
-
-void j1App::CalculateDeltaTime()
-{
-	currTime = SDL_GetTicks();
-	deltaTime = (currTime - lastTime) / 1000.0F;//INFO: 1 second is 1000 miliseconds
-	lastTime = currTime;
 }
 
 bool j1App::GetLevelToLoadName(p2SString& level_name) const

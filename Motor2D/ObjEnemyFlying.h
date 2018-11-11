@@ -12,7 +12,7 @@ struct Collider;
 class ObjEnemyFlying : public GameObject {
 public:
 	ObjEnemyFlying(fPoint position, int index, pugi::xml_node &object_node);
-	bool Update() override;
+	bool Update(float dt) override;
 	bool PreUpdate() override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;

@@ -25,6 +25,7 @@ j1Object::j1Object() : j1Module() {
 }
 
 bool j1Object::Awake(pugi::xml_node& node) {
+	tileSize = node.child("tile_size").text().as_uint();
 	object_node = node;
 	return true;
 }
@@ -62,7 +63,7 @@ bool j1Object::PreUpdate() {
 bool j1Object::Update(float dt) {
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
-			objects[i]->Update();
+			objects[i]->Update(dt);
 		}
 	}
 	return true;
@@ -247,7 +248,7 @@ bool GameObject::PreUpdate() {
 	return true;
 }
 
-bool GameObject::Update() {
+bool GameObject::Update(float dt) {
 	return true;
 }
 
@@ -359,4 +360,9 @@ bool GameObject::Load(pugi::xml_node& node)
 bool GameObject::Save(pugi::xml_node& node) const
 {
 	return true;
+}
+
+//We can use this variable to make it easier for us to understand the different distance the player can move or jump while building levels in the tiled editor
+float GameObject::tile_to_pixel(uint pixel) {
+	return pixel * App->object->tileSize;
 }

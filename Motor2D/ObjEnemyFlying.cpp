@@ -16,8 +16,6 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	currAnim = &idleAnim;
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
-
-	
 }
 
 bool ObjEnemyFlying::OnDestroy() {
@@ -58,7 +56,7 @@ bool ObjEnemyFlying::PreUpdate()
 	return true;
 }
 
-bool ObjEnemyFlying::Update() {
+bool ObjEnemyFlying::Update(float dt) {
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 

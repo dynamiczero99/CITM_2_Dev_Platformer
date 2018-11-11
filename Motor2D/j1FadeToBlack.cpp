@@ -56,6 +56,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 					App->scene->Enable();
 				}
 			}
+			App->longTransition = true;
 			current_step = fade_step::fade_from_black;
 		}
 	}
@@ -67,7 +68,7 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 		}
 	}
 
-	LOG("Fade percent: %f", fadePerCent);
+	//LOG("Fade percent: %f", fadePerCent);
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadePerCent * 255.0F));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
