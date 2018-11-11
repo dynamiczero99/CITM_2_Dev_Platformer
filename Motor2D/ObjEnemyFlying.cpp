@@ -33,24 +33,30 @@ void ObjEnemyFlying::MarkObject(bool mark)
 
 bool ObjEnemyFlying::PreUpdate()
 {
-	// testing path
-	if (SDL_GetTicks() > start_time + frequency_time)
-		//static bool cmon = false;
-		//if(!cmon)
+	switch (enemy_state)
 	{
-		iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
-		iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
-
-		if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
+	case FOLLOWING:
+		// testing path
+		if (SDL_GetTicks() > start_time + frequency_time)
+			//static bool cmon = false;
+			//if(!cmon)
 		{
-			if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
+			iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
+			iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+
+			if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
 			{
-				CopyLastGeneratedPath();
+				if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
+				{
+					CopyLastGeneratedPath();
+				}
 			}
+
+			start_time = SDL_GetTicks();
+			//cmon = true;
 		}
 
-		start_time = SDL_GetTicks();
-		//cmon = true;
+		break;
 	}
 
 	return true;
@@ -60,6 +66,26 @@ bool ObjEnemyFlying::Update(float dt) {
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 
+
+	switch (enemy_state)
+	{
+	case SEARCHING:
+		if (isPlayerInTileRange(MIN_DISTANCE)) // minimum distance to follow player
+		{
+			enemy_state = enemyState::FOLLOWING;
+		}
+		break;
+	case FOLLOWING:
+		// pathfinding
+		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE)) // minimum distance to stop follow
+			followPath();
+		else
+		{
+			enemy_state = enemyState::SEARCHING;
+		}
+		break;
+	}
+
 	// pathfinding debug draw ---------------------------------------------------
 	for (uint i = 0; i < last_path.Count() ; ++i)
 	{
@@ -68,16 +94,15 @@ bool ObjEnemyFlying::Update(float dt) {
 	}
 	// --------------------------------------------------------------------------
 
+
 	return true;
 }
 
 bool ObjEnemyFlying::PostUpdate() {
+
+	// draw
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
-
-	// pathfinding
-	if (last_path.Count() > 0)
-		followPath();
 
 	return true;
 }
@@ -183,4 +208,13 @@ void ObjEnemyFlying::CopyLastGeneratedPath()
 		last_path.PushBack(*pathToCopy->At(i));
 	}
 	last_path.Flip();
+}
+
+bool ObjEnemyFlying::isPlayerInTileRange(const uint range) const
+{
+	// translate to map coords
+	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
+	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+	
+	return (thisPos.DistanceManhattan(playerPos) < range);
 }
