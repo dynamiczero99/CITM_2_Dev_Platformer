@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Input.h"
 
 j1Render::j1Render() : j1Module()
 {
@@ -10,7 +11,7 @@ j1Render::j1Render() : j1Module()
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;
-	background.a = 0;
+	background.a = 255;
 }
 
 // Destructor
@@ -65,19 +66,87 @@ bool j1Render::Start()
 // Called each loop iteration
 bool j1Render::PreUpdate()
 {
+	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderClear(renderer);
 	return true;
 }
 
 bool j1Render::Update(float dt)
 {
+	LOG("Camera pos: %i, %i", camera.x, camera.y);
+	CameraDebug(dt);
 	return true;
 }
 
+void j1Render::CameraDebug(float dt)
+{
+	uint screenW, screenH = 0;
+	App->win->GetWindowSize(screenW, screenH);
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT) {
+		cameraDebug = true;
+		camera.x -= CAMERA_MOVE_SPEED * dt;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT) {
+		cameraDebug = true;
+		camera.x += CAMERA_MOVE_SPEED * dt;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT) {
+		cameraDebug = true;
+		camera.y += CAMERA_MOVE_SPEED * dt;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT) {
+		cameraDebug = true;
+		camera.y -= CAMERA_MOVE_SPEED * dt;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN && zoomedOutSize < MAX_ZOOM)
+	{
+		cameraDebug = true;
+		zoomedOutSize++;
+		SDL_RenderSetLogicalSize(renderer, screenW * zoomedOutSize, screenH * zoomedOutSize);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN && zoomedOutSize > 1)
+	{
+		cameraDebug = true;
+		zoomedOutSize--;
+		SDL_RenderSetLogicalSize(renderer, screenW * zoomedOutSize, screenH * zoomedOutSize);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_REPEAT) {
+		cameraDebug = false;
+		zoomedOutSize = 1;
+		SDL_RenderSetLogicalSize(renderer, screenW * zoomedOutSize, screenH * zoomedOutSize);
+	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
+	//{
+	//	if (showTilemapGrid == true) { showTilemapGrid = false; }
+	//	else { showTilemapGrid = true; }
+	//}
+}
+
+
 bool j1Render::PostUpdate()
 {
-	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+	//Draw the borders of the screen
+
+	SDL_Color color = { 255, 255, 255, 255 };
+
+	uint borderWidth = DEFAULT_BORDER_WIDTH * zoomedOutSize;
+
+	uint screenWidth, screenHeight;
+	App->win->GetWindowSize(screenWidth, screenHeight);
+
+	SDL_Rect rectUp = { 0, -(int)borderWidth, screenWidth, borderWidth };
+	DrawQuad(rectUp, color.r, color.g, color.b, color.a, true, false);
+	SDL_Rect rectDown = { 0, screenHeight, screenWidth, borderWidth };
+	DrawQuad(rectDown, color.r, color.g, color.b, color.a, true, false);
+	SDL_Rect rectLeft = { -(int)borderWidth, 0, borderWidth, screenHeight };
+	DrawQuad(rectLeft, color.r, color.g, color.b, color.a, true, false);
+	SDL_Rect rectRight = { screenWidth, 0, borderWidth, screenHeight };
+	DrawQuad(rectRight, color.r, color.g, color.b, color.a, true, false);
+
 	SDL_RenderPresent(renderer);
+
 	return true;
 }
 
@@ -157,6 +226,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	rect.w *= scale;
 	rect.h *= scale;
+
+	////If one of the vertices of the "bounding box" of the sprite is currently on the screen, attempt to render
+	//if (rect.GetLeft() > -camera.GetRight() || rect.GetRight() < -camera.GetLeft() || rect.GetTop() > -camera.GetBottom() || rect.GetBottom() < -camera.GetTop()) {
+	//	return false;
+	//}
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;

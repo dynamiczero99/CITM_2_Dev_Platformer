@@ -206,8 +206,8 @@ void ObjEnemyFlying::followPath()
 	iPoint nextNode = GetNextWorldNode();
 	//iPoint thisPos = GetMapPosition();
 
-	/*LOG("next world node: %i,%i", nextNode.x, nextNode.y);
-	LOG("this position: %i,%i", (int)position.x, (int)position.y);*/
+	//LOG("next world node: %i,%i", nextNode.x, nextNode.y);
+	//LOG("this position: %i,%i", (int)position.x, (int)position.y);
 
 	MoveToWorldNode(nextNode);
 

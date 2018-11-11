@@ -5,6 +5,11 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+#define DEFAULT_BORDER_WIDTH 10
+#define MAX_ZOOM 5
+//#define AXIS_LENGTH 5000
+#define CAMERA_MOVE_SPEED 200
+
 struct ColorRGB {
 	ColorRGB(){}
 	ColorRGB(Uint8 r, Uint8 g, Uint8 b) : r(r), g(g), b(b) {}
@@ -39,6 +44,7 @@ public:
 
 	// Called each loop iteration
 	bool PreUpdate();
+	void CameraDebug(float dt);
 	bool Update(float dt);
 	bool PostUpdate();
 
@@ -68,6 +74,14 @@ public:
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+
+	bool cameraDebug = false;
+
+private:
+	//Zoom out
+	//iPoint movedPosition;
+	int zoomedOutSize = 1;
+	//bool showTilemapGrid = false;
 };
 
 #endif // __j1RENDER_H__

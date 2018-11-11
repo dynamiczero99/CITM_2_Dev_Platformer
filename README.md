@@ -51,6 +51,7 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Mechanic that lets you change position with other objects.
 - Shoot with mouse.
 - Get music from the level from Tiled Map Editor.
+- Camera debugger
 
 ## Debug functionality:
 - F1 ​Start from the very first level
@@ -62,6 +63,13 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
   - You can go through colliders, you don't fall
   - Move up width W and move down with S
 - Enter Go to the next level (if you are in the last one come back to the first)
+- NUMPAD 7: Zoom in
+- NUMPAD 9: Zoom out
+- NUMPAD 8: Move camera up
+- NUMPAD 5: Move camera down
+- NUMPAD 4: Move camera left
+- NUMPAD 6: Move camera right
+- NUMPAD 0: Deactivate camera debugging
 
 ## License:
 	GNU GPLv3
