@@ -215,12 +215,12 @@ void j1Scene::CameraLogic()
 	{
 		// Load the first level of the list -------------------------
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
-		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 	}
 
 	// START from the current level
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 2.0f);
+		App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 
 	// switch between levels
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -247,7 +247,7 @@ void j1Scene::CameraLogic()
 			levelData = levelData->next;
 		}
 		
-		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 2.0f);
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 	}
 }
 
