@@ -73,7 +73,9 @@ bool j1Scene::Start()
 }
 
 bool j1Scene::PreUpdate() {
-	CameraLogic();
+	if (!App->render->cameraDebug) {
+		CameraLogic();
+	}
 
 	// debug pathfing ------------------
 	static iPoint origin;

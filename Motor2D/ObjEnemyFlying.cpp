@@ -120,8 +120,8 @@ void ObjEnemyFlying::followPath()
 	iPoint nextNode = GetNextWorldNode();
 	//iPoint thisPos = GetMapPosition();
 
-	LOG("next world node: %i,%i", nextNode.x, nextNode.y);
-	LOG("this position: %i,%i", (int)position.x, (int)position.y);
+	//LOG("next world node: %i,%i", nextNode.x, nextNode.y);
+	//LOG("this position: %i,%i", (int)position.x, (int)position.y);
 
 	MoveToWorldNode(nextNode);
 
@@ -142,7 +142,7 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node) const
 	velocity_vector -= position;
 	velocity_vector.Normalize();
 
-	LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
+	//LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
 
 	position.x += velocity_vector.x * 1.5f;
 	position.y += velocity_vector.y * 1.5f;
@@ -164,7 +164,7 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
 	{
 		last_path.Pop(nextNodePos);
-		LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
+		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
 	if (last_path.Count() > 0)

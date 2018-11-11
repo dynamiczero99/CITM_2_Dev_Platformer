@@ -150,7 +150,6 @@ void ObjPlayer::StandardControls()
 }
 
 bool ObjPlayer::Update(float dt) {
-	LOG("Delta time: %f", dt);
 	if (!godMode) {
 		StandardMovement(dt);
 	}

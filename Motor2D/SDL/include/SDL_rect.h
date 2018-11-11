@@ -66,37 +66,37 @@ typedef struct SDL_Rect
     int x, y;
     int w, h;
 
-	int GetTop();
-	int GetBottom();
-	int GetLeft();
-	int GetRight();
+	int GetTop() const;
+	int GetBottom() const;
+	int GetLeft() const;
+	int GetRight() const;
 } SDL_Rect;
 
 /**
 *  \brief Returns the top point of the rectangle
 */
-SDL_FORCE_INLINE int SDL_Rect::GetTop() {
+SDL_FORCE_INLINE int SDL_Rect::GetTop() const {
 	return y;
 }
 
 /**
 *  \brief Returns the bottom point of the rectangle
 */
-SDL_FORCE_INLINE int SDL_Rect::GetBottom() {
+SDL_FORCE_INLINE int SDL_Rect::GetBottom() const {
 	return y + h;
 }
 
 /**
 *  \brief Returns the left point of the rectangle
 */
-SDL_FORCE_INLINE int SDL_Rect::GetLeft() {
+SDL_FORCE_INLINE int SDL_Rect::GetLeft() const {
 	return x;
 }
 
 /**
 *  \brief Returns the right point of the rectangle
 */
-SDL_FORCE_INLINE int SDL_Rect::GetRight() {
+SDL_FORCE_INLINE int SDL_Rect::GetRight() const {
 	return x + w;
 }
 
