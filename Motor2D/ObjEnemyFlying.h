@@ -8,8 +8,8 @@
 #include "p2DynArray.h"
 
 // TODO: config.xml, testing for now
-#define MIN_DISTANCE 25
-#define MAX_DISTANCE 35
+#define MIN_DISTANCE 15
+#define MAX_DISTANCE 25
 
 struct Collider;
 

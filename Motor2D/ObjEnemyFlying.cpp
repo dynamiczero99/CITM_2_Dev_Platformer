@@ -18,6 +18,7 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
+	lastValidPos = position; // understands that spwan position is a valid one
 
 }
 
@@ -149,7 +150,7 @@ void ObjEnemyFlying::idleMovement()
 	// check if we arrived at target
 	if (App->map->WorldToMap(position.x, position.y) == targetTile)
 	{
-		//LOG("targetreached %i,%i", targetTile.x, targetTile.y);
+		LOG("targetreached %i,%i", targetTile.x, targetTile.y);
 		nextTravelPos.x = -nextTravelPos.x;
 		nextTravelPos.y = -nextTravelPos.y;
 		speedDir = -speedDir;

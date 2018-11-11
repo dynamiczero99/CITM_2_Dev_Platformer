@@ -73,7 +73,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	LOG("Camera pos: %i, %i", camera.x, camera.y);
+	//LOG("Camera pos: %i, %i", camera.x, camera.y);
 	CameraDebug(dt);
 	return true;
 }
