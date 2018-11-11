@@ -65,6 +65,10 @@ private:
 
 	// idle movement
 	void idleMovement();
+	p2DynArray<iPoint> idlePath = NULL;
+
+	// utils
+	int GetRandomValue(const int min,const  int max) const;
 
 };
 

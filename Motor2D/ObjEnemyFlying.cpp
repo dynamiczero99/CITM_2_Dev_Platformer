@@ -20,6 +20,27 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 
 	lastValidPos = position; // understands that spwan position is a valid one
 
+	// idle path pushbacks
+	// generate random idle paths for every enemy
+	for(uint i = 0; i < 6; ++i) // generate 6 different travel nodes
+		idlePath.PushBack({ GetRandomValue(-3,3),GetRandomValue(-3,3) });
+
+}
+
+int ObjEnemyFlying::GetRandomValue(const int min, const int max) const
+{
+	int value = 0;
+
+	// recalcule new frequency time c++11 random engine
+	std::mt19937 rng;
+	rng.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> newRN(min, max); // distribution in range [min, max]
+
+	value = newRN(rng);
+
+	LOG("random value: %i", value);
+
+	return value;
 }
 
 bool ObjEnemyFlying::OnDestroy() {
@@ -54,15 +75,7 @@ bool ObjEnemyFlying::PreUpdate()
 				{
 					CopyLastGeneratedPath();
 
-					// recalcule new frequency time c++11 random engine
-					std::mt19937 rng;
-					rng.seed(std::random_device()());
-					std::uniform_int_distribution<std::mt19937::result_type> newFreqRange(1000, 1500); // distribution in range [1000, 1500]
-
-					int newFreq = newFreqRange(rng);
-
-					LOG("%i", newFreq);
-					frequency_time = newFreq;
+					frequency_time = GetRandomValue(1000, 1500);
 				}
 			}
 
@@ -132,10 +145,11 @@ bool ObjEnemyFlying::Update(float dt) {
 
 void ObjEnemyFlying::idleMovement()
 {
-	static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
+	//static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
+	static uint posIndex = 0;
 	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
 	
-	iPoint targetTile = lastValid + nextTravelPos;
+	iPoint targetTile = lastValid + *idlePath.At(posIndex);//nextTravelPos;
 
 	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y) - iPoint((int)position.x, (int)position.y);
 
@@ -151,7 +165,17 @@ void ObjEnemyFlying::idleMovement()
 	if (App->map->WorldToMap(position.x, position.y) == targetTile)
 	{
 		LOG("targetreached %i,%i", targetTile.x, targetTile.y);
-		nextTravelPos *= -1;
+		//nextTravelPos *= -1;
+		posIndex++;
+
+		if (posIndex > idlePath.Count() - 1)
+		{
+			posIndex = 0;
+			// and generate new random path
+			idlePath.Clear();
+			for (uint i = 0; i < 6; ++i)
+				idlePath.PushBack({ GetRandomValue(-3, 3), GetRandomValue(-3, 3) });
+		}
 
 	}
 
