@@ -88,6 +88,9 @@ bool ObjEnemyFlying::Update(float dt) {
 		{
 			enemy_state = enemyState::FOLLOWING;
 		}
+		// and if we have a previous still non traveled path, finish them
+		if (last_path.Count() > 0)
+			followPath();
 		break;
 	case FOLLOWING:
 		// pathfinding
