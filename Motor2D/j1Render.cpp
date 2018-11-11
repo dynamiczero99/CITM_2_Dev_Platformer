@@ -228,9 +228,6 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.h *= scale;
 
 	////If one of the vertices of the "bounding box" of the sprite is currently on the screen, attempt to render
-	//if (rect.x + rect.w < -camera.x  / (int)App->win->GetScale()) {
-	//	return false;
-	//}
 	//if (rect.GetLeft() > -camera.GetRight() || rect.GetRight() < -camera.GetLeft() || rect.GetTop() > -camera.GetBottom() || rect.GetBottom() < -camera.GetTop()) {
 	//	return false;
 	//}
