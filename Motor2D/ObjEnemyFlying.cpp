@@ -10,12 +10,15 @@
 #include "j1Pathfinding.h"
 #include "ObjPlayer.h"
 #include "j1Map.h"
+#include <random>
 
 ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) {
 	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
 	currAnim = &idleAnim;
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+
+
 }
 
 bool ObjEnemyFlying::OnDestroy() {
@@ -49,11 +52,22 @@ bool ObjEnemyFlying::PreUpdate()
 				if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
 				{
 					CopyLastGeneratedPath();
+
+					// recalcule new frequency time c++11 random engine
+					std::mt19937 rng;
+					rng.seed(std::random_device()());
+					std::uniform_int_distribution<std::mt19937::result_type> newFreqRange(1000, 1500); // distribution in range [1000, 1500]
+
+					int newFreq = newFreqRange(rng);
+
+					LOG("%i", newFreq);
+					frequency_time = newFreq;
 				}
 			}
 
 			start_time = SDL_GetTicks();
 			//cmon = true;
+
 		}
 
 		break;
@@ -145,8 +159,8 @@ void ObjEnemyFlying::followPath()
 	iPoint nextNode = GetNextWorldNode();
 	//iPoint thisPos = GetMapPosition();
 
-	LOG("next world node: %i,%i", nextNode.x, nextNode.y);
-	LOG("this position: %i,%i", (int)position.x, (int)position.y);
+	/*LOG("next world node: %i,%i", nextNode.x, nextNode.y);
+	LOG("this position: %i,%i", (int)position.x, (int)position.y);*/
 
 	MoveToWorldNode(nextNode);
 
@@ -167,7 +181,7 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node) const
 	velocity_vector -= position;
 	velocity_vector.Normalize();
 
-	LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
+	//LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
 
 	position.x += velocity_vector.x * 1.5f;
 	position.y += velocity_vector.y * 1.5f;
@@ -189,7 +203,7 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
 	{
 		last_path.Pop(nextNodePos);
-		LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
+		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
 	if (last_path.Count() > 0)
