@@ -93,13 +93,20 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 {
 	LOG("Saving obj Enemy Flying");
 
-	pugi::xml_node boxNode = node.append_child("EnemyFlying");
+	pugi::xml_node flyingEnemy = node.append_child("FlyingEnemy");
 
-	boxNode.append_attribute("x") = position.x;
-	boxNode.append_attribute("y") = position.y;
-	boxNode.append_attribute("velocity_x") = velocity.x;
-	boxNode.append_attribute("velocity_y") = velocity.y;
+	//while (App->pathfinding->CreatePath({ (int)position.x, (int)position.y }, { 0,0 }) < 0) // force to have a real walkable path
+	//{
+	//	MoveToWorldNode(GetNextWorldNode());
+	//}
+	
+	iPoint pos = App->map->WorldToMap((int)position.x,(int)position.y); // stick to map coords.
+	pos = App->map->MapToWorld(pos.x, pos.y); // and save in world coords to easy load
 
+	flyingEnemy.append_attribute("x") = pos.x;
+	flyingEnemy.append_attribute("y") = pos.y;
+	flyingEnemy.append_attribute("velocity_x") = velocity.x;
+	flyingEnemy.append_attribute("velocity_y") = velocity.y;
 
 	return true;
 }

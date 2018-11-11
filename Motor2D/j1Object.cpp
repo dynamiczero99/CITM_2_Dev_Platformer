@@ -202,6 +202,12 @@ bool j1Object::Load(pugi::xml_node& node)
 		else
 			App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
 	}
+	// enemies --------------------------------
+	// flying enemy ---
+	for (pugi::xml_node flyingEnemy = node.child("FlyingEnemy"); flyingEnemy; flyingEnemy = flyingEnemy.next_sibling("FlyingEnemy"))
+	{
+		App->object->AddObjEnemyFlying({ flyingEnemy.attribute("x").as_float(), flyingEnemy.attribute("y").as_float() });
+	}
 
 	// and load the rest of data
 	for (int i = 0; i < MAX_OBJECTS; ++i)
