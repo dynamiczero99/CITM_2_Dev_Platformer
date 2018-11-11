@@ -31,9 +31,9 @@ private:
 	Collider * collider = nullptr;
 
 	// pathfinding relatives
-	p2DynArray<iPoint> last_path = NULL;
-	iPoint GetNextWorldNode();
-	void MoveToWorldNode(const iPoint& node);
+	mutable p2DynArray<iPoint> last_path = NULL;
+	iPoint GetNextWorldNode() const;
+	void MoveToWorldNode(const iPoint& node) const;
 	void CopyLastGeneratedPath();
 	iPoint GetMapPosition() const;
 
