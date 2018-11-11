@@ -1,13 +1,13 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="30">
     <title>Swap game</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
 
   <window>
@@ -30,11 +30,12 @@
   <map>
     <folder>maps/</folder>
 	<levels>
-	<level name="test_level.tmx"/>
+    <level name="test_level.tmx"/>
     <level name="level001.tmx"/>
     <level name="level002.tmx"/>
     <level name="level003.tmx"/>
     <level name="level004.tmx"/>
+
 	</levels>
   </map>
   
@@ -44,15 +45,17 @@
     <player_run_image>textures/engineer character/engineer-run.png</player_run_image>
     <player_jump_image>textures/engineer character/engineer-jump.png</player_jump_image>
     <robot_image>textures/robot_tileset.png</robot_image>
-	<debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
-    <projectile>
-      <speed>5</speed>
-      <collider_width>5</collider_width>
-      <collider_height>5</collider_height>
+    <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
+    <tile_size>8</tile_size>
+	  <debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
+      <projectile>
+        <speed>30</speed>
+        <collider_width>5</collider_width>
+        <collider_height>5</collider_height>
 	  <sfx name="impact" value="impactSound.wav"/>
     </projectile>
     <box>
-      <gravity>1200</gravity>
+      <gravity>120</gravity>
       <animation tile_width ="16" tile_height ="16">
         <inactive_animation speed ="0">
           <sprite x ="112" y ="208" w ="16" h="16"/>
@@ -70,17 +73,15 @@
       </animation>
     </enemy_flying>
     <player>
-	  <sfx name="teleport" value="teleport2.wav"/>
-	  <sfx name="shoot" value="shoot01.wav"/>
-	  <sfx name="death" value="death.wav"/>
-	  <sfx name="jump" value="jump2.wav"/>
-	  <sfx name="win" value="round_end.wav"/>
+	    <sfx name="teleport" value="teleport2.wav"/>
+	    <sfx name="shoot" value="shoot01.wav"/>
+	    <sfx name="death" value="death.wav"/>
+	    <sfx name="jump" value="jump2.wav"/>
+	    <sfx name="win" value="round_end.wav"/>
       <shoot_height>20</shoot_height>
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>
-      <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
-      <tile_size>8</tile_size>
-      <gravity>150</gravity>
+      <gravity>120</gravity>
       <!-- Tiles it moves every second-->
       <move_speed_ground>16</move_speed_ground>
       <move_speed_air>12</move_speed_air>

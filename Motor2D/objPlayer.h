@@ -24,7 +24,7 @@ public:
 
 	bool PreUpdate() override;
 
-	bool Update() override;
+	bool Update(float dt) override;
 	
 	bool PostUpdate() override;
 	bool OnDestroy() override;
@@ -37,8 +37,8 @@ private:
 	void ToggleGodMode();
 	void StandardControls();
 	void GodControls();
-	void StandardMovement();
-	void GodMovement();
+	void StandardMovement(float dt);
+	void GodMovement(float dt);
 
 	void LimitFallVelocity();
 	void ShootProjectile();
@@ -55,11 +55,8 @@ private:
 	GameObject::dir GetSmallestDirFiltered(Collider * c2);
 	GameObject::dir GetSmallestDir(Collider * c2);
 
-	inline float tile_to_pixel(uint pixel);
-
 public:
 	//Variables
-	uint tileSize = 0u;
 	float gravity = 0.0f;
 	float moveSpeedAir = 0.0f;//(pixels/s)
 	float moveSpeedGnd = 0.0f;//(pixels/s)

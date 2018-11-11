@@ -4,8 +4,6 @@
 #include "j1Window.h"
 #include "j1Render.h"
 
-#define VSYNC true
-
 j1Render::j1Render() : j1Module()
 {
 	name.create("renderer");
@@ -29,8 +27,12 @@ bool j1Render::Awake(pugi::xml_node& config)
 
 	if(config.child("vsync").attribute("value").as_bool(true) == true)
 	{
+		App->vsync = true;
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
+	}
+	else {
+		App->vsync = false;
 	}
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);

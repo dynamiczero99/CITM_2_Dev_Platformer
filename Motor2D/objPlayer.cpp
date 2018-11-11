@@ -34,7 +34,6 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	feetColRect.w = playerNode.child("feet_collider_width").text().as_int();
 	feetColRect.h = playerNode.child("feet_collider_height").text().as_int();
 	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, ColorRGB(255,255,255), this);
-	tileSize = playerNode.child("tile_size").text().as_uint();
 	gravity = tile_to_pixel(playerNode.child("gravity").text().as_float());
 	moveSpeedGnd = tile_to_pixel(playerNode.child("move_speed_ground").text().as_float());
 	moveSpeedAir = tile_to_pixel(playerNode.child("move_speed_air").text().as_float());
@@ -97,9 +96,11 @@ void ObjPlayer::GodControls()
 {
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
 		velocity.x = -moveSpeedGnd;
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
 		velocity.x = moveSpeedGnd;
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
 	else {
 		velocity.x = 0;
@@ -148,12 +149,13 @@ void ObjPlayer::StandardControls()
 	}
 }
 
-bool ObjPlayer::Update() {
+bool ObjPlayer::Update(float dt) {
+	LOG("Delta time: %f", dt);
 	if (!godMode) {
-		StandardMovement();
+		StandardMovement(dt);
 	}
 	else {
-		GodMovement();
+		GodMovement(dt);
 	}
 	ShootProjectile();
 	return true;
@@ -330,7 +332,6 @@ void ObjPlayer::CollideWinZone() {
 	{
 		if (item->data->name == App->map->data.loadedLevel)
 		{
-			LOG("coincidence");
 			item = item->next;
 			if (item == NULL)
 			{
@@ -355,12 +356,7 @@ void ObjPlayer::OnCollisionFeet(Collider * c2)
 	}
 }
 
-//We can use this variable to make it easier for us to understand the different distance the player can move or jump while building levels in the tiled editor
-inline float ObjPlayer::tile_to_pixel(uint pixel) {
-	return pixel * tileSize;
-}
-
-void ObjPlayer::StandardMovement()
+void ObjPlayer::StandardMovement(float dt)
 {
 	//Evaluate the result we got from last frame's OnCollision()
 	if (!isOnPlatform) {
@@ -368,20 +364,22 @@ void ObjPlayer::StandardMovement()
 		checkFallPlatform = false;
 	}
 
-	velocity = velocity + acceleration * App->GetDeltaTime();
+	velocity = velocity + acceleration * dt;
 	LimitFallVelocity();
-	position = position + velocity * App->GetDeltaTime();
+	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+
+	//LOG("Player position: %f, %f", position.x, position.y);
 
 	// - If this value remains false after checking the collision we'll consider the player has fallen from the platform
 	isOnPlatform = false;
 }
 
-void ObjPlayer::GodMovement() {
-	velocity = velocity + acceleration * App->GetDeltaTime();
-	position = position + velocity * App->GetDeltaTime();
+void ObjPlayer::GodMovement(float dt) {
+	velocity = velocity + acceleration * dt;
+	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);

@@ -85,7 +85,9 @@
     <ClCompile Include="j1Map.cpp" />
     <ClCompile Include="j1Object.cpp" />
     <ClCompile Include="j1Pathfinding.cpp" />
+    <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
+    <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="ObjBox.cpp" />
     <ClCompile Include="ObjEnemyFlying.cpp" />
     <ClCompile Include="ObjPlayer.cpp" />
@@ -103,7 +105,9 @@
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Object.h" />
     <ClInclude Include="j1Pathfinding.h" />
+    <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
+    <ClInclude Include="j1Timer.h" />
     <ClInclude Include="ObjBox.h" />
     <ClInclude Include="ObjEnemyFlying.h" />
     <ClInclude Include="ObjPlayer.h" />

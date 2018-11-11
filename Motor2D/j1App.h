@@ -3,6 +3,8 @@
 
 #include "p2List.h"
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "SDL/include/SDL_stdinc.h"
 
@@ -54,9 +56,6 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-	//Get the number of seconds since the previous update
-	float GetDeltaTime() const;
-
 	bool GetLevelToLoadName(p2SString& name) const;
 
 private:
@@ -83,10 +82,6 @@ private:
 	bool LoadGameNow();
 	bool SavegameNow() const;
 
-	//The first frame always takes some more time to process so we need to account for that
-	void DeltaTimeCorrection();
-	void CalculateDeltaTime();
-
 public:
 
 	// Modules
@@ -107,6 +102,9 @@ public:
 	bool readyToLoad = false;
 	bool want_to_load = false;
 
+	bool vsync = false;
+
+	bool longTransition = false;
 
 private:
 
@@ -115,23 +113,28 @@ private:
 	pugi::xml_node		app_config;
 
 	p2List<j1Module*>	modules;
-	uint				frames;
-	float				dt;
 	int					argc;
 	char**				args;
 
 	p2SString			title;
 	p2SString			organization;
 
-	mutable bool		want_to_save;
+	mutable bool		want_to_save = false;
 	//bool				want_to_load;
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
-	Uint32 currTime;
-	Uint32 lastTime;
-	float deltaTime;
-
+	j1PerfTimer			ptimer;
+	uint64				frame_count = 0;
+	j1Timer				startup_time;
+	j1Timer				frame_time;
+	j1Timer				last_sec_frame_time;
+	uint32				last_sec_frame_count = 0;
+	uint32				prev_last_sec_frame_count = 0;
+	uint32				capTime = 0;
+	uint32				framerateCap = 0;
+	float				dt = 0.0f;
+	bool				capFrames = true;
 };
 
 extern j1App* App;
