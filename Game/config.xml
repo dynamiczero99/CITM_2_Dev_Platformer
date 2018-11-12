@@ -23,21 +23,28 @@
   </file_system>
   
   <audio>
-	<music_folder>audio/music/</music_folder>
-	<fx_folder>audio/fx/</fx_folder>
+	  <music_folder>audio/music/</music_folder>
+	  <fx_folder>audio/fx/</fx_folder>
   </audio>
 
   <map>
     <folder>maps/</folder>
-	<levels>
-    <level name="test_level.tmx"/>
-    <level name="level001.tmx"/>
-    <level name="level002.tmx"/>
-    <level name="level003.tmx"/>
-    <level name="level004.tmx"/>
-
-	</levels>
+	  <levels>
+      <level name="test_level.tmx"/>
+      <level name="level001.tmx"/>
+      <level name="level002.tmx"/>
+      <level name="level003.tmx"/>
+      <level name="level004.tmx"/>
+	  </levels>
   </map>
+
+  <scene>
+    <catching_speed_horizontal>20</catching_speed_horizontal>
+    <catching_speed_jumping>3</catching_speed_jumping>
+    <catching_speed_falling>50</catching_speed_falling>
+    <screen_divisions_horizontal>8</screen_divisions_horizontal>
+    <screen_divisions_vertical>6</screen_divisions_vertical>
+  </scene>
   
   <object>
     <projectile_image>textures/projectile/projectile.png</projectile_image>

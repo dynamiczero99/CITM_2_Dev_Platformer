@@ -16,7 +16,7 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node& node);
 
 	// Called before the first frame
 	bool Start();
@@ -32,7 +32,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void CameraLogic();
+	void CameraLogic(float dt);
 
 	bool searchValidCameraPos();
 
@@ -40,20 +40,22 @@ public:
 	bool Save(pugi::xml_node& node) const;
 
 private:
-
-	fPoint cameraPos = { 0,0 };
-
-	bool firstStart = true;
-
-	bool teleport = false; // testing var, must to be player relative
-
 	void DebugInput();
-
-	SDL_Texture* debug_tex = nullptr;
-
 	// debug path generation with mouse
 	p2DynArray<iPoint> last_path = NULL;
 	void CopyLastGeneratedPath();
+
+private:
+
+	fPoint cameraPos = { 0,0 };
+	bool firstStart = true;
+	bool teleport = false; // testing var, must to be player relative
+	SDL_Texture* debug_tex = nullptr;
+	float	catchingSpeedHorizontal = 0.0f;
+	float	catchingSpeedJumping = 0.0f;
+	float	catchingSpeedFalling = 0.0f;
+	float	horizontalScreenDivision = 0.0f;
+	float	verticalScreenDivision = 0.0f;
 
 };
 
