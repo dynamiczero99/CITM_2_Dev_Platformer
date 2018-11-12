@@ -39,11 +39,13 @@
   </map>
 
   <scene>
-    <catching_speed_horizontal>3.0</catching_speed_horizontal>
-    <catching_speed_jumping>20.0</catching_speed_jumping>
-    <catching_speed_falling>1.2</catching_speed_falling>
-    <screen_divisions_horizontal>8</screen_divisions_horizontal>
-    <screen_divisions_vertical>6</screen_divisions_vertical>
+    <camera>
+      <horizontal_multiplier>3.0</horizontal_multiplier>
+      <jump_multiplier>20.0</jump_multiplier>
+      <fall_multiplier>1.2</fall_multiplier>
+      <horizontal_screen_divisions>8</horizontal_screen_divisions>
+      <vertical_screen_division>6</vertical_screen_division>
+    </camera>
   </scene>
   
   <object>

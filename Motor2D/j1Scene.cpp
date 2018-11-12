@@ -31,14 +31,14 @@ bool j1Scene::Awake(pugi::xml_node& node)
 
 	LOG("Loading Scene");
 
-	catchingSpeedHorizontal = node.child("catching_speed_horizontal").text().as_float();
-	catchingSpeedJumping = node.child("catching_speed_jumping").text().as_float();
-	catchingSpeedFalling = node.child("catching_speed_falling").text().as_float();
+	cameraHMultiplier = node.child("camera").child("horizontal_multiplier").text().as_float();
+	cameraJumpMultiplier = node.child("camera").child("jump_multiplier").text().as_float();
+	cameraFallMultiplier = node.child("camera").child("fall_multiplier").text().as_float();
 
 	uint width, height;
 	App->win->GetWindowSize(width, height);
-	horizontalScreenDivision = (1.0f / node.child("screen_divisions_horizontal").text().as_float()) * width;
-	verticalScreenDivision = (1.0f / node.child("screen_divisions_vertical").text().as_float()) * height;
+	horizontalScreenDivision = (1.0f / node.child("camera").child("horizontal_screen_divisions").text().as_float()) * width;
+	verticalScreenDivision = (1.0f / node.child("camera").child("vertical_screen_division").text().as_float()) * height;
 
 	return ret;
 }
@@ -74,7 +74,7 @@ bool j1Scene::Start()
 	// TODO, search a less ugly tornaround, maybe in module player?
 	// to loads its position on every new map load
 
-	searchValidCameraPos();
+	SearchValidCameraPos();
 
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
@@ -176,11 +176,6 @@ bool j1Scene::CleanUp()
 
 void j1Scene::CameraLogic(float dt)
 {
-	//- Calculate camera with and height
-	uint width, height = 0u;
-	App->win->GetWindowSize(width, height);
-
-	//- Calculate offset
 	iPoint offset = {0, 0};
 	//-- The screen is horizontally divided into 8 parts (see config.xml)
 	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
@@ -195,22 +190,20 @@ void j1Scene::CameraLogic(float dt)
 	//-- Place the player on the 5th part
 	offset.y = verticalScreenDivision * 5.0f;	
 
-	//- Calculate the player's pivot positon
 	iPoint playerPivotPos;
 	playerPivotPos.x = -(int)(App->object->player->position.x * (int)App->win->GetScale()); // center of current player pivot
 	playerPivotPos.y = -(int)(App->object->player->position.y * (int)App->win->GetScale());
 
-	//- Calculate camera target position
 	fPoint target;
 	target.x = (playerPivotPos.x + (int)offset.x);
 	target.y = (playerPivotPos.y + (int)offset.y);
 
-	cameraPos.x += (target.x - App->render->camera.x) * catchingSpeedHorizontal * dt;
+	cameraPos.x += (target.x - App->render->camera.x) * cameraHMultiplier * dt;
 	if (App->render->camera.y >= target.y) {
-		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedJumping * dt;
+		cameraPos.y += (target.y - App->render->camera.y) * cameraJumpMultiplier * dt;
 	}
 	else {
-		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedFalling  *dt;
+		cameraPos.y += (target.y - App->render->camera.y) * cameraFallMultiplier  *dt;
 	}
 
 	App->render->camera.x = cameraPos.x;
@@ -282,7 +275,7 @@ void j1Scene::CameraLogic(float dt)
 	 return true;
  }
 
- bool j1Scene::searchValidCameraPos()
+ bool j1Scene::SearchValidCameraPos()
  {
 	 // update offset
 	 uint width, height = 0;
