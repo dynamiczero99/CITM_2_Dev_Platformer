@@ -94,11 +94,12 @@ bool ObjPlayer::PreUpdate() {
 
 void ObjPlayer::GodControls()
 {
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) {
+	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) || xAxis < 0) {
 		velocity.x = -moveSpeedGnd;
 		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) {
+	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) || xAxis > 0) {
 		velocity.x = moveSpeedGnd;
 		flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	}
@@ -106,10 +107,11 @@ void ObjPlayer::GodControls()
 		velocity.x = 0;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE) {
+	Sint16 yAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE) || yAxis > 0) {
 		velocity.y = moveSpeedGnd;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE) {
+	else if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE) || yAxis < 0) {
 		velocity.y = -moveSpeedGnd;
 	}
 	else {
@@ -143,7 +145,7 @@ void ObjPlayer::StandardControls()
 	}
 
 	// Check that it is hitting the ground to be able to jump (he could jump on the air otherwise)
-	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A)) && isOnPlatform) {
+	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN) && isOnPlatform) {
 		velocity.y = jumpSpeed;
 		isOnPlatform = false;
 		checkFallPlatform = false;
