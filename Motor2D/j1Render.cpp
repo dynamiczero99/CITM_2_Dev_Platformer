@@ -207,7 +207,7 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	int scale = (int)App->win->GetScale();
 
 	SDL_Rect rect;
 	rect.x = (int)(camera.x * speed) + x * scale;
@@ -227,8 +227,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.h *= scale;
 
 	//iPoint cameraPos;
-	//cameraPos.x = -App->render->camera.x / (int)scale;
-	//cameraPos.y = -App->render->camera.y / (int)scale;
+	//cameraPos.x = -App->render->camera.x / scale;
+	//cameraPos.y = -App->render->camera.y / scale;
 
 	//if (rect.GetLeft() > cameraPos.x + camera.w) {
 	//	return false;
