@@ -24,6 +24,8 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	// generate random idle paths for every enemy
 	GenerateNewIdlePath(-3, 3); // in tiles, its counts from lastValidPos
 
+	frequency_time = GetRandomValue(1000, 1500); // define a initial random value too
+
 }
 
 int ObjEnemyFlying::GetRandomValue(const int min, const int max) const
@@ -50,8 +52,10 @@ bool ObjEnemyFlying::OnDestroy() {
 void ObjEnemyFlying::MarkObject(bool mark)
 {
 	if (mark) {
+		//LOG("marked enemy");
 	}
 	else {
+		//LOG("unmarked enemy");
 	}
 }
 
