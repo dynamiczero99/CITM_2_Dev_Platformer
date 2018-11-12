@@ -25,10 +25,20 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& node)
 {
-	LOG("Loading Scene");
 	bool ret = true;
+
+	LOG("Loading Scene");
+
+	catchingSpeedHorizontal = node.child("catching_speed_horizontal").text().as_float();
+	catchingSpeedJumping = node.child("catching_speed_jumping").text().as_float();
+	catchingSpeedFalling = node.child("catching_speed_falling").text().as_float();
+
+	uint width, height;
+	App->win->GetWindowSize(width, height);
+	horizontalScreenDivision = (1.0f / node.child("screen_divisions_horizontal").text().as_float()) * width;
+	verticalScreenDivision = (1.0f / node.child("screen_divisions_vertical").text().as_float()) * height;
 
 	return ret;
 }
@@ -73,10 +83,6 @@ bool j1Scene::Start()
 }
 
 bool j1Scene::PreUpdate() {
-	if (!App->render->cameraDebug) {
-		CameraLogic();
-	}
-
 	//// debug pathfing ------------------
 	//static iPoint origin;
 	//static bool origin_selected = false;
@@ -108,6 +114,10 @@ bool j1Scene::PreUpdate() {
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	if (!App->render->cameraDebug) {
+		CameraLogic(dt);
+	}
+
 	// checks for debug input
 	DebugInput();
 	// ----------------------
@@ -164,46 +174,43 @@ bool j1Scene::CleanUp()
 	return true;
 }
 
-void j1Scene::CameraLogic()
+void j1Scene::CameraLogic(float dt)
 {
+	//- Calculate camera with and height
 	uint width, height = 0u;
 	App->win->GetWindowSize(width, height);
 
-	float x = 0.0f;
+	//- Calculate offset
+	iPoint offset = {0, 0};
+	//-- The screen is horizontally divided into 8 parts (see config.xml)
 	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
-		x = width * 0.25f * 2.5f;
+		//-- Place the player on the 5th part
+		offset.x = horizontalScreenDivision * 5.0f;
 	}
 	else {
-		x = width * 0.25f * 1.5f; // situates player on the middle of second screen partition(of 4)
+		//-- Place the player on the 3rd part
+		offset.x = horizontalScreenDivision * 3.0f;
 	}
-	float y = height * 0.33f *2.5f; // 
-	
-	iPoint offset = { (int)x , (int)y };
+	//-- The screen is vertically divided into 6 parts (see config.xml)
+	//-- Place the player on the 5th part
+	offset.y = verticalScreenDivision * 5.0f;	
 
+	//- Calculate the player's pivot positon
 	iPoint playerPivotPos;
-	playerPivotPos.x = -(int)(App->object->player->position.x * App->win->GetScale()); // center of current player pivot
-	playerPivotPos.y = -(int)(App->object->player->position.y * App->win->GetScale());
+	playerPivotPos.x = -(int)(App->object->player->position.x * (int)App->win->GetScale()); // center of current player pivot
+	playerPivotPos.y = -(int)(App->object->player->position.y * (int)App->win->GetScale());
 
-	float targetX = (playerPivotPos.x + (int)offset.x);
-	float targetY = (playerPivotPos.y + (int)offset.y);
+	//- Calculate camera target position
+	fPoint target;
+	target.x = (playerPivotPos.x + (int)offset.x);
+	target.y = (playerPivotPos.y + (int)offset.y);
 
-	if (!teleport)
-	{
-
-		cameraPos.x += (targetX - App->render->camera.x) / 20;
-
-		if (App->render->camera.y >= targetY)
-			cameraPos.y += (targetY - App->render->camera.y) / 3;
-		else
-			cameraPos.y += (targetY - App->render->camera.y) / 50;
-
+	cameraPos.x += (target.x - App->render->camera.x) * catchingSpeedHorizontal * dt;
+	if (App->render->camera.y >= target.y) {
+		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedJumping * dt;
 	}
-	else
-	{
-		// translate the camera to center the player at the middle of screen
-		cameraPos.x = playerPivotPos.x + width * 0.5f;
-		cameraPos.y = playerPivotPos.y + height * 0.5f;
-		teleport = false;
+	else {
+		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedFalling  *dt;
 	}
 
 	App->render->camera.x = cameraPos.x;
