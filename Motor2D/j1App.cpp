@@ -511,3 +511,8 @@ bool j1App::GetLevelToLoadName(p2SString& level_name) const
 	}
 
 }
+
+float j1App::GetDt()
+{
+	return dt;
+}

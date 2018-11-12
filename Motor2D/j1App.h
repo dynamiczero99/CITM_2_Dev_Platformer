@@ -57,6 +57,8 @@ public:
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
 	bool GetLevelToLoadName(p2SString& name) const;
+	
+	float GetDt();
 
 private:
 
