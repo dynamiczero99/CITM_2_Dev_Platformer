@@ -226,25 +226,34 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.w *= scale;
 	rect.h *= scale;
 
-	//iPoint cameraPos;
-	//cameraPos.x = -App->render->camera.x / scale;
+	//iPoint cameraPos;// = ScreenToWorld(-App->render->camera.x, -App->render->camera.y);// / scale;
+	//cameraPos.x = -App->render->camera.x / scale;// ScreenToWorld(-App->render->camera.x, -App->render->camera.y / scale);// / scale;
 	//cameraPos.y = -App->render->camera.y / scale;
+	
+	uint width, height = 0;
+	App->win->GetWindowSize(width, height);
 
-	//if (rect.GetLeft() > cameraPos.x + camera.w) {
-	//	return false;
-	//}
+	int offset = 100;
+	
+	if (rect.x + offset > width + offset) return false;
+	if (rect.y + offset > height + offset) return false;
 
-	//if (rect.GetRight() < cameraPos.x) {
-	//	return false;
-	//}
+	/*if (rect.GetLeft() > (cameraPos.x + camera.w)) {
+		return false;
+	}*/
 
-	//if (rect.GetTop() > cameraPos.y + camera.h) {
-	//	return false;
-	//}
 
-	//if (rect.GetBottom() < cameraPos.y) {
-	//	return false;
-	//}
+	/*if (rect.GetRight() < cameraPos.x) {
+		return false;
+	}
+
+	if (rect.GetTop() > cameraPos.y + camera.h) {
+		return false;
+	}
+
+	if (rect.GetBottom() < cameraPos.y) {
+		return false;
+	}*/
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
