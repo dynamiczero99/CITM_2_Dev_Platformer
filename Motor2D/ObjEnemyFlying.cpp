@@ -18,12 +18,13 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
-	lastValidPos = position; // understands that spwan position is a valid one
+	lastValidPos = position; // understands that spawn position is a valid one
 
 	// idle path pushbacks
 	// generate random idle paths for every enemy
-	for(uint i = 0; i < 6; ++i) // generate 6 different travel nodes
-		idlePath.PushBack({ GetRandomValue(-3,3),GetRandomValue(-3,3) });
+	GenerateNewIdlePath(-3, 3); // in tiles, its counts from lastValidPos
+
+	frequency_time = GetRandomValue(1000, 1500); // define a initial random value too
 
 }
 
@@ -51,8 +52,10 @@ bool ObjEnemyFlying::OnDestroy() {
 void ObjEnemyFlying::MarkObject(bool mark)
 {
 	if (mark) {
+		//LOG("marked enemy");
 	}
 	else {
+		//LOG("unmarked enemy");
 	}
 }
 
@@ -146,38 +149,45 @@ bool ObjEnemyFlying::Update(float dt) {
 void ObjEnemyFlying::idleMovement(float dt)
 {
 	//static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
-	static uint posIndex = 0;
+	static int posIndex = 0;
 	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
 	
 	iPoint targetTile = lastValid + *idlePath.At(posIndex);//nextTravelPos;
 
 	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y) - iPoint((int)position.x, (int)position.y);
 
-	fPoint move;
-	move.x = movement_vec.x;
-	move.y = movement_vec.y;
-	move.Normalize();
+	LOG("movement vec: %i,%i", movement_vec.x, movement_vec.y);
 
-	position.x += move.x * dt * 25.0f;
-	position.y += move.y * dt * 25.0f;
-	
-	// check if we arrived at target
-	if (App->map->WorldToMap(position.x, position.y) == targetTile)
+	if (movement_vec == iPoint(0, 0))
 	{
-		LOG("targetreached %i,%i", targetTile.x, targetTile.y);
-		//nextTravelPos *= -1;
-		posIndex++;
-
-		if (posIndex > idlePath.Count() - 1)
-		{
-			posIndex = 0;
-			// and generate new random path
-			idlePath.Clear();
-			for (uint i = 0; i < 6; ++i)
-				idlePath.PushBack({ GetRandomValue(-3, 3), GetRandomValue(-3,3) });
-		}
-
+		LOG("fatal error, randomness going to fail");
+		GenerateNewIdlePath(-3, 3);
 	}
+	else
+	{
+		fPoint move = { 0,0 };
+		move.x = movement_vec.x;
+		move.y = movement_vec.y;
+		move.Normalize();
+
+		position.x += move.x * dt * 25.0f;
+		position.y += move.y * dt * 25.0f;
+
+		// check if we arrived at target
+		if (App->map->WorldToMap(position.x, position.y) == targetTile)
+		{
+			//LOG("targetreached %i,%i", targetTile.x, targetTile.y);
+			//nextTravelPos *= -1;
+			posIndex++;
+
+			if (posIndex > idlePath.Count() - 1)
+			{
+				posIndex = 0;
+				GenerateNewIdlePath(-3, 3);
+			}
+		}
+	}
+	//LOG("EnemyPos: %f,%f", position.x, position.y);
 
 }
 
@@ -303,4 +313,12 @@ bool ObjEnemyFlying::isPlayerInTileRange(const uint range) const
 	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 	
 	return (thisPos.DistanceManhattan(playerPos) < range);
+}
+
+void ObjEnemyFlying::GenerateNewIdlePath(const int minTiles, const int maxTiles)
+{
+	// and generate new random path
+	idlePath.Clear();
+	for (uint i = 0; i < MAX_IDLE_RPATH; ++i)
+		idlePath.PushBack({ GetRandomValue(minTiles, maxTiles), GetRandomValue(minTiles, maxTiles) });
 }
