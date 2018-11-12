@@ -46,10 +46,10 @@ private:
 	//functions --
 	iPoint GetNextWorldNode() const;
 	iPoint GetMapPosition() const;
-	void MoveToWorldNode(const iPoint& node) const;
+	void MoveToWorldNode(const iPoint& node, float dt) const;
 	void CopyLastGeneratedPath();
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
-	void followPath();
+	void followPath(float dt);
 
 	// variables --
 	mutable p2DynArray<iPoint> last_path = NULL;
@@ -64,7 +64,11 @@ private:
 	enemyState enemy_state = enemyState::SEARCHING; // default state
 
 	// idle movement
-	void idleMovement();
+	void idleMovement(float dt);
+	p2DynArray<iPoint> idlePath = NULL;
+
+	// utils
+	int GetRandomValue(const int min,const  int max) const;
 
 };
 
