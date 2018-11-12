@@ -7,6 +7,7 @@
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 #define NUM_KEYBOARD_KEYS 300
+#define DEAD_ZONE 3000
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -60,6 +61,9 @@ public:
 	j1KeyState GetMouseButton(int id) const {
 		return mouse_buttons[id - 1];
 	}
+
+	//Returns a value from -1 to 1 indicating the axis
+	Sint16 GetControllerAxis(SDL_GameControllerAxis axis);
 
 	j1KeyState GetControllerButton(int id) const {
 		return controller[id];

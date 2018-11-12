@@ -207,3 +207,12 @@ void j1Input::GetMouseMotion(int& x, int& y)
 	x = mouse_motion_x;
 	y = mouse_motion_y;
 }
+
+Sint16 j1Input::GetControllerAxis(SDL_GameControllerAxis axis) {
+	Sint16 axisValue = SDL_GameControllerGetAxis(gamepad1, axis);
+	//Avoid that small movements count as input
+	if (axisValue < -DEAD_ZONE || axisValue > DEAD_ZONE) {
+		return axisValue;
+	}
+	return 0;
+}
