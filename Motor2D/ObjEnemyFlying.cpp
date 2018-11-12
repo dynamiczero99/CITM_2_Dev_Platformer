@@ -151,7 +151,10 @@ bool ObjEnemyFlying::Update(float dt) {
 			// updates last valid pos
 			lastValidPos = position;
 			//check current animation
-			currAnim = &idleAnimSearching;
+			if (!marked)
+				currAnim = &idleAnimSearching;
+			else
+				currAnim = &idleAnimMarked;
 
 		}
 		break;
