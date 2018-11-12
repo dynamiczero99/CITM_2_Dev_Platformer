@@ -75,10 +75,25 @@
       </animation>
     </box>
     <enemy_flying>
-      <animation tile_width ="14" tile_height ="26">
-        <idle_animation speed = "0">
-          <sprite x ="210" y ="22" w ="14" h ="26"/>
-        </idle_animation>
+      <animation tile_width ="14" tile_height ="27">
+        <idle_animation_searching speed = "0.25">
+          <sprite x ="210" y ="21" w ="14" h ="27"/>
+		  <sprite x ="226" y ="21" w ="14" h ="27"/>
+		  <sprite x ="242" y ="21" w ="14" h ="27"/>
+		  <sprite x ="258" y ="21" w ="14" h ="27"/>
+        </idle_animation_searching>
+		<idle_animation_detected speed = "0.25">
+          <sprite x ="0" y ="226" w ="14" h ="27"/>
+		  <sprite x ="16" y ="226" w ="14" h ="27"/>
+		  <sprite x ="32" y ="226" w ="14" h ="27"/>
+		  <sprite x ="48" y ="226" w ="14" h ="27"/>
+        </idle_animation_detected>
+		<idle_animation_marked speed = "0.25">
+          <sprite x ="64" y ="226" w ="14" h ="27"/>
+		  <sprite x ="80" y ="226" w ="14" h ="27"/>
+		  <sprite x ="96" y ="226" w ="14" h ="27"/>
+		  <sprite x ="112" y ="226" w ="14" h ="27"/>
+        </idle_animation_marked>
       </animation>
     </enemy_flying>
     <player>
