@@ -169,7 +169,8 @@ bool ObjEnemyFlying::Update(float dt) {
 	// --------------------------------------------------------------------------
 
 	// and check facing direction
-	CheckFacingDirection();
+	if(!marked)
+		CheckFacingDirection();
 
 	return true;
 }
