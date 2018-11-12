@@ -182,17 +182,17 @@ void j1Scene::CameraLogic(float dt)
 
 	//- Calculate offset
 	iPoint offset = {0, 0};
-	//INFO: The screen is horizontally divided into 8 parts (see config.xml)
+	//-- The screen is horizontally divided into 8 parts (see config.xml)
 	if (App->object->player->flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
-		//INFO: Place the player on the 5th part
+		//-- Place the player on the 5th part
 		offset.x = horizontalScreenDivision * 5.0f;
 	}
 	else {
-		//INFO: Place the player on the 3rd part
+		//-- Place the player on the 3rd part
 		offset.x = horizontalScreenDivision * 3.0f;
 	}
-	//INFO: The screen is vertically divided into 6 parts (see config.xml)
-	//INFO: Place the player on the 5th part
+	//-- The screen is vertically divided into 6 parts (see config.xml)
+	//-- Place the player on the 5th part
 	offset.y = verticalScreenDivision * 5.0f;	
 
 	//- Calculate the player's pivot positon
@@ -205,12 +205,12 @@ void j1Scene::CameraLogic(float dt)
 	target.x = (playerPivotPos.x + (int)offset.x);
 	target.y = (playerPivotPos.y + (int)offset.y);
 
-	cameraPos.x += (target.x - App->render->camera.x) / 20;
+	cameraPos.x += (target.x - App->render->camera.x) * catchingSpeedHorizontal * dt;
 	if (App->render->camera.y >= target.y) {
-		cameraPos.y += (target.y - App->render->camera.y) / 3;
+		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedJumping * dt;
 	}
 	else {
-		cameraPos.y += (target.y - App->render->camera.y) / 50;
+		cameraPos.y += (target.y - App->render->camera.y) * catchingSpeedFalling  *dt;
 	}
 
 	App->render->camera.x = cameraPos.x;

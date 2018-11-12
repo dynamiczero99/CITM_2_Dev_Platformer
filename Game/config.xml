@@ -39,9 +39,9 @@
   </map>
 
   <scene>
-    <catching_speed_horizontal>20</catching_speed_horizontal>
-    <catching_speed_jumping>3</catching_speed_jumping>
-    <catching_speed_falling>50</catching_speed_falling>
+    <catching_speed_horizontal>1.5</catching_speed_horizontal>
+    <catching_speed_jumping>10.0</catching_speed_jumping>
+    <catching_speed_falling>0.6</catching_speed_falling>
     <screen_divisions_horizontal>8</screen_divisions_horizontal>
     <screen_divisions_vertical>6</screen_divisions_vertical>
   </scene>
