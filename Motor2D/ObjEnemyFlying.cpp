@@ -12,9 +12,9 @@
 #include "j1Map.h"
 #include <random>
 
-ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) {
-	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
-	currAnim = &idleAnim;
+ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) 
+{
+
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
@@ -25,6 +25,19 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	GenerateNewIdlePath(-3, 3); // in tiles, its counts from lastValidPos
 
 	frequency_time = GetRandomValue(1000, 1500); // define a initial random value too
+
+	//Animation
+	animTileWidth = enemy_node.child("animation").attribute("tile_width").as_uint();
+	animTileHeight = enemy_node.child("animation").attribute("tile_height").as_uint();
+
+	LoadAnimation(enemy_node.child("animation").child("idle_animation_searching"), idleAnimSearching);
+	idleAnimSearching.speed = enemy_node.child("animation").child("idle_animation_searching").attribute("speed").as_float();
+	LoadAnimation(enemy_node.child("animation").child("idle_animation_detected"), idleAnimDetected);
+	idleAnimDetected.speed = enemy_node.child("animation").child("idle_animation_detected").attribute("speed").as_float();
+	LoadAnimation(enemy_node.child("animation").child("idle_animation_marked"), idleAnimMarked);
+	idleAnimMarked.speed = enemy_node.child("animation").child("idle_animation_marked").attribute("speed").as_float();
+
+	currAnim = &idleAnimSearching;
 
 }
 
@@ -53,9 +66,11 @@ void ObjEnemyFlying::MarkObject(bool mark)
 {
 	if (mark) {
 		//LOG("marked enemy");
+		currAnim = &idleAnimMarked;
 	}
 	else {
 		//LOG("unmarked enemy");
+		currAnim = &idleAnimSearching;
 	}
 }
 

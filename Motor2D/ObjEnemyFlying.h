@@ -35,7 +35,9 @@ public:
 	bool Save(pugi::xml_node& saveNode) const;
 
 public:
-	Animation idleAnim;
+	Animation idleAnimSearching;
+	Animation idleAnimDetected;
+	Animation idleAnimMarked;
 	Animation * currAnim = nullptr;
 
 private:
