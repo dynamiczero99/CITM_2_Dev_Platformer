@@ -19,6 +19,7 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
 	lastValidPos = position; // understands that spawn position is a valid one
+	previousPos = position; // for facing direction
 
 	// idle path pushbacks
 	// generate random idle paths for every enemy
@@ -164,6 +165,8 @@ bool ObjEnemyFlying::Update(float dt) {
 	}
 	// --------------------------------------------------------------------------
 
+	// and check facing direction
+	CheckFacingDirection();
 
 	return true;
 }
@@ -171,7 +174,7 @@ bool ObjEnemyFlying::Update(float dt) {
 void ObjEnemyFlying::idleMovement(float dt)
 {
 	//static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
-	static int posIndex = 0;
+	//static int posIndex = 0;
 	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
 	
 	iPoint targetTile = lastValid + *idlePath.At(posIndex);//nextTravelPos;
@@ -217,7 +220,7 @@ bool ObjEnemyFlying::PostUpdate() {
 
 	// draw
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
-	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
+	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 
 	return true;
 }
@@ -343,4 +346,22 @@ void ObjEnemyFlying::GenerateNewIdlePath(const int minTiles, const int maxTiles)
 	idlePath.Clear();
 	for (uint i = 0; i < MAX_IDLE_RPATH; ++i)
 		idlePath.PushBack({ GetRandomValue(minTiles, maxTiles), GetRandomValue(minTiles, maxTiles) });
+}
+
+void ObjEnemyFlying::CheckFacingDirection()
+{
+	
+	//LOG("previous pos x:%f current pos x: %f", previousPos.x,position.x);
+
+	if (previousPos.x > position.x) // only on x axis
+	{
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else
+	{
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+
+	previousPos = position;
+
 }

@@ -6,6 +6,7 @@
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "p2DynArray.h"
+#include "SDL/include/SDL_render.h"
 
 // TODO: config.xml, testing for now
 #define MIN_DISTANCE 15
@@ -70,10 +71,16 @@ private:
 	// idle movement
 	void idleMovement(float dt);
 	p2DynArray<iPoint> idlePath = NULL;
+	int posIndex = 0;
 
 	// utils
 	int GetRandomValue(const int min,const  int max) const;
 	void GenerateNewIdlePath(const int minTiles, const int maxTiles);
+
+	// flip animation
+	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	void CheckFacingDirection();
+	fPoint previousPos = { 0,0 };
 
 };
 
