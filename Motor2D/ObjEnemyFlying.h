@@ -65,6 +65,7 @@ private:
 
 	//enemy state machine
 	enemyState enemy_state = enemyState::SEARCHING; // default state
+	bool marked = false;
 
 	// idle movement
 	void idleMovement(float dt);
