@@ -396,7 +396,7 @@ void ObjPlayer::LimitFallVelocity() {
 
 void ObjPlayer::ShootProjectile()
 {	
-	if (App->input->GetMouseButton(1) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
 
 		if (projectile != nullptr) {
 			App->object->DeleteObject(projectile);
@@ -435,7 +435,7 @@ void ObjPlayer::ShootProjectile()
 }
 
 void ObjPlayer::SwapPosition() {
-	if (App->input->GetMouseButton(3) == KEY_DOWN && swapObject != nullptr) {
+	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X)) && swapObject != nullptr) {
 		fPoint auxPos = position;
 		position = swapObject->position;
 		swapObject->position = auxPos;
