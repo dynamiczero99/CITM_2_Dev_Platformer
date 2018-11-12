@@ -203,9 +203,12 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	fPoint temporalPos = position; // stores the actual position to return enemy at
 
-	while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
+	if (last_path.Count() > 0)
 	{
-		MoveToWorldNode(GetNextWorldNode(), 1.0f); // i dont care dt for save, as more delta, more fast is the travel simulation
+		while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
+		{
+			MoveToWorldNode(GetNextWorldNode(), 1.0f); // i dont care dt for save, as more delta, more fast is the travel simulation
+		}
 	}
 	
 	iPoint pos = App->map->WorldToMap((int)position.x,(int)position.y); // stick to map coords.
