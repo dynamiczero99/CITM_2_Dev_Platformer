@@ -171,8 +171,8 @@ ObjEnemyFlying * j1Object::AddObjEnemyFlying(fPoint position) {
 
 
 bool j1Object::DeleteObject(GameObject * object) {
-	if (object == nullptr || object->index == -1 || object->index >= COLLIDER_MAX) {
-		LOG("Invalid collider index");
+	if (object == nullptr || object->index == -1 || object->index >= MAX_OBJECTS) {
+		LOG("Invalid object index");
 		return false;
 	}
 	if (objects[object->index] != nullptr)
@@ -183,8 +183,9 @@ bool j1Object::DeleteObject(GameObject * object) {
 		objects[object->index] = nullptr;
 		object = nullptr;
 		actualObjects--;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool j1Object::Load(pugi::xml_node& node)

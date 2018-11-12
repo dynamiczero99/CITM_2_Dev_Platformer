@@ -216,21 +216,19 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, ColorRGB c
 }
 
 bool j1Collision::DeleteCollider(Collider * collider) {
-	assert(collider != nullptr);
-	assert(collider->index != -1);
-	if (collider == nullptr || collider->index == -1) {
-		LOG("Invalid collider");
+	if (collider == nullptr || collider->index == -1 || collider->index >= MAX_COLLIDERS) {
+		LOG("Invalid collider index");
 		return false;
 	}
-	//TODO: Also check if the collider index exceeds the bound of the collider array
 	if (colliders[collider->index] != nullptr)
 	{
 		delete colliders[collider->index];
 		colliders[collider->index] = nullptr;
 		collider = nullptr;
 		actualColliders--;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 // -----------------------------------------------------
