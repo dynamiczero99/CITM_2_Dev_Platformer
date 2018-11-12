@@ -65,13 +65,13 @@ bool ObjEnemyFlying::OnDestroy() {
 void ObjEnemyFlying::MarkObject(bool mark)
 {
 	if (mark) {
-		//LOG("marked enemy");
 		currAnim = &idleAnimMarked;
 	}
 	else {
-		//LOG("unmarked enemy");
 		currAnim = &idleAnimSearching;
 	}
+	
+	marked = mark; // updates internal state
 }
 
 bool ObjEnemyFlying::PreUpdate()
@@ -116,12 +116,14 @@ bool ObjEnemyFlying::Update(float dt) {
 	switch (enemy_state)
 	{
 	case SEARCHING:
-		if (isPlayerInTileRange(MIN_DISTANCE)) // minimum distance to follow player
+		if (isPlayerInTileRange(MIN_DISTANCE) && !marked) // minimum distance to follow player
 		{
 			enemy_state = enemyState::FOLLOWING;
+			// updates current animation too
+			currAnim = &idleAnimDetected;
 		}
 		// and if we have a previous still non traveled path, finish them
-		if (last_path.Count() > 0)
+		if (last_path.Count() > 0 && !marked) // always that the enemy is not marked
 		{
 			followPath(dt);
 			// updates last valid pos
@@ -131,20 +133,25 @@ bool ObjEnemyFlying::Update(float dt) {
 		{
 			// idle default movement
 			// moves on x desired tiles from lastvalid position
-			idleMovement(dt);
+			// but if we mark the enemy, makes it static
+			if(!marked)
+				idleMovement(dt);
 
 		}
 		break;
 
 	case FOLLOWING:
 		// pathfinding
-		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE)) // minimum distance to stop follow
+		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
 			followPath(dt);
 		else
 		{
 			enemy_state = enemyState::SEARCHING;
 			// updates last valid pos
 			lastValidPos = position;
+			//check current animation
+			currAnim = &idleAnimSearching;
+
 		}
 		break;
 	}
