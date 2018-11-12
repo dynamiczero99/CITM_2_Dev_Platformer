@@ -396,7 +396,7 @@ void ObjPlayer::LimitFallVelocity() {
 
 void ObjPlayer::ShootProjectile()
 {	
-	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 
 		if (projectile != nullptr) {
 			App->object->DeleteObject(projectile);
@@ -413,44 +413,20 @@ void ObjPlayer::ShootProjectile()
 		sourcePosProjectile.y = position.y - shootHeight;
 
 		fPoint projectileDirection;
-		projectileDirection.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-		projectileDirection.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
-		projectileDirection.Normalize();
-
-		projectile = App->object->AddObjProjectile(sourcePosProjectile, projectileDirection, this);
-
-		//Play sfx
-		App->audio->PlayFx(shoot);
-	}
-	else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-
-		if (projectile != nullptr) {
-			App->object->DeleteObject(projectile);
-			projectile = nullptr;
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+			projectileDirection.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+			projectileDirection.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 		}
-
-		if (swapObject != nullptr) {
-			swapObject->MarkObject(false);
-			swapObject = nullptr;
+		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			iPoint mousePos;
+			App->input->GetMousePosition(mousePos.x, mousePos.y);
+			iPoint cameraPos;
+			cameraPos.x = -App->render->camera.x / (int)App->win->GetScale();
+			cameraPos.y = -App->render->camera.y / (int)App->win->GetScale();
+			iPoint targetPosProjectile;
+			targetPosProjectile = cameraPos + mousePos;
+			projectileDirection = (fPoint)targetPosProjectile - sourcePosProjectile;
 		}
-
-		fPoint sourcePosProjectile;
-		sourcePosProjectile.x = position.x;
-		sourcePosProjectile.y = position.y - shootHeight;
-
-		//INFO: Get the world position, not the screen position
-		iPoint mousePos;
-		App->input->GetMousePosition(mousePos.x, mousePos.y);
-
-		iPoint cameraPos;
-		cameraPos.x = -App->render->camera.x / (int)App->win->GetScale();
-		cameraPos.y = -App->render->camera.y / (int)App->win->GetScale();
-
-		iPoint targetPosProjectile;
-		targetPosProjectile = cameraPos + mousePos;
-
-		fPoint projectileDirection;
-		projectileDirection = (fPoint)targetPosProjectile - sourcePosProjectile;
 		projectileDirection.Normalize();
 
 		projectile = App->object->AddObjProjectile(sourcePosProjectile, projectileDirection, this);
