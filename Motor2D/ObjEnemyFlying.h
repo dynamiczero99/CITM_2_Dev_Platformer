@@ -10,6 +10,7 @@
 // TODO: config.xml, testing for now
 #define MIN_DISTANCE 15
 #define MAX_DISTANCE 25
+#define MAX_IDLE_RPATH 6
 
 struct Collider;
 
@@ -69,6 +70,7 @@ private:
 
 	// utils
 	int GetRandomValue(const int min,const  int max) const;
+	void GenerateNewIdlePath(const int minTiles, const int maxTiles);
 
 };
 

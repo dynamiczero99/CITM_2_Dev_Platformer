@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="40">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="45">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -60220,11 +60220,11 @@
   <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="31" name="flyingEnemy" x="390.5" y="134" width="16" height="16"/>
-   <object id="34" name="normalBox" x="472" y="216" width="16" height="16"/>
    <object id="35" name="normalBox" x="473" y="259" width="16" height="16"/>
-   <object id="36" name="normalBox" x="472.5" y="239.5" width="16" height="16"/>
-   <object id="37" name="flyingEnemy" x="476" y="181" width="16" height="16"/>
-   <object id="38" name="flyingEnemy" x="725.5" y="210" width="16" height="16"/>
+   <object id="41" name="flyingEnemy" x="452.5" y="176.5" width="16" height="16"/>
+   <object id="42" name="flyingEnemy" x="363.5" y="97.5" width="16" height="16"/>
+   <object id="43" name="flyingEnemy" x="433.5" y="91" width="16" height="16"/>
+   <object id="44" name="flyingEnemy" x="394.5" y="71.5" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
