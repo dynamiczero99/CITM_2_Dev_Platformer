@@ -2,9 +2,11 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "SDL/include/SDL_gamecontroller.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
+#define NUM_KEYBOARD_KEYS 300
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -51,18 +53,17 @@ public:
 	bool GetWindowEvent(j1EventWindow ev);
 
 	// Check key states (includes mouse and joy buttons)
-	j1KeyState GetKey(int id) const
-	{
+	j1KeyState GetKey(int id) const {
 		return keyboard[id];
 	}
 
-	j1KeyState GetMouseButton(int id) const
-	{
+	j1KeyState GetMouseButton(int id) const {
 		return mouse_buttons[id - 1];
 	}
 
-	// Check if a certain window event happened
-	bool GetWindowEvent(int code);
+	j1KeyState GetControllerButton(int id) const {
+		return controller[id];
+	}
 
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
@@ -70,12 +71,15 @@ public:
 
 private:
 	bool		windowEvents[WE_COUNT];
-	j1KeyState*	keyboard;
-	j1KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	j1KeyState*	keyboard = nullptr;
+	j1KeyState*	mouse_buttons = nullptr;
+	j1KeyState*	controller = nullptr;
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+
+	SDL_GameController * gamepad1 = nullptr;
 };
 
 #endif // __j1INPUT_H__

@@ -392,7 +392,7 @@ void ObjPlayer::LimitFallVelocity() {
 
 void ObjPlayer::ShootProjectile()
 {	
-	if (App->input->GetMouseButton(1) == KEY_DOWN) {
+	if (App->input->GetMouseButton(1) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
 
 		if (projectile != nullptr) {
 			App->object->DeleteObject(projectile);

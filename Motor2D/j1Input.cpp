@@ -4,22 +4,26 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
-
-#define MAX_KEYS 300
+#include "SDL/include/SDL_gamecontroller.h"
 
 j1Input::j1Input() : j1Module()
 {
 	name.create("input");
 
-	keyboard = new j1KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * MAX_KEYS);
+	keyboard = new j1KeyState[NUM_KEYBOARD_KEYS];
+	memset(keyboard, KEY_IDLE, sizeof(j1KeyState) * NUM_KEYBOARD_KEYS);
+	mouse_buttons = new j1KeyState[NUM_MOUSE_BUTTONS];
 	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * NUM_MOUSE_BUTTONS);
+	controller = new j1KeyState[SDL_CONTROLLER_BUTTON_MAX];
+	memset(mouse_buttons, KEY_IDLE, sizeof(j1KeyState) * SDL_CONTROLLER_BUTTON_MAX);
 }
 
 // Destructor
 j1Input::~j1Input()
 {
 	delete[] keyboard;
+	delete[] mouse_buttons;
+	delete[] controller;
 }
 
 // Called before render is available
@@ -35,6 +39,11 @@ bool j1Input::Awake(pugi::xml_node& config)
 		ret = false;
 	}
 
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
+		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+
 	return ret;
 }
 
@@ -42,6 +51,21 @@ bool j1Input::Awake(pugi::xml_node& config)
 bool j1Input::Start()
 {
 	SDL_StopTextInput();
+
+	// Open the first available controller
+	int joysticks = SDL_NumJoysticks();
+	for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+		if (SDL_IsGameController(i)) {
+			gamepad1 = SDL_GameControllerOpen(i);
+			if (gamepad1) {
+				break;
+			}
+			else {
+				fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -49,34 +73,59 @@ bool j1Input::Start()
 bool j1Input::PreUpdate()
 {
 	static SDL_Event event;
-	
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
-	for(int i = 0; i < MAX_KEYS; ++i)
-	{
-		if(keys[i] == 1)
-		{
-			if(keyboard[i] == KEY_IDLE)
-				keyboard[i] = KEY_DOWN;
-			else
-				keyboard[i] = KEY_REPEAT;
+	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {
+		if (SDL_GameControllerGetButton(gamepad1, (SDL_GameControllerButton)i) == 1) {
+			if (controller[i] == KEY_IDLE) {
+				controller[i] = KEY_DOWN;
+			}
+			else {
+				controller[i] = KEY_REPEAT;
+			}
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			if (controller[i] == KEY_REPEAT || controller[i] == KEY_DOWN) {
+				controller[i] = KEY_UP;
+			}
+			else {
+				controller[i] = KEY_IDLE;
+			}
+		}
+	}
+
+	const Uint8* keys = SDL_GetKeyboardState(NULL);
+
+	for(int i = 0; i < NUM_KEYBOARD_KEYS; ++i)
+	{
+		if(keys[i] == 1)
+		{
+			if (keyboard[i] == KEY_IDLE) {
+				keyboard[i] = KEY_DOWN;
+			}
+			else {
+				keyboard[i] = KEY_REPEAT;
+			}
+		}
+		else
+		{
+			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN) {
 				keyboard[i] = KEY_UP;
-			else
+			}
+			else {
 				keyboard[i] = KEY_IDLE;
+			}
 		}
 	}
 
 	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
-		if(mouse_buttons[i] == KEY_DOWN)
+		if (mouse_buttons[i] == KEY_DOWN) {
 			mouse_buttons[i] = KEY_REPEAT;
-
-		if(mouse_buttons[i] == KEY_UP)
+		}
+		if (mouse_buttons[i] == KEY_UP) {
 			mouse_buttons[i] = KEY_IDLE;
+		}
 	}
 
 	while(SDL_PollEvent(&event) != 0)
@@ -136,6 +185,8 @@ bool j1Input::CleanUp()
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	SDL_GameControllerClose(gamepad1);
+	gamepad1 = nullptr;
 	return true;
 }
 
