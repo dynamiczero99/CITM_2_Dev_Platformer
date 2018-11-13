@@ -44,9 +44,7 @@ private:
 	void ShootProjectile();
 	void SwapPosition();
 
-	void OnCollisionPlayer(Collider * c2);
 	void OnCollisionFeet(Collider * c2);
-
 	void SolveCollision(Collider * c2);
 	void CollideDeathZone();
 	void CollideWinZone();

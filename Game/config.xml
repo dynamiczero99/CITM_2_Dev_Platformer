@@ -54,6 +54,7 @@
     <player_run_image>textures/engineer character/engineer-run.png</player_run_image>
     <player_jump_image>textures/engineer character/engineer-jump.png</player_jump_image>
     <robot_image>textures/robot_tileset.png</robot_image>
+    <shoot_indicator>textures/ShootIndicator.png</shoot_indicator>
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>8</tile_size>
 	  <debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
@@ -102,7 +103,7 @@
 	    <sfx name="death" value="death.wav"/>
 	    <sfx name="jump" value="jump2.wav"/>
 	    <sfx name="win" value="round_end.wav"/>
-      <shoot_height>20</shoot_height>
+      <shoot_height>8</shoot_height>
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>
       <gravity>120</gravity>

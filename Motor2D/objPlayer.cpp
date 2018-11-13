@@ -182,6 +182,12 @@ void ObjPlayer::ToggleGodMode()
 bool ObjPlayer::PostUpdate() {
 	SwapPosition();
 
+	fPoint projectileDir;
+	projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+	projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+	float angle = atan2(projectileDir.y, projectileDir.x) * 180 / M_PI;
+	App->render->Blit(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 1.0f, SDL_FLIP_NONE, angle, 0, 5);
+
 	//Once the movement and the physical resolution has happened, determine the animations it must play
 	if (isOnPlatform) {
 		if (velocity.x != 0) {

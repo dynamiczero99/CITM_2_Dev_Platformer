@@ -183,9 +183,11 @@ bool j1Input::PreUpdate()
 // Called before quitting
 bool j1Input::CleanUp()
 {
+	SDL_GameControllerClose(gamepad1);
+	LOG("Quitting SDL controller subsystem");
+	SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
-	SDL_GameControllerClose(gamepad1);
 	gamepad1 = nullptr;
 	return true;
 }
