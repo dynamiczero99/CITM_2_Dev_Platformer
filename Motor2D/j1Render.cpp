@@ -233,10 +233,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
 
-	int offset = 100;
-	
-	if (rect.x + offset > width + offset) return false;
-	if (rect.y + offset > height + offset) return false;
+	if (rect.x > (int)width) return false;
+	if (rect.y > (int)height) return false;
 
 	/*if (rect.GetLeft() > (cameraPos.x + camera.w)) {
 		return false;
