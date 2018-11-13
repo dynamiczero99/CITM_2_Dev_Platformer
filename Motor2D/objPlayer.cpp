@@ -204,7 +204,9 @@ bool ObjPlayer::PostUpdate() {
 	}
 
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+
 	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
+
 	return true;
 }
 

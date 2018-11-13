@@ -230,28 +230,12 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	//cameraPos.x = -App->render->camera.x / scale;// ScreenToWorld(-App->render->camera.x, -App->render->camera.y / scale);// / scale;
 	//cameraPos.y = -App->render->camera.y / scale;
 	
+	//Don't blit if the sprite is out of the screen
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
-
-	if (rect.x > (int)width) return false;
-	if (rect.y > (int)height) return false;
-
-	/*if (rect.GetLeft() > (cameraPos.x + camera.w)) {
-		return false;
-	}*/
-
-
-	/*if (rect.GetRight() < cameraPos.x) {
+	if (rect.x + rect.w < 0 || rect.y + rect.h < 0 || rect.x >(int)width || rect.y >(int)height) {
 		return false;
 	}
-
-	if (rect.GetTop() > cameraPos.y + camera.h) {
-		return false;
-	}
-
-	if (rect.GetBottom() < cameraPos.y) {
-		return false;
-	}*/
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
