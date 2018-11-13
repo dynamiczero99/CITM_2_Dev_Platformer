@@ -53,7 +53,7 @@ int ObjEnemyFlying::GetRandomValue(const int min, const int max) const
 
 	value = newRN(rng);
 
-	LOG("random value: %i", value);
+	//LOG("random value: %i", value);
 
 	return value;
 }
@@ -81,7 +81,7 @@ bool ObjEnemyFlying::PreUpdate()
 	{
 	case FOLLOWING:
 		// testing path
-		if (SDL_GetTicks() > start_time + frequency_time)
+		if (SDL_GetTicks() > start_time + frequency_time)// && !waitingForPath)
 			//static bool cmon = false;
 			//if(!cmon)
 		{
@@ -90,15 +90,39 @@ bool ObjEnemyFlying::PreUpdate()
 
 			if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
 			{
-				if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
-				{
-					CopyLastGeneratedPath();
+				// multi thread test -------------------------
+				/*threadData *data = new threadData();
+				data->origin = thisPos;
+				data->destination = playerPos;*/
 
-					frequency_time = GetRandomValue(1000, 1500);
-				}
+				data2.origin = thisPos;
+				data2.destination = playerPos;
+
+				j1PathFinding* newPathfinding = new j1PathFinding();
+				threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
+				
+				//SDL_WaitThread(threadID, 0);
+
+				//CopyLastGeneratedPath();
+				waitingForPath = true;
+
+				frequency_time = GetRandomValue(1000, 1500);
+
+				delete newPathfinding;
+				//delete data;
+
+				LOG("NEW THREAD");
+				// ------------------------------------------------
+
+				//if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
+				//{
+				//	CopyLastGeneratedPath();
+
+				//	frequency_time = GetRandomValue(1000, 1500);
+				//}
 			}
 
-			start_time = SDL_GetTicks();
+			//start_time = SDL_GetTicks();
 			//cmon = true;
 
 		}
@@ -172,6 +196,18 @@ bool ObjEnemyFlying::Update(float dt) {
 	if(!marked)
 		CheckFacingDirection();
 
+	if (waitingForPath)
+	{
+		if (data2.ready)
+		{
+			LOG("thread ended");
+			CopyLastGeneratedPath();
+			start_time = SDL_GetTicks();
+			waitingForPath = false;
+		}
+
+	}
+
 	return true;
 }
 
@@ -185,11 +221,11 @@ void ObjEnemyFlying::idleMovement(float dt)
 
 	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y) - iPoint((int)position.x, (int)position.y);
 
-	LOG("movement vec: %i,%i", movement_vec.x, movement_vec.y);
+	//LOG("movement vec: %i,%i", movement_vec.x, movement_vec.y);
 
 	if (movement_vec == iPoint(0, 0))
 	{
-		LOG("fatal error, randomness going to fail");
+		//LOG("fatal error, randomness going to fail");
 		GenerateNewIdlePath(-3, 3);
 	}
 	else

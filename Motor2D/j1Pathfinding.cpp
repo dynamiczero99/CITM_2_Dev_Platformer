@@ -226,3 +226,15 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	return -1;
 }
 
+int j1PathFinding::multiThreadCreatePath(void* data)
+{
+	threadData* tdata = (threadData*)data;
+	
+	App->pathfinding->CreatePath(tdata->origin, tdata->destination);
+
+	tdata->ready = true;
+
+	LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
+	return 0;
+}
+

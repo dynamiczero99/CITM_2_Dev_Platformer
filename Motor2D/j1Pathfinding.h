@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
+#include "ObjEnemyFlying.h"
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
@@ -87,6 +88,8 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	static int multiThreadCreatePath(void* data);
+
 private:
 
 	// size of the map
@@ -96,6 +99,7 @@ private:
 	uchar* map;
 	// we store the created path here
 	p2DynArray<iPoint> last_path;
+
 };
 
 #endif // __j1PATHFINDING_H__

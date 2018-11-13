@@ -7,6 +7,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2DynArray.h"
 #include "SDL/include/SDL_render.h"
+#include "SDL/include/SDL_thread.h"
 
 // TODO: config.xml, testing for now
 #define MIN_DISTANCE 15
@@ -14,6 +15,13 @@
 #define MAX_IDLE_RPATH 6
 
 struct Collider;
+
+struct threadData
+{
+	iPoint origin = { 0,0 };
+	iPoint destination = { 0,0 };
+	bool ready = false;
+};
 
 class ObjEnemyFlying : public GameObject {
 protected:
@@ -25,6 +33,7 @@ protected:
 	};
 
 public:
+
 	ObjEnemyFlying(fPoint position, int index, pugi::xml_node &object_node);
 	bool Update(float dt) override;
 	bool PreUpdate() override;
@@ -54,6 +63,9 @@ private:
 	void CopyLastGeneratedPath();
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 	void followPath(float dt);
+	bool waitingForPath = false;
+	SDL_Thread* threadID = nullptr;
+	bool multiThreadEnabled = false;
 
 	// variables --
 	mutable p2DynArray<iPoint> last_path = NULL;
@@ -82,6 +94,10 @@ private:
 	void CheckFacingDirection();
 	fPoint previousPos = { 0,0 };
 
+	threadData data2;
+
 };
+
+//extern ObjEnemyFlying* mytest;
 
 #endif
