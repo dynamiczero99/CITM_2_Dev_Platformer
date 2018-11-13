@@ -52,6 +52,7 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Shoot with mouse.
 - Get music from the level from Tiled Map Editor.
 - Camera debugger
+- Optimization: Things out of the screen aren't rendered
 
 ## Debug functionality:
 - F1 ​Start from the very first level
