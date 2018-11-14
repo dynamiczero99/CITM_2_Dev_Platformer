@@ -122,7 +122,8 @@ void ObjPlayer::GodControls()
 void ObjPlayer::StandardControls()
 {
 	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) || xAxis < 0) {
+	if (((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)) ||
+		(xAxis < 0 && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT))) {
 		if (isOnPlatform) {
 			velocity.x = -moveSpeedGnd;
 		}
@@ -131,7 +132,8 @@ void ObjPlayer::StandardControls()
 		}
 		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 	}
-	else if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) || xAxis > 0) {
+	else if (((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)) ||
+		(xAxis > 0 && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT))) {
 		if (isOnPlatform) {
 			velocity.x = moveSpeedGnd;
 		}
@@ -182,11 +184,13 @@ void ObjPlayer::ToggleGodMode()
 bool ObjPlayer::PostUpdate() {
 	SwapPosition();
 
-	fPoint projectileDir;
-	projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-	projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
-	float angle = atan2(projectileDir.y, projectileDir.x) * 180 / M_PI;
-	App->render->Blit(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 1.0f, SDL_FLIP_NONE, angle, 0, 5);
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT) {
+		fPoint projectileDir;
+		projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+		projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+		float angle = atan2(projectileDir.y, projectileDir.x) * 180 / M_PI;
+		App->render->Blit(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 1.0f, SDL_FLIP_NONE, angle, 0, 15);
+	}
 
 	//Once the movement and the physical resolution has happened, determine the animations it must play
 	if (isOnPlatform) {
@@ -404,7 +408,7 @@ void ObjPlayer::LimitFallVelocity() {
 
 void ObjPlayer::ShootProjectile()
 {	
-	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 
 		if (projectile != nullptr) {
 			App->object->DeleteObject(projectile);
@@ -421,7 +425,7 @@ void ObjPlayer::ShootProjectile()
 		sourcePosProjectile.y = position.y - shootHeight;
 
 		fPoint projectileDirection;
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP) {
 			projectileDirection.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 			projectileDirection.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 		}
