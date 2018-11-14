@@ -63,6 +63,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : 
 	teleport = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "teleport").attribute("value").as_string());
 	jump = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "jump").attribute("value").as_string());
 	shoot = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "shoot").attribute("value").as_string());
+	aim = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "aim").attribute("value").as_string());
 	death = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "death").attribute("value").as_string());
 	win = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "win").attribute("value").as_string());
 
@@ -408,6 +409,10 @@ void ObjPlayer::LimitFallVelocity() {
 
 void ObjPlayer::ShootProjectile()
 {	
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+		App->audio->PlayFx(aim);
+	}
+
 	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 
 		if (projectile != nullptr) {

@@ -103,6 +103,7 @@
 	    <sfx name="death" value="death.wav"/>
 	    <sfx name="jump" value="jump2.wav"/>
 	    <sfx name="win" value="round_end.wav"/>
+      <sfx name="aim" value="aim.wav"/>
       <shoot_height>8</shoot_height>
       <collider_width>10</collider_width>
       <collider_height>18</collider_height>
