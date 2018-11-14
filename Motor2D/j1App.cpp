@@ -129,7 +129,7 @@ bool j1App::Start()
 
 	// Account for the first frame taking more than usual
 	// Without this the player and the boxes to fall through the floor
-	longTransition = true;
+	transition = true;
 
 	return ret;
 }
@@ -176,9 +176,9 @@ void j1App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
-	if (longTransition) {
+	if (transition) {
 		dt = 1.0f / (float)framerateCap;
-		longTransition = false;
+		transition = false;
 	}
 	else {
 		dt = frame_time.ReadSec();

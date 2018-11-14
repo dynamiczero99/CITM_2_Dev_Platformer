@@ -106,7 +106,7 @@ public:
 
 	bool vsync = false;
 
-	bool longTransition = false;
+	bool transition = false;
 
 private:
 
