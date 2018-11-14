@@ -62,7 +62,6 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
-	//Returns a value from -1 to 1 indicating the axis
 	Sint16 GetControllerAxis(SDL_GameControllerAxis axis);
 
 	j1KeyState GetControllerButton(int id) const {

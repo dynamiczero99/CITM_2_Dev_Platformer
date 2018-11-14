@@ -59,7 +59,7 @@
     <tile_size>8</tile_size>
 	  <debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
       <projectile>
-        <speed>30</speed>
+        <speed>45</speed>
         <collider_width>5</collider_width>
         <collider_height>5</collider_height>
 	  <sfx name="impact" value="impactSound.wav"/>

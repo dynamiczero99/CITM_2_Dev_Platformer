@@ -428,6 +428,10 @@ void ObjPlayer::ShootProjectile()
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP) {
 			projectileDirection.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 			projectileDirection.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+			if (projectileDirection.IsZero()) {
+				//If no direction is given, shoot forward
+				projectileDirection.x = SHRT_MAX;
+			}
 		}
 		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 			iPoint mousePos;

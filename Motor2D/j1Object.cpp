@@ -212,7 +212,7 @@ bool j1Object::Load(pugi::xml_node& node)
 	{
 		App->object->AddObjEnemyFlying({ flyingEnemy.attribute("x").as_float(), flyingEnemy.attribute("y").as_float() });
 	}
-
+	
 	// and load the rest of data
 	for (int i = 0; i < MAX_OBJECTS; ++i)
 	{
