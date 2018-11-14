@@ -8,6 +8,7 @@
 #include "p2SString.h"
 #include "p2Animation.h"
 #include "PugiXml/src/pugixml.hpp"
+#include "j1Timer.h"
 
 struct SDL_Texture;
 struct SDL_Rect;
@@ -87,6 +88,8 @@ public:
 	//Shoot
 	ObjProjectile * projectile = nullptr;
 	uint shootHeight = 0u;
+	j1Timer recoveryTimer;
+	float recoveryTime = 0.0f;//Time it takes for the player to move again after shooting
 
 private:
 	//Position swap
