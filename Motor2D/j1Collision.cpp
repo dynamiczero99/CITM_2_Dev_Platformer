@@ -14,10 +14,10 @@ j1Collision::j1Collision()
 		colliders[i] = nullptr;
 
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_WALL][COLLIDER_BOX] = true;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = true;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER_GOD] = true;
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_WALL][COLLIDER_BOX] = false;
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER_GOD] = false;
 	matrix[COLLIDER_WALL][COLLIDER_DEATH_ZONE] = false;
 	matrix[COLLIDER_WALL][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_WALL][COLLIDER_TRIGGER] = false;
