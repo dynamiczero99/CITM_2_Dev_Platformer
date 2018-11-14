@@ -596,7 +596,7 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 			colliderRect.h = object.attribute("height").as_int(0);
 			colliderRect.w = object.attribute("width").as_int(0);
 			// create collider type of
-			if(tmp == "Platforms")
+			if (tmp == "Platforms")
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL);
 			else if (tmp == "Floor")
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WALL); // reference collider type for test
@@ -604,6 +604,8 @@ bool j1Map::LoadMapColliders(pugi::xml_node& node)//, MapObjects* obj)
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_DEATH_ZONE);
 			else if (tmp == "Win")
 				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_WIN_ZONE);
+			else if (tmp == "Glass")
+				newObject->colliders[i] = App->collision->AddCollider(colliderRect, COLLIDER_GLASS);
 
 			// increments counter
 			++i;

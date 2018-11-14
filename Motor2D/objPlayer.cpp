@@ -223,7 +223,7 @@ bool ObjPlayer::PostUpdate() {
 
 void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 	if (c1 == playerCol) {
-		if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
+		if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 			SolveCollision(c2);
 		}
 		else if (c2->type == COLLIDER_DEATH_ZONE) {
