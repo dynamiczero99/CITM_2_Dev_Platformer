@@ -45,7 +45,7 @@ protected:
 	};
 
 public:
-	GameObject(fPoint position, int index);
+	GameObject(fPoint &position, int index);
 	~GameObject();
 	virtual bool PreUpdate();
 	virtual bool Update(float dt);

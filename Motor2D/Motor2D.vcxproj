@@ -90,6 +90,7 @@
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="ObjBox.cpp" />
     <ClCompile Include="ObjEnemyFlying.cpp" />
+    <ClCompile Include="ObjEnemyLand.cpp" />
     <ClCompile Include="ObjPlayer.cpp" />
     <ClCompile Include="ObjProjectile.cpp" />
     <ClCompile Include="ObjTrigger.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="ObjBox.h" />
     <ClInclude Include="ObjEnemyFlying.h" />
+    <ClInclude Include="ObjEnemyLand.h" />
     <ClInclude Include="ObjPlayer.h" />
     <ClInclude Include="ObjProjectile.h" />
     <ClInclude Include="ObjTrigger.h" />

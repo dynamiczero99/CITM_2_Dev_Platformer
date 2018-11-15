@@ -18,7 +18,7 @@ class ObjProjectile;
 
 class ObjPlayer : public GameObject {
 public:
-	ObjPlayer(pugi::xml_node & object_node, fPoint position, int index);
+	ObjPlayer(pugi::xml_node & object_node, fPoint &position, int index);
 
 	bool Load(pugi::xml_node& loadNode);
 	bool Save(pugi::xml_node& saveNode) const;

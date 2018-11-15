@@ -12,7 +12,7 @@
 #include "j1Map.h"
 #include <random>
 
-ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) 
+ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) 
 {
 
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};

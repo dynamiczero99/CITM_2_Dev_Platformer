@@ -18,7 +18,7 @@
 #include "j1Map.h"
 #include "j1FadeToBlack.h"
 
-ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint position, int index) : GameObject(position, index) {
+ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) : GameObject(position, index) {
 
 	velocity = fPoint(0.0F, 0.0F);
 	acceleration = fPoint(0.0F, 0.0F);

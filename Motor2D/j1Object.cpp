@@ -243,7 +243,7 @@ bool j1Object::Save(pugi::xml_node& node) const
 
 //Gameobject class methods -------------------------------------------
 
-GameObject::GameObject(fPoint position, int index) :
+GameObject::GameObject(fPoint &position, int index) :
 	position(position),
 	index(index) {
 }

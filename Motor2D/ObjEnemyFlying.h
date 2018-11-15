@@ -42,7 +42,7 @@ protected:
 
 public:
 
-	ObjEnemyFlying(fPoint position, int index, pugi::xml_node &object_node);
+	ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &object_node);
 	bool Update(float dt) override;
 	bool PreUpdate() override;
 	bool PostUpdate() override;

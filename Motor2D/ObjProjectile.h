@@ -10,7 +10,7 @@ struct Collider;
 
 class ObjProjectile : public GameObject {
 public:
-	ObjProjectile(fPoint position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player);
+	ObjProjectile(fPoint &position, int index, pugi::xml_node & projectile_node, fPoint direction, ObjPlayer* player);
 	bool Update(float dt) override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;
