@@ -80,53 +80,9 @@ bool ObjEnemyFlying::PreUpdate()
 	switch (enemy_state)
 	{
 	case FOLLOWING:
-		// testing path
+		// testing thread path
 		if (SDL_GetTicks() > start_time + frequency_time && !data2.waitingForPath)
-			//static bool cmon = false;
-			//if(!cmon)
-		{
-			iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
-			iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
-
-			if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
-			{
-				// multi thread test -------------------------
-				/*threadData *data = new threadData();
-				data->origin = thisPos;
-				data->destination = playerPos;*/
-
-				data2.origin = thisPos;
-				data2.destination = playerPos;
-				data2.index = index;
-				data2.waitingForPath = true;
-
-				j1PathFinding* newPathfinding = new j1PathFinding();
-				threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
-				
-				//SDL_WaitThread(threadID, 0);
-
-				//CopyLastGeneratedPath();
-				
-				frequency_time = GetRandomValue(1000, 1500);
-
-				delete newPathfinding;
-				//delete data;
-
-				LOG("NEW THREAD");
-				// ------------------------------------------------
-
-				//if (App->pathfinding->CreatePath(thisPos, playerPos) > 0) // if new path cannot be created, continue with the last valid one
-				//{
-				//	CopyLastGeneratedPath();
-
-				//	frequency_time = GetRandomValue(1000, 1500);
-				//}
-			}
-
-			//start_time = SDL_GetTicks();
-			//cmon = true;
-
-		}
+			StartNewPathThread();
 
 		break;
 	}
@@ -205,7 +161,6 @@ bool ObjEnemyFlying::Update(float dt) {
 		if (data2.ready)
 		{
 			LOG("thread ended");
-			CopyLastGeneratedPath();
 			start_time = SDL_GetTicks();
 			data2.waitingForPath = false;
 			data2.ready = false;
@@ -364,18 +319,6 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 		return thisPos;
 }
 
-void ObjEnemyFlying::CopyLastGeneratedPath()
-{
-	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
-
-	data2.last_path.Clear();
-	for (uint i = 0; i < pathToCopy->Count(); ++i)
-	{
-		data2.last_path.PushBack(*pathToCopy->At(i));
-	}
-	data2.last_path.Flip();
-}
-
 bool ObjEnemyFlying::isPlayerInTileRange(const uint range) const
 {
 	// translate to map coords
@@ -421,4 +364,27 @@ void threadData::CopyLastGeneratedPath()
 		last_path.PushBack(*pathToCopy->At(i));
 	}
 	last_path.Flip();
+}
+
+void ObjEnemyFlying::StartNewPathThread()
+{
+	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
+	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+
+	if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
+	{
+		data2.origin = thisPos;
+		data2.destination = playerPos;
+		data2.index = index;
+		data2.waitingForPath = true;
+
+		j1PathFinding* newPathfinding = new j1PathFinding();
+		threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
+
+		//SDL_WaitThread(threadID, 0);
+
+		frequency_time = GetRandomValue(1000, 1500);
+
+		delete newPathfinding;
+	}
 }

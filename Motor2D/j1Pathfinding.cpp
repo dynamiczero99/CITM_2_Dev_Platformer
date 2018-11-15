@@ -228,6 +228,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 int j1PathFinding::multiThreadCreatePath(void* data)
 {
+	LOG("NEW THREAD");
 	threadData* tdata = (threadData*)data;
 	
 	if (App->pathfinding->CreatePath(tdata->origin, tdata->destination) > 0)

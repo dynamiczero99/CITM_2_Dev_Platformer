@@ -65,12 +65,12 @@ private:
 	iPoint GetNextWorldNode() const;
 	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node, float dt) const;
-	void CopyLastGeneratedPath();
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 	void followPath(float dt);
+	void StartNewPathThread();
 	//bool waitingForPath = false;
 	SDL_Thread* threadID = nullptr;
-	bool multiThreadEnabled = false;
+	//bool multiThreadEnabled = false;
 
 	// variables --
 	//mutable p2DynArray<iPoint> last_path = NULL;
