@@ -123,10 +123,10 @@ void ObjPlayer::GodControls()
 
 void ObjPlayer::StandardControls()
 {
-	LOG("%f", recoveryTimer.ReadSec());
-	LOG("%f", recoveryTime);
+	//LOG("%f", recoveryTimer.ReadSec());
+	//LOG("%f", recoveryTime);
 	if (recoveryTimer.ReadSec() > recoveryTime) {
-		LOG("Condition evaluates to true");
+		//LOG("Condition evaluates to true");
 	}
 
 	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);

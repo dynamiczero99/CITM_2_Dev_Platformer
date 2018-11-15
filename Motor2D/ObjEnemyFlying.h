@@ -21,6 +21,10 @@ struct threadData
 	iPoint origin = { 0,0 };
 	iPoint destination = { 0,0 };
 	bool ready = false;
+	int index = -1;
+	mutable p2DynArray<iPoint> last_path = NULL;
+	
+	void CopyLastGeneratedPath();
 };
 
 class ObjEnemyFlying : public GameObject {
@@ -68,7 +72,7 @@ private:
 	bool multiThreadEnabled = false;
 
 	// variables --
-	mutable p2DynArray<iPoint> last_path = NULL;
+	//mutable p2DynArray<iPoint> last_path = NULL;
 	fPoint lastValidPos = { 0.0F,0.0F };
 
 	// provisional timer --

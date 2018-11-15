@@ -230,11 +230,19 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 {
 	threadData* tdata = (threadData*)data;
 	
-	App->pathfinding->CreatePath(tdata->origin, tdata->destination);
+	if (App->pathfinding->CreatePath(tdata->origin, tdata->destination) > 0)
+	{
+		LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
+		LOG("object index: %i", tdata->index);
+		//CreatePath(tdata->origin, tdata->destination);
 
-	tdata->ready = true;
+		tdata->ready = true;
 
-	LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
+		tdata->CopyLastGeneratedPath();
+	}
+	else
+		LOG("meeec");
+	
 	return 0;
 }
 

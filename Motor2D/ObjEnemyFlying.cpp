@@ -81,7 +81,7 @@ bool ObjEnemyFlying::PreUpdate()
 	{
 	case FOLLOWING:
 		// testing path
-		if (SDL_GetTicks() > start_time + frequency_time)// && !waitingForPath)
+		if (SDL_GetTicks() > start_time + frequency_time && !waitingForPath)
 			//static bool cmon = false;
 			//if(!cmon)
 		{
@@ -97,6 +97,7 @@ bool ObjEnemyFlying::PreUpdate()
 
 				data2.origin = thisPos;
 				data2.destination = playerPos;
+				data2.index = index;
 
 				j1PathFinding* newPathfinding = new j1PathFinding();
 				threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
@@ -148,7 +149,7 @@ bool ObjEnemyFlying::Update(float dt) {
 			currAnim = &idleAnimDetected;
 		}
 		// and if we have a previous still non traveled path, finish them
-		if (last_path.Count() > 0 && !marked) // always that the enemy is not marked
+		if (data2.last_path.Count() > 0 && !marked) // always that the enemy is not marked
 		{
 			followPath(dt);
 			// updates last valid pos
@@ -167,27 +168,30 @@ bool ObjEnemyFlying::Update(float dt) {
 
 	case FOLLOWING:
 		// pathfinding
-		if (last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
+		if (data2.last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
 			followPath(dt);
 		else
 		{
-			enemy_state = enemyState::SEARCHING;
-			// updates last valid pos
-			lastValidPos = position;
-			//check current animation
-			if (!marked)
-				currAnim = &idleAnimSearching;
-			else
-				currAnim = &idleAnimMarked;
+			if (!waitingForPath)
+			{
+				enemy_state = enemyState::SEARCHING;
+				// updates last valid pos
+				lastValidPos = position;
+				//check current animation
+				if (!marked)
+					currAnim = &idleAnimSearching;
+				else
+					currAnim = &idleAnimMarked;
+			}
 
 		}
 		break;
 	}
 
 	// pathfinding debug draw ---------------------------------------------------
-	for (uint i = 0; i < last_path.Count() ; ++i)
+	for (uint i = 0; i < data2.last_path.Count() ; ++i)
 	{
-		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
+		iPoint pos = App->map->MapToWorld(data2.last_path.At(i)->x, data2.last_path.At(i)->y);
 		App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
 	}
 	// --------------------------------------------------------------------------
@@ -204,6 +208,7 @@ bool ObjEnemyFlying::Update(float dt) {
 			CopyLastGeneratedPath();
 			start_time = SDL_GetTicks();
 			waitingForPath = false;
+			data2.ready = false;
 		}
 
 	}
@@ -278,7 +283,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	fPoint temporalPos = position; // stores the actual position to return enemy at
 
-	if (last_path.Count() > 0)
+	if (data2.last_path.Count() > 0)
 	{
 		while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
 		{
@@ -342,18 +347,18 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 	thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 
 	// get the nextNodePos, the last on dyn array (the first pop out) || copylastgenerated path flip the order
-	iPoint nextNodePos = *last_path.At(last_path.Count() - 1);
+	iPoint nextNodePos = *data2.last_path.At(data2.last_path.Count() - 1);
 
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
 	iPoint areaPoint = { 1,1 }; // tile values
 	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x || // enemy tile width 
 		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
 	{
-		last_path.Pop(nextNodePos);
+		data2.last_path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
 		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
-	if (last_path.Count() > 0)
+	if (data2.last_path.Count() > 0)
 		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 	else
 		return thisPos;
@@ -363,12 +368,12 @@ void ObjEnemyFlying::CopyLastGeneratedPath()
 {
 	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
 
-	last_path.Clear();
+	data2.last_path.Clear();
 	for (uint i = 0; i < pathToCopy->Count(); ++i)
 	{
-		last_path.PushBack(*pathToCopy->At(i));
+		data2.last_path.PushBack(*pathToCopy->At(i));
 	}
-	last_path.Flip();
+	data2.last_path.Flip();
 }
 
 bool ObjEnemyFlying::isPlayerInTileRange(const uint range) const
@@ -404,4 +409,16 @@ void ObjEnemyFlying::CheckFacingDirection()
 
 	previousPos = position;
 
+}
+
+void threadData::CopyLastGeneratedPath()
+{
+	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
+
+	last_path.Clear();
+	for (uint i = 0; i < pathToCopy->Count(); ++i)
+	{
+		last_path.PushBack(*pathToCopy->At(i));
+	}
+	last_path.Flip();
 }
