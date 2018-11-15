@@ -81,6 +81,12 @@
 	  <path_frequency_ms min_ms = "1000" max_ms = "1600"/>
 	  <idle_path_tilePoints minTiles ="-3" maxTiles="3"/>
       <animation tile_width ="14" tile_height ="27">
+	    <jetpack_fire_animation speed ="25">
+	      <sprite x ="128" y ="229" w ="4" h ="11"/>
+		  <sprite x ="133" y ="229" w ="4" h ="11"/>
+		  <sprite x ="137" y ="229" w ="4" h ="11"/>
+		  <sprite x ="142" y ="229" w ="4" h ="11"/>
+	    </jetpack_fire_animation>
         <idle_animation_searching speed = "15.0">
           <sprite x ="210" y ="21" w ="14" h ="27"/>
 		  <sprite x ="226" y ="21" w ="14" h ="27"/>

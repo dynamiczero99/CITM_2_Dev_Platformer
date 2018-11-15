@@ -56,6 +56,7 @@ public:
 	Animation idleAnimSearching;
 	Animation idleAnimDetected;
 	Animation idleAnimMarked;
+	Animation jetPackFire;
 	Animation * currAnim = nullptr;
 
 private:

@@ -45,6 +45,8 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	idleAnimDetected.speed = enemy_node.child("animation").child("idle_animation_detected").attribute("speed").as_float();
 	LoadAnimation(enemy_node.child("animation").child("idle_animation_marked"), idleAnimMarked);
 	idleAnimMarked.speed = enemy_node.child("animation").child("idle_animation_marked").attribute("speed").as_float();
+	LoadAnimation(enemy_node.child("animation").child("jetpack_fire_animation"), jetPackFire);
+	jetPackFire.speed = enemy_node.child("animation").child("jetpack_fire_animation").attribute("speed").as_float();
 
 	currAnim = &idleAnimSearching;
 
@@ -217,6 +219,12 @@ bool ObjEnemyFlying::PostUpdate() {
 
 	// draw
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	// jetpack fire
+	if(!flip)
+		App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
+	else
+		App->render->Blit(App->object->robotTilesetTex, blitPos.x + 10, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
+	// enemy
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 	
 	// pathfinding debug draw ---------------------------------------------------
