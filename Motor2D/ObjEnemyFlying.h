@@ -24,7 +24,9 @@ struct threadData
 	bool waitingForPath = false;
 	bool ready = false;
 	int index = -1;
-	mutable p2DynArray<iPoint> last_path = NULL;
+	// for assure the enemy is saved in correct place, needs to be mutable for how the methods works, see save()
+	// maybe now that we have randomly generated idle paths, this can be changed
+	mutable p2DynArray<iPoint> last_path = NULL; 
 	
 	void CopyLastGeneratedPath();
 };
@@ -69,15 +71,13 @@ private:
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 	void followPath(float dt) const;
 	void StartNewPathThread();
-	//bool waitingForPath = false;
-	SDL_Thread* threadID = nullptr;
-	//bool multiThreadEnabled = false;
-
 	// variables --
-	//mutable p2DynArray<iPoint> last_path = NULL;
+	//bool multiThreadEnabled = false;
+	SDL_Thread* threadID = nullptr;
 	fPoint lastValidPos = { 0.0F,0.0F };
+	// --------------------------------------
 
-	// provisional timer --
+	// provisional timer --------------------
 	Uint32 start_time = 0;
 	Uint32 frequency_time = 1500;
 	// --------------------------------------
@@ -100,8 +100,10 @@ private:
 	void CheckFacingDirection();
 	fPoint previousPos = { 0,0 };
 
+	// data to send to thread
 	threadData pathData;
 
+	// debug pathfinding debugdraw
 	bool pathDebugDraw = true;
 };
 

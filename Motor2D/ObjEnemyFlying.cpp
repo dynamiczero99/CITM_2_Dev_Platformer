@@ -113,7 +113,6 @@ bool ObjEnemyFlying::Update(float dt) {
 			// but if we mark the enemy, makes it static
 			if(!marked)
 				idleMovement(dt);
-
 		}
 		break;
 
@@ -150,7 +149,6 @@ bool ObjEnemyFlying::Update(float dt) {
 			pathData.waitingForPath = false;
 			pathData.ready = false;
 		}
-
 	}
 
 	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
