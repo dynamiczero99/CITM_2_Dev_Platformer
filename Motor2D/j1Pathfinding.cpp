@@ -152,23 +152,23 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 
-	// diagonals test
-	// top left
-	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// top right
-	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// bottom left
-	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// bottom right
-	cell.create(pos.x + 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	//// diagonals test
+	//// top left
+	//cell.create(pos.x - 1, pos.y - 1);
+	//if (App->pathfinding->IsWalkable(cell))
+	//	pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	//// top right
+	//cell.create(pos.x + 1, pos.y - 1);
+	//if (App->pathfinding->IsWalkable(cell))
+	//	pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	//// bottom left
+	//cell.create(pos.x - 1, pos.y + 1);
+	//if (App->pathfinding->IsWalkable(cell))
+	//	pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
+	//// bottom right
+	//cell.create(pos.x + 1, pos.y + 1);
+	//if (App->pathfinding->IsWalkable(cell))
+	//	pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
 
 }
 
@@ -266,7 +266,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 	startNode->data.pos_z = 0;
 
 	// check if the node above is ground or not
-	if (IsWalkable((startNode->data.pos - iPoint(0, -1))))
+	if (!IsWalkable((startNode->data.pos - iPoint(0, -1))))
 	{
 		startNode->data.jumpLength = 0;
 	}
@@ -302,11 +302,11 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 			bool atCeiling = false;
 
 			// check if the successor would be on ground
-			if (IsWalkable(adjacentNodeIterator->data.pos - iPoint(0, 1)))
+			if (!IsWalkable(adjacentNodeIterator->data.pos + iPoint(0, 1)))
 				onGround = true;
 
 			// check if would be at ceiling
-			if (IsWalkable(adjacentNodeIterator->data.pos + iPoint(0, 1)))
+			if (!IsWalkable(adjacentNodeIterator->data.pos - iPoint(0, 1)))
 				atCeiling = true;
 
 			// calculate jump value -------------
@@ -380,6 +380,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 			}
 
 			adjacentNodeIterator->data.g = newG;
+			adjacentNodeIterator->data.parent = currNode;
 			openList.list.add(adjacentNodeIterator->data);
 
 		}

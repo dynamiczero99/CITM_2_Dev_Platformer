@@ -37,13 +37,13 @@ struct PathNode
 	void FindWalkableAdjacents(PathList &list, const iPoint destination);
 
 	// -----------
-	int g;
+	int g = 0;
 	int h;
 	iPoint pos;
 	int pos_z;
 	PathNode* parent; // needed to reconstruct the path in the end
 	PathNode* parent_z;
-	int jumpLength;
+	int jumpLength = 0;
 };
 
 // ---------------------------------------------------------------------
