@@ -7,7 +7,7 @@
 	<map />
 	<pathfinding />
 	<scene>
-		<camera x="-768" y="-200.617584" />
+		<camera x="-768" y="-200.517578" />
 		<current_level name="test_level.tmx" />
 	</scene>
 	<object>
@@ -15,7 +15,7 @@
 		<Box x="872" y="280" velocity_x="0" velocity_y="0" />
 		<Box x="481" y="280" velocity_x="0" velocity_y="0" />
 		<Box x="983" y="280" velocity_x="0" velocity_y="0" />
-		<FlyingEnemy x="464" y="184" velocity_x="0" velocity_y="0" isMarked="true" />
+		<FlyingEnemy x="424" y="160" velocity_x="0" velocity_y="0" isMarked="true" flip_direction="false" />
 	</object>
 	<FadeToBlack />
 	<Collision />

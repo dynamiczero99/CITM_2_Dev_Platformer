@@ -222,6 +222,16 @@ bool ObjEnemyFlying::PostUpdate() {
 
 bool ObjEnemyFlying::Load(pugi::xml_node& node)
 {
+	p2SString flipDir = node.child("FlyingEnemy").attribute("flip_direction").as_string();
+	// check facing direction
+	if (flipDir == "true")
+	{
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+
 	return true;
 }
 
@@ -251,6 +261,11 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	if (marked)
 		flyingEnemy.append_attribute("isMarked") = true;
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL)
+		flyingEnemy.append_attribute("flip_direction") = "true";
+	else
+		flyingEnemy.append_attribute("flip_direction") = "false";
 
 	// restores the previous pos to enemy
 
