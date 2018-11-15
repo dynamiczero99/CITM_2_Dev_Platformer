@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="46">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="50">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -60222,6 +60222,10 @@
    <object id="35" name="normalBox" x="473" y="259" width="16" height="16"/>
    <object id="41" name="flyingEnemy" x="452.5" y="176.5" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
+   <object id="46" name="flyingEnemy" x="361" y="131.5" width="16" height="16"/>
+   <object id="47" name="flyingEnemy" x="418" y="126" width="16" height="16"/>
+   <object id="48" name="flyingEnemy" x="363" y="89.5" width="16" height="16"/>
+   <object id="49" name="flyingEnemy" x="428" y="81" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>

@@ -31,6 +31,7 @@ struct PathNode
 	// Calculates this tile score
 	int GetF() const;
 	// Calculate the F for a specific destination tile
+	//int GetLandF() const;
 	void SetGandH(const iPoint& destination);
 	// Find walkable adjacents
 	void FindWalkableAdjacents(PathList &list, const iPoint destination);
@@ -39,7 +40,10 @@ struct PathNode
 	int g;
 	int h;
 	iPoint pos;
+	int pos_z;
 	PathNode* parent; // needed to reconstruct the path in the end
+	PathNode* parent_z;
+	int jumpLength;
 };
 
 // ---------------------------------------------------------------------
@@ -75,6 +79,7 @@ public:
 
 	// Main function to request a path from A to B
 	int CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreateLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;

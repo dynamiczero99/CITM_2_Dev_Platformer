@@ -250,3 +250,141 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 	return 0;
 }
 
+int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump)
+{
+	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
+		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
+		return -1;
+	}
+
+	PathList openList;
+	PathList closedList;
+	openList.list.add(PathNode(0, origin.DistanceManhattan(destination), origin, nullptr));
+	p2List_item<PathNode> * startNode = openList.GetNodeLowestScore();
+	
+	// adds z value to start node
+	startNode->data.pos_z = 0;
+
+	// check if the node above is ground or not
+	if (IsWalkable((startNode->data.pos - iPoint(0, -1))))
+	{
+		startNode->data.jumpLength = 0;
+	}
+	else
+		startNode->data.jumpLength = maxCharacterTilesJump * 2;
+
+	while (openList.list.Count() > 0) 
+	{
+		p2List_item<PathNode> * lowestNode = openList.GetNodeLowestScore();
+
+		PathNode * currNode = &closedList.list.add(lowestNode->data)->data;
+		openList.list.del(lowestNode);
+		
+
+		if (currNode->pos == destination) {
+			last_path.Clear();
+			for (PathNode * pathIterator = currNode; pathIterator != nullptr && pathIterator->pos != origin; pathIterator = pathIterator->parent) {
+				last_path.PushBack(pathIterator->pos);
+			}
+			// adds start node too
+			//last_path.PushBack(closedList.list.start->data.pos);
+			last_path.Flip();
+			LOG("Succesful path: The algorithm has found a path from the origin(%i, %i) to the destination(%i, %i)", origin.x, origin.y, destination.x, destination.y);
+			return last_path.Count();
+		}
+
+		PathList adjacentNodes;
+		currNode->FindWalkableAdjacents(adjacentNodes, destination);
+
+		for (p2List_item<PathNode>* adjacentNodeIterator = adjacentNodes.list.start; adjacentNodeIterator != nullptr; adjacentNodeIterator = adjacentNodeIterator->next)
+		{
+			bool onGround = false;
+			bool atCeiling = false;
+
+			// check if the successor would be on ground
+			if (IsWalkable(adjacentNodeIterator->data.pos - iPoint(0, 1)))
+				onGround = true;
+
+			// check if would be at ceiling
+			if (IsWalkable(adjacentNodeIterator->data.pos + iPoint(0, 1)))
+				atCeiling = true;
+
+			// calculate jump value -------------
+			// get jumpt value from parent
+			int jumpLength = currNode->jumpLength;
+			int newJumpLength = jumpLength;
+
+			if (onGround)
+				newJumpLength = 0;
+			else if (atCeiling)
+			{
+				// if the character needs to fall
+				if (adjacentNodeIterator->data.pos.x != currNode->pos.x)
+					newJumpLength = MAX(maxCharacterTilesJump * 2 + 1, jumpLength + 1);
+				else
+					newJumpLength = MAX(maxCharacterTilesJump * 2, jumpLength + 2);
+			}
+			// calculate jump value on air
+			else if (adjacentNodeIterator->data.pos.y > currNode->pos.y)
+			{
+				if (jumpLength < 2)
+					newJumpLength = 3;
+				else if (jumpLength % 2 == 0) // if the jumpLength is even
+					newJumpLength = jumpLength + 2; // increment by two
+				else
+					newJumpLength = jumpLength + 1;
+			}
+			else if (adjacentNodeIterator->data.pos.y < currNode->pos.y)
+			{
+				if (jumpLength % 2 == 0)
+					newJumpLength = MAX(maxCharacterTilesJump * 2, jumpLength + 2);
+				else
+					newJumpLength = MAX(maxCharacterTilesJump * 2, jumpLength + 1);
+			}
+
+			// validating successor
+			if (jumpLength % 2 != 0 && currNode->pos.x != adjacentNodeIterator->data.pos.x)
+				continue;
+
+			if (jumpLength >= maxCharacterTilesJump * 2 && adjacentNodeIterator->data.pos.y > currNode->pos.y)
+				continue;
+
+			if (newJumpLength >= maxCharacterTilesJump * 2 + 6 && 
+				adjacentNodeIterator->data.pos.x != currNode->pos.x && (newJumpLength - (maxCharacterTilesJump * 2 + 6)) % 8 != 3)
+				continue;
+
+			// calculating cost
+			// g
+			int newG = currNode->g + adjacentNodeIterator->data.g + newJumpLength / 4;
+
+			// if the node still doesnt has duplicateds routes
+			p2List_item<PathNode>* duplicateNode = (p2List_item<PathNode>*)openList.Find(adjacentNodeIterator->data.pos);
+			if (duplicateNode == NULL) {
+				openList.list.add(adjacentNodeIterator->data);
+			}
+			else
+			{
+				// check if the duplicated has lowest jump value
+				int lowestJump = 0;
+				bool couldMoveSideways = false;
+				// check all duplicates // maybe we need to improve this
+				if (duplicateNode->data.jumpLength < adjacentNodeIterator->data.jumpLength)
+				{
+					lowestJump = duplicateNode->data.jumpLength;
+				}
+				if (duplicateNode->data.jumpLength % 2 == 0 && duplicateNode->data.jumpLength < maxCharacterTilesJump * 2 + 6)
+					couldMoveSideways = true;
+
+				if (lowestJump <= newJumpLength && (newJumpLength % 2 != 0 || newJumpLength >= maxCharacterTilesJump * 2 + 6 || couldMoveSideways))
+					continue;
+			}
+
+			adjacentNodeIterator->data.g = newG;
+			openList.list.add(adjacentNodeIterator->data);
+
+		}
+	}
+
+	LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
+	return -1;
+}
