@@ -77,22 +77,17 @@ void ObjEnemyFlying::MarkObject(bool mark)
 
 bool ObjEnemyFlying::PreUpdate()
 {
-	switch (enemy_state)
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-	case FOLLOWING:
-		// testing thread path
-		if (SDL_GetTicks() > start_time + frequency_time && !data2.waitingForPath)
-			StartNewPathThread();
-
-		break;
+		if (pathDebugDraw) pathDebugDraw = false;
+		else
+			pathDebugDraw = true;
 	}
 
 	return true;
 }
 
 bool ObjEnemyFlying::Update(float dt) {
-	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
-	collider->SetPos(colPos.x, colPos.y);
 
 
 	switch (enemy_state)
@@ -105,7 +100,7 @@ bool ObjEnemyFlying::Update(float dt) {
 			currAnim = &idleAnimDetected;
 		}
 		// and if we have a previous still non traveled path, finish them
-		if (data2.last_path.Count() > 0 && !marked) // always that the enemy is not marked
+		if (pathData.last_path.Count() > 0 && !marked) // always that the enemy is not marked
 		{
 			followPath(dt);
 			// updates last valid pos
@@ -124,60 +119,51 @@ bool ObjEnemyFlying::Update(float dt) {
 
 	case FOLLOWING:
 		// pathfinding
-		if (data2.last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
+		if (SDL_GetTicks() > start_time + frequency_time && !pathData.waitingForPath)
+			StartNewPathThread();
+		if (pathData.last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
 			followPath(dt);
 		else
 		{
-			//if (!waitingForPath)
-			//{
-				enemy_state = enemyState::SEARCHING;
-				// updates last valid pos
-				lastValidPos = position;
-				//check current animation
-				if (!marked)
-					currAnim = &idleAnimSearching;
-				else
-					currAnim = &idleAnimMarked;
-			//}
-
+			enemy_state = enemyState::SEARCHING;
+			// updates last valid pos
+			lastValidPos = position;
+			//check current animation
+			if (!marked)
+				currAnim = &idleAnimSearching;
+			else
+				currAnim = &idleAnimMarked;
 		}
 		break;
 	}
-
-	// pathfinding debug draw ---------------------------------------------------
-	for (uint i = 0; i < data2.last_path.Count() ; ++i)
-	{
-		iPoint pos = App->map->MapToWorld(data2.last_path.At(i)->x, data2.last_path.At(i)->y);
-		App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
-	}
-	// --------------------------------------------------------------------------
 
 	// and check facing direction
 	if(!marked)
 		CheckFacingDirection();
 
-	if (data2.waitingForPath)
+	if (pathData.waitingForPath)
 	{
-		if (data2.ready)
+		if (pathData.ready)
 		{
 			LOG("thread ended");
 			start_time = SDL_GetTicks();
-			data2.waitingForPath = false;
-			data2.ready = false;
+			pathData.waitingForPath = false;
+			pathData.ready = false;
 		}
 
 	}
+
+	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	collider->SetPos(colPos.x, colPos.y);
 
 	return true;
 }
 
 void ObjEnemyFlying::idleMovement(float dt)
 {
-	//static iPoint nextTravelPos = { 3,0 }; // next target node in map coords.
-	//static int posIndex = 0;
+
 	iPoint lastValid = App->map->WorldToMap(lastValidPos.x, lastValidPos.y);
-	
-	iPoint targetTile = lastValid + *idlePath.At(posIndex);//nextTravelPos;
+	iPoint targetTile = lastValid + *idlePath.At(posIndex);
 
 	iPoint movement_vec = App->map->MapToWorld(targetTile.x, targetTile.y) - iPoint((int)position.x, (int)position.y);
 
@@ -221,6 +207,17 @@ bool ObjEnemyFlying::PostUpdate() {
 	// draw
 	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
+	
+	// pathfinding debug draw ---------------------------------------------------
+	if (pathDebugDraw)
+	{
+		for (uint i = 0; i < pathData.last_path.Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(pathData.last_path.At(i)->x, pathData.last_path.At(i)->y);
+			App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
+		}
+	}
+	// --------------------------------------------------------------------------
 
 	return true;
 }
@@ -238,7 +235,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	fPoint temporalPos = position; // stores the actual position to return enemy at
 
-	if (data2.last_path.Count() > 0)
+	if (pathData.last_path.Count() > 0)
 	{
 		while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
 		{
@@ -261,7 +258,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 	return true;
 }
 
-void ObjEnemyFlying::followPath(float dt)
+void ObjEnemyFlying::followPath(float dt) const
 {
 	iPoint nextNode = GetNextWorldNode();
 	//iPoint thisPos = GetMapPosition();
@@ -302,18 +299,18 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 	thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 
 	// get the nextNodePos, the last on dyn array (the first pop out) || copylastgenerated path flip the order
-	iPoint nextNodePos = *data2.last_path.At(data2.last_path.Count() - 1);
+	iPoint nextNodePos = *pathData.last_path.At(pathData.last_path.Count() - 1);
 
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
 	iPoint areaPoint = { 1,1 }; // tile values
 	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x || // enemy tile width 
 		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
 	{
-		data2.last_path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
+		pathData.last_path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
 		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
-	if (data2.last_path.Count() > 0)
+	if (pathData.last_path.Count() > 0)
 		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 	else
 		return thisPos;
@@ -373,13 +370,13 @@ void ObjEnemyFlying::StartNewPathThread()
 
 	if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
 	{
-		data2.origin = thisPos;
-		data2.destination = playerPos;
-		data2.index = index;
-		data2.waitingForPath = true;
+		pathData.origin = thisPos;
+		pathData.destination = playerPos;
+		pathData.index = index;
+		pathData.waitingForPath = true;
 
 		j1PathFinding* newPathfinding = new j1PathFinding();
-		threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
+		threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&pathData);
 
 		//SDL_WaitThread(threadID, 0);
 

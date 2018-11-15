@@ -8,6 +8,7 @@
 #include "p2DynArray.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_thread.h"
+#include "j1Input.h"
 
 // TODO: config.xml, testing for now
 #define MIN_DISTANCE 15
@@ -66,7 +67,7 @@ private:
 	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node, float dt) const;
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
-	void followPath(float dt);
+	void followPath(float dt) const;
 	void StartNewPathThread();
 	//bool waitingForPath = false;
 	SDL_Thread* threadID = nullptr;
@@ -99,8 +100,9 @@ private:
 	void CheckFacingDirection();
 	fPoint previousPos = { 0,0 };
 
-	threadData data2;
+	threadData pathData;
 
+	bool pathDebugDraw = true;
 };
 
 //extern ObjEnemyFlying* mytest;
