@@ -21,11 +21,19 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	lastValidPos = position; // understands that spawn position is a valid one
 	previousPos = position; // for facing direction
 
+	// idle tile points
+	minTiles = enemy_node.child("idle_path_tilePoints").attribute("minTiles").as_int();
+	maxTiles = enemy_node.child("idle_path_tilePoints").attribute("maxTiles").as_int();
+
 	// idle path pushbacks
 	// generate random idle paths for every enemy
-	GenerateNewIdlePath(-3, 3); // in tiles, its counts from lastValidPos
+	GenerateNewIdlePath(minTiles, maxTiles); // in tiles, its counts from lastValidPos
 
-	frequency_time = GetRandomValue(1000, 1500); // define a initial random value too
+	// get min and max frequency for "asynchronous" path calc between enemies and threads creation
+	min_ms = enemy_node.child("path_frequency_ms").attribute("min_ms").as_uint();
+	max_ms = enemy_node.child("path_frequency_ms").attribute("max_ms").as_uint();
+
+	frequency_time = GetRandomValue(min_ms, max_ms); // define a initial random value too
 
 	//Animation
 	animTileWidth = enemy_node.child("animation").attribute("tile_width").as_uint();
@@ -39,6 +47,11 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint position, int index, pugi::xml_node &enemy
 	idleAnimMarked.speed = enemy_node.child("animation").child("idle_animation_marked").attribute("speed").as_float();
 
 	currAnim = &idleAnimSearching;
+
+	// speed
+	chasingSpeed = enemy_node.child("speed").attribute("chasing_speed").as_float();
+	idleSpeed = enemy_node.child("speed").attribute("idle_speed").as_float();
+
 
 }
 
@@ -170,7 +183,7 @@ void ObjEnemyFlying::idleMovement(float dt)
 	if (movement_vec == iPoint(0, 0))
 	{
 		//LOG("fatal error, randomness going to fail");
-		GenerateNewIdlePath(-3, 3);
+		GenerateNewIdlePath(minTiles, maxTiles);
 	}
 	else
 	{
@@ -179,8 +192,8 @@ void ObjEnemyFlying::idleMovement(float dt)
 		move.y = movement_vec.y;
 		move.Normalize();
 
-		position.x += move.x * dt * 25.0f;
-		position.y += move.y * dt * 25.0f;
+		position.x += move.x * dt * idleSpeed;
+		position.y += move.y * dt * idleSpeed;
 
 		// check if we arrived at target
 		if (App->map->WorldToMap(position.x, position.y) == targetTile)
@@ -192,7 +205,7 @@ void ObjEnemyFlying::idleMovement(float dt)
 			if (posIndex > idlePath.Count() - 1)
 			{
 				posIndex = 0;
-				GenerateNewIdlePath(-3, 3);
+				GenerateNewIdlePath(minTiles, maxTiles);
 			}
 		}
 	}
@@ -303,8 +316,8 @@ void ObjEnemyFlying::MoveToWorldNode(const iPoint& node, float dt) const
 
 	//LOG("velocity %f,%f", velocity_vector.x, velocity_vector.y);
 
-	position.x += velocity_vector.x * dt * 40.0f;
-	position.y += velocity_vector.y * dt * 40.0f;
+	position.x += velocity_vector.x * dt * chasingSpeed;
+	position.y += velocity_vector.y * dt * chasingSpeed;
 
 }
 
@@ -396,7 +409,7 @@ void ObjEnemyFlying::StartNewPathThread()
 
 		//SDL_WaitThread(threadID, 0);
 
-		frequency_time = GetRandomValue(1000, 1500);
+		frequency_time = GetRandomValue(min_ms, max_ms);
 
 		delete newPathfinding;
 	}

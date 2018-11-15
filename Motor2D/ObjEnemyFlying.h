@@ -81,6 +81,9 @@ private:
 	Uint32 start_time = 0;
 	Uint32 frequency_time = 1500;
 	// --------------------------------------
+	// path frequency intervals
+	Uint32 min_ms = 0u;
+	Uint32 max_ms = 0u;
 
 	//enemy state machine
 	enemyState enemy_state = enemyState::SEARCHING; // default state
@@ -105,6 +108,12 @@ private:
 
 	// debug pathfinding debugdraw
 	bool pathDebugDraw = true;
+
+	// follow speeds from xml
+	float chasingSpeed = 0.0F;
+	float idleSpeed = 0.0F;
+	// tilePoints for idle generator
+	int minTiles, maxTiles = 0;
 };
 
 //extern ObjEnemyFlying* mytest;
