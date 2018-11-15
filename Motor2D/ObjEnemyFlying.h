@@ -20,6 +20,7 @@ struct threadData
 {
 	iPoint origin = { 0,0 };
 	iPoint destination = { 0,0 };
+	bool waitingForPath = false;
 	bool ready = false;
 	int index = -1;
 	mutable p2DynArray<iPoint> last_path = NULL;
@@ -67,7 +68,7 @@ private:
 	void CopyLastGeneratedPath();
 	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 	void followPath(float dt);
-	bool waitingForPath = false;
+	//bool waitingForPath = false;
 	SDL_Thread* threadID = nullptr;
 	bool multiThreadEnabled = false;
 

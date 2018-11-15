@@ -241,7 +241,10 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 		tdata->CopyLastGeneratedPath();
 	}
 	else
-		LOG("meeec");
+	{
+		LOG("thread finished without reachable path");
+		tdata->waitingForPath = false;
+	}
 	
 	return 0;
 }

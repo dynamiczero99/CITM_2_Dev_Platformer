@@ -81,7 +81,7 @@ bool ObjEnemyFlying::PreUpdate()
 	{
 	case FOLLOWING:
 		// testing path
-		if (SDL_GetTicks() > start_time + frequency_time && !waitingForPath)
+		if (SDL_GetTicks() > start_time + frequency_time && !data2.waitingForPath)
 			//static bool cmon = false;
 			//if(!cmon)
 		{
@@ -98,6 +98,7 @@ bool ObjEnemyFlying::PreUpdate()
 				data2.origin = thisPos;
 				data2.destination = playerPos;
 				data2.index = index;
+				data2.waitingForPath = true;
 
 				j1PathFinding* newPathfinding = new j1PathFinding();
 				threadID = SDL_CreateThread(newPathfinding->multiThreadCreatePath, "test", (void*)&data2);
@@ -105,8 +106,7 @@ bool ObjEnemyFlying::PreUpdate()
 				//SDL_WaitThread(threadID, 0);
 
 				//CopyLastGeneratedPath();
-				waitingForPath = true;
-
+				
 				frequency_time = GetRandomValue(1000, 1500);
 
 				delete newPathfinding;
@@ -172,8 +172,8 @@ bool ObjEnemyFlying::Update(float dt) {
 			followPath(dt);
 		else
 		{
-			if (!waitingForPath)
-			{
+			//if (!waitingForPath)
+			//{
 				enemy_state = enemyState::SEARCHING;
 				// updates last valid pos
 				lastValidPos = position;
@@ -182,7 +182,7 @@ bool ObjEnemyFlying::Update(float dt) {
 					currAnim = &idleAnimSearching;
 				else
 					currAnim = &idleAnimMarked;
-			}
+			//}
 
 		}
 		break;
@@ -200,14 +200,14 @@ bool ObjEnemyFlying::Update(float dt) {
 	if(!marked)
 		CheckFacingDirection();
 
-	if (waitingForPath)
+	if (data2.waitingForPath)
 	{
 		if (data2.ready)
 		{
 			LOG("thread ended");
 			CopyLastGeneratedPath();
 			start_time = SDL_GetTicks();
-			waitingForPath = false;
+			data2.waitingForPath = false;
 			data2.ready = false;
 		}
 
