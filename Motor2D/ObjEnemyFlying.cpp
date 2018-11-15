@@ -90,7 +90,8 @@ bool ObjEnemyFlying::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		if (pathDebugDraw) pathDebugDraw = false;
+		if (pathDebugDraw)
+			pathDebugDraw = false;
 		else
 			pathDebugDraw = true;
 	}
