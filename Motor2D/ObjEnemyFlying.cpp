@@ -18,7 +18,7 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enem
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
-	lastValidPos = position; // understands that spawn position is a valid one
+	lastValidPos = position; // assumes that spawn position is a valid one
 	previousPos = position; // for facing direction
 
 	// idle tile points
@@ -40,13 +40,9 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enem
 	animTileHeight = enemy_node.child("animation").attribute("tile_height").as_uint();
 
 	LoadAnimation(enemy_node.child("animation").child("idle_animation_searching"), idleAnimSearching);
-	idleAnimSearching.speed = enemy_node.child("animation").child("idle_animation_searching").attribute("speed").as_float();
 	LoadAnimation(enemy_node.child("animation").child("idle_animation_detected"), idleAnimDetected);
-	idleAnimDetected.speed = enemy_node.child("animation").child("idle_animation_detected").attribute("speed").as_float();
 	LoadAnimation(enemy_node.child("animation").child("idle_animation_marked"), idleAnimMarked);
-	idleAnimMarked.speed = enemy_node.child("animation").child("idle_animation_marked").attribute("speed").as_float();
 	LoadAnimation(enemy_node.child("animation").child("jetpack_fire_animation"), jetPackFire);
-	jetPackFire.speed = enemy_node.child("animation").child("jetpack_fire_animation").attribute("speed").as_float();
 
 	currAnim = &idleAnimSearching;
 

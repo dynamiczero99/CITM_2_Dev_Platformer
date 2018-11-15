@@ -51,13 +51,9 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) :
 	currTex = App->object->playerIdleTex;
 
 	LoadAnimation(playerNode.child("animation").child("idle_animation"), idleAnim);
-	idleAnim.speed = playerNode.child("animation").child("idle_animation").attribute("speed").as_float();
 	LoadAnimation(playerNode.child("animation").child("run_animation"), runAnim);
-	runAnim.speed = playerNode.child("animation").child("run_animation").attribute("speed").as_float();
 	LoadAnimation(playerNode.child("animation").child("jump_animation"), jumpAnim);
-	jumpAnim.speed = playerNode.child("animation").child("jump_animation").attribute("speed").as_float();
 	LoadAnimation(playerNode.child("animation").child("fall_animation"), fallAnim);
-	fallAnim.speed = playerNode.child("animation").child("fall_animation").attribute("speed").as_float();
 	currAnim = &idleAnim;
 
 	// sound effects

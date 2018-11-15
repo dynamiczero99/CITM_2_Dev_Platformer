@@ -349,6 +349,7 @@ iPoint GameObject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
 }
 
 bool GameObject::LoadAnimation(pugi::xml_node &node, Animation &anim) {
+	anim.speed = node.attribute("speed").as_float();
 	for (node = node.child("sprite"); node; node = node.next_sibling("sprite")) {
 		SDL_Rect frame;
 		frame.x = node.attribute("x").as_int();
