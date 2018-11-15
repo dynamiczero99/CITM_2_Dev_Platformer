@@ -360,6 +360,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 			// if the node still doesnt has duplicateds routes
 			p2List_item<PathNode>* duplicateNode = (p2List_item<PathNode>*)openList.Find(adjacentNodeIterator->data.pos);
 			if (duplicateNode == NULL) {
+				adjacentNodeIterator->data.jumpLength = newJumpLength;
 				openList.list.add(adjacentNodeIterator->data);
 			}
 			else
@@ -381,6 +382,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 
 			adjacentNodeIterator->data.g = newG;
 			adjacentNodeIterator->data.parent = currNode;
+			adjacentNodeIterator->data.jumpLength = newJumpLength;
 			openList.list.add(adjacentNodeIterator->data);
 
 		}
