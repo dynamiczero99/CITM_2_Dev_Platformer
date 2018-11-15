@@ -210,7 +210,12 @@ bool j1Object::Load(pugi::xml_node& node)
 	// flying enemy ---
 	for (pugi::xml_node flyingEnemy = node.child("FlyingEnemy"); flyingEnemy; flyingEnemy = flyingEnemy.next_sibling("FlyingEnemy"))
 	{
-		App->object->AddObjEnemyFlying({ flyingEnemy.attribute("x").as_float(), flyingEnemy.attribute("y").as_float() });
+		ObjEnemyFlying* fe = App->object->AddObjEnemyFlying({ flyingEnemy.attribute("x").as_float(), flyingEnemy.attribute("y").as_float() });
+		if (flyingEnemy.attribute("isMarked"))
+		{
+			fe->MarkObject(true);
+			player->SetSwapObject(fe);
+		}
 	}
 	
 	// and load the rest of data

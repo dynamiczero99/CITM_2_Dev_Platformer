@@ -249,6 +249,9 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 	flyingEnemy.append_attribute("velocity_x") = velocity.x;
 	flyingEnemy.append_attribute("velocity_y") = velocity.y;
 
+	if (marked)
+		flyingEnemy.append_attribute("isMarked") = true;
+
 	// restores the previous pos to enemy
 
 	position = temporalPos;
