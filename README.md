@@ -3,11 +3,18 @@ Swap game is a puzzle-action-platformer where the player must overcome a series 
 This game was made as part of the development subject by 2 students in CITM (UPC). We've programmed the game from scratch in C++ and used free artwork.
 
 ## How to play:
+### Controller:
+- Left joystick: Move
+- A: Jump
+- B: Shoot a projectile which marks objects
+- Left Joystick (holding B): Aim
+- X: Swap positions with marked object
+
 ### Keyboard & Mouse:
 - A: Move left
 - D: Move right
 - Space: Jump
-- Mouse left button: Throw projectile which marks objects from the charcter's hat
+- Mouse left button: Shoot a projectile which marks objects
 - Mouse right button: Swap positions with marked object
 
 ## Credits
@@ -53,6 +60,9 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Get music from the level from Tiled Map Editor.
 - Camera debugger
 - Optimization: Things out of the screen aren't rendered
+- Optimization: Multithreaded pathfinding
+- Optimization: TimedUpdate() considers different times for each object so that all of them aren't done at the same time
+- Controller support
 
 ## Debug functionality:
 - F1 ​Start from the very first level

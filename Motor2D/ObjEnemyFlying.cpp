@@ -14,7 +14,6 @@
 
 ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) 
 {
-
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 

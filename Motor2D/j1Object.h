@@ -22,6 +22,7 @@ class Animation;
 enum triggerAction;
 
 class GameObject {
+	friend class j1Object; // Only j1Object factory can access the properties of this class
 protected:
 	enum class dir : uint {
 		invalid,
@@ -44,34 +45,45 @@ protected:
 		bottom_right
 	};
 
+	//Methods
 public:
+	virtual void MarkObject(bool mark);
+	virtual void OnCollision(Collider * c1, Collider * c2);
+
+protected:
 	GameObject(fPoint &position, int index);
+	virtual bool OnDestroy();
 	~GameObject();
+
 	virtual bool PreUpdate();
+	virtual bool TimedUpdate(float dt);
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
-	virtual bool OnDestroy();
-	virtual void OnCollision(Collider * c1, Collider * c2);
-	virtual void MarkObject(bool mark);
 
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
 
-
-protected:
-	//Returns the top-left position of a rectangle considering a pivot point
-	//Used to draw (Blit) or put the collider (SetPos)
+	//- Returns the top-left position of a rectangle considering a pivot point
+	//- Used to draw (Blit) or put the collider (SetPos)
 	iPoint GetRectPos(pivot pivot, int x, int y, uint w, uint h);
-	//Returns the pivot position specifing a rectangle
+	//- Returns the pivot position specifing a rectangle
 	iPoint GetPivotPos(pivot pivot, int x, int y, uint w, uint h);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 	float tile_to_pixel (uint pixel);
 
+	//Variables
 public:
 	mutable fPoint position = fPoint(0.0F, 0.0F);
 	fPoint velocity = fPoint(0.0F, 0.0F);
 	fPoint acceleration = fPoint(0.0F, 0.0F);
-	int index = -1;	//The position in the objects module array
+
+protected:
+	//The position in the objects module array
+	int index = -1;
+	Uint32 updateCycle = 0u;//const
+	Uint32 lastUpdateTime = 0u;
+	Uint32 nextUpdateTime = UINT_MAX;
+
 };
 
 class j1Object : public j1Module

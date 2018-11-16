@@ -62,8 +62,14 @@ bool j1Object::PreUpdate() {
 }
 
 bool j1Object::Update(float dt) {
+	Uint32 currTime = SDL_GetTicks();
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
-		if (objects[i] != nullptr) {
+		if (objects[i] != nullptr) { 
+			if (currTime >= objects[i]->nextUpdateTime) {
+				objects[i]->TimedUpdate((currTime - objects[i]->lastUpdateTime) / 1000.0f);
+				objects[i]->lastUpdateTime = currTime;
+				objects[i]->nextUpdateTime = currTime + objects[i]->updateCycle;
+			}
 			objects[i]->Update(dt);
 		}
 	}
@@ -258,6 +264,11 @@ bool GameObject::PreUpdate() {
 
 bool GameObject::Update(float dt) {
 	return true;
+}
+
+bool GameObject::TimedUpdate(float dt)
+{
+	return false;
 }
 
 bool GameObject::PostUpdate() {
