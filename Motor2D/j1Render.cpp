@@ -4,6 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Input.h"
+#include "Brofiler/Brofiler.h"
 
 j1Render::j1Render() : j1Module()
 {
@@ -126,6 +127,8 @@ void j1Render::CameraDebug(float dt)
 
 bool j1Render::PostUpdate()
 {
+	BROFILER_CATEGORY("Renderer PostUpdate", Profiler::Color::Gold);
+
 	//Draw the borders of the screen
 
 	SDL_Color color = { 255, 255, 255, 255 };

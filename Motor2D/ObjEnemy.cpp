@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Pathfinding.h"
 #include <random>
+#include "Brofiler/Brofiler.h"
 
 ObjEnemy::ObjEnemy(fPoint & position, int index) : GameObject(position, index)
 {
@@ -23,6 +24,9 @@ bool ObjEnemy::isPlayerInTileRange(const uint range) const
 
 void ObjEnemy::StartNewPathThread()
 {
+	//BROFILER_CATEGORY("NEW worker thread", Profiler::Color::AliceBlue);
+	BROFILER_THREAD("new worker");
+
 	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 

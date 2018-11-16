@@ -137,6 +137,7 @@ private:
 	uint32				framerateCap = 0;
 	float				dt = 0.0f;
 	bool				capFrames = true;
+	//SDL_Thread* threadID = nullptr;
 };
 
 extern j1App* App;

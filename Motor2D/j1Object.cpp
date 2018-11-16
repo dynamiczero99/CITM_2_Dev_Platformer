@@ -16,6 +16,9 @@
 #include "ObjEnemyFlying.h"
 #include "ObjEnemyLand.h"
 
+// Profiler ---
+#include "Brofiler/Brofiler.h"
+
 j1Object::j1Object() : j1Module() {
 	name.create("object");
 
@@ -53,7 +56,7 @@ bool j1Object::Start() {
 }
 
 bool j1Object::PreUpdate() {
-
+	BROFILER_CATEGORY("Objects PreUpdate", Profiler::Color::LightPink);
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
 			objects[i]->PreUpdate();
@@ -63,6 +66,9 @@ bool j1Object::PreUpdate() {
 }
 
 bool j1Object::Update(float dt) {
+	//BROFILER_FRAME("ObjectsUpdate");
+	BROFILER_CATEGORY("Objects Update", Profiler::Color::Pink);
+
 	Uint32 currTime = SDL_GetTicks();
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) { 
@@ -77,6 +83,7 @@ bool j1Object::Update(float dt) {
 }
 
 bool j1Object::PostUpdate() {
+	BROFILER_CATEGORY("Objects PostUpdate", Profiler::Color::HotPink);
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) {
 			objects[i]->PostUpdate();

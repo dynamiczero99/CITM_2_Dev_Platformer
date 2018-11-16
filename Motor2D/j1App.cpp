@@ -17,6 +17,7 @@
 #include "j1Pathfinding.h"
 #include "j1Object.h"
 #include "Brofiler/Brofiler.h"
+#include "SDL/include/SDL_thread.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -34,6 +35,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade_to_black = new j1FadeToBlack();
 	object = new j1Object();
 	pathfinding = new j1PathFinding();
+
+	//threadID = SDL_CreateThread(pathfinding->multiThreadCreatePath, "test", (void*)&pathData);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
