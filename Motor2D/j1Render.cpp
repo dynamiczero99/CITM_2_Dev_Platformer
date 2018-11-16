@@ -225,10 +225,6 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	rect.w *= scale;
 	rect.h *= scale;
-
-	//iPoint cameraPos;// = ScreenToWorld(-App->render->camera.x, -App->render->camera.y);// / scale;
-	//cameraPos.x = -App->render->camera.x / scale;// ScreenToWorld(-App->render->camera.x, -App->render->camera.y / scale);// / scale;
-	//cameraPos.y = -App->render->camera.y / scale;
 	
 	//Don't blit if the sprite is out of the screen
 	uint width, height = 0;

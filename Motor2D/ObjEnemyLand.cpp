@@ -7,7 +7,7 @@
 #include "j1Collision.h"
 #include "j1Render.h"
 
-ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_node) : GameObject(position, index)
+ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_node) : ObjEnemy(position, index)
 {
 	detectionRange = enemy_node.child("detection_range").text().as_int();
 	SDL_Rect colRect = {(int)position.x, (int)position.y, enemy_node.child("collider_rectangle").attribute("w").as_int(),  enemy_node.child("collider_rectangle").attribute("h").as_int() };
@@ -25,20 +25,20 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 		//Search path
 		//Put in path to follow var
 		//if found path
-		state = state::chasing;
+		state = enemyState::CHASING;
 	}
 	return false;
 }
 
 bool ObjEnemyLand::Update(float dt) {
 	switch (state) {
-	case state::invalid:
+	case enemyState::INVALID:
 		LOG("Invalid state");
 		break;
-	case state::moving:
+	case enemyState::IDLE:
 
 		break;
-	case state::chasing:
+	case enemyState::CHASING:
 
 		break;
 	}

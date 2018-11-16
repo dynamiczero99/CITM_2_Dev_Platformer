@@ -66,6 +66,9 @@
     <ClCompile Include="ObjEnemyLand.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ObjEnemy.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -154,6 +157,9 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="ObjEnemyLand.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjEnemy.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

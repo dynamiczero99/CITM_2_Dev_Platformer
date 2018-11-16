@@ -12,7 +12,7 @@
 #include "j1Map.h"
 #include <random>
 
-ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : GameObject(position, index) 
+ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : ObjEnemy(position, index) 
 {
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
@@ -103,10 +103,10 @@ bool ObjEnemyFlying::Update(float dt) {
 
 	switch (enemy_state)
 	{
-	case SEARCHING:
+	case IDLE:
 		if (isPlayerInTileRange(MIN_DISTANCE) && !marked) // minimum distance to follow player
 		{
-			enemy_state = enemyState::FOLLOWING;
+			enemy_state = enemyState::CHASING;
 			// updates current animation too
 			currAnim = &idleAnimDetected;
 		}
@@ -127,7 +127,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		}
 		break;
 
-	case FOLLOWING:
+	case CHASING:
 		// pathfinding
 		if (SDL_GetTicks() > start_time + frequency_time && !pathData.waitingForPath)
 			StartNewPathThread();
@@ -135,7 +135,7 @@ bool ObjEnemyFlying::Update(float dt) {
 			followPath(dt);
 		else
 		{
-			enemy_state = enemyState::SEARCHING;
+			enemy_state = enemyState::IDLE;
 			// updates last valid pos
 			lastValidPos = position;
 			//check current animation
@@ -347,15 +347,6 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 	else
 		return thisPos;
-}
-
-bool ObjEnemyFlying::isPlayerInTileRange(const uint range) const
-{
-	// translate to map coords
-	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
-	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
-	
-	return (thisPos.DistanceManhattan(playerPos) < range);
 }
 
 void ObjEnemyFlying::GenerateNewIdlePath(const int minTiles, const int maxTiles)

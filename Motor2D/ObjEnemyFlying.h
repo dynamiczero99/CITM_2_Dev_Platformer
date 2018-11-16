@@ -1,6 +1,7 @@
 #ifndef _OBJ_ENEMY_FLYING_H_
 #define _OBJ_ENEMY_FLYING_H_
 
+#include "ObjEnemy.h"
 #include "j1Object.h"
 #include "p2Point.h"
 #include "p2Animation.h"
@@ -31,17 +32,8 @@ struct threadData
 	void CopyLastGeneratedPath();
 };
 
-class ObjEnemyFlying : public GameObject {
-protected:
-	enum enemyState
-	{
-		SEARCHING, // represents idle state, searching a player in manhattan range
-		FOLLOWING, // player is in range and has a viable path
-		DEATH
-	};
-
+class ObjEnemyFlying : public ObjEnemy {
 public:
-
 	ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &object_node);
 	bool Update(float dt) override;
 	bool PreUpdate() override;
@@ -69,7 +61,6 @@ private:
 	iPoint GetNextWorldNode() const;
 	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node, float dt) const;
-	bool isPlayerInTileRange(const uint range) const; // returns true if player are on input range
 	void followPath(float dt) const;
 	void StartNewPathThread();
 	// variables --
@@ -87,7 +78,7 @@ private:
 	Uint32 max_ms = 0u;
 
 	//enemy state machine
-	enemyState enemy_state = enemyState::SEARCHING; // default state
+	enemyState enemy_state = enemyState::IDLE; // default state
 	bool marked = false;
 
 	// idle movement
