@@ -178,6 +178,10 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
+	//BROFILER_FRAME("createThread");
+	//BROFILER_THREAD("CreatePath worker");
+	BROFILER_CATEGORY("CreatePath", Profiler::Color::Black);
+
 	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
 		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
 		return -1;
@@ -229,8 +233,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 int j1PathFinding::multiThreadCreatePath(void* data)
 {
-	BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
+	BROFILER_FRAME("new thread");
 	//BROFILER_THREAD("new worker");
+	//BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
 	LOG("NEW THREAD");
 	threadData* tdata = (threadData*)data;
 	

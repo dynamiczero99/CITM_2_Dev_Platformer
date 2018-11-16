@@ -25,8 +25,8 @@ bool ObjEnemy::isPlayerInTileRange(const uint range) const
 void ObjEnemy::StartNewPathThread()
 {
 	//BROFILER_CATEGORY("NEW worker thread", Profiler::Color::AliceBlue);
-	BROFILER_THREAD("new worker");
-
+	//BROFILER_THREAD("new worker");
+	//BROFILER_FRAME("newthread");
 	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
 
