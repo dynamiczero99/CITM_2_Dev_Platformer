@@ -18,20 +18,6 @@
 
 struct Collider;
 
-struct threadData
-{
-	iPoint origin = { 0,0 };
-	iPoint destination = { 0,0 };
-	bool waitingForPath = false;
-	bool ready = false;
-	int index = -1;
-	// for assure the enemy is saved in correct place, needs to be mutable for how the methods works, see save()
-	// maybe now that we have randomly generated idle paths, this can be changed
-	mutable p2DynArray<iPoint> last_path = NULL; 
-	
-	void CopyLastGeneratedPath();
-};
-
 class ObjEnemyFlying : public ObjEnemy {
 public:
 	ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &object_node);
@@ -62,23 +48,10 @@ private:
 	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node, float dt) const;
 	void followPath(float dt) const;
-	void StartNewPathThread();
 	// variables --
 	//bool multiThreadEnabled = false;
-	SDL_Thread* threadID = nullptr;
 	fPoint lastValidPos = { 0.0F,0.0F };
-	// --------------------------------------
 
-	// provisional timer --------------------
-	Uint32 start_time = 0;
-	Uint32 frequency_time = 1500;
-	// --------------------------------------
-	// path frequency intervals
-	Uint32 min_ms = 0u;
-	Uint32 max_ms = 0u;
-
-	//enemy state machine
-	enemyState enemy_state = enemyState::IDLE; // default state
 	bool marked = false;
 
 	// idle movement
@@ -86,17 +59,13 @@ private:
 	p2DynArray<iPoint> idlePath = NULL;
 	int posIndex = 0;
 
-	// utils
-	int GetRandomValue(const int min,const  int max) const;
+	// Utilities
 	void GenerateNewIdlePath(const int minTiles, const int maxTiles);
 
 	// flip animation
 	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	void CheckFacingDirection();
 	fPoint previousPos = { 0,0 };
-
-	// data to send to thread
-	threadData pathData;
 
 	// debug pathfinding debugdraw
 	bool pathDebugDraw = true;

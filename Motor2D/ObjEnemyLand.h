@@ -17,7 +17,6 @@ public:
 	bool PostUpdate();
 
 private:
-	enemyState state = enemyState::IDLE;
 	Collider * col = nullptr;
 	int detectionRange = 0;
 	Animation idleAnim;

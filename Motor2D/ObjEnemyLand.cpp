@@ -25,13 +25,13 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 		//Search path
 		//Put in path to follow var
 		//if found path
-		state = enemyState::CHASING;
+		enemy_state = enemyState::CHASING;
 	}
 	return false;
 }
 
 bool ObjEnemyLand::Update(float dt) {
-	switch (state) {
+	switch (enemy_state) {
 	case enemyState::INVALID:
 		LOG("Invalid state");
 		break;
