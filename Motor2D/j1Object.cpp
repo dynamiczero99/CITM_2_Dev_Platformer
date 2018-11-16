@@ -65,10 +65,9 @@ bool j1Object::Update(float dt) {
 	Uint32 currTime = SDL_GetTicks();
 	for (uint i = 0; i < MAX_OBJECTS; ++i) {
 		if (objects[i] != nullptr) { 
-			if (currTime >= objects[i]->nextUpdateTime) {
-				objects[i]->TimedUpdate((currTime - objects[i]->lastUpdateTime) / 1000.0f);
-				objects[i]->lastUpdateTime = currTime;
-				objects[i]->nextUpdateTime = currTime + objects[i]->updateCycle;
+			if (currTime >= objects[i]->lastUpdate + objects[i]->updateCycle) {
+				objects[i]->TimedUpdate((currTime - objects[i]->lastUpdate) / 1000.0f);
+				objects[i]->lastUpdate = currTime;
 			}
 			objects[i]->Update(dt);
 		}

@@ -80,10 +80,8 @@ public:
 protected:
 	//The position in the objects module array
 	int index = -1;
-	Uint32 updateCycle = 0u;//const
-	Uint32 lastUpdateTime = 0u;
-	Uint32 nextUpdateTime = UINT_MAX;
-
+	Uint32 updateCycle = UINT_MAX;//const
+	Uint32 lastUpdate = 0u;
 };
 
 class j1Object : public j1Module
