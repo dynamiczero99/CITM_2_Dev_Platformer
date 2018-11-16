@@ -14,6 +14,7 @@
 #include "ObjBox.h"
 #include "ObjTrigger.h"
 #include "ObjEnemyFlying.h"
+#include "ObjEnemyLand.h"
 
 j1Object::j1Object() : j1Module() {
 	name.create("object");
@@ -172,6 +173,15 @@ ObjEnemyFlying * j1Object::AddObjEnemyFlying(fPoint position) {
 	ObjEnemyFlying * ret = nullptr;
 	if (index != -1) {
 		objects[index] = ret = new ObjEnemyFlying(position, index, object_node.child("enemy_flying"));
+	}
+	return ret;
+}
+
+ObjEnemyLand * j1Object::AddObjEnemyLand(fPoint position) {
+	int index = FindEmptyPosition();
+	ObjEnemyLand * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjEnemyLand(position, index, object_node.child("enemy_land"));
 	}
 	return ret;
 }

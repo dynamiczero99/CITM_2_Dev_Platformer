@@ -61,7 +61,7 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Camera debugger
 - Optimization: Things out of the screen aren't rendered
 - Optimization: Multithreaded pathfinding
-- Optimization: TimedUpdate() considers different times for each object so that all of them aren't done at the same time
+- Optimization: Each object has a different updateCycle which is used to avoid that all objects' TimedUpdate() are called at the same time.
 - Controller support
 
 ## Debug functionality:

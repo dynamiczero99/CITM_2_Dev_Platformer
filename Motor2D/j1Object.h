@@ -14,6 +14,7 @@ class ObjProjectile;
 class ObjBox;
 class ObjTrigger;
 class ObjEnemyFlying;
+class ObjEnemyLand;
 
 struct Collider;
 enum COLLIDER_TYPE;
@@ -80,7 +81,7 @@ public:
 protected:
 	//The position in the objects module array
 	int index = -1;
-	Uint32 updateCycle = UINT_MAX;//const
+	Uint32 updateCycle = UINT_MAX;
 	Uint32 lastUpdate = 0u;
 };
 
@@ -103,6 +104,7 @@ public:
 	ObjBox * AddObjBox(fPoint position);
 	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize);
 	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);
+	ObjEnemyLand * AddObjEnemyLand(fPoint position);
 	bool DeleteObject(GameObject * object);
 
 public:

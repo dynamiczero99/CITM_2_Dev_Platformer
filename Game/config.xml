@@ -59,11 +59,11 @@
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>8</tile_size>
 	  <debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
-      <projectile>
-        <speed>45</speed>
-        <collider_width>5</collider_width>
-        <collider_height>5</collider_height>
-	  <sfx name="impact" value="impactSound.wav"/>
+    <projectile>
+      <speed>45</speed>
+      <collider_width>5</collider_width>
+      <collider_height>5</collider_height>
+      <sfx name="impact" value="impactSound.wav"/>
     </projectile>
     <box>
       <gravity>120</gravity>
@@ -76,6 +76,28 @@
         </active_animation>
       </animation>
     </box>
+    <enemy_land>
+      <speed chasing_speed = "50" idle_speed = "25"/>
+      <collider_rectangle x = "0" y ="0" w ="12" h="23" />
+      <animation>
+        <idle_animation speed = "15.0">
+          <sprite x ="209" y ="152" w ="15" h="24"/>
+          <sprite x ="225" y ="152" w ="15" h="24"/>
+          <sprite x ="241" y ="152" w ="15" h="24"/>
+          <sprite x ="257" y ="152" w ="15" h="24"/>
+        </idle_animation>
+        <moving_animation speed = "15.0">
+          <sprite x ="289" y ="152" w ="15" h="24"/>
+          <sprite x ="305" y ="152" w ="15" h="24"/>
+          <sprite x ="321" y ="152" w ="15" h="24"/>
+          <sprite x ="337" y ="152" w ="15" h="24"/>
+          <sprite x ="353" y ="152" w ="15" h="24"/>
+          <sprite x ="369" y ="152" w ="15" h="24"/>
+          <sprite x ="401" y ="152" w ="15" h="24"/>
+        </moving_animation>
+      </animation>
+      <detection_range> 3 </detection_range>
+    </enemy_land>
     <enemy_flying>
 	  <speed chasing_speed = "50" idle_speed = "25"/>
 	  <path_frequency_ms min_ms = "1000" max_ms = "1600"/>
