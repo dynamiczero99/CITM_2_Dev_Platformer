@@ -16,6 +16,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Pathfinding.h"
 #include "j1Object.h"
+#include "Brofiler/Brofiler.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -137,6 +138,8 @@ bool j1App::Start()
 // Called each loop iteration
 bool j1App::Update()
 {
+	BROFILER_CATEGORY("App updates", Profiler::Color::LawnGreen);
+
 	bool ret = true;
 	PrepareUpdate();
 
@@ -190,6 +193,7 @@ void j1App::PrepareUpdate()
 // ---------------------------------------------
 void j1App::FinishUpdate()
 {
+	BROFILER_CATEGORY("App FinishUpdate", Profiler::Color::Cyan);
 	//Save and load
 	if (want_to_save == true) {
 		SavegameNow();
@@ -268,6 +272,7 @@ void j1App::FinishUpdate()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
+	BROFILER_CATEGORY("App PreUpdate", Profiler::Color::Turquoise);
 	bool ret = true;
 	j1Module* pModule = NULL;
 
@@ -288,6 +293,7 @@ bool j1App::PreUpdate()
 // Call modules on each loop iteration
 bool j1App::DoUpdate()
 {
+	BROFILER_CATEGORY("App Updates", Profiler::Color::LightGreen);
 	bool ret = true;
 	j1Module* pModule = NULL;
 
@@ -308,6 +314,7 @@ bool j1App::DoUpdate()
 // Call modules after each loop iteration
 bool j1App::PostUpdate()
 {
+	BROFILER_CATEGORY("App PostUpdates", Profiler::Color::MediumOrchid);
 	bool ret = true;
 	j1Module* pModule = NULL;
 
@@ -400,6 +407,8 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 
 bool j1App::LoadGameNow()
 {
+	BROFILER_CATEGORY("App LoadGame", Profiler::Color::Chocolate);
+
 	bool ret = false;
 
 	pugi::xml_document data;
@@ -439,6 +448,8 @@ bool j1App::LoadGameNow()
 
 bool j1App::SavegameNow() const
 {
+	BROFILER_CATEGORY("App FinishUpdate", Profiler::Color::Coral);
+
 	bool ret = true;
 
 	LOG("Saving Game State to %s...", save_game.GetString());
