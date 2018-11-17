@@ -49,7 +49,7 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enem
 	chasingSpeed = enemy_node.child("speed").attribute("chasing_speed").as_float();
 	idleSpeed = enemy_node.child("speed").attribute("idle_speed").as_float();
 
-	pivot = Pivot(PivotV::bottom, PivotH::middle);
+	pivot = Pivot(PivotV::middle, PivotH::middle);
 }
 
 bool ObjEnemyFlying::OnDestroy() {
@@ -324,7 +324,7 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
 	iPoint areaPoint = { 1,1 }; // tile values
 	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x || // enemy tile width 
-		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 3) <= nextNodePos.y)) // enemy tile height
+		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 2) <= nextNodePos.y)) // enemy tile height
 	{
 		pathData.last_path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
 		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);

@@ -11,7 +11,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 {
 	detectionRange = enemy_node.child("detection_range").text().as_int();
 	SDL_Rect colRect = {(int)position.x, (int)position.y, enemy_node.child("collider_rectangle").attribute("w").as_int(),  enemy_node.child("collider_rectangle").attribute("h").as_int() };
-	App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
 	LoadAnimation(enemy_node.child("animation").child("moving_animation"), movingAnim);
 	currAnim = &movingAnim;
@@ -43,6 +43,10 @@ bool ObjEnemyLand::Update(float dt) {
 
 		break;
 	}
+
+	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
+	col->SetPos(colPos.x, colPos.y);
+
 	return true;
 }
 
