@@ -13,7 +13,7 @@ ObjEnemy::ObjEnemy(fPoint & position, int index) : GameObject(position, index)
 
 }
 
-bool ObjEnemy::isPlayerInTileRange(const uint range) const
+bool ObjEnemy::IsPlayerInTileRange(const uint range) const
 {
 	// translate to map coords
 	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
@@ -65,14 +65,26 @@ int ObjEnemy::GetRandomValue(const int min, const int max) const
 	return value;
 }
 
+void ObjEnemy::DebugPath()
+{
+	if (pathDebugDraw)
+	{
+		for (uint i = 0; i < pathData.path.Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(pathData.path.At(i)->x, pathData.path.At(i)->y);
+			App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
+		}
+	}
+}
+
 void threadData::CopyLastGeneratedPath()
 {
 	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
 
-	last_path.Clear();
+	path.Clear();
 	for (uint i = 0; i < pathToCopy->Count(); ++i)
 	{
-		last_path.PushBack(*pathToCopy->At(i));
+		path.PushBack(*pathToCopy->At(i));
 	}
-	last_path.Flip();
+	path.Flip();
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="59">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="59">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -151,7 +151,7 @@
  <tileset firstgid="1672" name="GlassTexture" tilewidth="8" tileheight="8" tilecount="15" columns="5">
   <image source="../textures/GlassTexture.png" width="40" height="24"/>
  </tileset>
- <layer name="background" width="150" height="100">
+ <layer id="1" name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15158,7 +15158,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="midground" width="150" height="100">
+ <layer id="2" name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30165,7 +30165,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="foreground" width="150" height="100">
+ <layer id="3" name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -45169,7 +45169,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="navigationLayer" width="150" height="100">
+ <layer id="4" name="navigationLayer" width="150" height="100">
   <properties>
    <property name="Navigation" type="bool" value="true"/>
   </properties>
@@ -48718,7 +48718,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -48868,8 +48868,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -48879,6 +48877,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile/>
    <tile/>
@@ -49013,13 +49013,12 @@
    <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -49029,6 +49028,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile/>
@@ -49163,14 +49163,12 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -49180,6 +49178,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile/>
    <tile/>
@@ -49313,24 +49313,15 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49339,6 +49330,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49454,7 +49446,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49480,7 +49471,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -49489,6 +49480,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49604,7 +49596,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49630,7 +49621,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49640,6 +49630,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49754,7 +49745,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49763,7 +49753,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
    <tile gid="1671"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -49772,6 +49764,14 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49913,7 +49913,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -49930,6 +49929,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile/>
    <tile/>
@@ -50505,23 +50505,23 @@
    <tile/>
    <tile/>
    <tile gid="1671"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
+   <tile gid="1671"/>
    <tile/>
    <tile/>
    <tile/>
@@ -60176,22 +60176,22 @@
    <tile/>
   </data>
  </layer>
- <group name="Colliders">
-  <objectgroup name="Win">
+ <group id="5" name="Colliders">
+  <objectgroup id="6" name="Win">
    <object id="22" name="Trigger" type="next_level" x="1010.5" y="139" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup name="Glass">
+  <objectgroup id="7" name="Glass">
    <object id="39" x="944" y="176" width="8" height="104"/>
   </objectgroup>
-  <objectgroup name="Death">
+  <objectgroup id="8" name="Death">
    <object id="19" name="death" x="0" y="303" width="1200" height="40"/>
   </objectgroup>
-  <objectgroup name="Platforms">
+  <objectgroup id="9" name="Platforms">
    <object id="24" x="881" y="303" width="294" height="496"/>
    <object id="25" x="673" y="303" width="94" height="496"/>
    <object id="26" x="64" y="303" width="527" height="496"/>
   </objectgroup>
-  <objectgroup name="Floor">
+  <objectgroup id="10" name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -60203,8 +60203,8 @@
    <object id="30" gid="1395" x="493.5" y="296.5" width="16" height="16" visible="0"/>
   </objectgroup>
  </group>
- <group name="Player">
-  <objectgroup name="PlayerData">
+ <group id="11" name="Player">
+  <objectgroup id="12" name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -60213,13 +60213,13 @@
    </object>
   </objectgroup>
  </group>
- <group name="GameObjects">
-  <objectgroup name="Triggers"/>
-  <objectgroup name="GameObjects">
+ <group id="13" name="GameObjects">
+  <objectgroup id="14" name="Triggers"/>
+  <objectgroup id="15" name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="35" name="normalBox" x="486" y="-26" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
-   <object id="50" name="landEnemy" x="688" y="240" width="15" height="24"/>
+   <object id="50" name="landEnemy" x="736" y="216" width="16" height="24"/>
    <object id="56" name="flyingEnemy" x="445.5" y="196" width="15" height="15.5"/>
    <object id="58" name="flyingEnemy" x="481" y="181" width="15" height="15.5"/>
   </objectgroup>

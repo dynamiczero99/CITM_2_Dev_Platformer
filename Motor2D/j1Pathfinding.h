@@ -35,6 +35,7 @@ struct PathNode
 	void SetGandH(const iPoint& destination);
 	// Find walkable adjacents
 	void FindWalkableAdjacents(PathList &list, const iPoint destination);
+	void FindWalkableAdjacentsLand(PathList & pathList, const iPoint destination);
 
 	// -----------
 	int g = 0;

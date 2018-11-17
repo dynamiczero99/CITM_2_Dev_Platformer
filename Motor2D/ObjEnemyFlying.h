@@ -66,9 +66,6 @@ private:
 	void CheckFacingDirection();
 	fPoint previousPos = { 0,0 };
 
-	// debug pathfinding debugdraw
-	bool pathDebugDraw = false;
-
 	// follow speeds from xml
 	float chasingSpeed = 0.0F;
 	float idleSpeed = 0.0F;

@@ -92,7 +92,7 @@ public:
 protected:
 	//The position in the objects module array
 	int index = -1;
-	Uint32 updateCycle = UINT_MAX;
+	Uint32 updateCycle = UINT_MAX;//Time (ms) that waits before executing next TimedUpdate()
 	Uint32 lastUpdate = 0u;
 	Pivot pivot = Pivot(PivotV::top, PivotH::left);
 	Collider * col = nullptr;

@@ -74,7 +74,7 @@ void ObjEnemyFlying::MarkObject(bool mark)
 
 bool ObjEnemyFlying::PreUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		pathDebugDraw = !pathDebugDraw;
 	}
@@ -88,14 +88,14 @@ bool ObjEnemyFlying::Update(float dt) {
 	switch (enemy_state)
 	{
 	case IDLE:
-		if (isPlayerInTileRange(MIN_DISTANCE) && !marked) // minimum distance to follow player
+		if (IsPlayerInTileRange(MIN_DISTANCE) && !marked) // minimum distance to follow player
 		{
 			enemy_state = enemyState::CHASING;
 			// updates current animation too
 			currAnim = &idleAnimDetected;
 		}
 		// and if we have a previous still non traveled path, finish them
-		if (pathData.last_path.Count() > 0 && !marked) // always that the enemy is not marked
+		if (pathData.path.Count() > 0 && !marked) // always that the enemy is not marked
 		{
 			followPath(dt);
 			// updates last valid pos
@@ -115,7 +115,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		// pathfinding
 		if (SDL_GetTicks() > start_time + frequency_time && !pathData.waitingForPath)
 			StartNewPathThread();
-		if (pathData.last_path.Count() > 0 && isPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
+		if (pathData.path.Count() > 0 && IsPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
 			followPath(dt);
 		else
 		{
@@ -139,7 +139,7 @@ bool ObjEnemyFlying::Update(float dt) {
 	{
 		if (pathData.ready)
 		{
-			LOG("thread ended");
+			//LOG("thread ended");
 			start_time = SDL_GetTicks();
 			pathData.waitingForPath = false;
 			pathData.ready = false;
@@ -197,6 +197,8 @@ void ObjEnemyFlying::idleMovement(float dt)
 
 bool ObjEnemyFlying::PostUpdate() {
 
+	DebugPath();
+
 	// draw
 	iPoint blitPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	// jetpack fire
@@ -206,17 +208,7 @@ bool ObjEnemyFlying::PostUpdate() {
 		App->render->Blit(App->object->robotTilesetTex, blitPos.x + 10, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
 	// enemy
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
-	
-	// pathfinding debug draw ---------------------------------------------------
-	if (pathDebugDraw)
-	{
-		for (uint i = 0; i < pathData.last_path.Count(); ++i)
-		{
-			iPoint pos = App->map->MapToWorld(pathData.last_path.At(i)->x, pathData.last_path.At(i)->y);
-			App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
-		}
-	}
-	// --------------------------------------------------------------------------
+
 
 	return true;
 }
@@ -244,7 +236,7 @@ bool ObjEnemyFlying::Save(pugi::xml_node& node) const
 
 	fPoint temporalPos = position; // stores the actual position to return enemy at
 
-	if (pathData.last_path.Count() > 0)
+	if (pathData.path.Count() > 0)
 	{
 		while (!App->pathfinding->IsWalkable(GetMapPosition())) // force to have a real walkable path
 		{
@@ -316,18 +308,18 @@ iPoint ObjEnemyFlying::GetNextWorldNode() const
 	thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
 
 	// get the nextNodePos, the last on dyn array (the first pop out) || copylastgenerated path flip the order
-	iPoint nextNodePos = *pathData.last_path.At(pathData.last_path.Count() - 1);
+	iPoint nextNodePos = *pathData.path.At(pathData.path.Count() - 1);
 
 	// compare enemy and nextNode on tile coords, if is the same, pop and get the new nextNode
 	iPoint areaPoint = { 1,1 }; // tile values
 	if (!(thisPos.x >= (nextNodePos.x + areaPoint.x) || (thisPos.x + 2) <= nextNodePos.x || // enemy tile width 
 		thisPos.y >= (nextNodePos.y + areaPoint.y) || (thisPos.y + 2) <= nextNodePos.y)) // enemy tile height
 	{
-		pathData.last_path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
+		pathData.path.Pop(nextNodePos); //.last_path.Pop(nextNodePos);
 		//LOG("enemy are on target tile pos: tile: %i,%i enemy: %i,%i", nextNodePos.x, nextNodePos.y, thisPos.x, thisPos.y);
 	}
 
-	if (pathData.last_path.Count() > 0)
+	if (pathData.path.Count() > 0)
 		return App->map->MapToWorld(nextNodePos.x, nextNodePos.y);
 	else
 		return thisPos;
