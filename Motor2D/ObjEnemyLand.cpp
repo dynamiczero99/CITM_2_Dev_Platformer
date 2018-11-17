@@ -26,7 +26,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	moveSpeed = 10.0f;
 	maxFallSpeed = 50.0f;
 	acceleration.y = gravity;
-	reachOffset = 10;
+	reachOffset = 5;//10 pixels
 }
 
 bool ObjEnemyLand::PreUpdate() {
@@ -66,7 +66,9 @@ bool ObjEnemyLand::Update(float dt) {
 		if (pathData.path.Count() > 0) {
 			//Check if we've reached the next node in the path
 			iPoint enemyPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
-			if (abs(pathData.path[step].x - enemyPos.x) < reachOffset) {
+			iPoint iPosition ((int)position.x, (int)position.y);
+			iPoint targetTileWorldPos = App->map->MapToWorld(pathData.path[step].x, pathData.path[step].y);
+			if (iPosition.DistanceManhattan(targetTileWorldPos) < reachOffset) {
 				if (step + 1 < pathData.path.Count()) {
 					step++;
 				}
@@ -136,7 +138,6 @@ void ObjEnemyLand::OnCollision(Collider * c1, Collider * c2) {
 		case dir::down:
 			position.y = c2->rect.GetTop();
 			velocity.y = 0;
-			acceleration.y = 0;
 			break;
 		case dir::left:
 			position.x = c2->rect.GetRight() + c1->rect.w / 2;
