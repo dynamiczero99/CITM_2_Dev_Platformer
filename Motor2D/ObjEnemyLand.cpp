@@ -23,7 +23,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	updateCycle = 1000;
 	gravity = 1500.0f;
-	moveSpeed = 10.0f;
+	moveSpeed = 30.0f;
 	maxFallSpeed = 50.0f;
 	acceleration.y = gravity;
 	reachOffset = 5;//10 pixels
@@ -65,10 +65,9 @@ bool ObjEnemyLand::Update(float dt) {
 	case enemyState::CHASING:
 		if (pathData.path.Count() > 0) {
 			//Check if we've reached the next node in the path
-			iPoint enemyPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
-			iPoint iPosition ((int)position.x, (int)position.y);
+			iPoint iposition ((int)position.x, (int)position.y);
 			iPoint targetTileWorldPos = App->map->MapToWorld(pathData.path[step].x, pathData.path[step].y);
-			if (iPosition.DistanceManhattan(targetTileWorldPos) < reachOffset) {
+			if (iposition.DistanceManhattan(targetTileWorldPos) < reachOffset) {
 				if (step + 1 < pathData.path.Count()) {
 					step++;
 				}
@@ -77,10 +76,10 @@ bool ObjEnemyLand::Update(float dt) {
 				}
 			}
 			//Move in the x direction to the next node
-			if (pathData.path[step].x < enemyPos.x) {
+			if (targetTileWorldPos.x < iposition.x) {
 				velocity.x = -moveSpeed;
 			}
-			else if (pathData.path[step].x > enemyPos.x){
+			else if (targetTileWorldPos.x > iposition.x){
 				velocity.x = moveSpeed;
 			}
 			else {

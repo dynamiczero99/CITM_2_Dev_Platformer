@@ -79,7 +79,7 @@
     </box>
     <enemy_land>
       <speed chasing_speed = "50" idle_speed = "25"/>
-      <collider_rectangle x = "0" y ="0" w ="6" h="23" />
+      <collider_rectangle x = "0" y ="0" w ="12" h="23" />
       <animation>
         <idle_animation speed = "15.0">
           <sprite x ="209" y ="152" w ="15" h="24"/>
