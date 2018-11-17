@@ -38,24 +38,15 @@ bool j1Particles::Awake(pugi::xml_node& node)
 bool j1Particles::Start()
 {
 	LOG("Loading particles");
+	// teleport 01 animation
+	LoadAnimation(particleNode.child("animation_teleport01"), teleport01.anim, true);
+	teleport01.anim.loop = false;
 
-	int size = 48;
-	for (int j = 0; j < 8; ++j)
-	{
-		for (int i = 0; i < 8; ++i)
-		{
-			teleport01.anim.PushBack({ i * size, j * size, 48,48 });
-		}
-
-	}
-	teleport01.anim.speed = 25.0f;
 	//load textures and links pointers to -------------
 	graphics = App->tex->LoadTexture(particleNode.child("teleport_texture01").text().as_string());
 	// ------------------------------------------------
 	//load and links textures for particles -----------
 	teleport01.texture = graphics;
-	// teleport anim pushbacks test, TODO from xml
-	
 
 	//load specific Wavs effects for particles --------
 	//App->audio->LoadFx("path");
@@ -100,7 +91,7 @@ bool j1Particles::Update(float dt)
 		if (p == nullptr)
 			continue;
 
-		if (p->Update() == false)
+		if (p->Update(dt) == false)
 		{
 			//if (active[i]->deathParticle != nullptr)
 			//	AddParticle(*active[i]->deathParticle, active[i]->position.x, //+ active[i]->impactPosition.x,
@@ -143,8 +134,8 @@ void j1Particles::AddParticle(const Particle& particle, int x, int y, COLLIDER_T
 			{
 				p->speed = speed;
 			}
-			/*if (collider_type != COLLIDER_NONE) //TODO PARTICLE
-				p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type, this, p->damage);*/
+			//if (collider_type != COLLIDER_NONE) //TODO PARTICLE
+			//	p->collider = App->collision->AddCollider(p->anim.GetCurrentFrame(), collider_type);
 			active[i] = p;
 			break;
 		}
@@ -210,7 +201,7 @@ Particle::~Particle()
 		collider->to_delete = true;*/
 }
 
-bool Particle::Update()
+bool Particle::Update(float dt)
 {
 	bool ret = true;
 
@@ -219,8 +210,6 @@ bool Particle::Update()
 		if ((SDL_GetTicks() - born) > life)
 			ret = false;
 	}
-	//else if (anim.finish && (SDL_GetTicks() - born) > life)
-	//	ret = false;
 
 	//destroy particles respect camera position margins // TODO PARTICLES
 	/*if (position.x > (abs(App->render->camera.x) / SCREEN_SIZE) + SCREEN_WIDTH - MARGIN)
@@ -228,11 +217,52 @@ bool Particle::Update()
 	else if (position.x < (abs(App->render->camera.x) / SCREEN_SIZE) - MARGIN - 150)
 		ret = false;*/
 
-	position.x += speed.x;
-	position.y += speed.y;
+	// destroy particle when animation is finished
+	if (!anim.loop && anim.Finished())
+		ret = false;
+
+	position.x += speed.x * dt;
+	position.y += speed.y * dt;
 
 	if (collider != nullptr)
 		collider->SetPos(position.x, position.y);
 
 	return ret;
+}
+
+bool j1Particles::LoadAnimation(pugi::xml_node &node, Animation &anim, bool sequential)
+{
+	if (!sequential)
+	{
+		anim.speed = node.attribute("speed").as_float();
+		for (node = node.child("sprite"); node; node = node.next_sibling("sprite")) {
+			SDL_Rect frame;
+			frame.x = node.attribute("x").as_int();
+			frame.y = node.attribute("y").as_int();
+			frame.w = node.attribute("w").as_int();
+			frame.h = node.attribute("h").as_int();
+			anim.PushBack(frame);
+		}
+	}
+	else
+	{
+		int tile_width = node.attribute("tile_width").as_int();//48;
+		int tile_height = node.attribute("tile_height").as_int();
+		int x = node.child("size").attribute("x").as_int();
+		int y = node.child("size").attribute("y").as_int();
+	
+		for (int j = 0; j < y; ++j)
+		{
+			for (int i = 0; i < x; ++i)
+			{
+				teleport01.anim.PushBack({ i * tile_width, j * tile_height, tile_width, tile_height });
+			}
+
+		}
+		teleport01.anim.speed = node.attribute("speed").as_float();
+		teleport01.anim.loop = node.attribute("loop").as_bool(true);
+		LOG("bla");
+	}
+
+	return true;
 }

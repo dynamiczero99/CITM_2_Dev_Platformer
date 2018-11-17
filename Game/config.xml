@@ -184,6 +184,10 @@
   
   <Particles>
 	<teleport_texture01>textures/teleporter_01.png</teleport_texture01>
+	<!-- sequential animation example, represents a square power of two texture  -->
+	<animation_teleport01 tile_width="48" tile_height="48" speed ="25" loop="false">
+		<size x="8" y="8"/>
+	</animation_teleport01>
   </Particles>
   
 </config>
