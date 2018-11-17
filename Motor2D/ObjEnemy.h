@@ -14,7 +14,7 @@ struct threadData
 	int index = -1;
 	// for assure the enemy is saved in correct place, needs to be mutable for how the methods works, see save()
 	// maybe now that we have randomly generated idle paths, this can be changed
-	mutable p2DynArray<iPoint> last_path = NULL;
+	mutable p2DynArray<iPoint> path = NULL;
 
 	void CopyLastGeneratedPath();
 };
@@ -30,9 +30,10 @@ protected:
 		CHASING, // player is in range and has a viable path
 		DEATH
 	};
-	bool isPlayerInTileRange(const uint range) const;
+	bool IsPlayerInTileRange(const uint range) const;
 	void StartNewPathThread();
 	int GetRandomValue(const int min, const  int max) const;
+	void DebugPath();
 
 	//Variables
 protected:
@@ -50,6 +51,8 @@ protected:
 
 	//enemy state machine
 	enemyState enemy_state = enemyState::IDLE; // default state
+
+	bool pathDebugDraw = true;
 };
 
 #endif // !

@@ -153,24 +153,47 @@ void PathNode::FindWalkableAdjacents(PathList & pathList, const iPoint destinati
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
 
-	// diagonals test
-	// top left
+	// north - west
 	cell.create(pos.x - 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// top right
+
+	// north - east
 	cell.create(pos.x + 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// bottom left
+
+	// south - west
 	cell.create(pos.x - 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
-	// bottom right
+
+	// south - east
 	cell.create(pos.x + 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
 		pathList.list.add(PathNode(g + COST_TO_MOVE + 1, cell.DistanceManhattan(destination), cell, this));
 
+}
+
+void PathNode::FindWalkableAdjacentsLand(PathList & pathList, const iPoint destination)
+{
+	iPoint cell;
+	// south
+	cell.create(pos.x, pos.y + 1);
+
+	if (App->pathfinding->IsWalkable(cell)) {
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+	}
+	else {
+		// east
+		cell.create(pos.x + 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+		// west
+		cell.create(pos.x - 1, pos.y);
+		if (App->pathfinding->IsWalkable(cell))
+			pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+	}
 }
 
 // ----------------------------------------------------------------------------------
@@ -235,7 +258,7 @@ int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destinatio
 {
 	BROFILER_CATEGORY("CreatePath", Profiler::Color::Black);
 	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
-		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
+		//LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
 		return -1;
 	}
 
@@ -262,7 +285,7 @@ int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destinatio
 		}
 
 		PathList adjacentNodes;
-		currNode->FindWalkableAdjacents(adjacentNodes, destination);
+		currNode->FindWalkableAdjacentsLand(adjacentNodes, destination);
 
 		for (p2List_item<PathNode>* adjacentNodeIterator = adjacentNodes.list.start; adjacentNodeIterator != nullptr; adjacentNodeIterator = adjacentNodeIterator->next) {
 			if (closedList.Find(adjacentNodeIterator->data.pos) != NULL) {
@@ -279,7 +302,7 @@ int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destinatio
 		}
 	}
 
-	LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
+	//LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
 	return -1;
 }
 
@@ -309,7 +332,7 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 	}
 	else
 	{
-		LOG("thread finished without reachable path");
+		//LOG("thread finished without reachable path");
 		tdata->waitingForPath = false;
 	}
 	
