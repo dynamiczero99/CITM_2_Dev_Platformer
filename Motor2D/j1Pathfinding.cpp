@@ -316,6 +316,7 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 	return 0;
 }
 
+// doesnt work yet, still work in progress method...
 int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump)
 {
 	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {

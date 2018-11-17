@@ -124,7 +124,7 @@ bool j1Scene::Update(float dt)
 	// checks for debug input
 	DebugInput();
 	// ----------------------
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && !App->fade_to_black->IsFading()) {
 		App->LoadGame("savegame.xml");
 	}
 
