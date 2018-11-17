@@ -31,7 +31,7 @@ struct Particle
 	Particle();
 	Particle(const Particle& p);
 	~Particle();
-	bool Update();
+	bool Update(float dt);
 	// variables to instantiate collision particle
 	Particle* onCollisionWallParticle = nullptr;
 	Particle* onCollisionGeneralParticle = nullptr;
@@ -54,6 +54,8 @@ public:
 
 	//void AddParticle(const Particle& particle, Animation& sourceAnim, int x, int y, Uint32 delay = 0, iPoint speed = { 0,0 }, Uint32 life = 0, char* fx = nullptr);
 	void AddParticle(const Particle& particle, int x, int y, COLLIDER_TYPE collider_type, iPoint speed = { 0,0 }, Uint32 delay = 0);
+
+	bool LoadAnimation(pugi::xml_node &node, Animation &anim, bool sequential = false);
 
 private:
 
