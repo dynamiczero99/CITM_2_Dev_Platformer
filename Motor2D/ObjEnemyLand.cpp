@@ -13,7 +13,7 @@
 
 ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_node) : ObjEnemy(position, index)
 {
-	detectionRange = 10;
+	detectionRange = 20;
 	//detectionRange = enemy_node.child("detection_range").text().as_int();
 	SDL_Rect colRect = {(int)position.x, (int)position.y, enemy_node.child("collider_rectangle").attribute("w").as_int(),  enemy_node.child("collider_rectangle").attribute("h").as_int() };
 	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
@@ -22,7 +22,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	currAnim = &movingAnim;
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	updateCycle = 1000;
-	gravity = 1500.0f;
+	gravity = TileToPixel(enemy_node.child("gravity").text().as_uint());
 	moveSpeed = 30.0f;
 	maxFallSpeed = 50.0f;
 	acceleration.y = gravity;
@@ -78,9 +78,11 @@ bool ObjEnemyLand::Update(float dt) {
 			//Move in the x direction to the next node
 			if (targetTileWorldPos.x < iposition.x) {
 				velocity.x = -moveSpeed;
+				flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 			}
 			else if (targetTileWorldPos.x > iposition.x){
 				velocity.x = moveSpeed;
+				flip = SDL_RendererFlip::SDL_FLIP_NONE;
 			}
 			else {
 				velocity.x = 0.0f;

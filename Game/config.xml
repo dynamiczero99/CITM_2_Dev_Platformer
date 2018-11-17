@@ -78,6 +78,7 @@
       </animation>
     </box>
     <enemy_land>
+      <gravity>120</gravity>
       <speed chasing_speed = "50" idle_speed = "25"/>
       <collider_rectangle x = "0" y ="0" w ="12" h="23" />
       <animation>

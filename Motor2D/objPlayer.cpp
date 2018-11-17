@@ -236,13 +236,13 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 		else if (c2->type == COLLIDER_WIN_ZONE) {
 			CollideWinZone();
 		}
-		else if (c2->type == COLLIDER_ENEMY && c2->callbackObj != nullptr && !c2->callbackObj->marked)
-		{
-			CollideDeathZone();
-		}
-		else if (c2->type == COLLIDER_ENEMY && c2->callbackObj != nullptr && c2->callbackObj->marked)
-		{
-			SolveCollision(c2);
+		else if (c2->type == COLLIDER_ENEMY && c2->callbackObj != nullptr) {
+			if (c2->callbackObj->marked) {
+				SolveCollision(c2);
+			}
+			else {
+				CollideDeathZone();
+			}
 		}
 	}
 	else if (c1 == feetCol) {
