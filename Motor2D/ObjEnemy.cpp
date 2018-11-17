@@ -79,12 +79,10 @@ void ObjEnemy::DebugPath()
 
 void threadData::CopyLastGeneratedPath()
 {
-	const p2DynArray<iPoint>* pathToCopy = App->pathfinding->GetLastPath();
-
 	path.Clear();
-	for (uint i = 0; i < pathToCopy->Count(); ++i)
+	for (uint i = 0; i < App->pathfinding->GetLastPath()->Count(); ++i)
 	{
-		path.PushBack(*pathToCopy->At(i));
+		path.PushBack(*App->pathfinding->GetLastPath()->At(i));
 	}
-	path.Flip();
+	//path.Flip();
 }
