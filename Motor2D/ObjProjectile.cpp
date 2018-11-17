@@ -20,7 +20,7 @@ ObjProjectile::ObjProjectile (fPoint &position, int index, pugi::xml_node & proj
 	SDL_Rect colRect;
 	colRect.w = projectile_node.child("collider_width").text().as_int();
 	colRect.h = projectile_node.child("collider_height").text().as_int();
-	iPoint colPos = GetRectPos(pivot::middle_middle, position.x, position.y, colRect.w, colRect.h);
+	iPoint colPos = GetRectPos(pivot(pivotV::middle, pivotH::middle), position.x, position.y, colRect.w, colRect.h);
 	colRect.x = colPos.x;
 	colRect.y = colPos.y;
 	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_PLAYER_SHOT, this);
@@ -38,7 +38,7 @@ bool ObjProjectile::OnDestroy() {
 
 bool ObjProjectile::Update(float dt) {
 	position += velocity * dt;
-	iPoint colPos = GetRectPos(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
+	iPoint colPos = GetRectPos(pivot(pivotV::middle, pivotH::middle), position.x, position.y, collider->rect.w, collider->rect.h);
 	collider->SetPos(colPos.x, colPos.y);
 	return true;
 }
@@ -46,7 +46,7 @@ bool ObjProjectile::Update(float dt) {
 bool ObjProjectile::PostUpdate() {
 	//INFO: In this case the width of the sprite and the collider is the same
 	//INFO: If the sprite was animates we would get the property from Animation.rect.w & Animation.rect.h
-	iPoint blitPos = GetRectPos(pivot::middle_middle, position.x, position.y, collider->rect.w, collider->rect.h);
+	iPoint blitPos = GetRectPos(pivot(pivotV::middle, pivotH::middle), position.x, position.y, collider->rect.w, collider->rect.h);
 	App->render->Blit(App->object->projectileTex, blitPos.x, blitPos.y);
 	return true;
 }

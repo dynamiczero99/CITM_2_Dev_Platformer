@@ -47,7 +47,7 @@ bool ObjEnemyLand::Update(float dt) {
 
 bool ObjEnemyLand::PostUpdate() {
 	SDL_Rect currRect = currAnim->GetCurrentFrame();
-	iPoint blitPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, currRect.w, currRect.h);
+	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, currRect.w, currRect.h);
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currRect, 1.0f, flip);
 	return true;
 }

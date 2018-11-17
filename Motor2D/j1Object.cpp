@@ -305,74 +305,54 @@ void GameObject::MarkObject(bool mark) {
 
 //Method that returns the pivot position of the object from the top left position of a rectangle
 iPoint GameObject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
-	switch (pivot) {
-	case pivot::top_left:
-		return iPoint(x, y);
+
+	switch (pivot.vert) {
+	//case pivotVert::top: doesn't do anything
+	case pivotV::middle:
+		y += h * 0.5f;
 		break;
-	case pivot::top_middle:
-		return iPoint(x + w / 2, y);
-		break;
-	case pivot::top_right:
-		return iPoint(x + w, y);
-		break;
-	case pivot::middle_left:
-		return iPoint(x, y + h / 2);
-		break;
-	case pivot::middle_middle:
-		return iPoint(x + w / 2, y + h / 2);
-		break;
-	case pivot::middle_right:
-		return iPoint(x + w, y + h / 2);
-		break;
-	case pivot::bottom_left:
-		return iPoint(x, y + h);
-		break;
-	case pivot::bottom_middle:
-		return iPoint(x + w / 2, y + h);
-		break;
-	case pivot::bottom_right:
-		return iPoint(x + w, y + h);
-		break;
-	default:
-		LOG("Error reading the pivot");
+	case pivotV::bottom:
+		y += h;
 		break;
 	}
+
+	switch (pivot.horiz) {
+	//case pivotHoriz::left: doesn't do anything
+	case pivotH::middle:
+		x += w * 0.5f;
+		break;
+	case pivotH::right:
+		x += w;
+		break;
+	}
+
+	return (iPoint(x, y));
 }
 
 //Method that returns the top-left position considering the pivot point of the object
 iPoint GameObject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
-	switch (pivot) {
-	case pivot::top_left:
-		return iPoint(x, y);
+
+	switch (pivot.vert) {
+	//case pivotVert::top: doesn't do anything
+	case pivotV::middle:
+		y -= h * 0.5f;
 		break;
-	case pivot::top_middle:
-		return iPoint(x - w / 2, y);
-		break;
-	case pivot::top_right:
-		return iPoint(x - w, y);
-		break;
-	case pivot::middle_left:
-		return iPoint(x, y - h / 2);
-		break;
-	case pivot::middle_middle:
-		return iPoint(x - w / 2, y - h / 2);
-		break;
-	case pivot::middle_right:
-		return iPoint(x - w, y - h / 2);
-		break;
-	case pivot::bottom_left:
-		return iPoint(x, y - h);
-		break;
-	case pivot::bottom_middle:
-		return iPoint(x - w / 2, y - h);
-		break;
-	case pivot::bottom_right:
-		return iPoint(x - w, y - h);
-		break;
-	default:
-		LOG("Error reading the pivot");
+	case pivotV::bottom:
+		y -= h;
 		break;
 	}
+
+	switch (pivot.horiz) {
+	//case pivotHoriz::left: doesn't do anything
+	case pivotH::middle:
+		x -= w * 0.5f;
+		break;
+	case pivotH::right:
+		x -= w;
+		break;
+	}
+
+	return (iPoint(x, y));
 }
 
 bool GameObject::LoadAnimation(pugi::xml_node &node, Animation &anim) {

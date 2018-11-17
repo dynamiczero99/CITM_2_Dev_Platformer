@@ -22,30 +22,38 @@ struct SDL_Texture;
 class Animation;
 enum triggerAction;
 
+enum class dir : uint {
+	invalid,
+	left,
+	right,
+	down,
+	up,
+	max
+};
+
+//Pivot vertical
+enum class pivotV : uchar {
+	top,
+	middle,
+	bottom
+};
+
+
+//Pivot horizontal
+enum class pivotH : uchar {
+	left,
+	middle,
+	right
+};
+
+struct pivot {
+	pivot(pivotV vert, pivotH horiz) : vert(vert), horiz(horiz) {}
+	pivotV vert = pivotV::top;
+	pivotH horiz = pivotH::left;
+};
+
 class GameObject {
 	friend class j1Object; // Only j1Object factory can access the properties of this class
-protected:
-	enum class dir : uint {
-		invalid,
-		left,
-		right,
-		down,
-		up,
-		max
-	};
-
-	enum class pivot : uint {
-		top_left,
-		top_middle,
-		top_right,
-		middle_left,
-		middle_middle,
-		middle_right,
-		bottom_left,
-		bottom_middle,
-		bottom_right
-	};
-
 	//Methods
 public:
 	virtual void MarkObject(bool mark);

@@ -146,7 +146,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		}
 	}
 
-	iPoint colPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
 	collider->SetPos(colPos.x, colPos.y);
 
 	return true;
@@ -169,7 +169,7 @@ void ObjEnemyFlying::idleMovement(float dt)
 	}
 	else
 	{
-		fPoint move = { 0,0 };
+		fPoint move = { 0.0f, 0.0f };
 		move.x = movement_vec.x;
 		move.y = movement_vec.y;
 		move.Normalize();
@@ -198,7 +198,7 @@ void ObjEnemyFlying::idleMovement(float dt)
 bool ObjEnemyFlying::PostUpdate() {
 
 	// draw
-	iPoint blitPos = GetRectPos(pivot::bottom_middle, position.x, position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
 	// jetpack fire
 	if(!flip)
 		App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);

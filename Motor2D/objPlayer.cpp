@@ -217,7 +217,7 @@ bool ObjPlayer::PostUpdate() {
 		}
 	}
 
-	iPoint blitPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 
 	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 
@@ -242,8 +242,8 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 }
 
 //Returns the direction that has the smallest distance inside the other collider
-GameObject::dir ObjPlayer::GetSmallestDir(Collider * c2) {
-	GameObject::dir smallestDir = dir::invalid;
+dir ObjPlayer::GetSmallestDir(Collider * c2) {
+	dir smallestDir = dir::invalid;
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
@@ -254,7 +254,7 @@ GameObject::dir ObjPlayer::GetSmallestDir(Collider * c2) {
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (dist[i] < dist[(uint)smallestDir]) {
-			smallestDir = (GameObject::dir)i;
+			smallestDir = (dir)i;
 		}
 	}
 
@@ -271,9 +271,9 @@ int ObjPlayer::LimitDistance(int distance) {
 
 //Returns the direction that the player is moving to and has the smallest distance inside the other collider
 //Returns -1 if the players isn't moving to any direction
-GameObject::dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
+dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 
-	GameObject::dir smallestDir = dir::invalid;
+	dir smallestDir = dir::invalid;
 
 	bool direction[(uint)dir::max];
 	direction[(uint)dir::invalid] = true;
@@ -291,7 +291,7 @@ GameObject::dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (direction[i] && dist[i] < dist[(uint)smallestDir]) {
-			smallestDir = (GameObject::dir)i;
+			smallestDir = (dir)i;
 		}
 	}
 
@@ -299,7 +299,7 @@ GameObject::dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 }
 
 void ObjPlayer::SolveCollision(Collider * c2) {
-	GameObject::dir smallestDir;
+	dir smallestDir;
 	if (!velocity.IsZero()) {
 		//Exit the collision from the smallest distance the player is moving
 		smallestDir = GetSmallestDirFiltered(c2);
@@ -334,7 +334,7 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 		LOG("Error getting the direction the player must exit on the collsion.");
 		break;
 	}
-	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }
@@ -386,7 +386,7 @@ void ObjPlayer::StandardMovement(float dt)
 	velocity = velocity + acceleration * dt;
 	LimitFallVelocity();
 	position = position + velocity * dt;
-	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 
@@ -399,7 +399,7 @@ void ObjPlayer::StandardMovement(float dt)
 void ObjPlayer::GodMovement(float dt) {
 	velocity = velocity + acceleration * dt;
 	position = position + velocity * dt;
-	iPoint colPos = GetRectPos(pivot::bottom_middle, (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
+	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
 	playerCol->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }

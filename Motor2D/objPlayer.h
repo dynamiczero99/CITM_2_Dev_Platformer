@@ -51,8 +51,8 @@ private:
 	void CollideWinZone();
 
 	int LimitDistance(int distance);
-	GameObject::dir GetSmallestDirFiltered(Collider * c2);
-	GameObject::dir GetSmallestDir(Collider * c2);
+	dir GetSmallestDirFiltered(Collider * c2);
+	dir GetSmallestDir(Collider * c2);
 
 public:
 	//Variables
