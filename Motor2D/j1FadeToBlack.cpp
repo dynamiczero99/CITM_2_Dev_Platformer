@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
+#include "Brofiler/Brofiler.h"
 
 bool j1FadeToBlack::Awake(pugi::xml_node&)
 {
@@ -35,6 +36,7 @@ bool j1FadeToBlack::Start()
 // Update: draw background
 bool j1FadeToBlack::PostUpdate()//float dt)
 {
+	BROFILER_CATEGORY("FadeToBlack PostUpdate", Profiler::Color::Bisque);
 	if (current_step == fade_step::none)
 		return true;
 

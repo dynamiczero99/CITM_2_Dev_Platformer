@@ -5,6 +5,7 @@
 #include "j1Object.h"
 #include <assert.h>
 #include "p2Log.h"
+#include "Brofiler/Brofiler.h"
 
 j1Collision::j1Collision()
 {
@@ -123,6 +124,7 @@ j1Collision::~j1Collision()
 // Called before render is available
 bool j1Collision::Update(float dt)
 {
+	BROFILER_CATEGORY("Collisions Update", Profiler::Color::Purple);
 	// Calculate collisions
 	Collider* c1;
 	Collider* c2;
