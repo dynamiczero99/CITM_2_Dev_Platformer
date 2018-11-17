@@ -60185,9 +60185,9 @@
    <object id="19" name="death" x="0" y="303" width="1200" height="40"/>
   </objectgroup>
   <objectgroup id="9" name="Platforms">
-   <object id="26" x="480" y="280" width="16" height="496"/>
+   <object id="26" x="440" y="280" width="96" height="496"/>
    <object id="51" x="536" y="231.625" width="16" height="543.417"/>
-   <object id="55" x="592" y="231.625" width="16" height="543.417"/>
+   <object id="55" x="592" y="231.625" width="56" height="543.417"/>
    <object id="56" x="648" y="160" width="48" height="601.708"/>
   </objectgroup>
   <objectgroup id="10" name="Floor">
