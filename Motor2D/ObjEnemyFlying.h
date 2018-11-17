@@ -67,7 +67,7 @@ private:
 	fPoint previousPos = { 0,0 };
 
 	// debug pathfinding debugdraw
-	bool pathDebugDraw = true;
+	bool pathDebugDraw = false;
 
 	// follow speeds from xml
 	float chasingSpeed = 0.0F;
