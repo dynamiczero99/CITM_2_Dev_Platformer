@@ -15,7 +15,7 @@
 ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : ObjEnemy(position, index) 
 {
 	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
-	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 
 	lastValidPos = position; // assumes that spawn position is a valid one
 	previousPos = position; // for facing direction
@@ -49,11 +49,11 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enem
 	chasingSpeed = enemy_node.child("speed").attribute("chasing_speed").as_float();
 	idleSpeed = enemy_node.child("speed").attribute("idle_speed").as_float();
 
-
+	pivot = Pivot(PivotV::bottom, PivotH::middle);
 }
 
 bool ObjEnemyFlying::OnDestroy() {
-	App->collision->DeleteCollider(collider);
+	App->collision->DeleteCollider(col);
 	return true;
 }
 
@@ -146,8 +146,8 @@ bool ObjEnemyFlying::Update(float dt) {
 		}
 	}
 
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
-	collider->SetPos(colPos.x, colPos.y);
+	iPoint colPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
+	col->SetPos(colPos.x, colPos.y);
 
 	return true;
 }
@@ -198,7 +198,7 @@ void ObjEnemyFlying::idleMovement(float dt)
 bool ObjEnemyFlying::PostUpdate() {
 
 	// draw
-	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	// jetpack fire
 	if(!flip)
 		App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);

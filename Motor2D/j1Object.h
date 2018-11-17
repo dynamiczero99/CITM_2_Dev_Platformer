@@ -32,7 +32,7 @@ enum class dir : uint {
 };
 
 //Pivot vertical
-enum class pivotV : uchar {
+enum class PivotV : uchar {
 	top,
 	middle,
 	bottom
@@ -40,16 +40,16 @@ enum class pivotV : uchar {
 
 
 //Pivot horizontal
-enum class pivotH : uchar {
+enum class PivotH : uchar {
 	left,
 	middle,
 	right
 };
 
-struct pivot {
-	pivot(pivotV vert, pivotH horiz) : vert(vert), horiz(horiz) {}
-	pivotV vert = pivotV::top;
-	pivotH horiz = pivotH::left;
+struct Pivot {
+	Pivot(PivotV vert, PivotH horiz) : vert(vert), horiz(horiz) {}
+	PivotV vert = PivotV::top;
+	PivotH horiz = PivotH::left;
 };
 
 class GameObject {
@@ -58,6 +58,8 @@ class GameObject {
 public:
 	virtual void MarkObject(bool mark);
 	virtual void OnCollision(Collider * c1, Collider * c2);
+	//- Returns the position of the object specifing a pivot
+	iPoint GetObjPivotPos(Pivot pivot);
 
 protected:
 	GameObject(fPoint &position, int index);
@@ -74,11 +76,11 @@ protected:
 
 	//- Returns the top-left position of a rectangle considering a pivot point
 	//- Used to draw (Blit) or put the collider (SetPos)
-	iPoint GetRectPos(pivot pivot, int x, int y, uint w, uint h);
+	iPoint GetRectPos(Pivot pivot, int x, int y, uint w, uint h);
 	//- Returns the pivot position specifing a rectangle
-	iPoint GetPivotPos(pivot pivot, int x, int y, uint w, uint h);
+	iPoint GetPivotPos(Pivot pivot, int x, int y, uint w, uint h);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
-	float tile_to_pixel (uint pixel);
+	float TileToPixel (uint pixel);
 
 	//Variables
 public:
@@ -91,6 +93,8 @@ protected:
 	int index = -1;
 	Uint32 updateCycle = UINT_MAX;
 	Uint32 lastUpdate = 0u;
+	Pivot pivot = Pivot(PivotV::top, PivotH::left);
+	Collider * col = nullptr;
 };
 
 class j1Object : public j1Module

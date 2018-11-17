@@ -18,7 +18,6 @@ public:
 	bool OnDestroy() override;
 
 private:
-	Collider * col = nullptr;
 	int detectionRange = 0;
 	Animation idleAnim;
 	Animation movingAnim;

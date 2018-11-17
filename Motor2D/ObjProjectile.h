@@ -19,7 +19,6 @@ public:
 	bool Save(pugi::xml_node& saveNode) const;
 
 public:
-	Collider * collider = nullptr;
 	ObjPlayer * player = nullptr;
 	uint impactSound = 0u;
 };

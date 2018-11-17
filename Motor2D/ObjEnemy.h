@@ -34,6 +34,8 @@ protected:
 	void StartNewPathThread();
 	int GetRandomValue(const int min, const  int max) const;
 
+	//Variables
+protected:
 	// data to send to thread
 	threadData pathData;
 	SDL_Thread* threadID = nullptr;

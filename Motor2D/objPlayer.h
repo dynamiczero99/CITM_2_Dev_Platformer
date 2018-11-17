@@ -34,8 +34,6 @@ public:
 	void SetSwapObject(GameObject * markedObject);
 	void DestroyProjectile();
 
-	iPoint GetObjPivotPos(pivot pivot);
-
 private:
 	void ToggleGodMode();
 	void StandardControls();
@@ -64,7 +62,6 @@ public:
 	float jumpSpeed = 0.0f;//(pixels/s)
 
 	//Physics
-	Collider* playerCol = nullptr;
 	Collider* feetCol = nullptr;
 	bool isOnPlatform = false;
 	bool checkFallPlatform = false;

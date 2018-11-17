@@ -6,7 +6,7 @@
 ObjTrigger::ObjTrigger(fPoint &position, int index, triggerAction action, iPoint &rectSize) : action(action), GameObject(position, index),
 						colRect({ colRect.x = position.x, colRect.y = position.y, colRect.w = rectSize.x, colRect.h = rectSize.y }){
 
-	collider = App->collision->AddCollider(colRect, COLLIDER_TRIGGER, this);
+	col = App->collision->AddCollider(colRect, COLLIDER_TRIGGER, this);
 }
 
 void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
@@ -22,10 +22,10 @@ void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
 
 bool ObjTrigger::OnDestroy()
 {
-	if (collider != nullptr)
+	if (col != nullptr)
 	{
-		App->collision->DeleteCollider(collider);
-		collider = nullptr;
+		App->collision->DeleteCollider(col);
+		col = nullptr;
 	}
 
 	return true;

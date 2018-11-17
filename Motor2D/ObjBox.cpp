@@ -16,19 +16,20 @@ ObjBox::ObjBox(fPoint &position, int index, pugi::xml_node &box_node) : GameObje
 	animTileHeight = box_node.child("animation").attribute("tile_height").as_uint();
 	LoadAnimation(box_node.child("animation").child("inactive_animation"), inactiveAnim);
 	LoadAnimation(box_node.child("animation").child("active_animation"), activeAnim);
-	gravity = tile_to_pixel(box_node.child("gravity").text().as_float());
+	gravity = TileToPixel(box_node.child("gravity").text().as_float());
 	currAnim = &inactiveAnim;
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	pivot = Pivot(PivotV::bottom, PivotH::middle);
+	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 	SDL_Rect colRect;
 	colRect.w = animTileWidth;
 	colRect.h = animTileHeight;
 	colRect.x = colPos.x;
 	colRect.y = colPos.y;
-	collider = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 }
 
 bool ObjBox::OnDestroy() {
-	App->collision->DeleteCollider(collider);
+	App->collision->DeleteCollider(col);
 	return true;
 }
 
@@ -46,13 +47,13 @@ bool ObjBox::Update(float dt) {
 	acceleration.y = gravity;
 	velocity = velocity + acceleration * dt;
 	position = position + velocity * dt;
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
-	collider->SetPos(colPos.x, colPos.y);
+	iPoint colPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
+	col->SetPos(colPos.x, colPos.y);
 	return true;
 }
 
 bool ObjBox::PostUpdate() {
-	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), position.x, position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame());
 	return true;
 }
@@ -93,7 +94,7 @@ void ObjBox::OnCollision(Collider * c1, Collider * c2) {
 			LOG("Error checking box collsion");
 			break;
 		}
-		iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
+		iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
 		c1->SetPos(colPos.x, colPos.y);
 	}
 }

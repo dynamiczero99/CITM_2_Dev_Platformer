@@ -22,7 +22,6 @@ public:
 private:
 	triggerAction action = triggerAction::none;
 	SDL_Rect colRect;
-	Collider* collider = nullptr;
 };
 
 #endif

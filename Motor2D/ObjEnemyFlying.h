@@ -40,7 +40,6 @@ public:
 private:
 	uint animTileWidth = 0u;
 	uint animTileHeight = 0u;
-	Collider * collider = nullptr;
 
 	// pathfinding relatives ----------------
 	//functions --

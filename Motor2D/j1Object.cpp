@@ -299,29 +299,34 @@ bool GameObject::OnDestroy() {
 void GameObject::OnCollision(Collider * c1, Collider * c2) {
 }
 
+iPoint GameObject::GetObjPivotPos(Pivot pivot)
+{
+	return GetPivotPos(pivot, col->rect.x, col->rect.y, col->rect.w, col->rect.h);
+}
+
 //Virtual method rewritten in each gameobject that is able to be marked
 void GameObject::MarkObject(bool mark) {
 }
 
 //Method that returns the pivot position of the object from the top left position of a rectangle
-iPoint GameObject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
+iPoint GameObject::GetPivotPos(Pivot pivot, int x, int y, uint w, uint h) {
 
 	switch (pivot.vert) {
 	//case pivotVert::top: doesn't do anything
-	case pivotV::middle:
+	case PivotV::middle:
 		y += h * 0.5f;
 		break;
-	case pivotV::bottom:
+	case PivotV::bottom:
 		y += h;
 		break;
 	}
 
 	switch (pivot.horiz) {
 	//case pivotHoriz::left: doesn't do anything
-	case pivotH::middle:
+	case PivotH::middle:
 		x += w * 0.5f;
 		break;
-	case pivotH::right:
+	case PivotH::right:
 		x += w;
 		break;
 	}
@@ -330,24 +335,24 @@ iPoint GameObject::GetPivotPos(pivot pivot, int x, int y, uint w, uint h) {
 }
 
 //Method that returns the top-left position considering the pivot point of the object
-iPoint GameObject::GetRectPos(pivot pivot, int x, int y, uint w, uint h) {
+iPoint GameObject::GetRectPos(Pivot pivot, int x, int y, uint w, uint h) {
 
 	switch (pivot.vert) {
 	//case pivotVert::top: doesn't do anything
-	case pivotV::middle:
+	case PivotV::middle:
 		y -= h * 0.5f;
 		break;
-	case pivotV::bottom:
+	case PivotV::bottom:
 		y -= h;
 		break;
 	}
 
 	switch (pivot.horiz) {
 	//case pivotHoriz::left: doesn't do anything
-	case pivotH::middle:
+	case PivotH::middle:
 		x -= w * 0.5f;
 		break;
-	case pivotH::right:
+	case PivotH::right:
 		x -= w;
 		break;
 	}
@@ -379,6 +384,6 @@ bool GameObject::Save(pugi::xml_node& node) const
 }
 
 //We can use this variable to make it easier for us to understand the different distance the player can move or jump while building levels in the tiled editor
-float GameObject::tile_to_pixel(uint pixel) {
+float GameObject::TileToPixel(uint pixel) {
 	return pixel * App->object->tileSize;
 }

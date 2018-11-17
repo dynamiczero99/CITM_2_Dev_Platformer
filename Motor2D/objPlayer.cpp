@@ -29,17 +29,17 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) :
 	SDL_Rect colliderRect;
 	colliderRect.w = playerNode.child("collider_width").text().as_int();
 	colliderRect.h = playerNode.child("collider_height").text().as_int();
-	playerCol = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
+	col = App->collision->AddCollider(colliderRect, COLLIDER_PLAYER, this);
 	SDL_Rect feetColRect;
 	feetColRect.w = playerNode.child("feet_collider_width").text().as_int();
 	feetColRect.h = playerNode.child("feet_collider_height").text().as_int();
 	feetCol = App->collision->AddCollider(feetColRect, COLLIDER_PLAYER, ColorRGB(255,255,255), this);
-	gravity = tile_to_pixel(playerNode.child("gravity").text().as_float());
-	moveSpeedGnd = tile_to_pixel(playerNode.child("move_speed_ground").text().as_float());
-	moveSpeedAir = tile_to_pixel(playerNode.child("move_speed_air").text().as_float());
+	gravity = TileToPixel(playerNode.child("gravity").text().as_float());
+	moveSpeedGnd = TileToPixel(playerNode.child("move_speed_ground").text().as_float());
+	moveSpeedAir = TileToPixel(playerNode.child("move_speed_air").text().as_float());
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
-	jumpSpeed = -sqrtf(gravity * tile_to_pixel(playerNode.child("jump_height").text().as_float()) * 2.0F);
+	jumpSpeed = -sqrtf(gravity * TileToPixel(playerNode.child("jump_height").text().as_float()) * 2.0F);
 	maxFallVelocity = playerNode.child("maximum_fall_velocity").text().as_float();
 	shootHeight = playerNode.child("shoot_height").text().as_uint();
 	recoveryTime = playerNode.child("recovery_time").text().as_float();
@@ -64,12 +64,12 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) :
 	death = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "death").attribute("value").as_string());
 	win = App->audio->LoadFx(playerNode.find_child_by_attribute("name", "win").attribute("value").as_string());
 
-
+	pivot = Pivot(PivotV::bottom, PivotH::middle);
 }
 
 bool ObjPlayer::OnDestroy() {
-	App->collision->DeleteCollider(playerCol);
-	playerCol = nullptr;
+	App->collision->DeleteCollider(col);
+	col = nullptr;
 	App->collision->DeleteCollider(feetCol);
 	feetCol = nullptr;
 
@@ -175,11 +175,11 @@ void ObjPlayer::ToggleGodMode()
 	acceleration = fPoint(0.0F, 0.0F);
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		if (godMode) {
-			playerCol->type = COLLIDER_TYPE::COLLIDER_PLAYER;
+			col->type = COLLIDER_TYPE::COLLIDER_PLAYER;
 			godMode = false;
 		}
 		else {
-			playerCol->type = COLLIDER_TYPE::COLLIDER_PLAYER_GOD;
+			col->type = COLLIDER_TYPE::COLLIDER_PLAYER_GOD;
 			godMode = true;
 		}
 	}
@@ -217,7 +217,7 @@ bool ObjPlayer::PostUpdate() {
 		}
 	}
 
-	iPoint blitPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, animTileWidth, animTileHeight);
+	iPoint blitPos = GetRectPos(Pivot(PivotV::bottom, PivotH::middle), (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 
 	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 
@@ -225,7 +225,7 @@ bool ObjPlayer::PostUpdate() {
 }
 
 void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
-	if (c1 == playerCol) {
+	if (c1 == col) {
 		if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 			SolveCollision(c2);
 		}
@@ -247,10 +247,10 @@ dir ObjPlayer::GetSmallestDir(Collider * c2) {
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
-	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - playerCol->rect.GetTop());
-	dist[(uint)dir::down] = LimitDistance(playerCol->rect.GetBottom() - c2->rect.GetTop());
-	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - playerCol->rect.GetLeft());
-	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
+	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - col->rect.GetTop());
+	dist[(uint)dir::down] = LimitDistance(col->rect.GetBottom() - c2->rect.GetTop());
+	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - col->rect.GetLeft());
+	dist[(uint)dir::right] = LimitDistance(col->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (dist[i] < dist[(uint)smallestDir]) {
@@ -284,10 +284,10 @@ dir ObjPlayer::GetSmallestDirFiltered(Collider * c2) {
 
 	int dist[(uint)dir::max];
 	dist[(uint)dir::invalid] = INT_MAX;
-	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - playerCol->rect.GetTop());
-	dist[(uint)dir::down] = LimitDistance(playerCol->rect.GetBottom() - c2->rect.GetTop());
-	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - playerCol->rect.GetLeft());
-	dist[(uint)dir::right] = LimitDistance(playerCol->rect.GetRight() - c2->rect.GetLeft());
+	dist[(uint)dir::up] = LimitDistance(c2->rect.GetBottom() - col->rect.GetTop());
+	dist[(uint)dir::down] = LimitDistance(col->rect.GetBottom() - c2->rect.GetTop());
+	dist[(uint)dir::left] = LimitDistance(c2->rect.GetRight() - col->rect.GetLeft());
+	dist[(uint)dir::right] = LimitDistance(col->rect.GetRight() - c2->rect.GetLeft());
 
 	for (int i = 1; i < (uint)dir::max; ++i) {
 		if (direction[i] && dist[i] < dist[(uint)smallestDir]) {
@@ -319,23 +319,23 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 		checkFallPlatform = true;
 		break;
 	case dir::up:
-		position.y = (float)(c2->rect.GetBottom() + playerCol->rect.h);
+		position.y = (float)(c2->rect.GetBottom() + col->rect.h);
 		velocity.y = 0;
 		break;
 	case dir::left:
-		position.x = (float)(c2->rect.GetRight() + playerCol->rect.w / 2);
+		position.x = (float)(c2->rect.GetRight() + col->rect.w / 2);
 		velocity.x = 0;
 		break;
 	case dir::right:
-		position.x = (float)(c2->rect.GetLeft() - playerCol->rect.w / 2);
+		position.x = (float)(c2->rect.GetLeft() - col->rect.w / 2);
 		velocity.x = 0;
 		break;
 	default:
 		LOG("Error getting the direction the player must exit on the collsion.");
 		break;
 	}
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
-	playerCol->SetPos(colPos.x, colPos.y);
+	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
+	col->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }
 
@@ -386,8 +386,8 @@ void ObjPlayer::StandardMovement(float dt)
 	velocity = velocity + acceleration * dt;
 	LimitFallVelocity();
 	position = position + velocity * dt;
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
-	playerCol->SetPos(colPos.x, colPos.y);
+	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
+	col->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 
 	//LOG("Player position: %f, %f", position.x, position.y);
@@ -399,8 +399,8 @@ void ObjPlayer::StandardMovement(float dt)
 void ObjPlayer::GodMovement(float dt) {
 	velocity = velocity + acceleration * dt;
 	position = position + velocity * dt;
-	iPoint colPos = GetRectPos(pivot(pivotV::bottom, pivotH::middle), (int)position.x, (int)position.y, playerCol->rect.w, playerCol->rect.h);
-	playerCol->SetPos(colPos.x, colPos.y);
+	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
+	col->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }
 
@@ -537,9 +537,4 @@ bool ObjPlayer::Save(pugi::xml_node& saveNode) const
 void ObjPlayer::DestroyProjectile() {
 	App->object->DeleteObject(projectile);
 	projectile = nullptr;
-}
-
-iPoint ObjPlayer::GetObjPivotPos(pivot pivot)
-{
-	return GetPivotPos(pivot, playerCol->rect.x, playerCol->rect.y, playerCol->rect.w, playerCol->rect.h);
 }
