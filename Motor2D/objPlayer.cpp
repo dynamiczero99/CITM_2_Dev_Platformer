@@ -17,6 +17,7 @@
 #include "j1Audio.h"
 #include "j1Map.h"
 #include "j1FadeToBlack.h"
+#include "j1Particles.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) : GameObject(position, index) {
 
@@ -472,11 +473,19 @@ void ObjPlayer::ShootProjectile()
 void ObjPlayer::SwapPosition() {
 	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X)) && swapObject != nullptr) {
 		fPoint auxPos = position;
+		// add previous point particle effect -------
+		SDL_Rect pInstantiationPos = App->particles->teleport01.anim.GetCurrentFrame();
+		App->particles->AddParticle(App->particles->teleport01, position.x - pInstantiationPos.w / 2, 
+			position.y - pInstantiationPos.h, COLLIDER_NONE);
+		// ------------------------------------------
 		position = swapObject->position;
 		swapObject->position = auxPos;
 		swapObject->MarkObject(false);
 		swapObject = nullptr;
 		App->audio->PlayFx(teleport);
+		// add actual point particle effect
+		App->particles->AddParticle(App->particles->teleport02, position.x - pInstantiationPos.w / 2, 
+			position.y - pInstantiationPos.h, COLLIDER_NONE, { 0,0 }, 100);
 	}
 }
 

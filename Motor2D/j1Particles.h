@@ -48,7 +48,8 @@ public:
 
 	bool Awake(pugi::xml_node& node);
 	bool Start();
-	bool Update(float dt);
+	//bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
 
@@ -59,7 +60,8 @@ public:
 
 private:
 
-	SDL_Texture* graphics = nullptr;
+	SDL_Texture* teleport01_tex = nullptr;
+	SDL_Texture* teleport02_tex = nullptr;
 
 	Particle* active[MAX_ACTIVE_PARTICLES];
 	pugi::xml_node particleNode;
@@ -68,6 +70,7 @@ public:
 	//Particle explosion;
 	Particle impactShot;
 	Particle teleport01;
+	Particle teleport02;
 
 };
 
