@@ -485,7 +485,7 @@ void ObjPlayer::SwapPosition() {
 		App->audio->PlayFx(teleport);
 		// add actual point particle effect
 		App->particles->AddParticle(App->particles->teleport02, position.x - pInstantiationPos.w / 2, 
-			position.y - pInstantiationPos.h, COLLIDER_NONE);
+			position.y - pInstantiationPos.h, COLLIDER_NONE, { 0,0 }, 100);
 	}
 }
 

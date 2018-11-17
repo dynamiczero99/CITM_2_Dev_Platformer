@@ -48,7 +48,8 @@ public:
 
 	bool Awake(pugi::xml_node& node);
 	bool Start();
-	bool Update(float dt);
+	//bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 	void OnCollision(Collider* c1, Collider* c2);
 

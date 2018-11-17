@@ -87,7 +87,7 @@ bool j1Particles::CleanUp()
 }
 
 // Update: draw background
-bool j1Particles::Update(float dt)
+bool j1Particles::PostUpdate()//float dt)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -96,7 +96,7 @@ bool j1Particles::Update(float dt)
 		if (p == nullptr)
 			continue;
 
-		if (p->Update(dt) == false)
+		if (p->Update(App->GetDt()) == false)
 		{
 			//if (active[i]->deathParticle != nullptr)
 			//	AddParticle(*active[i]->deathParticle, active[i]->position.x, //+ active[i]->impactPosition.x,
