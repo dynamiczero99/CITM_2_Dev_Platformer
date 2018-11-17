@@ -15,6 +15,7 @@ public:
 	bool TimedUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate();
+	bool OnDestroy() override;
 
 private:
 	Collider * col = nullptr;

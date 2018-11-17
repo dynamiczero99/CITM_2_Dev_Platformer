@@ -231,6 +231,64 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	return -1;
 }
 
+int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destination)
+{
+	BROFILER_CATEGORY("CreatePath", Profiler::Color::Black);
+	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
+		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
+		return -1;
+	}
+
+	PathList openList;
+	PathList closedList;
+	openList.list.add(PathNode(0, origin.DistanceManhattan(destination), origin, nullptr));
+
+	while (openList.list.Count() > 0) {
+		p2List_item<PathNode> * lowestNode = openList.GetNodeLowestScore();
+
+		PathNode * currNode = &closedList.list.add(lowestNode->data)->data;
+		openList.list.del(lowestNode);
+
+		if (currNode->pos == destination) {
+			last_path.Clear();
+			for (PathNode * pathIterator = currNode; pathIterator != nullptr && pathIterator->pos != origin; pathIterator = pathIterator->parent) {
+				last_path.PushBack(pathIterator->pos);
+			}
+			// adds start node too
+			//last_path.PushBack(closedList.list.start->data.pos);
+			last_path.Flip();
+			LOG("Succesful path: The algorithm has found a path from the origin(%i, %i) to the destination(%i, %i)", origin.x, origin.y, destination.x, destination.y);
+			return last_path.Count();
+		}
+
+		PathList adjacentNodes;
+		currNode->FindWalkableAdjacents(adjacentNodes, destination);
+
+		for (p2List_item<PathNode>* adjacentNodeIterator = adjacentNodes.list.start; adjacentNodeIterator != nullptr; adjacentNodeIterator = adjacentNodeIterator->next) {
+			if (closedList.Find(adjacentNodeIterator->data.pos) != NULL) {
+				continue;
+			}
+			p2List_item<PathNode>* duplicateNode = (p2List_item<PathNode>*)openList.Find(adjacentNodeIterator->data.pos);
+			if (duplicateNode == NULL) {
+				openList.list.add(adjacentNodeIterator->data);
+			}
+			else if (adjacentNodeIterator->data.g < duplicateNode->data.g) {
+				duplicateNode->data.g = adjacentNodeIterator->data.g;
+				duplicateNode->data.parent = currNode;
+			}
+		}
+	}
+
+	LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
+	return -1;
+}
+
+void j1PathFinding::EmptyLastPath() {
+	//for (lastPath.) {
+
+	//}
+}
+
 int j1PathFinding::multiThreadCreatePath(void* data)
 {
 	BROFILER_FRAME("new thread");
@@ -239,7 +297,7 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 	LOG("NEW THREAD");
 	threadData* tdata = (threadData*)data;
 	
-	if (App->pathfinding->CreatePath(tdata->origin, tdata->destination) > 0)
+	if (App->pathfinding->CreatePathLand(tdata->origin, tdata->destination) > 0)
 	{
 		LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
 		LOG("object index: %i", tdata->index);

@@ -53,7 +53,6 @@ bool j1Input::Start()
 	SDL_StopTextInput();
 
 	// Open the first available controller
-	int joysticks = SDL_NumJoysticks();
 	for (int i = 0; i < SDL_NumJoysticks(); ++i) {
 		if (SDL_IsGameController(i)) {
 			gamepad1 = SDL_GameControllerOpen(i);

@@ -51,3 +51,9 @@ bool ObjEnemyLand::PostUpdate() {
 	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currRect, 1.0f, flip);
 	return true;
 }
+
+bool ObjEnemyLand::OnDestroy()
+{
+	App->collision->DeleteCollider(col);
+	return true;
+}
