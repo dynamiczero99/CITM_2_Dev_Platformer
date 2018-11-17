@@ -181,4 +181,9 @@
       </animation>
     </player>
   </object>
+  
+  <Particles>
+	<teleport_texture01>textures/teleporter_01.png</teleport_texture01>
+  </Particles>
+  
 </config>

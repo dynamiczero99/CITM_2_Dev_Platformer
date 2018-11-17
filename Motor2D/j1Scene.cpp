@@ -16,6 +16,8 @@
 #include "j1Pathfinding.h"
 #include "Brofiler/Brofiler.h"
 
+#include "j1Particles.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -218,6 +220,9 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::DebugInput()
 {
+	 if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		 App->particles->AddParticle(App->particles->teleport01, 450, 250, COLLIDER_NONE);
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		// Load the first level of the list -------------------------

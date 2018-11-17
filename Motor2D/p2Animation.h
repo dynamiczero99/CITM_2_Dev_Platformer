@@ -3,7 +3,7 @@
 
 #include "SDL/include/SDL_rect.h"
 #include "j1App.h"
-#define MAX_FRAMES 25
+#define MAX_FRAMES 64
 
 class Animation
 {
