@@ -538,3 +538,8 @@ void ObjPlayer::DestroyProjectile() {
 	App->object->DeleteObject(projectile);
 	projectile = nullptr;
 }
+
+iPoint ObjPlayer::GetObjPivotPos(pivot pivot)
+{
+	return GetPivotPos(pivot, playerCol->rect.x, playerCol->rect.y, playerCol->rect.w, playerCol->rect.h);
+}

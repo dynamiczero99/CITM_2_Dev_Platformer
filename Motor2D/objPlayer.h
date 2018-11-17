@@ -34,6 +34,8 @@ public:
 	void SetSwapObject(GameObject * markedObject);
 	void DestroyProjectile();
 
+	iPoint GetObjPivotPos(pivot pivot);
+
 private:
 	void ToggleGodMode();
 	void StandardControls();
@@ -54,8 +56,8 @@ private:
 	dir GetSmallestDirFiltered(Collider * c2);
 	dir GetSmallestDir(Collider * c2);
 
-public:
 	//Variables
+public:
 	float gravity = 0.0f;
 	float moveSpeedAir = 0.0f;//(pixels/s)
 	float moveSpeedGnd = 0.0f;//(pixels/s)
