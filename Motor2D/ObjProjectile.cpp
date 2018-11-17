@@ -60,6 +60,13 @@ void ObjProjectile::OnCollision(Collider * c1, Collider * c2) {
 			player->SetSwapObject(c2->callbackObj);
 		}
 		break;
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+		App->audio->PlayFx(App->object->impactBoxSFX);
+		if (player != nullptr) {
+			c2->callbackObj->MarkObject(true);
+			player->SetSwapObject(c2->callbackObj);
+		}
+		break;
 	case COLLIDER_TYPE::COLLIDER_WALL:
 		player->DestroyProjectile();
 		break;

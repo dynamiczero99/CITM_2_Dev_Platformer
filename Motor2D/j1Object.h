@@ -87,6 +87,7 @@ public:
 	mutable fPoint position = fPoint(0.0F, 0.0F);
 	fPoint velocity = fPoint(0.0F, 0.0F);
 	fPoint acceleration = fPoint(0.0F, 0.0F);
+	bool marked = false;
 
 protected:
 	//The position in the objects module array

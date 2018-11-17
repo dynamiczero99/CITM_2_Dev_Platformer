@@ -51,7 +51,7 @@ private:
 	//bool multiThreadEnabled = false;
 	fPoint lastValidPos = { 0.0F,0.0F };
 
-	bool marked = false;
+	//bool marked = false;
 
 	// idle movement
 	void idleMovement(float dt);

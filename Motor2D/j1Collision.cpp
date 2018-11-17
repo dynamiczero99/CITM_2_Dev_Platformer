@@ -23,6 +23,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WALL][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_WALL][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_WALL][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = true;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
@@ -33,6 +34,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_WIN_ZONE] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_TRIGGER] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_GLASS] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
 
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_PLAYER] = false;
@@ -43,6 +45,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_WIN_ZONE] = true;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_TRIGGER] = true;
 	matrix[COLLIDER_PLAYER_GOD][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_PLAYER_GOD][COLLIDER_ENEMY] = false;
 	
 	matrix[COLLIDER_BOX][COLLIDER_WALL] = true;
 	matrix[COLLIDER_BOX][COLLIDER_PLAYER] = true;
@@ -53,6 +56,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_BOX][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_BOX][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_BOX][COLLIDER_GLASS] = true;
+	matrix[COLLIDER_BOX][COLLIDER_ENEMY] = false;
 
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER] = false;
@@ -63,6 +67,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_ENEMY] = true;
 
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_PLAYER] = true;
@@ -73,6 +78,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_DEATH_ZONE][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_DEATH_ZONE][COLLIDER_ENEMY] = false;
 
 	matrix[COLLIDER_WIN_ZONE][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WIN_ZONE][COLLIDER_PLAYER] = true;
@@ -83,6 +89,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_WIN_ZONE][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_WIN_ZONE][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_WIN_ZONE][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_WIN_ZONE][COLLIDER_ENEMY] = false;
 
 	matrix[COLLIDER_TRIGGER][COLLIDER_WALL] = false;
 	matrix[COLLIDER_TRIGGER][COLLIDER_PLAYER] = true;
@@ -93,6 +100,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_TRIGGER][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_TRIGGER][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_TRIGGER][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_TRIGGER][COLLIDER_ENEMY] = false;
 
 	matrix[COLLIDER_GLASS][COLLIDER_WALL] = false;
 	matrix[COLLIDER_GLASS][COLLIDER_PLAYER] = false;
@@ -103,6 +111,19 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_GLASS][COLLIDER_WIN_ZONE] = false;
 	matrix[COLLIDER_GLASS][COLLIDER_TRIGGER] = false;
 	matrix[COLLIDER_GLASS][COLLIDER_GLASS] = false;
+	matrix[COLLIDER_GLASS][COLLIDER_ENEMY] = true;
+
+	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_GOD] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_BOX] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_SHOT] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_DEATH_ZONE] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_WIN_ZONE] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_TRIGGER] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_GLASS] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = true;
+
 
 	colliderColor[COLLIDER_WALL] = ColorRGB(0, 0, 255);
 	colliderColor[COLLIDER_PLAYER] = ColorRGB(0, 255, 0);
@@ -113,6 +134,7 @@ j1Collision::j1Collision()
 	colliderColor[COLLIDER_WIN_ZONE] = ColorRGB(250, 255, 0);
 	colliderColor[COLLIDER_TRIGGER] = ColorRGB(239, 89, 232);
 	colliderColor[COLLIDER_GLASS] = ColorRGB(95 ,232 ,0);
+	colliderColor[COLLIDER_ENEMY] = ColorRGB(124, 13, 13);
 
 	actualColliders = 0;
 }
