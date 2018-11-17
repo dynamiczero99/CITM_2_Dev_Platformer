@@ -202,8 +202,8 @@ Particle::Particle(const Particle& p) :
 
 Particle::~Particle()
 {
-	/*if (collider != nullptr) // TODO PARTICLE
-		collider->to_delete = true;*/
+	if (collider != nullptr)
+		App->collision->DeleteCollider(collider);
 }
 
 bool Particle::Update(float dt)
