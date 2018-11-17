@@ -7,7 +7,7 @@
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 #define NUM_KEYBOARD_KEYS 300
-#define DEAD_ZONE 3000
+#define DEAD_ZONE 8000
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;

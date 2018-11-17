@@ -293,8 +293,8 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 {
 	BROFILER_FRAME("new thread");
 	//BROFILER_THREAD("new worker");
-	//BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
-	LOG("NEW THREAD");
+	BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
+	//LOG("NEW THREAD");
 	threadData* tdata = (threadData*)data;
 	
 	if (App->pathfinding->CreatePathLand(tdata->origin, tdata->destination) > 0)

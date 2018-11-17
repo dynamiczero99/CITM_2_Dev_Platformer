@@ -84,31 +84,31 @@ bool j1Scene::Start()
 }
 
 bool j1Scene::PreUpdate() {
-	// debug pathfing ------------------
-	static iPoint origin;
-	static bool origin_selected = false;
+	//// debug pathfing ------------------
+	//static iPoint origin;
+	//static bool origin_selected = false;
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
+	//int x, y;
+	//App->input->GetMousePosition(x, y);
+	//iPoint p = App->render->ScreenToWorld(x, y);
+	//p = App->map->WorldToMap(p.x, p.y);
 
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (origin_selected == true)
-		{
-			//App->pathfinding->CreatePath(origin, p);
-			App->pathfinding->CreateLandPath(origin, p, 1, 1, 3);
-			origin_selected = false;
-			CopyLastGeneratedPath();
-		}
-		else
-		{
-			origin = p;
-			origin_selected = true;
-		}
-	}
-	 // ---------------------------------
+	//if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	//{
+	//	if (origin_selected == true)
+	//	{
+	//		//App->pathfinding->CreatePath(origin, p);
+	//		App->pathfinding->CreateLandPath(origin, p, 1, 1, 3);
+	//		origin_selected = false;
+	//		CopyLastGeneratedPath();
+	//	}
+	//	else
+	//	{
+	//		origin = p;
+	//		origin_selected = true;
+	//	}
+	//}
+	// // ---------------------------------
 
 	return true;
 }
@@ -134,21 +134,21 @@ bool j1Scene::Update(float dt)
 
 	App->map->Draw();
 
-	// Debug pathfinding ------------------------------
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
+	//// Debug pathfinding ------------------------------
+	//int x, y;
+	//App->input->GetMousePosition(x, y);
+	//iPoint p = App->render->ScreenToWorld(x, y);
+	//p = App->map->WorldToMap(p.x, p.y);
+	//p = App->map->MapToWorld(p.x, p.y);
 
-	App->render->Blit(debug_tex, p.x, p.y);
+	//App->render->Blit(debug_tex, p.x, p.y);
 
-	for (uint i = 0; i < last_path.Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
-		App->render->Blit(debug_tex, pos.x, pos.y);
-	}
-	// ------------------------------------------------
+	//for (uint i = 0; i < last_path.Count(); ++i)
+	//{
+	//	iPoint pos = App->map->MapToWorld(last_path.At(i)->x, last_path.At(i)->y);
+	//	App->render->Blit(debug_tex, pos.x, pos.y);
+	//}
+	//// ------------------------------------------------
 
 	return true;
 }

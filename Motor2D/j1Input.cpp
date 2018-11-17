@@ -39,19 +39,11 @@ bool j1Input::Awake(pugi::xml_node& config)
 		ret = false;
 	}
 
+	// gamepad controller ----
 	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
 		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-
-	return ret;
-}
-
-// Called before the first frame
-bool j1Input::Start()
-{
-	SDL_StopTextInput();
-
 	// Open the first available controller
 	for (int i = 0; i < SDL_NumJoysticks(); ++i) {
 		if (SDL_IsGameController(i)) {
@@ -64,6 +56,14 @@ bool j1Input::Start()
 			}
 		}
 	}
+	// ------------------------
+	return ret;
+}
+
+// Called before the first frame
+bool j1Input::Start()
+{
+	SDL_StopTextInput();
 
 	return true;
 }
@@ -166,13 +166,39 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEMOTION:
+			{
 				int scale = App->win->GetScale();
 				mouse_motion_x = event.motion.xrel / scale;
 				mouse_motion_y = event.motion.yrel / scale;
 				mouse_x = event.motion.x / scale;
 				mouse_y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+			}
 			break;
+
+			case SDL_CONTROLLERDEVICEADDED:
+			{
+				LOG("gamePad added");
+				// Open the first available controller
+				for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+					if (SDL_IsGameController(i)) {
+						gamepad1 = SDL_GameControllerOpen(i);
+						if (gamepad1) {
+							break;
+						}
+						else {
+							fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+						}
+					}
+				}
+			}
+			break;
+
+			case SDL_CONTROLLERDEVICEREMOVED:
+				LOG("disconnected gamepad");
+				SDL_GameControllerClose(gamepad1);
+				gamepad1 = nullptr;
+				break;
 		}
 	}
 
@@ -182,9 +208,10 @@ bool j1Input::PreUpdate()
 // Called before quitting
 bool j1Input::CleanUp()
 {
-	SDL_GameControllerClose(gamepad1);
 	LOG("Quitting SDL controller subsystem");
 	SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+	if(gamepad1 != nullptr)
+		SDL_GameControllerClose(gamepad1);
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	gamepad1 = nullptr;
