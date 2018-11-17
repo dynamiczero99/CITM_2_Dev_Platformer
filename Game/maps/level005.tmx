@@ -60178,7 +60178,7 @@
  </layer>
  <group id="5" name="Colliders">
   <objectgroup id="6" name="Win">
-   <object id="22" name="Trigger" type="next_level" x="664" y="32" width="16" height="128"/>
+   <object id="22" name="Trigger" type="next_level" x="688" y="32" width="16" height="128"/>
   </objectgroup>
   <objectgroup id="7" name="Glass"/>
   <objectgroup id="8" name="Death">
@@ -60186,9 +60186,9 @@
   </objectgroup>
   <objectgroup id="9" name="Platforms">
    <object id="26" x="440" y="280" width="96" height="496"/>
-   <object id="51" x="536" y="231.625" width="16" height="543.417"/>
-   <object id="55" x="592" y="231.625" width="56" height="543.417"/>
-   <object id="56" x="648" y="160" width="48" height="601.708"/>
+   <object id="51" x="536" y="231.625" width="48" height="543.417"/>
+   <object id="55" x="624" y="231.625" width="48" height="543.417"/>
+   <object id="56" x="672" y="160" width="48" height="601.708"/>
   </objectgroup>
   <objectgroup id="10" name="Floor">
    <properties>
@@ -60209,7 +60209,7 @@
  </group>
  <group id="13" name="GameObjects">
   <objectgroup id="14" name="Triggers">
-   <object id="27" name="animation" type="event" x="656" y="120" width="40" height="40"/>
+   <object id="27" name="animation" type="event" x="680" y="120" width="40" height="40"/>
   </objectgroup>
   <objectgroup id="15" name="GameObjects">
    <object id="49" name="normalBox" x="536" y="208" width="16" height="16"/>
