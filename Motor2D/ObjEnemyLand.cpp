@@ -9,6 +9,8 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 
+#define TILE_WIDTH 8
+
 ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_node) : ObjEnemy(position, index)
 {
 	detectionRange = 10;
@@ -21,7 +23,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	updateCycle = 1000;
 	gravity = 1500.0f;
-	moveSpeed = 100.0f;
+	moveSpeed = 10.0f;
 	maxFallSpeed = 50.0f;
 	acceleration.y = gravity;
 	reachOffset = 10;
@@ -39,7 +41,9 @@ bool ObjEnemyLand::PreUpdate() {
 bool ObjEnemyLand::TimedUpdate(float dt)
 {
 	if (IsPlayerInTileRange(detectionRange) && App->object->player->position.y >= position.y - 10) {
-		App->pathfinding->CreatePathLand(iPoint((int)position.x, (int)position.y), App->object->player->GetObjPivotPos(Pivot(PivotV::middle, PivotH::middle)));
+		iPoint srcPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
+		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - TILE_WIDTH * 0.5f);
+		App->pathfinding->CreatePathLand(srcPos, trgPos);
 		pathData.CopyLastGeneratedPath();
 		enemy_state = enemyState::CHASING;
 	}

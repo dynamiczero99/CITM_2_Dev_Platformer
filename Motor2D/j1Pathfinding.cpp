@@ -257,6 +257,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destination)
 {
 	BROFILER_CATEGORY("CreatePath", Profiler::Color::Black);
+	LOG("Origin:      x: %i, y: %i", origin.x, origin.y);
+	LOG("Destination: x: %i, y: %i", destination.x, destination.y);
 	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
 		//LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
 		return -1;
@@ -304,12 +306,6 @@ int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destinatio
 
 	//LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
 	return -1;
-}
-
-void j1PathFinding::EmptyLastPath() {
-	//for (lastPath.) {
-
-	//}
 }
 
 int j1PathFinding::multiThreadCreatePath(void* data)

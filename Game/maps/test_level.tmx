@@ -60219,9 +60219,7 @@
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="35" name="normalBox" x="486" y="-26" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
-   <object id="50" name="landEnemy" x="736" y="216" width="16" height="24"/>
-   <object id="56" name="flyingEnemy" x="445.5" y="196" width="15" height="15.5"/>
-   <object id="58" name="flyingEnemy" x="481" y="181" width="15" height="15.5"/>
+   <object id="50" name="landEnemy" x="488" y="152" width="16" height="24"/>
   </objectgroup>
  </group>
 </map>
