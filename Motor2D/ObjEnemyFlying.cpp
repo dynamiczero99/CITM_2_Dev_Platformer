@@ -14,7 +14,7 @@
 
 ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enemy_node) : ObjEnemy(position, index) 
 {
-	SDL_Rect colRect = {(int)position.x, (int)position.y, 14, 22};
+	SDL_Rect colRect = {(int)position.x, (int)position.y + 2, 14, 22};
 	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_ENEMY, this);
 
 	lastValidPos = position; // assumes that spawn position is a valid one
@@ -149,7 +149,7 @@ bool ObjEnemyFlying::Update(float dt) {
 		}
 	}
 
-	iPoint colPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
+	iPoint colPos = GetRectPos(pivot, position.x, position.y + 2, animTileWidth, animTileHeight);
 	col->SetPos(colPos.x, colPos.y);
 
 	return true;
