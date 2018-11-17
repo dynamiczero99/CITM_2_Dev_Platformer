@@ -69,7 +69,7 @@ bool ObjBox::PostUpdate() {
 }
 
 void ObjBox::OnCollision(Collider * c1, Collider * c2) {
-	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX) {
+	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 		uint dist[(uint)dir::max];
 		dist[(uint)dir::invalid] = INT_MAX;
 		dist[(uint)dir::left] = c2->rect.GetRight() - c1->rect.GetLeft();
