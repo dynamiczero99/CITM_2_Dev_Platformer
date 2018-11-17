@@ -54,6 +54,9 @@ ObjEnemyFlying::ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &enem
 
 bool ObjEnemyFlying::OnDestroy() {
 	App->collision->DeleteCollider(col);
+	// we not destroy any enemy, if we finish destroying any enemy
+	// maybe is better to search a outside place to call wait thread
+	SDL_WaitThread(threadID, NULL);
 	return true;
 }
 

@@ -28,7 +28,8 @@ void ObjEnemy::StartNewPathThread()
 	//BROFILER_THREAD("new worker");
 	//BROFILER_FRAME("newthread");
 	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
-	iPoint playerPos = App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+	iPoint playerPos = App->object->player->GetObjPivotPos(Pivot(PivotV::middle, PivotH::middle));//App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+	playerPos = App->map->WorldToMap(playerPos.x, playerPos.y);
 
 	if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
 	{
