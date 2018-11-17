@@ -265,9 +265,9 @@ bool j1Collision::DeleteCollider(Collider * collider) {
 	}
 	if (colliders[collider->index] != nullptr)
 	{
-		delete colliders[collider->index];
-		colliders[collider->index] = nullptr;
-		collider = nullptr;
+		int colIndex = collider->index;
+		delete colliders[colIndex];
+		colliders[colIndex] = collider = nullptr;
 		actualColliders--;
 		return true;
 	}

@@ -201,11 +201,11 @@ bool j1Object::DeleteObject(GameObject * object) {
 	}
 	if (objects[object->index] != nullptr)
 	{
+		int objIndex = object->index;
 		//"delete" calls the object's destructor. We'll use it to reamove all allocated memory.
-		objects[object->index]->OnDestroy();
-		delete objects[object->index];
-		objects[object->index] = nullptr;
-		object = nullptr;
+		objects[objIndex]->OnDestroy();
+		delete objects[objIndex];
+		objects[objIndex] = object = nullptr;
 		actualObjects--;
 		return true;
 	}
