@@ -209,6 +209,8 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 // Blit to screen
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
 {
+	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
+
 	bool ret = true;
 	int scale = (int)App->win->GetScale();
 
