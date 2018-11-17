@@ -45,7 +45,11 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - TILE_WIDTH * 0.5f);
 		App->pathfinding->CreatePathLand(srcPos, trgPos);
 		pathData.CopyLastGeneratedPath();
+		step = 0u;
 		enemy_state = enemyState::CHASING;
+	}
+	else {
+		GoIdle();
 	}
 	return true;
 }
@@ -61,20 +65,20 @@ bool ObjEnemyLand::Update(float dt) {
 	case enemyState::CHASING:
 		if (pathData.path.Count() > 0) {
 			//Check if we've reached the next node in the path
-			if (abs(pathData.path[step].x - (int)position.x) < reachOffset) {
+			iPoint enemyPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
+			if (abs(pathData.path[step].x - enemyPos.x) < reachOffset) {
 				if (step + 1 < pathData.path.Count()) {
 					step++;
 				}
 				else {
-					step = 0u;
-					enemy_state = enemyState::IDLE;
+					GoIdle();
 				}
 			}
 			//Move in the x direction to the next node
-			if (pathData.path[step].x < position.x) {
+			if (pathData.path[step].x < enemyPos.x) {
 				velocity.x = -moveSpeed;
 			}
-			else if (pathData.path[step].x > position.x){
+			else if (pathData.path[step].x > enemyPos.x){
 				velocity.x = moveSpeed;
 			}
 			else {
@@ -92,6 +96,12 @@ bool ObjEnemyLand::Update(float dt) {
 	col->SetPos(colPos.x, colPos.y);
 
 	return true;
+}
+
+void ObjEnemyLand::GoIdle() {
+	step = 0u;
+	velocity.x = 0.0f;
+	enemy_state = enemyState::IDLE;
 }
 
 bool ObjEnemyLand::PostUpdate() {

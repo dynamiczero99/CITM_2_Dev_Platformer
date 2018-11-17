@@ -18,6 +18,7 @@ public:
 	bool PostUpdate() override;
 	bool OnDestroy() override;
 	void OnCollision(Collider * c1, Collider * c2) override;
+	void GoIdle();
 
 private:
 	int detectionRange = 0;
