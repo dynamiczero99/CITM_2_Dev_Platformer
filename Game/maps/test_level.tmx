@@ -60217,7 +60217,7 @@
   <objectgroup name="Triggers"/>
   <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
-   <object id="35" name="normalBox" x="473" y="259" width="16" height="16"/>
+   <object id="35" name="normalBox" x="486" y="-26" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
    <object id="50" name="landEnemy" x="688" y="240" width="15" height="24"/>
    <object id="56" name="flyingEnemy" x="445.5" y="196" width="15" height="15.5"/>

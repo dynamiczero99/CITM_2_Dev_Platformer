@@ -44,11 +44,21 @@ void ObjBox::MarkObject(bool mark)
 }
 
 bool ObjBox::Update(float dt) {
+	fPoint temp = position;
 	acceleration.y = gravity;
 	velocity = velocity + acceleration * dt;
 	position = position + velocity * dt;
+	// fast workaround to check if this moviment was physic impossible
+	// for avoid false dt conditions
+	if (position.y > temp.y + 60.0F)
+	{
+		position.y = temp.y;
+		acceleration = { 0.0F,0.0F };
+		velocity = { 0.0F,0.0F };
+	}
 	iPoint colPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	col->SetPos(colPos.x, colPos.y);
+	
 	return true;
 }
 
