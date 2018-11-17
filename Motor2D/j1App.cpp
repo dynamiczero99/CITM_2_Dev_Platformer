@@ -15,6 +15,7 @@
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
 #include "j1Pathfinding.h"
+#include "j1Particles.h"
 #include "j1Object.h"
 #include "Brofiler/Brofiler.h"
 #include "SDL/include/SDL_thread.h"
@@ -35,8 +36,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade_to_black = new j1FadeToBlack();
 	object = new j1Object();
 	pathfinding = new j1PathFinding();
-
-	//threadID = SDL_CreateThread(pathfinding->multiThreadCreatePath, "test", (void*)&pathData);
+	particles = new j1Particles();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -48,6 +48,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(scene);
 	AddModule(object);
+	AddModule(particles);
 	AddModule(fade_to_black);
 	AddModule(collision);//Collision is the penultimate module to update because it calcules all the overlaping collisions and resolves them just before rendering
 	AddModule(render);// render last to swap buffer

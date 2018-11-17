@@ -20,6 +20,7 @@ class j1Collision;
 class j1FadeToBlack;
 class j1Object;
 class j1PathFinding;
+class j1Particles;
 
 class j1App
 {
@@ -98,6 +99,7 @@ public:
 	j1FadeToBlack*		fade_to_black = nullptr;
 	j1Object*			object = nullptr;
 	j1PathFinding*		pathfinding = nullptr;
+	j1Particles*		particles = nullptr;
 
 	// save relative
 	bool prepareToLoad = false;
@@ -137,7 +139,6 @@ private:
 	uint32				framerateCap = 0;
 	float				dt = 0.0f;
 	bool				capFrames = true;
-	//SDL_Thread* threadID = nullptr;
 };
 
 extern j1App* App;
