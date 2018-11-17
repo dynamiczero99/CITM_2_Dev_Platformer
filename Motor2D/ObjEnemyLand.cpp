@@ -19,7 +19,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
 	LoadAnimation(enemy_node.child("animation").child("moving_animation"), movingAnim);
-	currAnim = &movingAnim;
+	currAnim = &idleAnim;
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	updateCycle = 1000;
 	gravity = TileToPixel(enemy_node.child("gravity").text().as_uint());
@@ -46,6 +46,7 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 		App->pathfinding->CreatePathLand(srcPos, trgPos);
 		pathData.CopyLastGeneratedPath();
 		step = 0u;
+		currAnim = &movingAnim;
 		enemy_state = enemyState::CHASING;
 	}
 	else {
@@ -104,6 +105,7 @@ bool ObjEnemyLand::Update(float dt) {
 void ObjEnemyLand::GoIdle() {
 	step = 0u;
 	velocity.x = 0.0f;
+	currAnim = &idleAnim;
 	enemy_state = enemyState::IDLE;
 }
 
