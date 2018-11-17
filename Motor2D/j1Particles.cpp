@@ -40,13 +40,16 @@ bool j1Particles::Start()
 	LOG("Loading particles");
 	// teleport 01 animation
 	LoadAnimation(particleNode.child("animation_teleport01"), teleport01.anim, true);
-	teleport01.anim.loop = false;
+	// teleport 02 animation
+	LoadAnimation(particleNode.child("animation_teleport01"), teleport02.anim, true);
 
 	//load textures and links pointers to -------------
-	graphics = App->tex->LoadTexture(particleNode.child("teleport_texture01").text().as_string());
+	teleport01_tex = App->tex->LoadTexture(particleNode.child("teleport_texture01").text().as_string());
+	teleport02_tex = App->tex->LoadTexture(particleNode.child("teleport_texture02").text().as_string());
 	// ------------------------------------------------
 	//load and links textures for particles -----------
-	teleport01.texture = graphics;
+	teleport01.texture = teleport01_tex;
+	teleport02.texture = teleport02_tex;
 
 	//load specific Wavs effects for particles --------
 	//App->audio->LoadFx("path");
@@ -62,8 +65,10 @@ bool j1Particles::CleanUp()
 	LOG("Unloading particles");
 
 	//unloading graphics
-	if(App->tex->UnloadTexture(graphics))
-		graphics = nullptr;
+	if(App->tex->UnloadTexture(teleport01_tex))
+		teleport01_tex = nullptr;
+	if (App->tex->UnloadTexture(teleport02_tex))
+		teleport02_tex = nullptr;
 
 	//removing active particles
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
@@ -255,13 +260,12 @@ bool j1Particles::LoadAnimation(pugi::xml_node &node, Animation &anim, bool sequ
 		{
 			for (int i = 0; i < x; ++i)
 			{
-				teleport01.anim.PushBack({ i * tile_width, j * tile_height, tile_width, tile_height });
+				anim.PushBack({ i * tile_width, j * tile_height, tile_width, tile_height });
 			}
 
 		}
-		teleport01.anim.speed = node.attribute("speed").as_float();
-		teleport01.anim.loop = node.attribute("loop").as_bool(true);
-		LOG("bla");
+		anim.speed = node.attribute("speed").as_float();
+		anim.loop = node.attribute("loop").as_bool(true);
 	}
 
 	return true;

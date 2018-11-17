@@ -221,7 +221,7 @@ void j1Scene::CameraLogic(float dt)
  void j1Scene::DebugInput()
 {
 	 if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-		 App->particles->AddParticle(App->particles->teleport01, 450, 250, COLLIDER_ENEMY);
+		 App->particles->AddParticle(App->particles->teleport02, 450, 250, COLLIDER_ENEMY);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
