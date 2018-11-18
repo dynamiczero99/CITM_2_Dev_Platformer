@@ -112,6 +112,9 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(robotTilesetTex);
 	App->tex->UnloadTexture(debugEnemyPathTex);
 	App->tex->UnloadTexture(shootIndicatorTex);
+	App->tex->UnloadTexture(laserActiveTex);
+	App->tex->UnloadTexture(laserTurnOnTex);
+	App->tex->UnloadTexture(laserTurnOffTex);
 	// unload sfx
 	App->audio->UnloadDesiredSFX(impactBoxSFX); // unload a desired sfx
 	//App->audio->UnloadSFX(); // unload all sfx on audio sfx list
