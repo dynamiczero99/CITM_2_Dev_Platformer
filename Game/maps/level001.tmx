@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="14" nextobjectid="28">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="28">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -145,7 +145,7 @@
  <tileset firstgid="1669" name="mouse_pixelart" tilewidth="15" tileheight="22" tilecount="2" columns="2">
   <image source="../textures/mouse_pixelart.png" width="30" height="22"/>
  </tileset>
- <layer id="1" name="background" width="150" height="100">
+ <layer name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15152,7 +15152,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="2" name="midground" width="150" height="100">
+ <layer name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30159,7 +30159,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="3" name="foreground" width="150" height="100">
+ <layer name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -45163,19 +45163,19 @@
    <tile/>
   </data>
  </layer>
- <group id="4" name="Colliders">
-  <objectgroup id="5" name="Win">
+ <group name="Colliders">
+  <objectgroup name="Win">
    <object id="22" name="Trigger" type="next_level" x="1010.5" y="139" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup id="6" name="Death">
+  <objectgroup name="Death">
    <object id="19" name="death" x="0" y="303" width="1200" height="497"/>
   </objectgroup>
-  <objectgroup id="7" name="Platforms">
+  <objectgroup name="Platforms">
    <object id="24" x="881" y="303" width="294" height="496"/>
    <object id="25" x="673" y="303" width="94" height="496"/>
    <object id="26" x="64" y="303" width="527" height="496"/>
   </objectgroup>
-  <objectgroup id="8" name="Floor">
+  <objectgroup name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -45184,11 +45184,10 @@
    <object id="16" name="floor" x="864" y="280" width="281" height="23"/>
    <object id="17" x="64" y="16" width="239" height="287"/>
    <object id="23" x="1145" y="16" width="30" height="287"/>
-   <object id="30" gid="1395" x="493.5" y="296.5" width="16" height="16" visible="0"/>
   </objectgroup>
  </group>
- <group id="9" name="Player">
-  <objectgroup id="10" name="PlayerData">
+ <group name="Player">
+  <objectgroup name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -45197,9 +45196,9 @@
    </object>
   </objectgroup>
  </group>
- <group id="11" name="GameObjects">
-  <objectgroup id="12" name="Triggers"/>
-  <objectgroup id="13" name="GameObjects">
+ <group name="GameObjects">
+  <objectgroup name="Triggers"/>
+  <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
   </objectgroup>
  </group>

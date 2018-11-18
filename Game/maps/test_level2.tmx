@@ -60200,7 +60200,6 @@
    <object id="16" name="floor" x="864" y="280" width="281" height="23"/>
    <object id="17" x="64" y="16" width="239" height="287"/>
    <object id="23" x="1145" y="16" width="30" height="287"/>
-   <object id="30" gid="1395" x="493.5" y="296.5" width="16" height="16" visible="0"/>
    <object id="59" name="floor" x="480" y="232" width="128" height="23"/>
   </objectgroup>
  </group>
