@@ -134,3 +134,16 @@ bool ObjBox::Save(pugi::xml_node& node) const
 
 	return true;
 }
+
+bool ObjBox::OnTriggerEnter()
+{
+	//LOG("called");
+	velocity.y = - 500.0F;
+	return true;
+}
+
+bool ObjBox::OnTriggerExit()
+{
+	//LOG("exit trigger");
+	return true;
+}

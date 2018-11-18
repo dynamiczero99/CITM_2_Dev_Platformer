@@ -196,6 +196,30 @@ void PathNode::FindWalkableAdjacentsLand(PathList & pathList, const iPoint desti
 	}
 }
 
+void PathNode::FindWalkableAdjacentsJumpingLand(PathList & pathList, const iPoint destination)
+{
+	iPoint cell;
+	// north
+	cell.create(pos.x, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+
+	// east
+	cell.create(pos.x + 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+
+	// south
+	cell.create(pos.x, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+
+	// west
+	cell.create(pos.x - 1, pos.y);
+	if (App->pathfinding->IsWalkable(cell))
+		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+}
+
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
@@ -336,7 +360,7 @@ int j1PathFinding::multiThreadCreatePath(void* data)
 }
 
 // doesnt work yet, still work in progress method...
-int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump)
+int j1PathFinding::CreateJumpingLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump)
 {
 	if (!IsWalkable(origin) || !IsWalkable(destination) || origin == destination) {
 		LOG("Invalid origin or destination: Origin or destination are not walkable or are the same.");
@@ -348,9 +372,6 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 	openList.list.add(PathNode(0, origin.DistanceManhattan(destination), origin, nullptr));
 	p2List_item<PathNode> * startNode = openList.GetNodeLowestScore();
 	
-	// adds z value to start node
-	startNode->data.pos_z = 0;
-
 	// check if the node above is ground or not
 	if (!IsWalkable((startNode->data.pos - iPoint(0, -1))))
 	{
@@ -380,7 +401,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 		}
 
 		PathList adjacentNodes;
-		currNode->FindWalkableAdjacents(adjacentNodes, destination);
+		currNode->FindWalkableAdjacentsJumpingLand(adjacentNodes, destination);
 
 		for (p2List_item<PathNode>* adjacentNodeIterator = adjacentNodes.list.start; adjacentNodeIterator != nullptr; adjacentNodeIterator = adjacentNodeIterator->next)
 		{
@@ -411,7 +432,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 					newJumpLength = MAX(maxCharacterTilesJump * 2, jumpLength + 2);
 			}
 			// calculate jump value on air
-			else if (adjacentNodeIterator->data.pos.y > currNode->pos.y)
+			else if (adjacentNodeIterator->data.pos.y < currNode->pos.y)
 			{
 				if (jumpLength < 2)
 					newJumpLength = 3;
@@ -420,7 +441,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 				else
 					newJumpLength = jumpLength + 1;
 			}
-			else if (adjacentNodeIterator->data.pos.y < currNode->pos.y)
+			else if (adjacentNodeIterator->data.pos.y > currNode->pos.y)
 			{
 				if (jumpLength % 2 == 0)
 					newJumpLength = MAX(maxCharacterTilesJump * 2, jumpLength + 2);
@@ -432,7 +453,7 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 			if (jumpLength % 2 != 0 && currNode->pos.x != adjacentNodeIterator->data.pos.x)
 				continue;
 
-			if (jumpLength >= maxCharacterTilesJump * 2 && adjacentNodeIterator->data.pos.y > currNode->pos.y)
+			if (jumpLength >= maxCharacterTilesJump * 2 && adjacentNodeIterator->data.pos.y < currNode->pos.y)
 				continue;
 
 			if (newJumpLength >= maxCharacterTilesJump * 2 + 6 && 
@@ -441,39 +462,101 @@ int j1PathFinding::CreateLandPath(const iPoint& origin, const iPoint& destinatio
 
 			// calculating cost
 			// g
-			int newG = currNode->g + adjacentNodeIterator->data.g + newJumpLength / 4;
+			int newG = currNode->g + newJumpLength / 4;
 
-			// if the node still doesnt has duplicateds routes
-			p2List_item<PathNode>* duplicateNode = (p2List_item<PathNode>*)openList.Find(adjacentNodeIterator->data.pos);
-			if (duplicateNode == NULL) {
-				adjacentNodeIterator->data.jumpLength = newJumpLength;
-				openList.list.add(adjacentNodeIterator->data);
-			}
-			else
+			int numRepeateds = 0;
+			PathList openRepeteadsList;
+			PathList closedRepeteadsList;
+			openList.CreateRepeteadsList(openRepeteadsList, adjacentNodeIterator->data.pos, numRepeateds);
+			closedList.CreateRepeteadsList(openRepeteadsList, adjacentNodeIterator->data.pos, numRepeateds);
+			PathList resultList;
+			CombineTwoRepeteadsList(openRepeteadsList, closedRepeteadsList, resultList);
+
+			LOG("numRepeteads %i", numRepeateds);
+			LOG("resultListSays: %i", resultList.list.Count());
+
+			if (resultList.list.Count() > 0)
 			{
 				// check if the duplicated has lowest jump value
-				int lowestJump = 0;
+				int lowestJump = 255;
 				bool couldMoveSideways = false;
-				// check all duplicates // maybe we need to improve this
-				if (duplicateNode->data.jumpLength < adjacentNodeIterator->data.jumpLength)
+			
+				for (p2List_item<PathNode>* repeteadsIterator = resultList.list.start; repeteadsIterator != nullptr; repeteadsIterator = repeteadsIterator->next)
 				{
-					lowestJump = duplicateNode->data.jumpLength;
+					if (repeteadsIterator->data.jumpLength < lowestJump)
+					{
+						lowestJump = repeteadsIterator->data.jumpLength;
+					}
+					if (repeteadsIterator->data.jumpLength % 2 == 0 && repeteadsIterator->data.jumpLength < maxCharacterTilesJump * 2 + 6)
+					{
+						couldMoveSideways = true;
+					}
+					if (lowestJump <= newJumpLength && (newJumpLength % 2 != 0 || newJumpLength >= maxCharacterTilesJump * 2 + 6 || couldMoveSideways))
+						continue;
 				}
-				if (duplicateNode->data.jumpLength % 2 == 0 && duplicateNode->data.jumpLength < maxCharacterTilesJump * 2 + 6)
-					couldMoveSideways = true;
-
-				if (lowestJump <= newJumpLength && (newJumpLength % 2 != 0 || newJumpLength >= maxCharacterTilesJump * 2 + 6 || couldMoveSideways))
-					continue;
 			}
 
-			adjacentNodeIterator->data.g = newG;
-			adjacentNodeIterator->data.parent = currNode;
+			//adjacentNodeIterator->data.g = newG;
 			adjacentNodeIterator->data.jumpLength = newJumpLength;
 			openList.list.add(adjacentNodeIterator->data);
-
+	
 		}
 	}
 
 	LOG("Invalid path: The algorithm has extended to all the possible nodes and hasn't found a path to the destination.");
 	return -1;
+}
+
+int PathList::FindCounter(const iPoint& point)
+{
+	int ret = 0;
+
+	p2List_item<PathNode>* item = list.start;
+	while (item)
+	{
+		if (item->data.pos == point)
+			ret++;
+		item = item->next;
+	}
+	return ret;
+}
+
+void PathList::CreateRepeteadsList(PathList& repeatedList, const iPoint nodePoint, int& numRepeteads)
+{
+	int counter = 0;
+	p2List_item<PathNode>* item = list.start;
+	while (item)
+	{
+		if (item->data.pos == nodePoint)
+		{
+			counter++;
+			repeatedList.list.add(item->data);
+		}
+		item = item->next;
+	}
+	LOG("repeteads nodes: %i", counter);
+	numRepeteads += counter;
+}
+
+void j1PathFinding::CombineTwoRepeteadsList(const PathList& list1, const PathList& list2, PathList& result)
+{
+	int counter = 0;
+	// copy first list
+	p2List_item<PathNode>* item = list1.list.start;
+	while (item)
+	{
+		result.list.add(item->data);
+		item = item->next;
+		counter++;
+	}
+	// copy second list
+	item = list2.list.start;
+	while (item)
+	{
+		result.list.add(item->data);
+		item = item->next;
+		counter++;
+	}
+	
+	LOG("repeteads nodes: %i", counter);
 }

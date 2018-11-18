@@ -40,7 +40,7 @@ bool ObjEnemyLand::PreUpdate() {
 //Create a path to the player if it is in range
 bool ObjEnemyLand::TimedUpdate(float dt)
 {
-	LOG("Timed update");
+	//LOG("Timed update");
 	if (IsPlayerInTileRange(detectionRange) && App->object->player->position.y >= position.y - 10) {
 		iPoint srcPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
 		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - TILE_WIDTH * 0.5f);
@@ -57,10 +57,10 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 }
 
 bool ObjEnemyLand::Update(float dt) {
-	LOG("Velocity %f", velocity.x);
+	//LOG("Velocity %f", velocity.x);
 	switch (enemy_state) {
 	case enemyState::INVALID:
-		LOG("Invalid state");
+		//LOG("Invalid state");
 		break;
 	case enemyState::IDLE:
 

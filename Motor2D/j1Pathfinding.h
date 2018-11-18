@@ -36,6 +36,7 @@ struct PathNode
 	// Find walkable adjacents
 	void FindWalkableAdjacents(PathList &list, const iPoint destination);
 	void FindWalkableAdjacentsLand(PathList & pathList, const iPoint destination);
+	void FindWalkableAdjacentsJumpingLand(PathList & pathList, const iPoint destination);
 
 	// -----------
 	int g = 0;
@@ -54,6 +55,9 @@ struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL
 	const p2List_item<PathNode>* Find(const iPoint& point) const;
+
+	int FindCounter(const iPoint& point);
+	void CreateRepeteadsList(PathList& list, const iPoint node, int& numRepeteads);
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
 	p2List_item<PathNode>* GetNodeLowestScore() const;
@@ -81,7 +85,7 @@ public:
 	// Main function to request a path from A to B
 	int CreatePath(const iPoint& origin, const iPoint& destination);
 	int CreatePathLand(const iPoint& origin, const iPoint& destination);
-	int CreateLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump);
+	int CreateJumpingLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -96,6 +100,8 @@ public:
 	uchar GetTileAt(const iPoint& pos) const;
 
 	static int multiThreadCreatePath(void* data);
+
+	void CombineTwoRepeteadsList(const PathList& list1, const PathList& list2, PathList& result);
 
 private:
 

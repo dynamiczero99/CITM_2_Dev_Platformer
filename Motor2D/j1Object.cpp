@@ -15,6 +15,7 @@
 #include "ObjTrigger.h"
 #include "ObjEnemyFlying.h"
 #include "ObjEnemyLand.h"
+#include "ObjDoor.h"
 
 // Profiler ---
 #include "Brofiler/Brofiler.h"
@@ -43,6 +44,9 @@ bool j1Object::Start() {
 	robotTilesetTex = App->tex->LoadTexture(object_node.child("robot_image").text().as_string());
 	debugEnemyPathTex = App->tex->LoadTexture(object_node.child("debug_path_enemy_tex").text().as_string());
 	shootIndicatorTex = App->tex->LoadTexture(object_node.child("shoot_indicator").text().as_string());
+	laserActiveTex = App->tex->LoadTexture(object_node.child("door").child("laser_active_texture").text().as_string());
+	laserTurnOnTex = App->tex->LoadTexture(object_node.child("door").child("laser_turn_on_texture").text().as_string());
+	laserTurnOffTex = App->tex->LoadTexture(object_node.child("door").child("laser_turn_off_texture").text().as_string());
 	//Add objects
 	fPoint playerStartPos;
 	playerStartPos.x = App->map->playerData.x;
@@ -108,6 +112,9 @@ bool j1Object::CleanUp() {
 	App->tex->UnloadTexture(robotTilesetTex);
 	App->tex->UnloadTexture(debugEnemyPathTex);
 	App->tex->UnloadTexture(shootIndicatorTex);
+	App->tex->UnloadTexture(laserActiveTex);
+	App->tex->UnloadTexture(laserTurnOnTex);
+	App->tex->UnloadTexture(laserTurnOffTex);
 	// unload sfx
 	App->audio->UnloadDesiredSFX(impactBoxSFX); // unload a desired sfx
 	//App->audio->UnloadSFX(); // unload all sfx on audio sfx list
@@ -131,6 +138,49 @@ int j1Object::FindEmptyPosition() {
 	LOG("Reached maximum object capacity, returning -1");
 	return -1;
 }
+
+bool j1Object::OnTriggerEnter(ObjTrigger* trigger)
+{
+	// check if we have any coincidence
+	for (uint i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+		{
+			for (int ids = 0; ids < trigger->objectsEventIDs.Count(); ++ids)
+			{
+				if (objects[i]->objectID == *trigger->objectsEventIDs.At(ids))
+				{
+					//LOG("coincidence");
+					objects[i]->OnTriggerEnter();
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+bool j1Object::OnTriggerExit(ObjTrigger* trigger)
+{
+	// check if we have any coincidence
+	for (uint i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+		{
+			for (int ids = 0; ids < trigger->objectsEventIDs.Count(); ++ids)
+			{
+				if (objects[i]->objectID == *trigger->objectsEventIDs.At(ids))
+				{
+					//LOG("coincidence");
+					objects[i]->OnTriggerExit();
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
 
 
 //You should try to AddObject() on the Start method
@@ -165,12 +215,12 @@ ObjBox * j1Object::AddObjBox (fPoint position, int objectID) {
 	return ret;
 }
 
-ObjTrigger * j1Object::AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize) //triggerAction::none)
+ObjTrigger * j1Object::AddObjTrigger(fPoint position, iPoint rectSize) //triggerAction::none)
 {
 	int index = FindEmptyPosition();
 	ObjTrigger * ret = nullptr;
 	if (index != -1) {
-		objects[index] = ret = new ObjTrigger(position, index, action, rectSize);
+		objects[index] = ret = new ObjTrigger(position, index, object_node.child("trigger"), rectSize);
 	}
 	return ret;
 }
@@ -189,6 +239,15 @@ ObjEnemyLand * j1Object::AddObjEnemyLand(fPoint position) {
 	ObjEnemyLand * ret = nullptr;
 	if (index != -1) {
 		objects[index] = ret = new ObjEnemyLand(position, index, object_node.child("enemy_land"));
+	}
+	return ret;
+}
+
+ObjDoor * j1Object::AddObjDoor(fPoint position, int objectID) {
+	int index = FindEmptyPosition();
+	ObjDoor * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjDoor(position, index, object_node.child("door"), objectID);
 	}
 	return ret;
 }
@@ -312,6 +371,14 @@ bool GameObject::PostUpdate() {
 }
 
 bool GameObject::OnDestroy() {
+	return true;
+}
+
+bool GameObject::OnTriggerEnter(){
+	return true;
+}
+
+bool GameObject::OnTriggerExit() {
 	return true;
 }
 

@@ -17,6 +17,8 @@ public:
 	void MarkObject(bool mark) override;
 
 	void OnCollision(Collider * c1, Collider * c2) override;
+	bool OnTriggerEnter();
+	bool OnTriggerExit();
 
 	bool Load(pugi::xml_node& loadNode);
 	bool Save(pugi::xml_node& saveNode) const;

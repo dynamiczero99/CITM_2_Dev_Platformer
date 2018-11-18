@@ -15,6 +15,7 @@ class ObjBox;
 class ObjTrigger;
 class ObjEnemyFlying;
 class ObjEnemyLand;
+class ObjDoor;
 
 struct Collider;
 enum COLLIDER_TYPE;
@@ -71,7 +72,8 @@ protected:
 	virtual bool TimedUpdate(float dt);
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
-
+	virtual bool OnTriggerEnter();
+	virtual bool OnTriggerExit();
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
 
@@ -115,12 +117,16 @@ public:
 	bool Save(pugi::xml_node&) const;
 	int FindEmptyPosition();
 
+	bool OnTriggerEnter(ObjTrigger* trigger); // maybe we can improve this two functions in one
+	bool OnTriggerExit(ObjTrigger* trigger);
+
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
 	ObjBox * AddObjBox(fPoint position, int objectID);
-	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize);
+	ObjTrigger * AddObjTrigger(fPoint position, iPoint rectSize);
 	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);//, int objectID);
 	ObjEnemyLand * AddObjEnemyLand(fPoint position);//, int objectID);
+	ObjDoor* AddObjDoor(fPoint position, int objectID);
 	bool DeleteObject(GameObject * object);
 
 public:
@@ -131,6 +137,9 @@ public:
 	SDL_Texture * robotTilesetTex = nullptr;
 	SDL_Texture * debugEnemyPathTex = nullptr;
 	SDL_Texture * shootIndicatorTex = nullptr;
+	SDL_Texture* laserActiveTex = nullptr;
+	SDL_Texture* laserTurnOnTex = nullptr;
+	SDL_Texture* laserTurnOffTex = nullptr;
 	ObjPlayer * player = nullptr;
 	// sfx id
 	uint impactBoxSFX = 0u;
