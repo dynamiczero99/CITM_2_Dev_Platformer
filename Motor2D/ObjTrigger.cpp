@@ -37,11 +37,19 @@ bool ObjTrigger::PostUpdate()
 }
 
 void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
-	if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER) {
+	if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER || c2->type == COLLIDER_TYPE::COLLIDER_BOX) {
 		timer.Start();
 		if (!activated)
 		{
-			LOG("player triggered");
+			switch (c2->type)
+			{
+				case COLLIDER_PLAYER:
+					LOG("player triggered");
+					break;
+				case COLLIDER_BOX:
+					LOG("collider box triggered");
+					break;
+			}
 			activated = true;
 			currentState = animState::active;
 			App->object->OnTriggerEnter(this);

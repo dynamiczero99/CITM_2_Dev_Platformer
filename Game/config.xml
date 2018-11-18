@@ -192,6 +192,36 @@
 		</small_active_animation>
 	 </animation>
 	</trigger>
+	<door>
+		<laser_active_texture>textures/laser/laser-active.png</laser_active_texture>
+		<laser_turn_on_texture>textures/laser/laser-turn-on.png</laser_turn_on_texture>
+		<laser_turn_off_texture>textures/laser/laser-turn-off.png</laser_turn_off_texture>
+		<animation>
+			<active speed ="45">
+				  <sprite x ="0" y ="11" w ="16" h="53"/>
+				  <sprite x ="16" y ="11" w ="16" h="53"/>
+				  <sprite x ="0" y ="11" w ="16" h="53"/>
+			</active>
+			<turn_on speed ="25">
+				  <sprite x ="0" y ="11" w ="16" h="53"/>
+				  <sprite x ="16" y ="11" w ="16" h="53"/>
+				  <sprite x ="32" y ="11" w ="16" h="53"/>
+				  <sprite x ="48" y ="11" w ="16" h="53"/>
+				  <sprite x ="64" y ="11" w ="16" h="53"/>
+				  <sprite x ="80" y ="11" w ="16" h="53"/>
+				  <sprite x ="96" y ="11" w ="16" h="53"/>
+			</turn_on>
+			<turn_off speed ="25">
+				  <sprite x ="0" y ="11" w ="16" h="53"/>
+				  <sprite x ="16" y ="11" w ="16" h="53"/>
+				  <sprite x ="32" y ="11" w ="16" h="53"/>
+				  <sprite x ="48" y ="11" w ="16" h="53"/>
+				  <sprite x ="64" y ="11" w ="16" h="53"/>
+				  <sprite x ="80" y ="11" w ="16" h="53"/>
+				  <sprite x ="96" y ="11" w ="16" h="53"/>
+			</turn_off>
+		</animation>
+	</door>
   </object>
   
   <Particles>

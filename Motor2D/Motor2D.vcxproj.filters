@@ -72,6 +72,9 @@
     <ClCompile Include="j1Particles.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ObjDoor.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="j1Particles.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjDoor.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@ class ObjBox;
 class ObjTrigger;
 class ObjEnemyFlying;
 class ObjEnemyLand;
+class ObjDoor;
 
 struct Collider;
 enum COLLIDER_TYPE;
@@ -125,6 +126,7 @@ public:
 	ObjTrigger * AddObjTrigger(fPoint position, iPoint rectSize);
 	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);//, int objectID);
 	ObjEnemyLand * AddObjEnemyLand(fPoint position);//, int objectID);
+	ObjDoor* AddObjDoor(fPoint position, int objectID);
 	bool DeleteObject(GameObject * object);
 
 public:
@@ -135,6 +137,9 @@ public:
 	SDL_Texture * robotTilesetTex = nullptr;
 	SDL_Texture * debugEnemyPathTex = nullptr;
 	SDL_Texture * shootIndicatorTex = nullptr;
+	SDL_Texture* laserActiveTex = nullptr;
+	SDL_Texture* laserTurnOnTex = nullptr;
+	SDL_Texture* laserTurnOffTex = nullptr;
 	ObjPlayer * player = nullptr;
 	// sfx id
 	uint impactBoxSFX = 0u;

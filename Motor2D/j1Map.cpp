@@ -672,6 +672,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 		if (tmp == "GameObjects") // gameobjects maybe needs load from save, check this
 		{
+			// DYNAMIC GAMEOBJECTS
 			if (!App->readyToLoad) // if the new map is loaded from save game, load gameobjects from savegame file
 			{
 				// iterate all objects
@@ -693,7 +694,22 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 					else if (gameobject_name == "landEnemy") {
 						App->object->AddObjEnemyLand({ object.attribute("x").as_float(), object.attribute("y").as_float() });
 					}
+				}
+			}
 
+			// STATIC GAMEOBJECTS
+			// iterate all objects
+			for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+			{
+
+				p2SString gameobject_name = object.attribute("name").as_string();
+				LOG("%s", gameobject_name.GetString());
+
+				if (gameobject_name == "Door") {
+					//Box have their pivot point on ther bottom - middle
+					App->object->AddObjDoor({ object.attribute("x").as_float(),
+											 object.attribute("y").as_float() },
+						object.attribute("id").as_int());
 				}
 			}
 		}
@@ -721,11 +737,11 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 							p2SString propertyName = properties.attribute("name").as_string();
 							LOG("property %s", propertyName.GetString());
 
-							if (propertyName == "triggerObjectID")
-							{
+							//if (propertyName == "triggerObjectID")
+							//{
 								int linkedID = properties.attribute("value").as_int();
 								ot->objectsEventIDs.PushBack(linkedID);
-							}
+							//}
 						}
 					}
 				}

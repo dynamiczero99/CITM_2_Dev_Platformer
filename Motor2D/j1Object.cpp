@@ -15,6 +15,7 @@
 #include "ObjTrigger.h"
 #include "ObjEnemyFlying.h"
 #include "ObjEnemyLand.h"
+#include "ObjDoor.h"
 
 // Profiler ---
 #include "Brofiler/Brofiler.h"
@@ -43,6 +44,9 @@ bool j1Object::Start() {
 	robotTilesetTex = App->tex->LoadTexture(object_node.child("robot_image").text().as_string());
 	debugEnemyPathTex = App->tex->LoadTexture(object_node.child("debug_path_enemy_tex").text().as_string());
 	shootIndicatorTex = App->tex->LoadTexture(object_node.child("shoot_indicator").text().as_string());
+	laserActiveTex = App->tex->LoadTexture(object_node.child("door").child("laser_active_texture").text().as_string());
+	laserTurnOnTex = App->tex->LoadTexture(object_node.child("door").child("laser_turn_on_texture").text().as_string());
+	laserTurnOffTex = App->tex->LoadTexture(object_node.child("door").child("laser_turn_off_texture").text().as_string());
 	//Add objects
 	fPoint playerStartPos;
 	playerStartPos.x = App->map->playerData.x;
@@ -232,6 +236,15 @@ ObjEnemyLand * j1Object::AddObjEnemyLand(fPoint position) {
 	ObjEnemyLand * ret = nullptr;
 	if (index != -1) {
 		objects[index] = ret = new ObjEnemyLand(position, index, object_node.child("enemy_land"));
+	}
+	return ret;
+}
+
+ObjDoor * j1Object::AddObjDoor(fPoint position, int objectID) {
+	int index = FindEmptyPosition();
+	ObjDoor * ret = nullptr;
+	if (index != -1) {
+		objects[index] = ret = new ObjDoor(position, index, object_node.child("door"), objectID);
 	}
 	return ret;
 }
