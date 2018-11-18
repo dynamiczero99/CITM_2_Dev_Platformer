@@ -752,6 +752,11 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 	return true;
 }
 
+int j1Map::GetTileWidth()
+{
+	return data.tile_width;
+}
+
 bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;

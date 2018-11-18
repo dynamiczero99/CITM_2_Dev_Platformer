@@ -50375,10 +50375,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile gid="1671"/>
@@ -50535,6 +50531,9 @@
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile gid="1671"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -50921,6 +50920,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile gid="1671"/>
@@ -51209,18 +51209,18 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile gid="1671"/>
@@ -51359,18 +51359,18 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1671"/>
    <tile gid="1671"/>
    <tile gid="1671"/>
@@ -60195,8 +60195,8 @@
    <object id="75" name="floor" x="664" y="224" width="48" height="16"/>
    <object id="76" name="floor" x="280" y="224" width="144" height="16"/>
    <object id="77" name="floor" x="760" y="224" width="48" height="16"/>
-   <object id="78" name="floor" x="840" y="272" width="48" height="16"/>
-   <object id="79" name="floor" x="280" y="320" width="528" height="16"/>
+   <object id="78" name="floor" x="808" y="272" width="48" height="16"/>
+   <object id="79" name="floor" x="376" y="320" width="432" height="16"/>
    <object id="81" name="floor" x="472" y="304" width="48" height="16"/>
    <object id="82" name="floor" x="568" y="304" width="48" height="16"/>
    <object id="83" name="floor" x="664" y="304" width="48" height="16"/>

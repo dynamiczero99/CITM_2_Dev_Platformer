@@ -170,6 +170,7 @@ private:
 	bool LoadMapColliders(pugi::xml_node& node);//, MapObjects* obj);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool LoadGameObjects(pugi::xml_node& node);
+	int GetTileWidth();
 
 
 	TileSet* GetTilesetFromTileId(int id) const;

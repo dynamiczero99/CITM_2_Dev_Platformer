@@ -44,11 +44,12 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 	if (IsPlayerInTileRange(detectionRange) && App->object->player->position.y >= position.y - 10) {
 		iPoint srcPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
 		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - TILE_WIDTH * 0.5f);
-		App->pathfinding->CreatePathLand(srcPos, trgPos);
-		pathData.CopyLastGeneratedPath();
-		step = 0u;
-		currAnim = &movingAnim;
-		enemy_state = enemyState::CHASING;
+		if (App->pathfinding->CreatePathLand(srcPos, trgPos) > -1) {
+			pathData.CopyLastGeneratedPath();
+			step = 0u;
+			currAnim = &movingAnim;
+			enemy_state = enemyState::CHASING;
+		}
 	}
 	else {
 		GoIdle();
@@ -70,7 +71,9 @@ bool ObjEnemyLand::Update(float dt) {
 			//Check if we've reached the next node in the path
 			iPoint iposition ((int)position.x, (int)position.y);
 			iPoint targetTileWorldPos = App->map->MapToWorld(pathData.path[step].x, pathData.path[step].y);
-			targetTileWorldPos.y += TILE_WIDTH * 0.5f;
+			targetTileWorldPos.y += TILE_WIDTH;//The position of the tiles is given from the top left
+			LOG("src pos y: %i", iposition.y);
+			LOG("trg pos y: %i", targetTileWorldPos.y);
 			if (iposition.DistanceManhattan(targetTileWorldPos) < reachOffset) {
 				if (step + 1 < pathData.path.Count()) {
 					step++;
