@@ -12,8 +12,8 @@
 #include "j1Input.h"
 
 // TODO: config.xml, testing for now
-#define MIN_DISTANCE 15
-#define MAX_DISTANCE 25
+#define MIN_DISTANCE 12
+#define MAX_DISTANCE 20
 #define MAX_IDLE_RPATH 6
 
 struct Collider;

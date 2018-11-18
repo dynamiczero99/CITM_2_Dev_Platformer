@@ -487,6 +487,7 @@ void ObjPlayer::SwapPosition() {
 			position.y - pInstantiationPos.h, COLLIDER_NONE);
 		// ------------------------------------------
 		position = swapObject->position;
+		velocity = swapObject->velocity;
 		swapObject->position = auxPos;
 		swapObject->MarkObject(false);
 		swapObject = nullptr;
