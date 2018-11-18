@@ -72,11 +72,12 @@ Jose Antonio Prieto
 - Save and load state of all entities
 - Brofiler
 - Load custom properties from xml
+- Added module particles
 
 Jaume Montagut Guix
 - A*
 - Walking enemy
-- Entity module
+- Added module entities (j1Object)
 - Incorporation of dt to stabilize movement & animations
 
 ## Debug functionality:
