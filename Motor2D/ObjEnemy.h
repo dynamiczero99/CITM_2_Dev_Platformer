@@ -31,7 +31,7 @@ protected:
 		DEATH
 	};
 	bool IsPlayerInTileRange(const uint range) const;
-	void StartNewPathThread();
+	//void StartNewPathThread();
 	int GetRandomValue(const int min, const  int max) const;
 	void DebugPath();
 

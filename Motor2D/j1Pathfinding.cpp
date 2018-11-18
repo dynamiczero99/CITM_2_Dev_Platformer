@@ -196,29 +196,30 @@ void PathNode::FindWalkableAdjacentsLand(PathList & pathList, const iPoint desti
 	}
 }
 
-void PathNode::FindWalkableAdjacentsJumpingLand(PathList & pathList, const iPoint destination)
-{
-	iPoint cell;
-	// north
-	cell.create(pos.x, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
-
-	// east
-	cell.create(pos.x + 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
-
-	// south
-	cell.create(pos.x, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
-
-	// west
-	cell.create(pos.x - 1, pos.y);
-	if (App->pathfinding->IsWalkable(cell))
-		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
-}
+// still working on it
+//void PathNode::FindWalkableAdjacentsJumpingLand(PathList & pathList, const iPoint destination)
+//{
+//	iPoint cell;
+//	// north
+//	cell.create(pos.x, pos.y + 1);
+//	if (App->pathfinding->IsWalkable(cell))
+//		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+//
+//	// east
+//	cell.create(pos.x + 1, pos.y);
+//	if (App->pathfinding->IsWalkable(cell))
+//		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+//
+//	// south
+//	cell.create(pos.x, pos.y - 1);
+//	if (App->pathfinding->IsWalkable(cell))
+//		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+//
+//	// west
+//	cell.create(pos.x - 1, pos.y);
+//	if (App->pathfinding->IsWalkable(cell))
+//		pathList.list.add(PathNode(g + COST_TO_MOVE, cell.DistanceManhattan(destination), cell, this));
+//}
 
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
@@ -332,32 +333,33 @@ int j1PathFinding::CreatePathLand(const iPoint& origin, const iPoint& destinatio
 	return -1;
 }
 
-int j1PathFinding::multiThreadCreatePath(void* data)
-{
-	BROFILER_FRAME("new thread");
-	//BROFILER_THREAD("new worker");
-	BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
-	//LOG("NEW THREAD");
-	threadData* tdata = (threadData*)data;
-	
-	if (App->pathfinding->CreatePathLand(tdata->origin, tdata->destination) > 0)
-	{
-		LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
-		LOG("object index: %i", tdata->index);
-		//CreatePath(tdata->origin, tdata->destination);
-
-		tdata->ready = true;
-
-		tdata->CopyLastGeneratedPath();
-	}
-	else
-	{
-		//LOG("thread finished without reachable path");
-		tdata->waitingForPath = false;
-	}
-	
-	return 0;
-}
+// not used for now
+//int j1PathFinding::multiThreadCreatePath(void* data)
+//{
+//	BROFILER_FRAME("new thread");
+//	//BROFILER_THREAD("new worker");
+//	BROFILER_CATEGORY("worker path", Profiler::Color::Orchid);
+//	//LOG("NEW THREAD");
+//	threadData* tdata = (threadData*)data;
+//	
+//	if (App->pathfinding->CreatePathLand(tdata->origin, tdata->destination) > 0)
+//	{
+//		LOG("origin %i,%i", tdata->origin.x, tdata->origin.y);
+//		LOG("object index: %i", tdata->index);
+//		//CreatePath(tdata->origin, tdata->destination);
+//
+//		tdata->ready = true;
+//
+//		tdata->CopyLastGeneratedPath();
+//	}
+//	else
+//	{
+//		//LOG("thread finished without reachable path");
+//		tdata->waitingForPath = false;
+//	}
+//	
+//	return 0;
+//}
 
 // doesnt work yet, still work in progress method...
 //int j1PathFinding::CreateJumpingLandPath(const iPoint& origin, const iPoint& destination, int characterTileWidth, int characterTileHeight, int maxCharacterTilesJump)
