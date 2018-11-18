@@ -243,7 +243,18 @@ bool j1Object::Load(pugi::xml_node& node)
 			player->SetSwapObject(fe);
 		}
 	}
-	
+
+	// land enemy ---
+	for (pugi::xml_node landEnemy = node.child("landEnemy"); landEnemy; landEnemy = landEnemy.next_sibling("landEnemy"))
+	{
+		ObjEnemyLand * le = App->object->AddObjEnemyLand({ landEnemy.attribute("x").as_float(), landEnemy.attribute("y").as_float() });
+		//if (landEnemy.attribute("isMarked"))
+		//{
+		//	le->MarkObject(true);
+		//	player->SetSwapObject(le);
+		//}
+	}
+
 	// and load the rest of data
 	for (int i = 0; i < MAX_OBJECTS; ++i)
 	{

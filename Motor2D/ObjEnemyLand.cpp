@@ -126,6 +126,18 @@ bool ObjEnemyLand::OnDestroy()
 	return true;
 }
 
+void ObjEnemyLand::MarkObject(bool mark)
+{
+	//if (mark) {
+	//	currAnim = &idleAnimMarked;
+	//}
+	//else {
+	//	currAnim = &idleAnimSearching;
+	//}
+
+	//marked = mark; // updates internal state
+}
+
 void ObjEnemyLand::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 		uint dist[(uint)dir::max];
@@ -164,4 +176,46 @@ void ObjEnemyLand::OnCollision(Collider * c1, Collider * c2) {
 		iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, c1->rect.w, c1->rect.h);
 		c1->SetPos(colPos.x, colPos.y);
 	}
+}
+
+bool ObjEnemyLand::Load(pugi::xml_node & loadNode)
+{
+	p2SString flipDir = loadNode.child("landEnemy").attribute("flip_direction").as_string();
+	// check facing direction
+	if (flipDir == "true")
+	{
+		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+	}
+	else {
+		flip = SDL_RendererFlip::SDL_FLIP_NONE;
+	}
+	return false;
+}
+
+bool ObjEnemyLand::Save(pugi::xml_node& node) const
+{
+	LOG("LandEnemy");
+
+	pugi::xml_node landEnemy = node.append_child("landEnemy");
+
+	iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y); // stick to map coords.
+	pos = App->map->MapToWorld(pos.x, pos.y); // and save in world coords to easy load
+
+	landEnemy.append_attribute("x") = pos.x;
+	landEnemy.append_attribute("y") = pos.y;
+	//landEnemy.append_attribute("velocity_x") = velocity.x;
+	//landEnemy.append_attribute("velocity_y") = velocity.y;
+
+	//if (marked) {
+	//	landEnemy.append_attribute("isMarked") = true;
+	//}
+
+	if (flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL) {
+		landEnemy.append_attribute("flip_direction") = "true";
+	}
+	else {
+		landEnemy.append_attribute("flip_direction") = "false";
+	}
+
+	return true;
 }
