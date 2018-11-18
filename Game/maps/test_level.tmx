@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="66">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="67">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -60218,15 +60218,16 @@
   <objectgroup name="Triggers">
    <object id="63" name="Trigger" type="standard" x="432.75" y="277" width="14" height="3">
     <properties>
-     <property name="triggerObjectID" type="int" value="21"/>
+     <property name="triggerObjectID" type="int" value="66"/>
     </properties>
    </object>
   </objectgroup>
   <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
-   <object id="35" name="normalBox" x="592" y="200" width="16" height="16"/>
+   <object id="35" name="normalBox" x="708.5" y="261.5" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
-   <object id="50" name="landEnemy" x="528" y="192" width="16" height="24"/>
+   <object id="50" name="landEnemy" x="590.5" y="204" width="16" height="24"/>
+   <object id="66" name="normalBox" x="458" y="262" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>

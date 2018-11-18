@@ -40,10 +40,9 @@ private:
 	j1Timer timer;
 	Animation smallAnim[animState::max];
 	bool activated = false;
-	/*uint animTileWidth = 0u;
-	uint animTileHeight = 0u;*/
-	//Animation bigAnim;
-	
+	uint32 coolDown = 0u;
+	animState currentState = animState::inactive;
+
 };
 
 #endif

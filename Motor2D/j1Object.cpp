@@ -132,6 +132,49 @@ int j1Object::FindEmptyPosition() {
 	return -1;
 }
 
+bool j1Object::OnTriggerEnter(ObjTrigger* trigger)
+{
+	// check if we have any coincidence
+	for (uint i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+		{
+			for (int ids = 0; ids < trigger->objectsEventIDs.Count(); ++ids)
+			{
+				if (objects[i]->objectID == *trigger->objectsEventIDs.At(ids))
+				{
+					//LOG("coincidence");
+					objects[i]->OnTriggerEnter();
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+bool j1Object::OnTriggerExit(ObjTrigger* trigger)
+{
+	// check if we have any coincidence
+	for (uint i = 0; i < MAX_OBJECTS; ++i)
+	{
+		if (objects[i] != nullptr)
+		{
+			for (int ids = 0; ids < trigger->objectsEventIDs.Count(); ++ids)
+			{
+				if (objects[i]->objectID == *trigger->objectsEventIDs.At(ids))
+				{
+					//LOG("coincidence");
+					objects[i]->OnTriggerExit();
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+
 
 //You should try to AddObject() on the Start method
 //- On the Awake method the object module might have not gotten its node from the xml (depends on the order of the modules and if the module you are calling from is before of after the module object)
@@ -312,6 +355,14 @@ bool GameObject::PostUpdate() {
 }
 
 bool GameObject::OnDestroy() {
+	return true;
+}
+
+bool GameObject::OnTriggerEnter(){
+	return true;
+}
+
+bool GameObject::OnTriggerExit() {
 	return true;
 }
 

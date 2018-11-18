@@ -8,6 +8,8 @@ ObjTrigger::ObjTrigger(fPoint &position, int index, pugi::xml_node& node, iPoint
 
 	LoadAnimation(node.child("animation").child("small_inactive_animation"), smallAnim[animState::inactive]);
 	LoadAnimation(node.child("animation").child("small_active_animation"), smallAnim[animState::active]);
+	
+	coolDown = node.child("cooldown_time_ms").text().as_uint();
 
 	col = App->collision->AddCollider(colRect, COLLIDER_TRIGGER, this);
 }
@@ -15,10 +17,12 @@ ObjTrigger::ObjTrigger(fPoint &position, int index, pugi::xml_node& node, iPoint
 bool ObjTrigger::Update(float dt)
 {
 	
-	if (timer.Read() > 1000 && activated)
+	if (timer.Read() > coolDown && activated)
 	{
-		LOG("unswitched");
+		//LOG("unswitched");
 		activated = false;
+		currentState = animState::inactive;
+		App->object->OnTriggerExit(this);
 	}
 
 	return true;
@@ -27,17 +31,21 @@ bool ObjTrigger::Update(float dt)
 bool ObjTrigger::PostUpdate()
 {
 	
-	App->render->Blit(App->object->robotTilesetTex, position.x, position.y, &smallAnim[animState::active].GetCurrentFrame());
+	App->render->Blit(App->object->robotTilesetTex, position.x, position.y, &smallAnim[currentState].GetCurrentFrame());
 
 	return true;
 }
 
 void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER) {
-		LOG("player triggered");
 		timer.Start();
 		if (!activated)
+		{
+			LOG("player triggered");
 			activated = true;
+			currentState = animState::active;
+			App->object->OnTriggerEnter(this);
+		}
 		/*switch (action) {
 		case triggerAction::next_level:
 			break;

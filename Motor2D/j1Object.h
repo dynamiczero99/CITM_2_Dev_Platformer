@@ -71,7 +71,8 @@ protected:
 	virtual bool TimedUpdate(float dt);
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
-
+	virtual bool OnTriggerEnter();
+	virtual bool OnTriggerExit();
 	virtual bool Load(pugi::xml_node&);
 	virtual bool Save(pugi::xml_node&) const;
 
@@ -114,6 +115,9 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 	int FindEmptyPosition();
+
+	bool OnTriggerEnter(ObjTrigger* trigger); // maybe we can improve this two functions in one
+	bool OnTriggerExit(ObjTrigger* trigger);
 
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
