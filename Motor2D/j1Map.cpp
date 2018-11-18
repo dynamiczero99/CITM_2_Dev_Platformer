@@ -683,7 +683,9 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 					if (gameobject_name == "normalBox") {
 						//Box have their pivot point on ther bottom - middle
-						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, object.attribute("y").as_float() + object.attribute("height").as_float() });
+						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, 
+												 object.attribute("y").as_float() + object.attribute("height").as_float() }, 
+												 object.attribute("id").as_int());
 					}
 					else if (gameobject_name == "flyingEnemy") {
 						App->object->AddObjEnemyFlying({ object.attribute("x").as_float(), object.attribute("y").as_float() });
@@ -705,19 +707,46 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 				p2SString gameobject_type = object.attribute("type").as_string();
 				//LOG("%s", gameobject_type.GetString());
 
-				if (gameobject_type == "event")
+				if (gameobject_type == "standard")
 				{
+					if (object.child("properties"))
+					{
+						// creates trigger
+						ObjTrigger* ot = App->object->AddObjTrigger({ object.attribute("x").as_float(), object.attribute("y").as_float() }, triggerAction::none,
+							{ object.attribute("width").as_int(), object.attribute("height").as_int() });
+						LOG("trigger properties found");
+
+						// adds all triggered id's
+						for (pugi::xml_node properties = object.child("properties").child("property"); properties; properties = properties.next_sibling("property"))
+						{
+							p2SString propertyName = properties.attribute("name").as_string();
+							LOG("property %s", propertyName.GetString());
+
+							if (propertyName == "triggerObjectID")
+							{
+								int linkedID = properties.attribute("value").as_int();
+								ot->objectsEventIDs.PushBack(linkedID);
+							}
+						}
+
+						for (uint i = 0; i < ot->objectsEventIDs.Count(); ++i)
+						{
+							LOG("trigger linked id %i", ot->objectsEventIDs.At(i));
+							//LOG("blabla %i", properties.attribute("value").as_int());
+						}
+					}
+					
 					p2SString event_type = object.attribute("name").as_string();
 
-					if (event_type == "animation")
-					{
-						LOG("there is one animation trigger");
-						// create objtrigger event animation
-						App->object->AddObjTrigger({ object.attribute("x").as_float(),
-													 object.attribute("y").as_float() },
-													 triggerAction::animation,
-							{ object.attribute("width").as_int(), object.attribute("width").as_int() });
-					}
+					//if (event_type == "animation")
+					//{
+					//	LOG("there is one animation trigger");
+					//	// create objtrigger event animation
+					//	App->object->AddObjTrigger({ object.attribute("x").as_float(),
+					//								 object.attribute("y").as_float() },
+					//								 triggerAction::animation,
+					//		{ object.attribute("width").as_int(), object.attribute("width").as_int() });
+					//}
 					
 				}
 				

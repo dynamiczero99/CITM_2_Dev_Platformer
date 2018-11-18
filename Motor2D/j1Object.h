@@ -63,6 +63,7 @@ public:
 
 protected:
 	GameObject(fPoint &position, int index);
+	GameObject(fPoint &position, int index, int objectID);
 	virtual bool OnDestroy();
 	~GameObject();
 
@@ -96,6 +97,8 @@ protected:
 	Uint32 lastUpdate = 0u;
 	Pivot pivot = Pivot(PivotV::top, PivotH::left);
 	Collider * col = nullptr;
+	// unique ID for every object
+	int objectID = -1;
 };
 
 class j1Object : public j1Module
@@ -114,10 +117,10 @@ public:
 
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
-	ObjBox * AddObjBox(fPoint position);
+	ObjBox * AddObjBox(fPoint position, int objectID);
 	ObjTrigger * AddObjTrigger(fPoint position, triggerAction action, iPoint rectSize);
-	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);
-	ObjEnemyLand * AddObjEnemyLand(fPoint position);
+	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);//, int objectID);
+	ObjEnemyLand * AddObjEnemyLand(fPoint position);//, int objectID);
 	bool DeleteObject(GameObject * object);
 
 public:
