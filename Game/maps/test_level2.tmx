@@ -49575,10 +49575,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
-   <tile gid="1671"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -60233,6 +60233,7 @@
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="35" name="normalBox" x="708.5" y="261.5" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
+   <object id="50" name="landEnemy" x="590.5" y="204" width="16" height="24"/>
    <object id="66" name="normalBox" x="458" y="262" width="16" height="16"/>
    <object id="67" name="Door" x="479.75" y="175" width="16" height="53"/>
    <object id="70" name="normalBox" x="308.25" y="263.75" width="16" height="16"/>

@@ -100,8 +100,8 @@ bool j1Scene::PreUpdate() {
 		if (origin_selected == true)
 		{
 			//App->pathfinding->CreatePath(origin, p);
-			//App->pathfinding->CreateLandPath(origin, p, 1, 1, 3);
-			App->pathfinding->CreatePathLand(origin, p);
+			App->pathfinding->CreateJumpingLandPath(origin, p, 1, 1, 6);
+			//App->pathfinding->CreatePathLand(origin, p);
 			CopyLastGeneratedPath();
 			origin_selected = false;
 		}
