@@ -149,7 +149,7 @@
       <jump_height>8</jump_height>
       <feet_collider_width>10</feet_collider_width>
       <feet_collider_height>5</feet_collider_height>
-      <maximum_fall_velocity>750</maximum_fall_velocity>
+      <maximum_fall_velocity>60</maximum_fall_velocity>
       <recovery_time>0.3</recovery_time>
       <animation tile_width ="16" tile_height ="28">
         <idle_animation speed ="15.0">
