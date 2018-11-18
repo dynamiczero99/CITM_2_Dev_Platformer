@@ -231,7 +231,7 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 			SolveCollision(c2);
 		}
 		else if (c2->type == COLLIDER_DEATH_ZONE) {
-			CollideDeathZone();
+			Die();
 		}
 		else if (c2->type == COLLIDER_WIN_ZONE) {
 			CollideWinZone();
@@ -241,7 +241,7 @@ void ObjPlayer::OnCollision(Collider * c1, Collider * c2) {
 				SolveCollision(c2);
 			}
 			else {
-				CollideDeathZone();
+				Die();
 			}
 		}
 	}
@@ -348,7 +348,7 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
 }
 
-void ObjPlayer::CollideDeathZone() {
+void ObjPlayer::Die() {
 	App->audio->PlayFx(death);
 	App->fade_to_black->FadeToBlack(App->map->data.loadedLevel.GetString(), 1.0f);
 }
@@ -411,12 +411,6 @@ void ObjPlayer::GodMovement(float dt) {
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
-}
-
-void ObjPlayer::LimitFallVelocity(float dt) {
-	if (velocity.y * dt > maxFallVelocity) {
-		velocity.y = maxFallVelocity / dt;
-	}
 }
 
 void ObjPlayer::ShootProjectile()

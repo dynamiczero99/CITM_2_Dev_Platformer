@@ -141,6 +141,12 @@ void ObjEnemyLand::MarkObject(bool mark)
 }
 
 void ObjEnemyLand::OnCollision(Collider * c1, Collider * c2) {
+	if (c2->type == COLLIDER_PLAYER) {
+		if (c2->callbackObj->position.y > position.y - col->rect.h * 0.5f) {
+			//TODO: This will cause problems if we add 2 players
+			App->object->player->Die();
+		}
+	}
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 		uint dist[(uint)dir::max];
 		dist[(uint)dir::invalid] = INT_MAX;

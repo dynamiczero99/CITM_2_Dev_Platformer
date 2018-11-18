@@ -33,6 +33,7 @@ public:
 
 	void SetSwapObject(GameObject * markedObject);
 	void DestroyProjectile();
+	void Die();
 
 private:
 	void ToggleGodMode();
@@ -41,13 +42,11 @@ private:
 	void StandardMovement(float dt);
 	void GodMovement(float dt);
 
-	void LimitFallVelocity(float dt);
 	void ShootProjectile();
 	void SwapPosition();
 
 	void OnCollisionFeet(Collider * c2);
 	void SolveCollision(Collider * c2);
-	void CollideDeathZone();
 	void CollideWinZone();
 
 	int LimitDistance(int distance);

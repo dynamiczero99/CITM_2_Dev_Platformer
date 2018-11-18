@@ -474,3 +474,9 @@ bool GameObject::Save(pugi::xml_node& node) const
 float GameObject::TileToPixel(uint pixel) {
 	return pixel * App->object->tileSize;
 }
+
+void GameObject::LimitFallVelocity(float dt) {
+	if (velocity.y * dt > maxFallVelocity) {
+		velocity.y = maxFallVelocity / dt;
+	}
+}
