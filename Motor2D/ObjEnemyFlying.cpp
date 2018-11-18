@@ -74,7 +74,7 @@ void ObjEnemyFlying::MarkObject(bool mark)
 
 bool ObjEnemyFlying::PreUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		pathDebugDraw = !pathDebugDraw;
 	}

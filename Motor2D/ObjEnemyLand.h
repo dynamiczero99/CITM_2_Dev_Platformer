@@ -20,6 +20,7 @@ public:
 	void OnCollision(Collider * c1, Collider * c2) override;
 	bool Load(pugi::xml_node & loadNode) override;
 	bool Save(pugi::xml_node & saveNode) const override;
+	void MarkObject(bool mark) override;
 
 private:
 	void GoIdle();

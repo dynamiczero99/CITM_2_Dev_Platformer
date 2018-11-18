@@ -126,6 +126,18 @@ bool ObjEnemyLand::OnDestroy()
 	return true;
 }
 
+void ObjEnemyLand::MarkObject(bool mark)
+{
+	//if (mark) {
+	//	currAnim = &idleAnimMarked;
+	//}
+	//else {
+	//	currAnim = &idleAnimSearching;
+	//}
+
+	//marked = mark; // updates internal state
+}
+
 void ObjEnemyLand::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_WALL || c2->type == COLLIDER_BOX || c2->type == COLLIDER_GLASS) {
 		uint dist[(uint)dir::max];
@@ -191,8 +203,8 @@ bool ObjEnemyLand::Save(pugi::xml_node& node) const
 
 	landEnemy.append_attribute("x") = pos.x;
 	landEnemy.append_attribute("y") = pos.y;
-	landEnemy.append_attribute("velocity_x") = velocity.x;
-	landEnemy.append_attribute("velocity_y") = velocity.y;
+	//landEnemy.append_attribute("velocity_x") = velocity.x;
+	//landEnemy.append_attribute("velocity_y") = velocity.y;
 
 	//if (marked) {
 	//	landEnemy.append_attribute("isMarked") = true;

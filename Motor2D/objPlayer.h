@@ -41,7 +41,7 @@ private:
 	void StandardMovement(float dt);
 	void GodMovement(float dt);
 
-	void LimitFallVelocity();
+	void LimitFallVelocity(float dt);
 	void ShootProjectile();
 	void SwapPosition();
 
