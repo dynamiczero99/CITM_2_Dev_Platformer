@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="18" nextobjectid="67">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="69">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -151,7 +151,7 @@
  <tileset firstgid="1672" name="GlassTexture" tilewidth="8" tileheight="8" tilecount="15" columns="5">
   <image source="../textures/GlassTexture.png" width="40" height="24"/>
  </tileset>
- <layer id="1" name="background" width="150" height="100">
+ <layer name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15158,7 +15158,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="2" name="midground" width="150" height="100">
+ <layer name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30165,7 +30165,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="3" name="foreground" width="150" height="100">
+ <layer name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -45169,7 +45169,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="4" name="navigationLayer" width="150" height="100">
+ <layer name="navigationLayer" width="150" height="100">
   <properties>
    <property name="Navigation" type="bool" value="true"/>
   </properties>
@@ -60176,22 +60176,22 @@
    <tile/>
   </data>
  </layer>
- <group id="5" name="Colliders">
-  <objectgroup id="6" name="Win">
+ <group name="Colliders">
+  <objectgroup name="Win">
    <object id="22" name="Trigger" type="next_level" x="1010.5" y="139" width="20.5" height="137.5"/>
   </objectgroup>
-  <objectgroup id="7" name="Glass">
+  <objectgroup name="Glass">
    <object id="39" x="944" y="176" width="8" height="104"/>
   </objectgroup>
-  <objectgroup id="8" name="Death">
+  <objectgroup name="Death">
    <object id="19" name="death" x="0" y="303" width="1200" height="40"/>
   </objectgroup>
-  <objectgroup id="9" name="Platforms">
+  <objectgroup name="Platforms">
    <object id="24" x="881" y="303" width="294" height="496"/>
    <object id="25" x="673" y="303" width="94" height="496"/>
    <object id="26" x="64" y="303" width="527" height="496"/>
   </objectgroup>
-  <objectgroup id="10" name="Floor">
+  <objectgroup name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -60204,8 +60204,8 @@
    <object id="59" name="floor" x="480" y="232" width="128" height="23"/>
   </objectgroup>
  </group>
- <group id="11" name="Player">
-  <objectgroup id="12" name="PlayerData">
+ <group name="Player">
+  <objectgroup name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -60214,8 +60214,8 @@
    </object>
   </objectgroup>
  </group>
- <group id="16" name="GameObjects">
-  <objectgroup id="17" name="Triggers">
+ <group name="GameObjects">
+  <objectgroup name="Triggers">
    <object id="63" name="Trigger" type="standard" x="432.75" y="277" width="14" height="3">
     <properties>
      <property name="id0" type="int" value="66"/>
@@ -60229,14 +60229,15 @@
     </properties>
    </object>
   </objectgroup>
-  <objectgroup id="15" name="GameObjects">
+  <objectgroup name="GameObjects">
    <object id="21" name="normalBox" x="864" y="263" width="16" height="16"/>
    <object id="35" name="normalBox" x="708.5" y="261.5" width="16" height="16"/>
    <object id="45" name="normalBox" x="975" y="262" width="16" height="16"/>
-   <object id="66" name="landEnemy" x="528" y="160" width="16" height="24"/>
    <object id="66" name="normalBox" x="458" y="262" width="16" height="16"/>
    <object id="67" name="Door" x="479.75" y="175" width="16" height="53"/>
    <object id="70" name="normalBox" x="308.25" y="263.75" width="16" height="16"/>
+   <object id="67" name="flyingEnemy" x="428.25" y="179.25" width="16" height="16"/>
+   <object id="68" name="flyingEnemy" x="382.5" y="184" width="16" height="16"/>
   </objectgroup>
  </group>
 </map>
