@@ -21,6 +21,7 @@ ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_
 	gravity = TileToPixel(enemy_node.child("gravity").text().as_uint());
 	moveSpeed = enemy_node.child("move_speed").text().as_float();
 	reachOffset = enemy_node.child("reach_offset").text().as_int();
+	maxFallSpeed = enemy_node.child("maximum_fall_velocity").text().as_int();
 
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	acceleration.y = gravity;
@@ -98,7 +99,7 @@ bool ObjEnemyLand::Update(float dt) {
 	}
 
 	velocity = velocity + acceleration * dt;
-	//TODO: Limit fall velocity
+	LimitFallSpeed(dt);
 	position = position + velocity * dt;
 
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);

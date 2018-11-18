@@ -84,7 +84,7 @@ protected:
 	iPoint GetPivotPos(Pivot pivot, int x, int y, uint w, uint h);
 	bool LoadAnimation(pugi::xml_node &node, Animation &anim);
 	float TileToPixel (uint pixel);
-	void LimitFallVelocity(float dt);
+	void LimitFallSpeed(float dt);
 
 	//Variables
 public:
@@ -102,7 +102,7 @@ protected:
 	Collider * col = nullptr;
 	// unique ID for every object
 	int objectID = -1;
-	float maxFallVelocity = INT_MAX;
+	float maxFallSpeed = INT_MAX;
 };
 
 class j1Object : public j1Module

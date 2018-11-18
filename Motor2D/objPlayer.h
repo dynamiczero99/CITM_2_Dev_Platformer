@@ -87,7 +87,6 @@ public:
 
 private:
 	//Position swap
-	float maxFallVelocity = 0.0f;
 	GameObject * swapObject = nullptr;
 
 	//God mode

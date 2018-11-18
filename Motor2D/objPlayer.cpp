@@ -41,7 +41,7 @@ ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) :
 	//- This formula traduces gives us the speed necessary to reach a certain height
 	//- It is calculated using the conservation of mechanic energy
 	jumpSpeed = -sqrtf(gravity * TileToPixel(playerNode.child("jump_height").text().as_float()) * 2.0F);
-	maxFallVelocity = playerNode.child("maximum_fall_velocity").text().as_float();
+	maxFallSpeed = playerNode.child("maximum_fall_velocity").text().as_float();
 	shootHeight = playerNode.child("shoot_height").text().as_uint();
 	recoveryTime = playerNode.child("recovery_time").text().as_float();
 
@@ -393,7 +393,7 @@ void ObjPlayer::StandardMovement(float dt)
 	}
 
 	velocity = velocity + acceleration * dt;
-	LimitFallVelocity(dt);
+	LimitFallSpeed(dt);
 	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);

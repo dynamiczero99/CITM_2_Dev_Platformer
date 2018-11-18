@@ -62,14 +62,17 @@
     <!-- The size we consider a standard tile to be (used when calculating moveSpeed and jumpHeight)-->
     <tile_size>8</tile_size>
 	  <debug_path_enemy_tex>maps/debugPath.png</debug_path_enemy_tex>
+    
     <projectile>
       <speed>45</speed>
       <collider_width>5</collider_width>
       <collider_height>5</collider_height>
       <sfx name="impact" value="impactSound.wav"/>
     </projectile>
+    
     <box>
       <gravity>120</gravity>
+      <maximum_fall_velocity>60</maximum_fall_velocity>
       <animation tile_width ="16" tile_height ="16">
         <inactive_animation speed ="0">
           <sprite x ="112" y ="208" w ="16" h="16"/>
@@ -79,6 +82,7 @@
         </active_animation>
       </animation>
     </box>
+    
     <enemy_land>
       <gravity>120</gravity>
       <speed chasing_speed = "50" idle_speed = "25"/>
@@ -87,6 +91,7 @@
       <move_speed>30.0</move_speed>
       <reach_offset>3</reach_offset>
       <detection_range> 20 </detection_range>
+      <maximum_fall_velocity>60</maximum_fall_velocity>
       <animation>
         <idle_animation speed = "15.0">
           <sprite x ="209" y ="152" w ="15" h="24"/>
@@ -104,8 +109,8 @@
           <sprite x ="401" y ="152" w ="15" h="24"/>
         </moving_animation>
       </animation>
-
     </enemy_land>
+    
     <enemy_flying>
 	  <speed chasing_speed = "50" idle_speed = "25"/>
 	  <path_frequency_ms min_ms = "1000" max_ms = "1600"/>
@@ -137,6 +142,7 @@
         </idle_animation_marked>
       </animation>
     </enemy_flying>
+    
     <player>
 	    <sfx name="teleport" value="teleport2.wav"/>
 	    <sfx name="shoot" value="shoot01.wav"/>
@@ -187,6 +193,7 @@
         </fall_animation>
       </animation>
     </player>
+    
 	<trigger>
 	 <cooldown_time_ms>500</cooldown_time_ms>
 	 <animation tile_width ="14" tile_height ="3">
@@ -198,6 +205,7 @@
 		</small_active_animation>
 	 </animation>
 	</trigger>
+    
 	<door>
 		<laser_active_texture>textures/laser/laser-active.png</laser_active_texture>
 		<laser_turn_on_texture>textures/laser/laser-turn-on.png</laser_turn_on_texture>
@@ -228,8 +236,8 @@
 			</turn_off>
 		</animation>
 	</door>
+    
   </object>
-  
   <Particles>
 	<teleport_texture01>textures/teleporter_01.png</teleport_texture01>
 	<teleport_texture02>textures/teleporter_hit.png</teleport_texture02>

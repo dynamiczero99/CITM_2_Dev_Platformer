@@ -36,7 +36,6 @@ private:
 	//The node in which it is in the array
 	uint step = 0u;
 	float moveSpeed = 0.0f;
-	float maxFallSpeed = 0.0f;
 	//The distance (pixels) in which it determines it has reached that node
 	//If reachOffset is very small and moveSpeed too big it may pass the node and never go to the next node
 	int reachOffset = 0;
