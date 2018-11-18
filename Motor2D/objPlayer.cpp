@@ -193,6 +193,15 @@ bool ObjPlayer::PostUpdate() {
 		fPoint projectileDir;
 		projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
 		projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+		if (projectileDir.IsZero()) {
+			//If no direction is given, shoot forward
+			if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+				projectileDir.x = SHRT_MAX;
+			}
+			else {
+				projectileDir.x = SHRT_MIN;
+			}
+		}
 		float angle = atan2(projectileDir.y, projectileDir.x) * 180.0f / M_PI;
 		App->render->Blit(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 1.0f, SDL_FLIP_NONE, angle, 0, 15);
 	}
@@ -441,7 +450,12 @@ void ObjPlayer::ShootProjectile()
 			projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
 			if (projectileDir.IsZero()) {
 				//If no direction is given, shoot forward
-				projectileDir.x = SHRT_MAX;
+				if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+					projectileDir.x = SHRT_MAX;
+				}
+				else {
+					projectileDir.x = SHRT_MIN;
+				}
 			}
 			recoveryTimer.Start();
 		}

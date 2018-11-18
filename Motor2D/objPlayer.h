@@ -84,6 +84,7 @@ public:
 	uint shootHeight = 0u;
 	j1Timer recoveryTimer;
 	float recoveryTime = 0.0f;//Time it takes for the player to move again after shooting
+	float angle = 0.0f;
 
 private:
 	//Position swap
