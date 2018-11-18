@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="65">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="66">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -60218,7 +60218,7 @@
   <objectgroup name="Triggers">
    <object id="63" name="Trigger" type="standard" x="424.5" y="270.5" width="18" height="9">
     <properties>
-     <property name="triggerObjectID" type="int" value="0"/>
+     <property name="triggerObjectID" type="int" value="21"/>
     </properties>
    </object>
   </objectgroup>
