@@ -30,11 +30,7 @@
   <map>
     <folder>maps/</folder>
 	  <levels>
-      <level name="level011.tmx"/>
-	    <level name="level012.tmx"/>
-      <level name="level013.tmx"/>
-      <level name="level010.tmx"/>
-      <level name="test_level.tmx"/>
+      <!--<level name="test_level.tmx"/>-->
       <level name="level001.tmx"/>
       <level name="level002.tmx"/>
       <level name="level003.tmx"/>
@@ -44,6 +40,10 @@
       <level name="level007.tmx"/>
       <level name="level008.tmx"/>
       <level name="level009.tmx"/>
+      <level name="level010.tmx"/>
+      <level name="level011.tmx"/>
+	    <level name="level012.tmx"/>
+      <level name="level013.tmx"/>
 	  </levels>
   </map>
 
