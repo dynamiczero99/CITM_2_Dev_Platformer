@@ -62,23 +62,32 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Optimization: Things out of the screen aren't rendered
 - Optimization: Multithreaded pathfinding
 - Optimization: Each object has a different updateCycle which is used to avoid that all objects' TimedUpdate() are called at the same time.
-- Controller support
+- Controller support and specific gameplay mechanic for this type of input.
+- you can swap position with enemies too!
 
-## Member contributions
+## Member contributions to assignment 2
 
 Jose Antonio Prieto
 - Flying enemy
 - A*
 - Save and load state of all entities
 - Brofiler
-- Load custom properties from xml
 - Added module particles
+- Added gamepad hotplug functionality
+- Implemented trigger import(from tiled map editor)/ functionality
+- Added new object trigger events to entity system
+- Added new object doors
 
 Jaume Montagut Guix
-- A*
 - Walking enemy
+- A*
 - Added module entities (j1Object)
 - Incorporation of dt to stabilize movement & animations
+- Implemented gamepad and - exclusive gameplay!" -
+- new material to play with it, glass
+- implement camera draw limits and its debug functionality
+- designed some new cool levels!
+- multitude of fixes/improvements
 
 ## Debug functionality:
 - F1 ​Start from the very first level
