@@ -46,7 +46,6 @@ private:
 	void CopyLastGeneratedPath();
 
 private:
-
 	fPoint cameraPos = { 0,0 };
 	bool firstStart = true;
 	bool teleport = false; // testing var, must to be player relative

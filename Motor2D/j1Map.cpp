@@ -65,7 +65,7 @@ void j1Map::Draw()
 	
 	for (p2List_item<MapLayer*>* layer = data.mapLayers.start; layer != NULL; layer = layer->next)
 	{
-		if (layer->data->name == "navigationLayer") {
+		if (layer->data->name == "navigationLayer" && showNavLayer == false) {
 			continue;
 		}
 

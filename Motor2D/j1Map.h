@@ -181,6 +181,7 @@ public:
 	MapData data;
 	PlayerData playerData;
 	bool				map_loaded;
+	bool showNavLayer = false;
 
 private:
 

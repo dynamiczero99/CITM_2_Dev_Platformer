@@ -113,6 +113,10 @@ bool j1Scene::PreUpdate() {
 	//}
 	// // ---------------------------------
 
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
+		App->map->showNavLayer = !App->map->showNavLayer;
+	}
+
 	return true;
 }
 

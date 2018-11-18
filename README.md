@@ -94,6 +94,7 @@ Jaume Montagut Guix
 - F2 ​Start from the beginning of the current level
 - F5 ​Save the current state
 - F6 ​Load the previous state (even across levels)
+- F7 Show navigation layer
 - F9​ See paths and colliders
 - F10​ God Mode
   - You can go through colliders, you don't fall
