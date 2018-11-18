@@ -71,7 +71,9 @@ bool ObjEnemyLand::Update(float dt) {
 			//Check if we've reached the next node in the path
 			iPoint iposition ((int)position.x, (int)position.y);
 			iPoint targetTileWorldPos = App->map->MapToWorld(pathData.path[step].x, pathData.path[step].y);
-			targetTileWorldPos.y += TILE_WIDTH;//The position of the tiles is given from the top left
+			//The position of the tiles is given from the top left
+			targetTileWorldPos.x += TILE_WIDTH * 0.5;//Middle
+			targetTileWorldPos.y += TILE_WIDTH;//Bottom
 			LOG("src pos y: %i", iposition.y);
 			LOG("trg pos y: %i", targetTileWorldPos.y);
 			if (iposition.DistanceManhattan(targetTileWorldPos) < reachOffset) {
