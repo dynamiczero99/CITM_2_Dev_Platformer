@@ -52,7 +52,7 @@ protected:
 	//enemy state machine
 	enemyState enemy_state = enemyState::IDLE; // default state
 
-	bool pathDebugDraw = true;
+	bool pathDebugDraw = false;
 };
 
 #endif // !
