@@ -9,6 +9,13 @@ ObjTrigger::ObjTrigger(fPoint &position, int index, triggerAction action, iPoint
 	col = App->collision->AddCollider(colRect, COLLIDER_TRIGGER, this);
 }
 
+bool ObjTrigger::Update(float dt)
+{
+
+
+	return true;
+}
+
 void ObjTrigger::OnCollision(Collider * c1, Collider * c2) {
 	if (c2->type == COLLIDER_TYPE::COLLIDER_PLAYER) {
 		/*switch (action) {

@@ -17,6 +17,7 @@ enum triggerAction {
 class ObjTrigger : public GameObject {
 public:
 	ObjTrigger(fPoint &position, int index, triggerAction action, iPoint &rectSize);
+	bool Update(float dt);
 	void OnCollision(Collider * c1, Collider * c2) override;
 	bool OnDestroy();
 

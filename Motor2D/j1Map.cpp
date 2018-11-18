@@ -706,7 +706,6 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 			{
 				p2SString gameobject_type = object.attribute("type").as_string();
 				//LOG("%s", gameobject_type.GetString());
-
 				if (gameobject_type == "standard")
 				{
 					if (object.child("properties"))
@@ -728,32 +727,10 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 								ot->objectsEventIDs.PushBack(linkedID);
 							}
 						}
-
-						for (uint i = 0; i < ot->objectsEventIDs.Count(); ++i)
-						{
-							LOG("trigger linked id %i", ot->objectsEventIDs.At(i));
-							//LOG("blabla %i", properties.attribute("value").as_int());
-						}
 					}
-					
-					p2SString event_type = object.attribute("name").as_string();
-
-					//if (event_type == "animation")
-					//{
-					//	LOG("there is one animation trigger");
-					//	// create objtrigger event animation
-					//	App->object->AddObjTrigger({ object.attribute("x").as_float(),
-					//								 object.attribute("y").as_float() },
-					//								 triggerAction::animation,
-					//		{ object.attribute("width").as_int(), object.attribute("width").as_int() });
-					//}
-					
 				}
-				
 			}
-
 		}
-		
 	}
 
 	return true;
