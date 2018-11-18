@@ -79,10 +79,6 @@ public:
 	Animation fallAnim;
 
 	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
-	bool movingLeft = false;
-	bool movingRight = false;
-	bool goingUp = false;
-	bool goingDown = false;
 
 	//Shoot
 	ObjProjectile * projectile = nullptr;
