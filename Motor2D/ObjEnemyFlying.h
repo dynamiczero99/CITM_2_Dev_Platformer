@@ -22,6 +22,7 @@ class ObjEnemyFlying : public ObjEnemy {
 public:
 	ObjEnemyFlying(fPoint &position, int index, pugi::xml_node &object_node);
 	bool Update(float dt) override;
+	bool TimedUpdate(float dt) override;
 	bool PreUpdate() override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;
@@ -47,6 +48,7 @@ private:
 	iPoint GetMapPosition() const;
 	void MoveToWorldNode(const iPoint& node, float dt) const;
 	void followPath(float dt) const;
+	bool SearchNewPath();
 	// variables --
 	//bool multiThreadEnabled = false;
 	fPoint lastValidPos = { 0.0F,0.0F };

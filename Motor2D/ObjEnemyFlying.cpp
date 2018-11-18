@@ -56,7 +56,7 @@ bool ObjEnemyFlying::OnDestroy() {
 	App->collision->DeleteCollider(col);
 	// we not destroy any enemy, if we finish destroying any enemy
 	// maybe is better to search a outside place to call wait thread
-	SDL_WaitThread(threadID, NULL);
+	//SDL_WaitThread(threadID, NULL);
 	return true;
 }
 
@@ -78,6 +78,12 @@ bool ObjEnemyFlying::PreUpdate()
 	{
 		pathDebugDraw = !pathDebugDraw;
 	}
+
+	return true;
+}
+
+bool ObjEnemyFlying::TimedUpdate(float dt)
+{
 
 	return true;
 }
@@ -114,7 +120,11 @@ bool ObjEnemyFlying::Update(float dt) {
 	case CHASING:
 		// pathfinding
 		if (SDL_GetTicks() > start_time + frequency_time && !pathData.waitingForPath)
-			StartNewPathThread();
+		{
+			//StartNewPathThread();
+			SearchNewPath();
+
+		}
 		if (pathData.path.Count() > 0 && IsPlayerInTileRange(MAX_DISTANCE) && !marked) // minimum distance to stop follow
 			followPath(dt);
 		else
@@ -348,5 +358,28 @@ void ObjEnemyFlying::CheckFacingDirection()
 	}
 
 	previousPos = position;
+
+}
+
+bool ObjEnemyFlying::SearchNewPath()
+{
+	iPoint thisPos = App->map->WorldToMap((int)position.x, (int)position.y);
+	iPoint playerPos = App->object->player->GetObjPivotPos(Pivot(PivotV::middle, PivotH::middle));//App->map->WorldToMap((int)App->object->player->position.x, (int)App->object->player->position.y);
+	playerPos = App->map->WorldToMap(playerPos.x, playerPos.y);
+
+	if (thisPos.DistanceManhattan(playerPos) > 1) // if the enemy is at more than 1 distance manhattan
+	{
+		if (App->pathfinding->CreatePath(thisPos, playerPos))
+		{
+			frequency_time = GetRandomValue(min_ms, max_ms);
+			pathData.CopyLastGeneratedPath();
+			start_time = SDL_GetTicks();
+
+		}
+
+		return true;
+	}
+	else
+		return false;
 
 }
