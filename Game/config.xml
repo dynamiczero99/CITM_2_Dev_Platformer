@@ -30,6 +30,7 @@
   <map>
     <folder>maps/</folder>
 	  <levels>
+      <level name="level011.tmx"/>
 	    <level name="level012.tmx"/>
       <level name="level013.tmx"/>
       <level name="level010.tmx"/>
