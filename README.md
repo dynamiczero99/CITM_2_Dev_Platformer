@@ -60,7 +60,6 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Get music from the level from Tiled Map Editor.
 - Camera debugger
 - Optimization: Things out of the screen aren't rendered
-- Optimization: Multithreaded pathfinding
 - Optimization: Each object has a different updateCycle which is used to avoid that all objects' TimedUpdate() are called at the same time.
 - Controller support
 
