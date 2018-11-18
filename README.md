@@ -64,6 +64,21 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Optimization: Each object has a different updateCycle which is used to avoid that all objects' TimedUpdate() are called at the same time.
 - Controller support
 
+## Member contributions
+
+Jose Antonio Prieto
+- Flying enemy
+- A*
+- Save and load state of all entities
+- Brofiler
+- Load custom properties from xml
+
+Jaume Montagut Guix
+- A*
+- Walking enemy
+- Entity module
+- Incorporation of dt to stabilize movement & animations
+
 ## Debug functionality:
 - F1 ​Start from the very first level
 - F2 ​Start from the beginning of the current level
