@@ -9,24 +9,21 @@
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 
-#define TILE_WIDTH 8
-
 ObjEnemyLand::ObjEnemyLand(fPoint & position, int index, pugi::xml_node & enemy_node) : ObjEnemy(position, index)
 {
-	detectionRange = 20;
-	//detectionRange = enemy_node.child("detection_range").text().as_int();
+	detectionRange = enemy_node.child("detection_range").text().as_int();
 	SDL_Rect colRect = {(int)position.x, (int)position.y, enemy_node.child("collider_rectangle").attribute("w").as_int(),  enemy_node.child("collider_rectangle").attribute("h").as_int() };
 	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
 	LoadAnimation(enemy_node.child("animation").child("idle_animation"), idleAnim);
 	LoadAnimation(enemy_node.child("animation").child("moving_animation"), movingAnim);
 	currAnim = &idleAnim;
-	pivot = Pivot(PivotV::bottom, PivotH::middle);
-	updateCycle = 1000;
+	updateCycle = enemy_node.child("update_cycle").text().as_uint();
 	gravity = TileToPixel(enemy_node.child("gravity").text().as_uint());
-	moveSpeed = 30.0f;
-	maxFallSpeed = 50.0f;
+	moveSpeed = enemy_node.child("move_speed").text().as_float();
+	reachOffset = enemy_node.child("reach_offset").text().as_int();
+
+	pivot = Pivot(PivotV::bottom, PivotH::middle);
 	acceleration.y = gravity;
-	reachOffset = 5;
 }
 
 bool ObjEnemyLand::PreUpdate() {
@@ -42,8 +39,8 @@ bool ObjEnemyLand::TimedUpdate(float dt)
 {
 	//LOG("Timed update");
 	if (IsPlayerInTileRange(detectionRange) && App->object->player->position.y >= position.y - 10) {
-		iPoint srcPos = App->map->WorldToMap((int)position.x, (int)position.y - TILE_WIDTH * 0.5f);
-		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - TILE_WIDTH * 0.5f);
+		iPoint srcPos = App->map->WorldToMap((int)position.x, (int)position.y - App->map->GetTileWidth() * 0.5f);
+		iPoint trgPos = App->map->WorldToMap(App->object->player->position.x, App->object->player->position.y - App->map->GetTileWidth() * 0.5f);
 		if (App->pathfinding->CreatePathLand(srcPos, trgPos) > -1) {
 			pathData.CopyLastGeneratedPath();
 			step = 0u;
@@ -72,8 +69,8 @@ bool ObjEnemyLand::Update(float dt) {
 			iPoint iposition ((int)position.x, (int)position.y);
 			iPoint targetTileWorldPos = App->map->MapToWorld(pathData.path[step].x, pathData.path[step].y);
 			//The position of the tiles is given from the top left
-			targetTileWorldPos.x += TILE_WIDTH * 0.5;//Middle
-			targetTileWorldPos.y += TILE_WIDTH;//Bottom
+			targetTileWorldPos.x += App->map->GetTileWidth() * 0.5;//Middle
+			targetTileWorldPos.y += App->map->GetTileWidth();//Bottom
 			LOG("src pos y: %i", iposition.y);
 			LOG("trg pos y: %i", targetTileWorldPos.y);
 			if (iposition.DistanceManhattan(targetTileWorldPos) < reachOffset) {

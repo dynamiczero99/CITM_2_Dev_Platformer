@@ -26,18 +26,20 @@ private:
 	void GoIdle();
 
 private:
+	//The Manhattan distance in which the enemy will attempt to create a path to the player
 	int detectionRange = 0;
 	Animation idleAnim;
 	Animation movingAnim;
 	Animation * currAnim = nullptr;
 	SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
 	float gravity = 0.0f;
-	uint step = 0u;//The node in which it is in the array
+	//The node in which it is in the array
+	uint step = 0u;
 	float moveSpeed = 0.0f;
 	float maxFallSpeed = 0.0f;
-	int reachOffset = 0;
 	//The distance (pixels) in which it determines it has reached that node
 	//If reachOffset is very small and moveSpeed too big it may pass the node and never go to the next node
+	int reachOffset = 0;
 };
 
 #endif _OBJ_ENEMY_LAND_H_

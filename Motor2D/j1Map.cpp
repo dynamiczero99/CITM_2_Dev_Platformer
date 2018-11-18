@@ -752,7 +752,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 	return true;
 }
 
-int j1Map::GetTileWidth()
+int j1Map::GetTileWidth() const
 {
 	return data.tile_width;
 }

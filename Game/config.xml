@@ -84,6 +84,10 @@
       <gravity>120</gravity>
       <speed chasing_speed = "50" idle_speed = "25"/>
       <collider_rectangle x = "0" y ="0" w ="6" h="23" />
+      <update_cycle>1000</update_cycle>
+      <move_speed>30.0</move_speed>
+      <reach_offset>3</reach_offset>
+      <detection_range> 20 </detection_range>
       <animation>
         <idle_animation speed = "15.0">
           <sprite x ="209" y ="152" w ="15" h="24"/>
@@ -101,7 +105,7 @@
           <sprite x ="401" y ="152" w ="15" h="24"/>
         </moving_animation>
       </animation>
-      <detection_range> 3 </detection_range>
+
     </enemy_land>
     <enemy_flying>
 	  <speed chasing_speed = "50" idle_speed = "25"/>
