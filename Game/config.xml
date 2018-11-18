@@ -197,7 +197,7 @@
     </player>
     
 	<trigger>
-	 <cooldown_time_ms>500</cooldown_time_ms>
+	 <cooldown_time_ms>50</cooldown_time_ms>
 	 <animation tile_width ="14" tile_height ="3">
 		<small_inactive_animation speed ="0">
           <sprite x ="113" y ="173" w ="14" h="3"/>
