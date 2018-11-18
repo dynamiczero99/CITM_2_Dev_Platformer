@@ -16,6 +16,7 @@ ObjBox::ObjBox(fPoint &position, int index, pugi::xml_node &box_node, int object
 	animTileHeight = box_node.child("animation").attribute("tile_height").as_uint();
 	LoadAnimation(box_node.child("animation").child("inactive_animation"), inactiveAnim);
 	LoadAnimation(box_node.child("animation").child("active_animation"), activeAnim);
+	maxFallSpeed = box_node.child("maximum_fall_velocity").text().as_float();
 	gravity = TileToPixel(box_node.child("gravity").text().as_float());
 	currAnim = &inactiveAnim;
 	pivot = Pivot(PivotV::bottom, PivotH::middle);
@@ -50,14 +51,7 @@ bool ObjBox::Update(float dt) {
 	acceleration.y = gravity;
 	velocity = velocity + acceleration * dt;
 	position = position + velocity * dt;
-	// fast workaround to check if this moviment was physic impossible
-	// for avoid false dt conditions
-	if (position.y > temp.y + 60.0F)
-	{
-		position.y = temp.y;
-		acceleration = { 0.0F,0.0F };
-		velocity = { 0.0F,0.0F };
-	}
+	LimitFallSpeed(dt);
 	iPoint colPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	col->SetPos(colPos.x, colPos.y);
 	
