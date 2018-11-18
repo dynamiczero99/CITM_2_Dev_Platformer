@@ -64,8 +64,10 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Controller support and specific gameplay mechanic for this type of input.
 - you can swap position with enemies too!
 
-## Member contributions to assignment 2
+## Important notes.
+- First enemies appear in level 007. Use Enter to go to the next level.
 
+## Member contributions to assignment 2
 Jose Antonio Prieto
 - Flying enemy
 - A*
@@ -76,7 +78,6 @@ Jose Antonio Prieto
 - Implemented trigger import(from tiled map editor)/ functionality
 - Added new object trigger events to entity system
 - Added new object doors
-
 Jaume Montagut Guix
 - Walking enemy
 - A*

@@ -62,9 +62,13 @@ void j1Map::Draw()
 
 	int mapBlitOffset = 50;//TODO: Get this from the xml
 
-	p2List_item<MapLayer*>* layer = data.mapLayers.start;
-	while (layer != NULL)
+	
+	for (p2List_item<MapLayer*>* layer = data.mapLayers.start; layer != NULL; layer = layer->next)
 	{
+		if (layer->data->name == "navigationLayer") {
+			continue;
+		}
+
 		for (int y = 0; y < data.rows; ++y)
 		{
 			for (int x = 0; x < data.columns; ++x)
@@ -89,7 +93,6 @@ void j1Map::Draw()
 				}
 			}
 		}
-		layer = layer->next;
 	}
 	// advance animation frames
 	for (p2List_item<TileSet*>* tilesets = data.tilesets.start; tilesets != NULL; tilesets = tilesets->next)
