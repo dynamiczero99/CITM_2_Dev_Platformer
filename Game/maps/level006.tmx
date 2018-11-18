@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextobjectid="73">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="8" tileheight="8" infinite="0" nextlayerid="16" nextobjectid="73">
  <properties>
   <property name="background_music" value="song21.ogg"/>
   <property name="testValue" type="int" value="2"/>
@@ -151,7 +151,7 @@
  <tileset firstgid="1672" name="GlassTexture" tilewidth="8" tileheight="8" tilecount="15" columns="5">
   <image source="../textures/GlassTexture.png" width="40" height="24"/>
  </tileset>
- <layer name="background" width="150" height="100">
+ <layer id="1" name="background" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.8"/>
   </properties>
@@ -15158,7 +15158,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="midground" width="150" height="100">
+ <layer id="2" name="midground" width="150" height="100">
   <properties>
    <property name="parallaxSpeed" type="float" value="0.9"/>
   </properties>
@@ -30165,7 +30165,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="foreground" width="150" height="100">
+ <layer id="3" name="foreground" width="150" height="100">
   <data>
    <tile/>
    <tile/>
@@ -45169,7 +45169,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="navigationLayer" width="150" height="100">
+ <layer id="4" name="navigationLayer" width="150" height="100">
   <properties>
    <property name="Navigation" type="bool" value="true"/>
   </properties>
@@ -60176,18 +60176,18 @@
    <tile/>
   </data>
  </layer>
- <group name="Colliders">
-  <objectgroup name="Win">
+ <group id="5" name="Colliders">
+  <objectgroup id="6" name="Win">
    <object id="22" name="Trigger" type="next_level" x="336" y="232" width="16" height="56"/>
   </objectgroup>
-  <objectgroup name="Glass">
+  <objectgroup id="7" name="Glass">
    <object id="39" x="616" y="232" width="8" height="128"/>
   </objectgroup>
-  <objectgroup name="Death">
+  <objectgroup id="8" name="Death">
    <object id="19" name="death" x="8" y="392" width="1200" height="40"/>
   </objectgroup>
-  <objectgroup name="Platforms"/>
-  <objectgroup name="Floor">
+  <objectgroup id="9" name="Platforms"/>
+  <objectgroup id="10" name="Floor">
    <properties>
     <property name="testValue" type="int" value="5"/>
    </properties>
@@ -60203,8 +60203,8 @@
    <object id="71" name="floor" x="792" y="208" width="24" height="176"/>
   </objectgroup>
  </group>
- <group name="Player">
-  <objectgroup name="PlayerData">
+ <group id="11" name="Player">
+  <objectgroup id="12" name="PlayerData">
    <properties>
     <property name="testValue" type="int" value="3"/>
    </properties>
@@ -60213,11 +60213,11 @@
    </object>
   </objectgroup>
  </group>
- <group name="GameObjects">
-  <objectgroup name="Triggers"/>
-  <objectgroup name="GameObjects">
+ <group id="13" name="GameObjects">
+  <objectgroup id="14" name="Triggers"/>
+  <objectgroup id="15" name="GameObjects">
    <object id="35" name="normalBox" x="696" y="272" width="16" height="16"/>
-   <object id="72" name="normalBox" x="544" y="272" width="16" height="16"/>
+   <object id="72" name="normalBox" x="528" y="256" width="32" height="32"/>
   </objectgroup>
  </group>
 </map>

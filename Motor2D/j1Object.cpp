@@ -206,11 +206,11 @@ ObjProjectile * j1Object::AddObjProjectile(fPoint position, fPoint direction, Ob
 	return ret;
 }
 
-ObjBox * j1Object::AddObjBox (fPoint position, int objectID) {
+ObjBox * j1Object::AddObjBox (fPoint position, SDL_Rect & colRect, int objectID) {
 	int index = FindEmptyPosition();
 	ObjBox * ret = nullptr;
 	if (index != -1) {
-		objects[index] = ret = new ObjBox(position, index, object_node.child("box"), objectID);
+		objects[index] = ret = new ObjBox(position, colRect, index, object_node.child("box"), objectID);
 	}
 	return ret;
 }
@@ -278,18 +278,19 @@ bool j1Object::Load(pugi::xml_node& node)
 	for (pugi::xml_node boxes = node.child("Box"); boxes; boxes = boxes.next_sibling("Box"))
 	{
 		LOG("node found");
+		SDL_Rect boxRect;
+		boxRect.x = 0;
+		boxRect.y = 0;
+		boxRect.w = boxes.attribute("width").as_float();
+		boxRect.h = boxes.attribute("height").as_float();
+		object_box_markedOnLoad = App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() * 0.5f, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() },
+			boxRect,
+			boxes.attribute("id").as_int());
+
 		// check if the box has the attribute marked, we only can have 1 marked box at a time
-		if (boxes.attribute("isMarked"))
-		{
-			object_box_markedOnLoad = App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2,
-															   boxes.attribute("y").as_float() + boxes.attribute("height").as_float() },
-															   boxes.attribute("id").as_int());
+		if (boxes.attribute("isMarked")) {
 			object_box_markedOnLoad->MarkObject(true);
 		}
-		else
-			App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2,
-									 boxes.attribute("y").as_float() + boxes.attribute("height").as_float() }, 
-									 boxes.attribute("id").as_int());
 	}
 	// enemies --------------------------------
 	// flying enemy ---

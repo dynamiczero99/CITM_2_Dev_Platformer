@@ -30,8 +30,9 @@
   <map>
     <folder>maps/</folder>
 	  <levels>
+      <!--
 	  <level name="level_factory.tmx"/>
-      <level name="level010.tmx"/>
+      -->
       <level name="test_level.tmx"/>
       <level name="level001.tmx"/>
       <level name="level002.tmx"/>
@@ -42,6 +43,7 @@
       <level name="level007.tmx"/>
       <level name="level008.tmx"/>
       <level name="level009.tmx"/>
+       <level name="level010.tmx"/>
 	  </levels>
   </map>
 
@@ -84,6 +86,16 @@
           <sprite x ="144" y ="208" w ="16" h="16"/>
         </active_animation>
       </animation>
+      <big_box>
+        <animation tile_width ="32" tile_height ="32">
+          <inactive_animation speed ="0">
+            <sprite x ="0" y ="253" w ="32" h="32"/>
+          </inactive_animation>
+          <active_animation speed ="0">
+            <sprite x ="32" y ="253" w ="32" h="32"/>
+          </active_animation>
+        </animation>
+      </big_box>
     </box>
     
     <enemy_land>
