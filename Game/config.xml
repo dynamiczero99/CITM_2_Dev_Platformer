@@ -30,7 +30,6 @@
   <map>
     <folder>maps/</folder>
 	  <levels>
-      <level name="level007.tmx"/>
       <level name="test_level.tmx"/>
       <level name="level001.tmx"/>
       <level name="level002.tmx"/>
@@ -38,7 +37,7 @@
       <level name="level004.tmx"/>
       <level name="level005.tmx"/>
       <level name="level006.tmx"/>
-    
+      <level name="level007.tmx"/>
       <level name="level008.tmx"/>
 	  </levels>
   </map>
@@ -83,7 +82,7 @@
     <enemy_land>
       <gravity>120</gravity>
       <speed chasing_speed = "50" idle_speed = "25"/>
-      <collider_rectangle x = "0" y ="0" w ="6" h="23" />
+      <collider_rectangle x = "0" y ="0" w ="8" h="23" />
       <update_cycle>1000</update_cycle>
       <move_speed>30.0</move_speed>
       <reach_offset>3</reach_offset>
