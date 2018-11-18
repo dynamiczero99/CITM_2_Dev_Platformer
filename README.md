@@ -63,9 +63,10 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 - Optimization: Each object has a different updateCycle which is used to avoid that all objects' TimedUpdate() are called at the same time.
 - Controller support and specific gameplay mechanic for this type of input.
 - Walking enemy: Kills you if you touch it from the sides. You can stand on top of it to solve puzzles.
-- Flying enemy: Moves in a random direction if it does't find a path. Stops if you mark it.
+- Flying enemy: Moves in a random direction if it does't find a path. Stops if you mark it and lets you stand above it.
 - You can swap position with enemies too!
 - Get all entities directly from each map xml
+- When you swap with an object you also exchange velocities.
 
 ## Important notes.
 - First enemies appear in level 007. Use Enter to go to the next level.
