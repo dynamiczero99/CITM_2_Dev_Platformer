@@ -119,7 +119,7 @@ bool ObjEnemyFlying::Update(float dt) {
 
 	case CHASING:
 		// pathfinding
-		if (SDL_GetTicks() > start_time + frequency_time && !pathData.waitingForPath)
+		if (SDL_GetTicks() > start_time + frequency_time)// && !pathData.waitingForPath)
 		{
 			//StartNewPathThread();
 			SearchNewPath();
@@ -145,16 +145,16 @@ bool ObjEnemyFlying::Update(float dt) {
 	if(!marked)
 		CheckFacingDirection();
 
-	if (pathData.waitingForPath)
-	{
-		if (pathData.ready)
-		{
-			//LOG("thread ended");
-			start_time = SDL_GetTicks();
-			pathData.waitingForPath = false;
-			pathData.ready = false;
-		}
-	}
+	//if (pathData.waitingForPath)
+	//{
+		//if (pathData.ready)
+		//{
+		//	//LOG("thread ended");
+		//	start_time = SDL_GetTicks();
+		//	pathData.waitingForPath = false;
+		//	pathData.ready = false;
+		//}
+	//}
 
 	iPoint colPos = GetRectPos(pivot, position.x, position.y + 2, animTileWidth, animTileHeight);
 	col->SetPos(colPos.x, colPos.y);
@@ -374,12 +374,17 @@ bool ObjEnemyFlying::SearchNewPath()
 			frequency_time = GetRandomValue(min_ms, max_ms);
 			pathData.CopyLastGeneratedPath();
 			start_time = SDL_GetTicks();
+			//pathData.ready = true;
+			pathData.path.Flip();
 
 		}
 
 		return true;
 	}
 	else
+	{
+
 		return false;
+	}
 
 }
