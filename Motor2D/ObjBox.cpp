@@ -8,7 +8,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2Log.h"
 
-ObjBox::ObjBox(fPoint &position, int index, pugi::xml_node &box_node) : GameObject(position, index) {
+ObjBox::ObjBox(fPoint &position, int index, pugi::xml_node &box_node, int objectID) : GameObject(position, index, objectID) {
 	velocity = fPoint(0.0f, 0.0f);
 	acceleration = fPoint(0.0f, 0.0f);
 
@@ -26,6 +26,8 @@ ObjBox::ObjBox(fPoint &position, int index, pugi::xml_node &box_node) : GameObje
 	colRect.x = colPos.x;
 	colRect.y = colPos.y;
 	col = App->collision->AddCollider(colRect, COLLIDER_TYPE::COLLIDER_BOX, this);
+
+	LOG("object id");
 }
 
 bool ObjBox::OnDestroy() {
@@ -125,6 +127,7 @@ bool ObjBox::Save(pugi::xml_node& node) const
 	boxNode.append_attribute("y") = position.y;
 	boxNode.append_attribute("velocity_x") = velocity.x;
 	boxNode.append_attribute("velocity_y") = velocity.y;
+	boxNode.append_attribute("id") = objectID;
 	if(currAnim == &activeAnim)
 		boxNode.append_attribute("isMarked") = true;
 

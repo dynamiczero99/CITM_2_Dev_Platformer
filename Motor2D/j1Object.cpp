@@ -156,11 +156,11 @@ ObjProjectile * j1Object::AddObjProjectile(fPoint position, fPoint direction, Ob
 	return ret;
 }
 
-ObjBox * j1Object::AddObjBox (fPoint position) {
+ObjBox * j1Object::AddObjBox (fPoint position, int objectID) {
 	int index = FindEmptyPosition();
 	ObjBox * ret = nullptr;
 	if (index != -1) {
-		objects[index] = ret = new ObjBox(position, index, object_node.child("box"));
+		objects[index] = ret = new ObjBox(position, index, object_node.child("box"), objectID);
 	}
 	return ret;
 }
@@ -222,11 +222,15 @@ bool j1Object::Load(pugi::xml_node& node)
 		// check if the box has the attribute marked, we only can have 1 marked box at a time
 		if (boxes.attribute("isMarked"))
 		{
-			object_box_markedOnLoad = App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+			object_box_markedOnLoad = App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2,
+															   boxes.attribute("y").as_float() + boxes.attribute("height").as_float() },
+															   boxes.attribute("id").as_int());
 			object_box_markedOnLoad->MarkObject(true);
 		}
 		else
-			App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2, boxes.attribute("y").as_float() + boxes.attribute("height").as_float() });
+			App->object->AddObjBox({ boxes.attribute("x").as_float() + boxes.attribute("width").as_float() / 2,
+									 boxes.attribute("y").as_float() + boxes.attribute("height").as_float() }, 
+									 boxes.attribute("id").as_int());
 	}
 	// enemies --------------------------------
 	// flying enemy ---
@@ -264,10 +268,15 @@ bool j1Object::Save(pugi::xml_node& node) const
 }
 
 //Gameobject class methods -------------------------------------------
-
 GameObject::GameObject(fPoint &position, int index) :
 	position(position),
-	index(index) {
+	index(index){
+}
+
+GameObject::GameObject(fPoint &position, int index, int objectID) :
+	position(position),
+	index(index),
+	objectID(objectID){
 }
 
 GameObject::~GameObject () {
