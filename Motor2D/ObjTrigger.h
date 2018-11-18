@@ -4,29 +4,45 @@
 #include "p2Point.h"
 #include "j1Object.h"
 #include "p2DynArray.h"
+#include "j1Timer.h"
+#include "p2Animation.h"
+#include "p2Log.h"
 
 struct Collider;
 
-enum triggerAction {
-	none,
-	animation,
-	undefined
-};
+//enum triggerAction {
+//	none,
+//	animation,
+//	undefined
+//};
 
 
 class ObjTrigger : public GameObject {
 public:
-	ObjTrigger(fPoint &position, int index, triggerAction action, iPoint &rectSize);
+	ObjTrigger(fPoint &position, int index, pugi::xml_node& node,iPoint &rectSize);
 	bool Update(float dt);
+	bool PostUpdate();
 	void OnCollision(Collider * c1, Collider * c2) override;
 	bool OnDestroy();
 
 	p2DynArray<int> objectsEventIDs = NULL;
 
 private:
-	triggerAction action = triggerAction::none;
-	SDL_Rect colRect;
 
+	enum animState
+	{
+		active,
+		inactive,
+		max
+	};
+	
+	SDL_Rect colRect;
+	j1Timer timer;
+	Animation smallAnim[animState::max];
+	bool activated = false;
+	/*uint animTileWidth = 0u;
+	uint animTileHeight = 0u;*/
+	//Animation bigAnim;
 	
 };
 

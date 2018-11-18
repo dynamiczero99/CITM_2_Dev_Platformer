@@ -181,6 +181,16 @@
         </fall_animation>
       </animation>
     </player>
+	<trigger>
+	 <animation tile_width ="14" tile_height ="3">
+		<small_inactive_animation speed ="0">
+          <sprite x ="113" y ="173" w ="14" h="3"/>
+        </small_inactive_animation>
+        <small_active_animation speed ="0">
+          <sprite x ="113" y ="189" w ="14" h="3"/>
+		</small_active_animation>
+	 </animation>
+	</trigger>
   </object>
   
   <Particles>

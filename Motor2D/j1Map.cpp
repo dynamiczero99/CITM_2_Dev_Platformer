@@ -711,7 +711,7 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 					if (object.child("properties"))
 					{
 						// creates trigger
-						ObjTrigger* ot = App->object->AddObjTrigger({ object.attribute("x").as_float(), object.attribute("y").as_float() }, triggerAction::none,
+						ObjTrigger* ot = App->object->AddObjTrigger({ object.attribute("x").as_float(), object.attribute("y").as_float() },
 							{ object.attribute("width").as_int(), object.attribute("height").as_int() });
 						LOG("trigger properties found");
 
