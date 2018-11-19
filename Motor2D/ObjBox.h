@@ -10,7 +10,7 @@ struct Collider;
 
 class ObjBox : public GameObject {
 public:
-	ObjBox(fPoint &position, int index, pugi::xml_node &object_node, int objectID);
+	ObjBox(fPoint &position, SDL_Rect & colRect, int index, pugi::xml_node &object_node, int objectID);
 	bool Update(float dt) override;
 	bool PostUpdate() override;
 	bool OnDestroy() override;
