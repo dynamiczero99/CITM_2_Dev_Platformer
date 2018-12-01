@@ -97,11 +97,11 @@ bool j1Scene::Start()
 	uint width, height = 0;
 	App->win->GetWindowSize(width, height);
 	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ ((int)width * (int)App->win->GetScale()) / 2 - 64, 400 }, "BUTTON1", TextPos::CENTERED, App->gui->buttonhighlight_texture);
+		{ (int)width / 2 - 64, 400 }, "BUTTON1", TextPos::CENTERED, App->gui->buttonhighlight_texture);
 	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ ((int)width * (int)App->win->GetScale()) / 2 - 64, 423 }, "BUTTON2", TextPos::CENTERED, App->gui->buttonhighlight_texture);
+		{ (int)width / 2 - 64, 423 }, "BUTTON2", TextPos::CENTERED, App->gui->buttonhighlight_texture);
 	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ ((int)width * (int)App->win->GetScale()) / 2 - 64, 446 }, "BUTTON3", TextPos::CENTERED, App->gui->buttonhighlight_texture);
+		{ (int)width / 2 - 64, 446 }, "BUTTON3", TextPos::CENTERED, App->gui->buttonhighlight_texture);
 
 	// checkbox
 	App->gui->AddGUICheckBox(App->gui->checkbox_down_texture, App->gui->checkbox_up_texture, { 0,0, 32,32 }, { 60,360 }, "this is a checkbox", TextPos::RIGHT, App->gui->checkbox_highlight_texture, App->gui->checkbox_check_texture);

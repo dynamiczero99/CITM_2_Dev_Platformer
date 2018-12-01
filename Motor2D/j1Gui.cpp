@@ -77,6 +77,10 @@ bool j1Gui::PreUpdate()
 		// check and updates mouse state -----------------------
 		int x, y = 0;
 		App->input->GetMousePosition(x, y);
+		x *= App->win->GetScale(); // workaround to get correct mouse pos
+		y *= App->win->GetScale();
+		/*LOG("mouse pos x:%i y:%i", x, y);
+		LOG("button pos x:%i y:%i", e->boundaries.x, e->boundaries.y);*/
 		if (e->CheckBoundariesXY(x, y))
 		{
 			e->SetMouseState(GUIelement::MouseEvent::ENTER);
