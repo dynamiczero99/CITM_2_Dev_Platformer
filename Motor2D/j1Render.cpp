@@ -257,6 +257,35 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	return ret;
 }
 
+bool j1Render::BlitGUIUnscaled(SDL_Texture* texture, int x, int y, const SDL_Rect* section) const
+{
+	BROFILER_CATEGORY("Render BlitUnscaled", Profiler::Color::Azure);
+
+	bool ret = true;
+
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
 bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
