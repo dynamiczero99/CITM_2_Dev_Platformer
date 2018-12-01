@@ -17,6 +17,19 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+  
+  <gui>
+    <atlas file="gui/atlas.png"/>
+	<button_up file="gui/UI-DialogBox-Button-Up.png"/>
+	<button_down file="gui/UI-DialogBox-Button-Down.png"/>
+	<button_hover file="gui/UI-DialogBox-Button-Highlight.png"/>
+	<checkbox_up file="gui/UI-CheckBox-Up.png"/>
+	<checkbox_down file="gui/UI-CheckBox-Down.png"/>
+	<checkbox_highlight file="gui/UI-CheckBox-Highlight.png"/>
+	<checkbox_check file="gui/UI-CheckBox-Check.png"/>
+	<checkbox_check_locked file="gui/UI-CheckBox-Check-Disabled.png"/>
+
+  </gui>
 
   <file_system>
     <path>data.zip</path>
