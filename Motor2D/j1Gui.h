@@ -87,58 +87,58 @@ public:
 	bool PostUpdate();
 };
 
-class GUIText : public GUIElement
-{
-public:
-
-	GUIText() {}
-	GUIText(const iPoint& position, const char* text, SDL_Color color);
-
-public:
-
-	bool PreUpdate() { return true; }
-	bool PostUpdate();
-
-private:
-	SDL_Texture* texture = nullptr;
-
-};
-
-class GUIButton : public GUIImage//public GUIelement
-{
-public:
-
-	// maybe we need more different possibilites constructors
-	//GUIButton();
-	GUIButton(SDL_Texture* click_texture, SDL_Texture* unclick_texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetPos = GUI_ADJUST::CENTERED, SDL_Texture* hoverTex = nullptr);
-
-	bool PreUpdate();
-
-private:
-
-protected:
-	SDL_Texture* clicked_texture = nullptr;
-	SDL_Texture* unclicked_texture = nullptr;
-	SDL_Texture* hover_texture = nullptr;
-	//Animation on guiState::HOVER
-	// 
-
-};
-
-class GUICheckBox : public GUIButton
-{
-public:
-
-	GUICheckBox(SDL_Texture* click_texture, SDL_Texture* unclick_texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetPos = GUI_ADJUST::CENTERED, SDL_Texture* hoverTex = nullptr, SDL_Texture* checkTex = nullptr);
-
-	bool PreUpdate();
-	bool PostUpdate();
-
-private:
-
-	bool active = false;
-	SDL_Texture* checkTexture = nullptr;
-};
+//class GUIText : public GUIElement
+//{
+//public:
+//
+//	GUIText() {}
+//	GUIText(const iPoint& position, const char* text, SDL_Color color);
+//
+//public:
+//
+//	bool PreUpdate() { return true; }
+//	bool PostUpdate();
+//
+//private:
+//	SDL_Texture* texture = nullptr;
+//
+//};
+//
+//class GUIButton : public GUIImage//public GUIelement
+//{
+//public:
+//
+//	// maybe we need more different possibilites constructors
+//	//GUIButton();
+//	GUIButton(SDL_Texture* click_texture, SDL_Texture* unclick_texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetPos = GUI_ADJUST::CENTERED, SDL_Texture* hoverTex = nullptr);
+//
+//	bool PreUpdate();
+//
+//private:
+//
+//protected:
+//	SDL_Texture* clicked_texture = nullptr;
+//	SDL_Texture* unclicked_texture = nullptr;
+//	SDL_Texture* hover_texture = nullptr;
+//	//Animation on guiState::HOVER
+//	// 
+//
+//};
+//
+//class GUICheckBox : public GUIButton
+//{
+//public:
+//
+//	GUICheckBox(SDL_Texture* click_texture, SDL_Texture* unclick_texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetPos = GUI_ADJUST::CENTERED, SDL_Texture* hoverTex = nullptr, SDL_Texture* checkTex = nullptr);
+//
+//	bool PreUpdate();
+//	bool PostUpdate();
+//
+//private:
+//
+//	bool active = false;
+//	SDL_Texture* checkTexture = nullptr;
+//};
 
 
 
@@ -167,12 +167,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// TODO 2: Create the factory methods
-	// Gui creation functions
-	GUIImage* AddGUIBanner(SDL_Texture* texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED);
-	GUIText* AddGUIText(const iPoint& position, const char* text, SDL_Color color);
-	GUIButton* AddGUIButton(SDL_Texture* clickedTexture, SDL_Texture* unclickTexture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED, SDL_Texture* onMouseTex = nullptr);
-	GUICheckBox* AddGUICheckBox(SDL_Texture* clickedTexture, SDL_Texture* unclickTexture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED, SDL_Texture* onMouseTex = nullptr, SDL_Texture* checkTex = nullptr);
+	//Create GUI Objects
+	GUIImage* AddGUIImage(SDL_Texture* texture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED);
+	//GUIText* AddGUIText(const iPoint& position, const char* text, SDL_Color color);
+	//GUIButton* AddGUIButton(SDL_Texture* clickedTexture, SDL_Texture* unclickTexture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED, SDL_Texture* onMouseTex = nullptr);
+	//GUICheckBox* AddGUICheckBox(SDL_Texture* clickedTexture, SDL_Texture* unclickTexture, const SDL_Rect& rect, const iPoint& position, const char* text = nullptr, GUI_ADJUST targetTextPos = GUI_ADJUST::CENTERED, SDL_Texture* onMouseTex = nullptr, SDL_Texture* checkTex = nullptr);
 
 	const SDL_Texture* GetAtlas() const;
 
