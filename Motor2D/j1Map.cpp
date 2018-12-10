@@ -687,14 +687,9 @@ bool j1Map::LoadGameObjects(pugi::xml_node& node)
 
 					if (gameobject_name == "normalBox") {
 						//Box have their pivot point on ther bottom - middle
-						SDL_Rect boxRect;
-						boxRect.x = 0;
-						boxRect.y = 0;
-						boxRect.w = object.attribute("width").as_float();
-						boxRect.h = object.attribute("height").as_float();
-						App->object->AddObjBox( { object.attribute("x").as_float() + object.attribute("width").as_float() * 0.5f, object.attribute("y").as_float() + object.attribute("height").as_float() }, 
-							boxRect,
-							object.attribute("id").as_int());
+						App->object->AddObjBox({ object.attribute("x").as_float() + object.attribute("width").as_float() / 2, 
+												 object.attribute("y").as_float() + object.attribute("height").as_float() }, 
+												 object.attribute("id").as_int());
 					}
 					else if (gameobject_name == "flyingEnemy") {
 						App->object->AddObjEnemyFlying({ object.attribute("x").as_float(), object.attribute("y").as_float() });

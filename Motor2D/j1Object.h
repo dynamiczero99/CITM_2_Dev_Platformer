@@ -124,7 +124,7 @@ public:
 
 	ObjPlayer * AddObjPlayer(fPoint position);
 	ObjProjectile * AddObjProjectile(fPoint position, fPoint direction, ObjPlayer * objPlayer);
-	ObjBox * AddObjBox(fPoint position, SDL_Rect & colRect, int objectID);
+	ObjBox * AddObjBox(fPoint position, int objectID);
 	ObjTrigger * AddObjTrigger(fPoint position, iPoint rectSize);
 	ObjEnemyFlying * AddObjEnemyFlying(fPoint position);//, int objectID);
 	ObjEnemyLand * AddObjEnemyLand(fPoint position);//, int objectID);
