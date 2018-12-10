@@ -19,7 +19,6 @@
 #include "j1Object.h"
 #include "Brofiler/Brofiler.h"
 //#include "SDL/include/SDL_thread.h"
-#include "j1Gui.h"
 #include "j1Fonts.h"
 
 // Constructor
@@ -40,7 +39,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	particles = new j1Particles();
 	font = new j1Fonts();
-	gui = new j1Gui();
 
 
 
@@ -54,7 +52,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 
 	AddModule(font);
-	AddModule(gui);
 
 	AddModule(scene);
 	AddModule(object);

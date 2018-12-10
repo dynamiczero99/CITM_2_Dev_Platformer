@@ -17,7 +17,6 @@
 #include "Brofiler/Brofiler.h"
 
 #include "j1Particles.h"
-#include "j1Gui.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -82,31 +81,6 @@ bool j1Scene::Start()
 
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
-
-	// GUI elements creation example ---------------------------------------------------
-	// method thats adds a banner and optional text embedded
-	SDL_Color whiteColor = { 255,13,255,255 };
-	App->gui->AddGUIBanner((SDL_Texture*)App->gui->GetAtlas(), { 485, 829, 328, 103 }, { 20, 60 }, "Banner with text on top", TextPos::UP);
-	App->gui->AddGUIBanner((SDL_Texture*)App->gui->GetAtlas(), { 485, 829, 328, 103 }, { 360, 160 }, "Banner with text on left", TextPos::LEFT);
-	App->gui->AddGUIBanner((SDL_Texture*)App->gui->GetAtlas(), { 485, 829, 328, 103 }, { 360, 60 }, "Banner with text centered", TextPos::CENTERED);
-	// only banner
-	App->gui->AddGUIBanner(nullptr, { 485, 829, 328, 103 }, { 300, 280 });
-	// only text
-	App->gui->AddGUIText({ 640,360 }, "<- Banner without text, this is a ONLY TEXT element", whiteColor);
-	// buttons
-	uint width, height = 0;
-	App->win->GetWindowSize(width, height);
-	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ (int)width / 2 - 64, 400 }, "BUTTON1", TextPos::CENTERED, App->gui->buttonhighlight_texture);
-	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ (int)width / 2 - 64, 423 }, "BUTTON2", TextPos::CENTERED, App->gui->buttonhighlight_texture);
-	App->gui->AddGUIButton(App->gui->buttondown_texture, App->gui->buttonup_texture, { 0, 0, 128, 23 },
-		{ (int)width / 2 - 64, 446 }, "BUTTON3", TextPos::CENTERED, App->gui->buttonhighlight_texture);
-
-	// checkbox
-	App->gui->AddGUICheckBox(App->gui->checkbox_down_texture, App->gui->checkbox_up_texture, { 0,0, 32,32 }, { 60,360 }, "this is a checkbox", TextPos::RIGHT, App->gui->checkbox_highlight_texture, App->gui->checkbox_check_texture);
-	App->gui->AddGUICheckBox(App->gui->checkbox_down_texture, App->gui->checkbox_up_texture, { 0,0, 32,32 }, { 60,390 }, "this is another checkbox", TextPos::RIGHT, App->gui->checkbox_highlight_texture, App->gui->checkbox_check_texture);
-	App->gui->AddGUICheckBox(App->gui->checkbox_down_texture, App->gui->checkbox_up_texture, { 0,0, 32,32 }, { 110,420 }, "another", TextPos::LEFT, App->gui->checkbox_highlight_texture, App->gui->checkbox_check_texture);
 
 
 	return true;

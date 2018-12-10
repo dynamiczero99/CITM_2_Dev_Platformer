@@ -75,9 +75,6 @@
     <ClCompile Include="ObjDoor.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="j1Gui.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
     </ClInclude>
     <ClInclude Include="ObjDoor.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Gui.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Fonts.h">
       <Filter>Modules</Filter>
