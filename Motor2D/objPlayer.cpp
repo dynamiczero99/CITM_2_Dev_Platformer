@@ -400,10 +400,9 @@ void ObjPlayer::StandardMovement(float dt)
 		acceleration.y = gravity;
 		checkFallPlatform = false;
 	}
-
+	position = position + velocity * dt + acceleration * 0.5f * dt;
 	velocity = velocity + acceleration * dt;
-	LimitFallSpeed(dt);
-	position = position + velocity * dt;
+	//LimitFallSpeed(dt);
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);
 	feetCol->SetPos(position.x - feetCol->rect.w * 0.5f, position.y);
