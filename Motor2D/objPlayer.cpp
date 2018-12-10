@@ -354,7 +354,7 @@ void ObjPlayer::SolveCollision(Collider * c2) {
 	}
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);
-	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+	feetCol->SetPos(position.x - feetCol->rect.w * 0.5f, position.y);
 }
 
 void ObjPlayer::Die() {
@@ -406,7 +406,7 @@ void ObjPlayer::StandardMovement(float dt)
 	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);
-	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+	feetCol->SetPos(position.x - feetCol->rect.w * 0.5f, position.y);
 
 	//LOG("Player position: %f, %f", position.x, position.y);
 
@@ -419,7 +419,7 @@ void ObjPlayer::GodMovement(float dt) {
 	position = position + velocity * dt;
 	iPoint colPos = GetRectPos(pivot, (int)position.x, (int)position.y, col->rect.w, col->rect.h);
 	col->SetPos(colPos.x, colPos.y);
-	feetCol->SetPos(position.x - feetCol->rect.w / 2, position.y);
+	feetCol->SetPos(position.x - feetCol->rect.w * 0.5f, position.y);
 }
 
 void ObjPlayer::ShootProjectile()
@@ -493,7 +493,7 @@ void ObjPlayer::SwapPosition() {
 		swapObject = nullptr;
 		App->audio->PlayFx(teleport);
 		// add actual point particle effect
-		App->particles->AddParticle(App->particles->teleport02, position.x - pInstantiationPos.w / 2, 
+		App->particles->AddParticle(App->particles->teleport02, position.x - pInstantiationPos.w *0.5f, 
 			position.y - pInstantiationPos.h, COLLIDER_NONE, { 0,0 }, 100);
 	}
 }
