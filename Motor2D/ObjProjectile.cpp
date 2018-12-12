@@ -47,7 +47,7 @@ bool ObjProjectile::PostUpdate() {
 	//INFO: In this case the width of the sprite and the collider is the same
 	//INFO: If the sprite was animates we would get the property from Animation.rect.w & Animation.rect.h
 	iPoint blitPos = GetRectPos(pivot, position.x, position.y, col->rect.w, col->rect.h);
-	App->render->Blit(App->object->projectileTex, blitPos.x, blitPos.y);
+	App->render->AddToBlitList(App->object->projectileTex, blitPos.x, blitPos.y);
 	return true;
 }
 

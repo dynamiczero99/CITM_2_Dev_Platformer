@@ -20,6 +20,7 @@ class UI_Element
 {
 public:
 	UI_Element(UiElemType type, iPoint pos, j1Module* callback);
+	UI_Element() {};
 	virtual ~UI_Element();
 
 	virtual bool PreUpdate() { return true; };

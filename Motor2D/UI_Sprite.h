@@ -7,6 +7,7 @@ class UI_Sprite : public UI_Element
 {
 public:
 	UI_Sprite(SDL_Texture* tex, SDL_Rect* texSection, iPoint pos, j1Module* callback);
+	UI_Sprite() {};
 	virtual ~UI_Sprite();
 
 	virtual bool Update();

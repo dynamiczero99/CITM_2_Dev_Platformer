@@ -185,6 +185,66 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 	background = color;
 }
 
+bool j1Render::BlitEntireList()
+{
+	for (p2List_item<BlitItem*>* iterator = blitList.start; iterator; iterator = iterator->next)
+	{
+		BlitToScreen(iterator->data);
+	}
+
+	return true;
+}
+
+bool j1Render::BlitToScreen(BlitItem* itemToBlit)
+{
+	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
+
+	bool ret = true;
+	int scale = (int)App->win->GetScale();
+
+	SDL_Rect rect;
+	rect.x = (int)(camera.x * itemToBlit->speed) + itemToBlit->position.x * scale;
+	rect.y = (int)(camera.y * itemToBlit->speed) + itemToBlit->position.y * scale;
+
+	if (itemToBlit->section != NULL)
+	{
+		rect.w = itemToBlit->section->w;
+		rect.h = itemToBlit->section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(itemToBlit->texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	//Don't blit if the sprite is out of the screen
+	uint width, height = 0;
+	App->win->GetWindowSize(width, height);
+	if (rect.x + rect.w < 0 || rect.y + rect.h < 0 || rect.x >(int)width || rect.y >(int)height) {
+		return false;
+	}
+
+	SDL_Point* p = NULL;
+	SDL_Point _pivot;
+
+	if (itemToBlit->pivot.x != INT_MAX && itemToBlit->pivot.y != INT_MAX)
+	{
+		_pivot.x = itemToBlit->pivot.x;
+		_pivot.y = itemToBlit->pivot.y;
+		p = &_pivot;
+	}
+
+	if (SDL_RenderCopyEx(renderer, itemToBlit->texture, itemToBlit->section, &rect, itemToBlit->angle, p, itemToBlit->flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
 	SDL_RenderSetViewport(renderer, &rect);
@@ -207,54 +267,25 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+bool j1Render::AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
 {
-	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
+	BlitItem* newItem = new BlitItem();
 
-	bool ret = true;
-	int scale = (int)App->win->GetScale();
+	newItem->texture = texture;
+	newItem->position.create(x, y);
+	newItem->section = section;
+	newItem->depth = depth;
+	newItem->speed = speed;
+	newItem->flip = flip;
+	newItem->angle = angle;
+	newItem->pivot.create(pivot_x, pivot_y);
 
-	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	//blitList.add(newItem);
+}
 
-	if(section != NULL)
-	{
-		rect.w = section->w;
-		rect.h = section->h;
-	}
-	else
-	{
-		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
-	}
-
-	rect.w *= scale;
-	rect.h *= scale;
-	
-	//Don't blit if the sprite is out of the screen
-	uint width, height = 0;
-	App->win->GetWindowSize(width, height);
-	if (rect.x + rect.w < 0 || rect.y + rect.h < 0 || rect.x >(int)width || rect.y >(int)height) {
-		return false;
-	}
-
-	SDL_Point* p = NULL;
-	SDL_Point pivot;
-
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
-	{
-		pivot.x = pivot_x;
-		pivot.y = pivot_y;
-		p = &pivot;
-	}
-
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
-	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+bool j1Render::AddToDebugBlitList(SDL_Texture * texture, int x, int y, const SDL_Rect * section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+{
+	return false;
 }
 
 bool j1Render::BlitGUIUnscaled(SDL_Texture* texture, int x, int y, const SDL_Rect* section) const

@@ -78,17 +78,17 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\UI-Development\Motor2D\j1Gui.cpp">
+    <ClCompile Include="j1Gui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Button.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="UI_Element.cpp">
+      <Filter>UI_Elements</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Element.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="UI_Sprite.cpp">
+      <Filter>UI_Elements</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Sprite.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="UI_Button.cpp">
+      <Filter>UI_Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,17 +192,17 @@
     <ClInclude Include="j1Fonts.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\UI-Development\Motor2D\j1Gui.h">
+    <ClInclude Include="j1Gui.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Button.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="UI_Element.h">
+      <Filter>UI_Elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Element.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="UI_Sprite.h">
+      <Filter>UI_Elements</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Sprite.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="UI_Button.h">
+      <Filter>UI_Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +223,9 @@
     </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{a8bfab6a-5472-4969-943e-861a8b493f08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI_Elements">
+      <UniqueIdentifier>{7cc4a5f4-ebcf-4c0e-afdd-552938975c2a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

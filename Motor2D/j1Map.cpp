@@ -84,10 +84,10 @@ void j1Map::Draw()
 
 						if (tileset->anim != nullptr)
 						{
-							App->render->Blit(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height, &tileset->anim->ReturnCurrentFrame(), layer->data->properties.parallaxSpeed);
+							App->render->AddToBlitList(tileset->texture, pos.x, (pos.y - tileset->tile_height) + data.tile_height, &tileset->anim->ReturnCurrentFrame(), layer->data->properties.parallaxSpeed);
 						}
 						else {
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r, layer->data->properties.parallaxSpeed);
+							App->render->AddToBlitList(tileset->texture, pos.x, pos.y, &r, layer->data->properties.parallaxSpeed);
 						}
 					}
 				}

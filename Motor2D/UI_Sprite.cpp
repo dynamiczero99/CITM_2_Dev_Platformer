@@ -21,5 +21,5 @@ bool UI_Sprite::Update()
 
 void UI_Sprite::Draw()
 {
-	App->render->Blit(tex, position.x, position.y, texSection);
+	App->render->AddToBlitList(tex, position.x, position.y, texSection);
 }

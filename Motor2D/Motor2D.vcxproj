@@ -76,13 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\UI-Development\Motor2D\j1Gui.cpp" />
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Button.cpp" />
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Element.cpp" />
-    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Sprite.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
+    <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
@@ -107,15 +104,15 @@
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="UI_Button.cpp" />
+    <ClCompile Include="UI_Element.cpp" />
+    <ClCompile Include="UI_Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\UI-Development\Motor2D\j1Gui.h" />
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Button.h" />
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Element.h" />
-    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Sprite.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Fonts.h" />
+    <ClInclude Include="j1Gui.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Object.h" />
     <ClInclude Include="j1Particles.h" />
@@ -147,6 +144,9 @@
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="UI_Button.h" />
+    <ClInclude Include="UI_Element.h" />
+    <ClInclude Include="UI_Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

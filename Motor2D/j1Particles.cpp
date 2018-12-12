@@ -111,7 +111,7 @@ bool j1Particles::PostUpdate()//float dt)
 
 			//p->r = p->anim->GetCurrentFrame(); ---
 			//App->render->Blit(graphics, p->position.x, p->position.y, &(p->r)); // ---
-			App->render->Blit(p->texture, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
+			App->render->AddToBlitList(p->texture, p->position.x, p->position.y, &(p->anim.GetCurrentFrame()));
 			if (p->fx_played == false && p->fx != 0)
 			{
 				p->fx_played = true;
