@@ -17,6 +17,7 @@
 #include "j1Pathfinding.h"
 #include "j1Particles.h"
 #include "j1Object.h"
+#include "j1Gui.h"
 #include "Brofiler/Brofiler.h"
 //#include "SDL/include/SDL_thread.h"
 #include "j1Fonts.h"
@@ -39,6 +40,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	particles = new j1Particles();
 	font = new j1Fonts();
+	gui = new j1Gui();
 
 
 
@@ -52,6 +54,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 
 	AddModule(font);
+	AddModule(gui);
 
 	AddModule(scene);
 	AddModule(object);

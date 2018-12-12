@@ -76,6 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\UI-Development\Motor2D\j1Gui.cpp" />
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Button.cpp" />
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Element.cpp" />
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Sprite.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -105,6 +109,10 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\UI-Development\Motor2D\j1Gui.h" />
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Button.h" />
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Element.h" />
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Sprite.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Fonts.h" />

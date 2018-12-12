@@ -78,6 +78,18 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\UI-Development\Motor2D\j1Gui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Button.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Element.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\UI-Development\Motor2D\UI_Sprite.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -178,6 +190,18 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="j1Fonts.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\UI-Development\Motor2D\j1Gui.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Button.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Element.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\UI-Development\Motor2D\UI_Sprite.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
