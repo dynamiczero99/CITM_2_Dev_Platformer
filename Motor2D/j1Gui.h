@@ -8,9 +8,6 @@
 
 #define CURSOR_WIDTH 2
 
-// TODO 1: Create your structure of classes
-
-// ---------------------------------------------------
 class j1Gui : public j1Module
 {
 public:
@@ -41,12 +38,19 @@ public:
 	// TODO 2: Create the factory methods
 	// Gui creation functions
 	UI_Element* CreateUIElement(UiElemType type, iPoint position, j1Module* callback, SDL_Rect* texSection = nullptr);
-	p2List<UI_Element*> uiList;
+	bool DestroyUIElement(UI_Element* toDestroyElem);
 
 	const SDL_Texture* GetAtlas() const;
+	void UI_Debug();
+
+public:
+
+	bool dragging = false;
+	p2List<UI_Element*> uiList;
 
 private:
 
+	bool debug = false;
 	SDL_Texture* atlas;
 	p2SString atlas_file_name;
 };

@@ -90,6 +90,13 @@
     <ClCompile Include="UI_Button.cpp">
       <Filter>UI_Elements</Filter>
     </ClCompile>
+    <ClCompile Include="UI_DynamicLabel.cpp">
+      <Filter>UI_Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Label.cpp">
+      <Filter>UI_Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -204,6 +211,13 @@
     <ClInclude Include="UI_Button.h">
       <Filter>UI_Elements</Filter>
     </ClInclude>
+    <ClInclude Include="UI_DynamicLabel.h">
+      <Filter>UI_Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Label.h">
+      <Filter>UI_Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

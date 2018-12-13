@@ -1,5 +1,5 @@
-#ifndef _UI_WINDOW_
-#define _UI_WINDOW_
+#ifndef _UI_SPRITE_
+#define _UI_SPRITE_
 
 #include "UI_Element.h"
 #include "SDL\include\SDL.h"
@@ -17,8 +17,8 @@ private:
 	virtual void Draw();
 
 protected:
-	SDL_Texture* tex;
-	SDL_Rect* texSection;
+	SDL_Texture* uiAtlas = nullptr;
+	SDL_Rect* atlasSection = nullptr;
 };
 
-#endif //_UI_WINDOW_
+#endif //_UI_SPRITE_

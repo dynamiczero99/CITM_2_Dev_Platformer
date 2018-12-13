@@ -105,8 +105,11 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="UI_Button.cpp" />
+    <ClCompile Include="UI_DynamicLabel.cpp" />
     <ClCompile Include="UI_Element.cpp" />
+    <ClCompile Include="UI_Label.cpp" />
     <ClCompile Include="UI_Sprite.cpp" />
+    <ClCompile Include="UI_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Collision.h" />
@@ -145,8 +148,11 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="UI_Button.h" />
+    <ClInclude Include="UI_DynamicLabel.h" />
     <ClInclude Include="UI_Element.h" />
+    <ClInclude Include="UI_Label.h" />
     <ClInclude Include="UI_Sprite.h" />
+    <ClInclude Include="UI_Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

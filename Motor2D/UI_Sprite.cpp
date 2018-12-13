@@ -4,8 +4,8 @@
 
 UI_Sprite::UI_Sprite(SDL_Texture* tex, SDL_Rect* texSection, iPoint pos, j1Module* callback) : UI_Element(SPRITE, pos, callback)
 {
-	this->tex = tex;
-	this->texSection = texSection;
+	this->uiAtlas = tex;
+	this->atlasSection = texSection;
 }
 
 UI_Sprite::~UI_Sprite()
@@ -21,5 +21,5 @@ bool UI_Sprite::Update()
 
 void UI_Sprite::Draw()
 {
-	App->render->AddToBlitList(tex, position.x, position.y, texSection);
+	App->render->AddToBlitList(uiAtlas, position.x, position.y, atlasSection);
 }

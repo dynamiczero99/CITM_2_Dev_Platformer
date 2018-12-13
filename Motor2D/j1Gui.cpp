@@ -48,7 +48,6 @@ bool j1Gui::PreUpdate()
 bool j1Gui::Update(float dt)
 {
 	
-
 	return true;
 }
 
@@ -82,10 +81,48 @@ UI_Element * j1Gui::CreateUIElement(UiElemType type, iPoint position, j1Module *
 	return ret;
 }
 
+bool j1Gui::DestroyUIElement(UI_Element * toDestroyElem)
+{
+	bool ret = true;
+
+	if (toDestroyElem == nullptr)
+		ret = false;
+
+	p2List_item<UI_Element*>* temp = uiList.start;
+
+	// Iterate the whole list to find the element that needs to be destroyed
+	while (temp && ret)
+	{
+		if (temp->data == toDestroyElem)
+		{
+			// Call recursive function in order to delete also the attached "children" elements of toDestroyElem
+			if (temp->data->attachedUIElements.start)
+			{
+				p2List_item<UI_Element*>* attachedIterator = temp->data->attachedUIElements.start;
+				while (attachedIterator && temp)
+				{
+					DestroyUIElement(attachedIterator->data);
+					attachedIterator = attachedIterator->next;
+				}
+			}
+			delete toDestroyElem;
+			uiList.del(temp);
+			break;
+		}
+		temp = temp->next;
+	}
+
+	return ret;
+}
+
 // const getter for atlas
 const SDL_Texture* j1Gui::GetAtlas() const
 {
 	return atlas;
+}
+
+void j1Gui::UI_Debug()
+{
 }
 
 // class Gui ---------------------------------------------------

@@ -26,6 +26,12 @@ public:
 	virtual bool PreUpdate() { return true; };
 	virtual bool Update() { return true; };
 	virtual bool CleanUp() { return true; };
+	void Drag();
+
+	void UpdateAttached();
+
+	// Attach given element to this one
+	void Attach(UI_Element* toAttach, const iPoint relativePosition);
 
 private:
 
@@ -37,9 +43,18 @@ public:
 	SDL_Rect			world_area;
 	iPoint				position;
 
+	bool beingClicked;
+	bool draggable = false;
+
+	p2List<UI_Element*> attachedUIElements;
+	UI_Element* parent = nullptr;
+
 protected:
 
+	iPoint	relativePos;
+	bool attached;
 	j1Module * callback = nullptr;
+	iPoint lastMousePos;
 };
 
 #endif //_UI_ELEMENT_
