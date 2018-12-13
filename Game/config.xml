@@ -44,6 +44,7 @@
     <folder>maps/</folder>
 	  <levels>
       <!--<level name="test_level.tmx"/>-->
+      <level name="level000.tmx"/>
       <level name="level001.tmx"/>
       <level name="level002.tmx"/>
       <level name="level003.tmx"/>
