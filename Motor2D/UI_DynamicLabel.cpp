@@ -14,12 +14,12 @@ UI_DynamicLabel::~UI_DynamicLabel()
 
 void UI_DynamicLabel::ChangeContent(const char* new_content)
 {
-	if (text_texture != nullptr)
-		App->tex->UnloadTexture(text_texture);
+	if (textTexture != nullptr)
+		App->tex->UnloadTexture(textTexture);
 
-	text_texture = App->font->Print(new_content);
+	textTexture = App->font->Print(new_content);
 	int w, h;
-	SDL_QueryTexture(text_texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture(textTexture, NULL, NULL, &w, &h);
 	SetArea(w, h);
 }
 

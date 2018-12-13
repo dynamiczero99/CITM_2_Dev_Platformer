@@ -31,7 +31,7 @@ bool ObjTrigger::Update(float dt)
 bool ObjTrigger::PostUpdate()
 {
 	
-	App->render->AddToBlitList(App->object->robotTilesetTex, position.x, position.y, &smallAnim[currentState].GetCurrentFrame());
+	App->render->Blit(App->object->robotTilesetTex, position.x, position.y, &smallAnim[currentState].GetCurrentFrame());
 
 	return true;
 }

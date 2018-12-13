@@ -14,8 +14,8 @@ UI_Label::UI_Label(iPoint pos, j1Module* callback) : UI_Element(UiElemType::LABE
 
 UI_Label::~UI_Label()
 {
-	if (text_texture != nullptr)
-		App->tex->UnloadTexture(text_texture);
+	if (textTexture != nullptr)
+		App->tex->UnloadTexture(textTexture);
 }
 
 void UI_Label::SetArea(uint w, uint h)
@@ -31,13 +31,19 @@ bool UI_Label::CleanUp()
 
 void UI_Label::SetText(const char* content, const SDL_Color &color, _TTF_Font* font_size)
 {
-	text_texture = App->font->Print(content, color, font_size);
+	textTexture = App->font->Print(content, color, font_size);
 	int w, h;
-	SDL_QueryTexture(text_texture, NULL, NULL, &w, &h);
+	SDL_QueryTexture(textTexture, NULL, NULL, &w, &h);
 	SetArea(w, h);
+}
+
+bool UI_Label::Update()
+{
+	Draw();
+	return true;
 }
 
 void UI_Label::Draw()
 {
-	App->render->AddToBlitList(text_texture, position.x, position.y);
+	App->render->Blit(textTexture, position.x, position.y);
 }

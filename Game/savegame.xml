@@ -6,23 +6,20 @@
 	<audio />
 	<map />
 	<pathfinding />
+	<fonts />
+	<gui />
 	<scene>
-		<camera x="-854.835022" y="-200.661179" />
-		<current_level name="test_level.tmx" />
+		<camera x="-1004.04498" y="-584.999878" />
+		<current_level name="level002.tmx" />
 	</scene>
 	<object>
-		<Box x="872" y="280" velocity_x="0" velocity_y="0" id="21" />
-		<Box x="716.5" y="280" velocity_x="0" velocity_y="0" id="35" />
-		<Box x="983" y="280" velocity_x="0" velocity_y="0" id="45" />
-		<landEnemy x="584" y="232" flip_direction="false" />
-		<Box x="466" y="280" velocity_x="0" velocity_y="0" id="66" />
-		<Box x="316.25" y="280" velocity_x="0" velocity_y="0" id="70" />
-		<Player x="413.823975" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
+		<Player x="462.911865" y="408" velocity_x="0" velocity_y="0" flip_direction="false" />
+		<Box x="592" y="408" velocity_x="0" velocity_y="0" id="21" />
 	</object>
 	<Particles />
 	<FadeToBlack />
 	<Collision />
 	<renderer>
-		<camera x="-854" y="-200" />
+		<camera x="-1004" y="-584" />
 	</renderer>
 </game_state>

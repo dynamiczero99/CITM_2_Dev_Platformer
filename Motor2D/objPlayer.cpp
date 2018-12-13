@@ -203,7 +203,7 @@ bool ObjPlayer::PostUpdate() {
 			}
 		}
 		float angle = atan2(projectileDir.y, projectileDir.x) * 180.0f / M_PI;
-		App->render->AddToBlitList(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 0, 1.0f, SDL_FLIP_NONE, angle, 0, 15);
+		App->render->Blit(App->object->shootIndicatorTex, position.x, position.y - 12, NULL, 1.0f, SDL_FLIP_NONE, angle, 0, 15);
 	}
 
 	//Once the movement and the physical resolution has happened, determine the animations it must play
@@ -229,7 +229,7 @@ bool ObjPlayer::PostUpdate() {
 
 	iPoint blitPos = GetRectPos(Pivot(PivotV::bottom, PivotH::middle), (int)position.x, (int)position.y, animTileWidth, animTileHeight);
 
-	App->render->AddToBlitList(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
+	App->render->Blit(currTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 
 	return true;
 }

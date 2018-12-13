@@ -13,13 +13,14 @@ public:
 	~UI_Label();
 
 	bool CleanUp();
-	void SetText(const char* content, const SDL_Color &color, _TTF_Font* font_size);
+	void SetText(const char* content, const SDL_Color &color, _TTF_Font* fontSize);
+	virtual bool Update();
 	void Draw();
 
 private:
 	void SetArea(uint w, uint h);
 
 public:
-	SDL_Texture * text_texture;
+	SDL_Texture * textTexture;
 };
 #endif //_UI_LABEL_

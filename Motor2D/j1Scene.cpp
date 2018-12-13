@@ -9,12 +9,14 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
+#include "j1Gui.h"
 #include "j1Object.h"
 #include "j1Collision.h"
 #include "j1Window.h"
 #include "ObjPlayer.h"
 #include "j1Pathfinding.h"
 #include "Brofiler/Brofiler.h"
+#include "UI_Sprite.h"
 
 #include "j1Particles.h"
 
@@ -74,13 +76,17 @@ bool j1Scene::Start()
 
 	debug_tex = App->tex->LoadTexture("maps/calculatedPathTex.png");
 
-	// TODO, search a less ugly tornaround, maybe in module player?
-	// to loads its position on every new map load
-
 	SearchValidCameraPos();
 
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
+
+	SDL_Rect section = { 115, 145, 218, 57 };
+	SDL_Rect hover = { 526, 201, 218, 57};
+	SDL_Rect clicked = {757, 201, 218, 57};
+	SDL_Rect disabled = { 0,0,0,0 };
+	UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, clicked, disabled);
+	button->draggable = true;
 
 
 	return true;

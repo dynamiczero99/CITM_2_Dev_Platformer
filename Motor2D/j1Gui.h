@@ -4,6 +4,9 @@
 #include "j1Module.h"
 #include "UI_Element.h"
 #include "UI_Sprite.h"
+#include "UI_Button.h"
+#include "UI_Label.h"
+#include "UI_DynamicLabel.h"
 #include "p2List.h"
 
 #define CURSOR_WIDTH 2
@@ -37,10 +40,15 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UI_Element* CreateUIElement(UiElemType type, iPoint position, j1Module* callback, SDL_Rect texSection = { 0,0,0,0 });
+	UI_Element* CreateUIElement(iPoint position, j1Module* callback);
+	UI_Sprite* CreateSprite(iPoint position, j1Module* callback, SDL_Rect texSection);
+	UI_Button* CreateButton(iPoint position, j1Module* callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect clickSection, SDL_Rect disabledSection);
+	UI_Label* CreateLabel(iPoint position, j1Module* callback);
+	UI_DynamicLabel* CreateDynamicLabel(iPoint position, j1Module* callback);
+
 	bool DestroyUIElement(UI_Element* toDestroyElem);
 
-	const SDL_Texture* GetAtlas() const;
+	SDL_Texture* GetAtlas() const;
 	void UI_Debug();
 
 public:

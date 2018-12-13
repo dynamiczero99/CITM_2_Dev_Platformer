@@ -213,11 +213,11 @@ bool ObjEnemyFlying::PostUpdate() {
 	iPoint blitPos = GetRectPos(pivot, position.x, position.y, animTileWidth, animTileHeight);
 	// jetpack fire
 	if(!flip)
-		App->render->AddToBlitList(App->object->robotTilesetTex, blitPos.x, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
+		App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
 	else
-		App->render->AddToBlitList(App->object->robotTilesetTex, blitPos.x + 10, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
+		App->render->Blit(App->object->robotTilesetTex, blitPos.x + 10, blitPos.y + 16, &jetPackFire.GetCurrentFrame(), 1.0F, flip);
 	// enemy
-	App->render->AddToBlitList(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
+	App->render->Blit(App->object->robotTilesetTex, blitPos.x, blitPos.y, &currAnim->GetCurrentFrame(), 1.0F, flip);
 
 
 	return true;

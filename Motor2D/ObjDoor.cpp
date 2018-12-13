@@ -39,7 +39,7 @@ bool ObjDoor::Update(float dt)
 bool ObjDoor::PostUpdate()
 {
 
-	App->render->AddToBlitList(currTex, position.x, position.y, &anim[currentState].GetCurrentFrame());
+	App->render->Blit(currTex, position.x, position.y, &anim[currentState].GetCurrentFrame());
 
 	return true;
 }

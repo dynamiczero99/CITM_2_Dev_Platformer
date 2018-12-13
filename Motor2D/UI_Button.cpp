@@ -10,19 +10,21 @@
 #include "SDL\include\SDL.h"
 
 
-UI_Button::UI_Button(SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked, iPoint pos, j1Module* callback) : UI_Sprite(UiElemType::BUTTON, idle, pos, callback)
+UI_Button::UI_Button(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked) : UI_Sprite(UiElemType::BUTTON, pos, callback, idle)
 {
 	idleRect = atlasSection;
 	hoverRect = hover;
 	clickRect = clicked;
 	disabledRect = disabled;
+
+	currentRect = &idleRect;
 }
 
 UI_Button::~UI_Button()
 {
 }
 
-bool UI_Button::PreUpdate(float d_time)
+bool UI_Button::Update()
 {
 	bool ret = true;
 
@@ -58,13 +60,16 @@ bool UI_Button::PreUpdate(float d_time)
 		}
 	}
 
+	Drag();
+	Draw();
+
 	return ret;
 }
 
 
 void UI_Button::Draw()
 {
-	App->render->AddToBlitList(uiAtlas, position.x, position.y, currentRect);
+	App->render->Blit(uiAtlas, position.x, position.y, currentRect);
 }
 
 

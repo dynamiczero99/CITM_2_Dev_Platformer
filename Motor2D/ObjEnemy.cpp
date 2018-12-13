@@ -73,7 +73,7 @@ void ObjEnemy::DebugPath()
 		for (uint i = 0; i < pathData.path.Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(pathData.path.At(i)->x, pathData.path.At(i)->y);
-			App->render->AddToBlitList(App->object->debugEnemyPathTex, pos.x, pos.y);
+			App->render->Blit(App->object->debugEnemyPathTex, pos.x, pos.y);
 		}
 	}
 }

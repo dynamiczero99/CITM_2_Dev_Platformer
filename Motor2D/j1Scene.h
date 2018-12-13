@@ -6,6 +6,8 @@
 
 struct SDL_Texture;
 
+class UI_Sprite;
+
 class j1Scene : public j1Module
 {
 public:

@@ -10,8 +10,9 @@ enum UiElemType
 	NONE,
 	SPRITE,
 	LABEL,
+	DYNAMICLABEL,
 	BUTTON,
-	WINDOW,
+	SLIDER,
 };
 
 #include "SDL\include\SDL.h"

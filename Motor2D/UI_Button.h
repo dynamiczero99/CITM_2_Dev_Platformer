@@ -31,10 +31,10 @@ enum MouseEvents
 class UI_Button : public UI_Sprite
 {
 public:
-	UI_Button(SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked, iPoint pos, j1Module* callback);
+	UI_Button(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked);
 	~UI_Button();
 
-	bool PreUpdate(float d_time);
+	bool Update();
 	void Draw();
 
 	bool MouseOver(const SDL_Rect& button);

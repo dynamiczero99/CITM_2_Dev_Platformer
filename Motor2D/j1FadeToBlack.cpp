@@ -1,9 +1,10 @@
-#include <math.h>
+ #include <math.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1FadeToBlack.h"
+#include "j1Textures.h"
 #include "j1Render.h"
 #include "j1Map.h"
 #include "j1Scene.h"
@@ -71,8 +72,8 @@ bool j1FadeToBlack::PostUpdate()//float dt)
 	}
 
 	//LOG("Fade percent: %f", fadePerCent);
-	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadePerCent * 255.0F));
-	SDL_RenderFillRect(App->render->renderer, &screen);
+	App->render->DrawQuad(App->render->camera, 0, 0, 0, (Uint8)(fadePerCent * 255.0F));
+	//SDL_RenderFillRect(App->render->renderer, &screen);
 
 	return true;
 }

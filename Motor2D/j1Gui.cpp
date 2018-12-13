@@ -38,22 +38,22 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	for (p2List_item<UI_Element*>* iterator = uiList.start; iterator; iterator = iterator->next)
-	{
-		iterator->data->Update();
-	}
 	return true;
 }
 
 bool j1Gui::Update(float dt)
 {
-	
+
 	return true;
 }
 
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	for (p2List_item<UI_Element*>* iterator = uiList.start; iterator; iterator = iterator->next)
+	{
+		iterator->data->Update();
+	}
 	return true;
 }
 
@@ -65,20 +65,64 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-UI_Element * j1Gui::CreateUIElement(UiElemType type, iPoint position, j1Module * callback, SDL_Rect texSection)
+UI_Element * j1Gui::CreateUIElement(iPoint position, j1Module * callback)
 {
 	UI_Element* ret = nullptr;
 
-	switch (type)
-	{
-	case SPRITE:
-		ret = new UI_Sprite(SPRITE, texSection, position, callback);
-	}
+	ret = new UI_Element();
 
 	if (ret != nullptr)
 	uiList.add(ret);
 
 	return ret;
+}
+
+UI_Sprite * j1Gui::CreateSprite(iPoint position, j1Module * callback, SDL_Rect texSection)
+{
+	UI_Element* ret = nullptr;
+
+	ret = new UI_Sprite(SPRITE, position, callback, texSection);
+
+	if (ret != nullptr)
+		uiList.add(ret);
+
+	return (UI_Sprite*)ret;
+}
+
+UI_Button * j1Gui::CreateButton(iPoint position, j1Module * callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect disabledSection, SDL_Rect clickSection)
+{
+	UI_Element* ret = nullptr;
+
+	ret = new UI_Button(BUTTON, position, callback, idleSection, hoverSection, disabledSection, clickSection);
+
+	if (ret != nullptr)
+		uiList.add(ret);
+
+	return (UI_Button*)ret;
+}
+
+UI_Label * j1Gui::CreateLabel(iPoint position, j1Module * callback)
+{
+	UI_Element* ret = nullptr;
+
+	ret = new UI_Label(position, callback);
+
+	if (ret != nullptr)
+		uiList.add(ret);
+
+	return (UI_Label*)ret;
+}
+
+UI_DynamicLabel * j1Gui::CreateDynamicLabel(iPoint position, j1Module * callback)
+{
+	UI_Element* ret = nullptr;
+
+	ret = new UI_DynamicLabel(position, callback);
+
+	if (ret != nullptr)
+		uiList.add(ret);
+
+	return (UI_DynamicLabel*)ret;
 }
 
 bool j1Gui::DestroyUIElement(UI_Element * toDestroyElem)
@@ -116,7 +160,7 @@ bool j1Gui::DestroyUIElement(UI_Element * toDestroyElem)
 }
 
 // const getter for atlas
-const SDL_Texture* j1Gui::GetAtlas() const
+SDL_Texture* j1Gui::GetAtlas() const
 {
 	return atlas;
 }

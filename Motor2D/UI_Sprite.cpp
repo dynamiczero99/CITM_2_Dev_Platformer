@@ -1,9 +1,11 @@
 #include "UI_Sprite.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Gui.h"
 
-UI_Sprite::UI_Sprite(UiElemType type, SDL_Rect texSection, iPoint pos, j1Module* callback) : UI_Element(type, pos, callback)
+UI_Sprite::UI_Sprite(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect texSection) : UI_Element(type, pos, callback)
 {
+	uiAtlas = App->gui->GetAtlas();
 	this->atlasSection = texSection;
 }
 
@@ -20,5 +22,5 @@ bool UI_Sprite::Update()
 
 void UI_Sprite::Draw()
 {
-	App->render->AddToBlitList(uiAtlas, position.x, position.y, &atlasSection);
+	App->render->Blit(uiAtlas, position.x, position.y, &atlasSection);
 }

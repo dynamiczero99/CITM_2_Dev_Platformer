@@ -27,7 +27,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if(config.child("vsync").attribute("value").as_bool(true) == true)
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		App->vsync = true;
 		flags |= SDL_RENDERER_PRESENTVSYNC;
@@ -39,7 +39,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
-	if(renderer == NULL)
+	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -147,8 +147,6 @@ bool j1Render::PostUpdate()
 	SDL_Rect rectRight = { screenWidth, 0, borderWidth, screenHeight };
 	DrawQuad(rectRight, color.r, color.g, color.b, color.a, true, false);
 
-	BlitEntireList();
-
 	SDL_RenderPresent(renderer);
 
 	return true;
@@ -187,69 +185,6 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 	background = color;
 }
 
-bool j1Render::BlitEntireList()
-{
-	for (p2List_item<BlitItem*>* iterator = blitList.start; iterator; iterator = iterator->next)
-	{
-		BlitToScreen(iterator->data);
-		delete iterator->data;
-	}
-
-	blitList.clear();
-
-	return true;
-}
-
-bool j1Render::BlitToScreen(BlitItem* itemToBlit)
-{
-	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
-
-	bool ret = true;
-	int scale = (int)App->win->GetScale();
-
-	SDL_Rect rect;
-	rect.x = (int)(camera.x * itemToBlit->speed) + itemToBlit->position.x * scale;
-	rect.y = (int)(camera.y * itemToBlit->speed) + itemToBlit->position.y * scale;
-
-	if (itemToBlit->section.h != 0 && itemToBlit->section.w != 0)
-	{
-		rect.w = itemToBlit->section.w;
-		rect.h = itemToBlit->section.h;
-	}
-	else
-	{
-		SDL_QueryTexture(itemToBlit->texture, NULL, NULL, &rect.w, &rect.h);
-	}
-
-	rect.w *= scale;
-	rect.h *= scale;
-
-	//Don't blit if the sprite is out of the screen
-	uint width, height = 0;
-	App->win->GetWindowSize(width, height);
-	if (rect.x + rect.w < 0 || rect.y + rect.h < 0 || rect.x >(int)width || rect.y >(int)height) {
-		return false;
-	}
-
-	SDL_Point* p = NULL;
-	SDL_Point _pivot;
-
-	if (itemToBlit->pivot.x != INT_MAX && itemToBlit->pivot.y != INT_MAX)
-	{
-		_pivot.x = itemToBlit->pivot.x;
-		_pivot.y = itemToBlit->pivot.y;
-		p = &_pivot;
-	}
-
-	if (SDL_RenderCopyEx(renderer, itemToBlit->texture, &itemToBlit->section, &rect, itemToBlit->angle, p, itemToBlit->flip) != 0)
-	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
-}
-
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
 	SDL_RenderSetViewport(renderer, &rect);
@@ -272,33 +207,54 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
 {
-	BlitItem* newItem = new BlitItem();
+	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
 
-	newItem->texture = texture;
-	newItem->position.create(x, y);
+	bool ret = true;
+	int scale = (int)App->win->GetScale();
+
+	SDL_Rect rect;
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y * speed) + y * scale;
 
 	if (section != NULL)
-		newItem->section = *section;
-
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
 	else
-		newItem->section = { 0,0,0,0 };
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
 
-	newItem->depth = depth;
-	newItem->speed = speed;
-	newItem->flip = flip;
-	newItem->angle = angle;
-	newItem->pivot.create(pivot_x, pivot_y);
+	rect.w *= scale;
+	rect.h *= scale;
 
-	blitList.add(newItem);
+	//Don't blit if the sprite is out of the screen
+	uint width, height = 0;
+	App->win->GetWindowSize(width, height);
+	if (rect.x + rect.w < 0 || rect.y + rect.h < 0 || rect.x >(int)width || rect.y >(int)height) {
+		return false;
+	}
 
-	return true;
-}
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
 
-bool j1Render::AddToDebugBlitList(SDL_Texture * texture, int x, int y, const SDL_Rect * section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
-{
-	return false;
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+	{
+		pivot.x = pivot_x;
+		pivot.y = pivot_y;
+		p = &pivot;
+	}
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
 }
 
 bool j1Render::BlitGUIUnscaled(SDL_Texture* texture, int x, int y, const SDL_Rect* section) const
@@ -339,7 +295,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
-	if(use_camera)
+	if (use_camera)
 	{
 		rec.x = (int)(camera.x + rect.x * scale);
 		rec.y = (int)(camera.y + rect.y * scale);
@@ -349,7 +305,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -368,12 +324,12 @@ bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 
 
 	int result = -1;
 
-	if(use_camera)
+	if (use_camera)
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -395,7 +351,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	float factor = (float)M_PI / 180.0f;
 
-	for(uint i = 0; i < 360; ++i)
+	for (uint i = 0; i < 360; ++i)
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));
 		points[i].y = (int)(y + radius * sin(i * factor));
@@ -403,7 +359,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;

@@ -6,7 +6,7 @@
 class UI_Sprite : public UI_Element
 {
 public:
-	UI_Sprite(UiElemType type, SDL_Rect texSection, iPoint pos, j1Module* callback);
+	UI_Sprite(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect texSection);
 	UI_Sprite() {};
 	virtual ~UI_Sprite();
 
