@@ -149,6 +149,8 @@ bool j1Render::PostUpdate()
 
 	SDL_RenderPresent(renderer);
 
+	BlitEntireList();
+
 	return true;
 }
 
@@ -187,7 +189,7 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 
 bool j1Render::BlitEntireList()
 {
-	for (p2List_item<BlitItem*>* iterator = blitList.start; iterator; iterator = iterator->next)
+	for (p2List_item<BlitItem>* iterator = blitList.start; iterator; iterator = iterator->next)
 	{
 		BlitToScreen(iterator->data);
 	}
@@ -195,7 +197,7 @@ bool j1Render::BlitEntireList()
 	return true;
 }
 
-bool j1Render::BlitToScreen(BlitItem* itemToBlit)
+bool j1Render::BlitToScreen(BlitItem itemToBlit)
 {
 	BROFILER_CATEGORY("Render Blit", Profiler::Color::Azure);
 
@@ -203,17 +205,17 @@ bool j1Render::BlitToScreen(BlitItem* itemToBlit)
 	int scale = (int)App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * itemToBlit->speed) + itemToBlit->position.x * scale;
-	rect.y = (int)(camera.y * itemToBlit->speed) + itemToBlit->position.y * scale;
+	rect.x = (int)(camera.x * itemToBlit.speed) + itemToBlit.position.x * scale;
+	rect.y = (int)(camera.y * itemToBlit.speed) + itemToBlit.position.y * scale;
 
-	if (itemToBlit->section != NULL)
+	if (itemToBlit.section != NULL)
 	{
-		rect.w = itemToBlit->section->w;
-		rect.h = itemToBlit->section->h;
+		rect.w = itemToBlit.section->w;
+		rect.h = itemToBlit.section->h;
 	}
 	else
 	{
-		SDL_QueryTexture(itemToBlit->texture, NULL, NULL, &rect.w, &rect.h);
+		SDL_QueryTexture(itemToBlit.texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
 	rect.w *= scale;
@@ -229,14 +231,14 @@ bool j1Render::BlitToScreen(BlitItem* itemToBlit)
 	SDL_Point* p = NULL;
 	SDL_Point _pivot;
 
-	if (itemToBlit->pivot.x != INT_MAX && itemToBlit->pivot.y != INT_MAX)
+	if (itemToBlit.pivot.x != INT_MAX && itemToBlit.pivot.y != INT_MAX)
 	{
-		_pivot.x = itemToBlit->pivot.x;
-		_pivot.y = itemToBlit->pivot.y;
+		_pivot.x = itemToBlit.pivot.x;
+		_pivot.y = itemToBlit.pivot.y;
 		p = &_pivot;
 	}
 
-	if (SDL_RenderCopyEx(renderer, itemToBlit->texture, itemToBlit->section, &rect, itemToBlit->angle, p, itemToBlit->flip) != 0)
+	if (SDL_RenderCopyEx(renderer, itemToBlit.texture, itemToBlit.section, &rect, itemToBlit.angle, p, itemToBlit.flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
@@ -267,7 +269,7 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+bool j1Render::AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
 {
 	BlitItem* newItem = new BlitItem();
 
@@ -280,10 +282,12 @@ bool j1Render::AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect*
 	newItem->angle = angle;
 	newItem->pivot.create(pivot_x, pivot_y);
 
-	//blitList.add(newItem);
+	blitList.add(*newItem);
+
+	return true;
 }
 
-bool j1Render::AddToDebugBlitList(SDL_Texture * texture, int x, int y, const SDL_Rect * section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+bool j1Render::AddToDebugBlitList(SDL_Texture * texture, int x, int y, const SDL_Rect * section, int depth, float speed, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y)
 {
 	return false;
 }

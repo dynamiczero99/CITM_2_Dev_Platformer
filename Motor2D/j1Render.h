@@ -85,10 +85,10 @@ public:
 
 	
 	// Adds an element to the blit list
-	bool AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, int depth = 0, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
+	bool AddToBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, int depth = 0, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	
 	// Adds an element to the debug blit list (always blits over the default blit list)
-	bool AddToDebugBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, int depth = 0, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
+	bool AddToDebugBlitList(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, int depth = 0, float speed = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX);
 	
 	bool BlitGUIUnscaled(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL) const;
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;
@@ -104,7 +104,7 @@ private:
 	bool BlitEntireList();
 
 	// Actually blits the passed parameter item
-	bool BlitToScreen(BlitItem* itemToBlit);
+	bool BlitToScreen(BlitItem itemToBlit);
 
 public:
 
@@ -113,8 +113,8 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 
-	p2List<BlitItem*> blitList;
-	p2List<BlitItem*> debugBlitList;
+	p2List<BlitItem> blitList;
+	p2List<BlitItem> debugBlitList;
 
 	bool cameraDebug = false;
 

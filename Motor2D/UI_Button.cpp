@@ -38,12 +38,12 @@ bool UI_Button::PreUpdate(float d_time)
 			hovering = true;
 			ChangeVisualState(MOUSE_ENTER);
 		}
-		if (hovering && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		if (hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			ChangeVisualState(MOUSE_CLICK);
 			App->audio->PlayFx(click_sfx, 0, App->audio->sfx_vol);
 		}
-		if (hovering && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+		if (hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 		{
 			ChangeVisualState(MOUSE_RELEASE);
 			ret = callback->OnEvent(this);
@@ -59,13 +59,13 @@ bool UI_Button::PreUpdate(float d_time)
 }
 
 
-void Button::Draw()
+void UI_Button::Draw()
 {
-	App->render->Blit(App->gui->GetAtlas(), position.x, position.y, current_rect);
+	App->render->AddToBlitList(App->gui->GetAtlas(), position.x, position.y, current_rect);
 }
 
 
-bool Button::MouseOver(const SDL_Rect& button)
+bool UI_Button::MouseOver(const SDL_Rect& button)
 {
 	iPoint mouse_cords;
 	App->input->GetMousePosition(mouse_cords.x, mouse_cords.y);
@@ -74,7 +74,7 @@ bool Button::MouseOver(const SDL_Rect& button)
 	return (mouse_cords.x >= button.x && mouse_cords.x <= button.x + button.w) && (mouse_cords.y >= button.y && mouse_cords.y <= button.y + button.h);
 }
 
-void Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicked_sec, SDL_Rect disabled_sec)
+void UI_Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicked_sec, SDL_Rect disabled_sec)
 {
 	idle_rect.x = idle_sec.x;
 	idle_rect.y = idle_sec.y;
@@ -103,18 +103,18 @@ void Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicked_s
 }
 
 
-void Button::SetButtonType(ButtonType type)
+void UI_Button::SetButtonType(ButtonType type)
 {
 	button_type = type;
 }
 
-void Button::SetArea(uint w, uint h)
+void UI_Button::SetArea(uint w, uint h)
 {
 	world_area.w = w;
 	world_area.h = h;
 }
 
-void Button::ChangeVisualState(const int event)
+void UI_Button::ChangeVisualState(const int event)
 {
 	switch (event)
 	{
