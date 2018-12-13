@@ -6,7 +6,7 @@
 class UI_Sprite : public UI_Element
 {
 public:
-	UI_Sprite(SDL_Texture* tex, SDL_Rect* texSection, iPoint pos, j1Module* callback);
+	UI_Sprite(UiElemType type, SDL_Rect texSection, iPoint pos, j1Module* callback);
 	UI_Sprite() {};
 	virtual ~UI_Sprite();
 
@@ -18,7 +18,7 @@ private:
 
 protected:
 	SDL_Texture* uiAtlas = nullptr;
-	SDL_Rect* atlasSection = nullptr;
+	SDL_Rect atlasSection;
 };
 
 #endif //_UI_SPRITE_

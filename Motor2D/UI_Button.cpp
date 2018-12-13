@@ -10,9 +10,12 @@
 #include "SDL\include\SDL.h"
 
 
-UI_Button::UI_Button(iPoint pos, j1Module* callback) : UI_Element(UiElemType::BUTTON, pos, callback)
+UI_Button::UI_Button(SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked, iPoint pos, j1Module* callback) : UI_Sprite(UiElemType::BUTTON, idle, pos, callback)
 {
-	
+	idleRect = atlasSection;
+	hoverRect = hover;
+	clickRect = clicked;
+	disabledRect = disabled;
 }
 
 UI_Button::~UI_Button()
@@ -25,11 +28,11 @@ bool UI_Button::PreUpdate(float d_time)
 
 	if (!enabled)
 	{
-		current_rect = &disabled_rect;
+		currentRect = &disabledRect;
 		return ret;
 	}
 
-	world_area = { position.x, position.y, current_rect->w, current_rect->h };
+	world_area = { position.x, position.y, currentRect->w, currentRect->h };
 
 	if (!App->gui->dragging)
 	{
@@ -41,7 +44,7 @@ bool UI_Button::PreUpdate(float d_time)
 		if (hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			ChangeVisualState(MOUSE_CLICK);
-			App->audio->PlayFx(click_sfx, 0, App->audio->sfx_vol);
+			App->audio->PlayFx(click_sfx, 0/*, App->audio->sfx_vol*/);
 		}
 		if (hovering && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 		{
@@ -61,7 +64,7 @@ bool UI_Button::PreUpdate(float d_time)
 
 void UI_Button::Draw()
 {
-	App->render->AddToBlitList(App->gui->GetAtlas(), position.x, position.y, current_rect);
+	App->render->AddToBlitList(uiAtlas, position.x, position.y, currentRect);
 }
 
 
@@ -76,27 +79,27 @@ bool UI_Button::MouseOver(const SDL_Rect& button)
 
 void UI_Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicked_sec, SDL_Rect disabled_sec)
 {
-	idle_rect.x = idle_sec.x;
-	idle_rect.y = idle_sec.y;
-	idle_rect.w = idle_sec.w;
-	idle_rect.h = idle_sec.h;
+	idleRect.x = idle_sec.x;
+	idleRect.y = idle_sec.y;
+	idleRect.w = idle_sec.w;
+	idleRect.h = idle_sec.h;
 
-	highlighted_rect.x = high_sec.x;
-	highlighted_rect.y = high_sec.y;
-	highlighted_rect.w = high_sec.w;
-	highlighted_rect.h = high_sec.h;
+	hoverRect.x = high_sec.x;
+	hoverRect.y = high_sec.y;
+	hoverRect.w = high_sec.w;
+	hoverRect.h = high_sec.h;
 
-	click_rect.x = clicked_sec.x;
-	click_rect.y = clicked_sec.y;
-	click_rect.w = clicked_sec.w;
-	click_rect.h = clicked_sec.h;
+	clickRect.x = clicked_sec.x;
+	clickRect.y = clicked_sec.y;
+	clickRect.w = clicked_sec.w;
+	clickRect.h = clicked_sec.h;
 
 	if (disabled_sec.h != 0 && disabled_sec.w != 0)
 	{
-		disabled_rect.h = disabled_sec.h;
-		disabled_rect.w = disabled_sec.w;
-		disabled_rect.x = disabled_sec.x;
-		disabled_rect.y = disabled_sec.y;
+		disabledRect.h = disabled_sec.h;
+		disabledRect.w = disabled_sec.w;
+		disabledRect.x = disabled_sec.x;
+		disabledRect.y = disabled_sec.y;
 
 		enabled = false;
 	}
@@ -119,13 +122,13 @@ void UI_Button::ChangeVisualState(const int event)
 	switch (event)
 	{
 	case MOUSE_ENTER:
-		current_rect = &highlighted_rect; break;
+		currentRect = &hoverRect; break;
 	case MOUSE_CLICK:
-		current_rect = &click_rect; break;
+		currentRect = &clickRect; break;
 	case MOUSE_RELEASE:
-		current_rect = &highlighted_rect; break;
+		currentRect = &hoverRect; break;
 	case MOUSE_LEAVE:
-		current_rect = &idle_rect; break;
+		currentRect = &idleRect; break;
 	}
 
 	//	SetArea(current_rect->w, current_rect->h);

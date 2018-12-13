@@ -2,9 +2,8 @@
 #include "j1App.h"
 #include "j1Render.h"
 
-UI_Sprite::UI_Sprite(SDL_Texture* tex, SDL_Rect* texSection, iPoint pos, j1Module* callback) : UI_Element(SPRITE, pos, callback)
+UI_Sprite::UI_Sprite(UiElemType type, SDL_Rect texSection, iPoint pos, j1Module* callback) : UI_Element(type, pos, callback)
 {
-	this->uiAtlas = tex;
 	this->atlasSection = texSection;
 }
 
@@ -21,5 +20,5 @@ bool UI_Sprite::Update()
 
 void UI_Sprite::Draw()
 {
-	App->render->AddToBlitList(uiAtlas, position.x, position.y, atlasSection);
+	App->render->AddToBlitList(uiAtlas, position.x, position.y, &atlasSection);
 }

@@ -91,6 +91,7 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ObjBox.cpp" />
     <ClCompile Include="ObjDoor.cpp" />
     <ClCompile Include="ObjEnemy.cpp" />
@@ -109,7 +110,6 @@
     <ClCompile Include="UI_Element.cpp" />
     <ClCompile Include="UI_Label.cpp" />
     <ClCompile Include="UI_Sprite.cpp" />
-    <ClCompile Include="UI_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Collision.h" />
@@ -123,6 +123,7 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="ObjBox.h" />
     <ClInclude Include="ObjDoor.h" />
     <ClInclude Include="ObjEnemy.h" />
@@ -152,7 +153,6 @@
     <ClInclude Include="UI_Element.h" />
     <ClInclude Include="UI_Label.h" />
     <ClInclude Include="UI_Sprite.h" />
-    <ClInclude Include="UI_Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

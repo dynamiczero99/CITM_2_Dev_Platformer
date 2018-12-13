@@ -33,7 +33,7 @@ class BlitItem
 public:
 	SDL_Texture* texture;
 	iPoint position;
-	const SDL_Rect* section;
+	SDL_Rect section;
 	float speed = 1.0f;
 	SDL_RendererFlip flip;
 	double angle;
@@ -104,7 +104,7 @@ private:
 	bool BlitEntireList();
 
 	// Actually blits the passed parameter item
-	bool BlitToScreen(BlitItem itemToBlit);
+	bool BlitToScreen(BlitItem* itemToBlit);
 
 public:
 
@@ -113,8 +113,11 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 
-	p2List<BlitItem> blitList;
-	p2List<BlitItem> debugBlitList;
+	p2List<BlitItem*> blitList;
+	p2List<BlitItem*> debugBlitList;
+
+	p2List<BlitItem*> uiBlitList;
+	p2List<BlitItem*> uiDebugBlitList;
 
 	bool cameraDebug = false;
 

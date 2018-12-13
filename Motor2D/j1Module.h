@@ -10,6 +10,7 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j1App;
+class UI_Button;
 struct Collider;
 
 class j1Module
@@ -68,6 +69,21 @@ public:
 	virtual bool Save(pugi::xml_node&) const
 	{
 		return true;
+	}
+
+	virtual bool OnEvent(UI_Button* button)
+	{
+		return true;
+	}
+
+	virtual void AddUiElems()
+	{
+		return;
+	}
+
+	virtual void OpenMenu(uint type)
+	{
+		return;
 	}
 
 	// Module activation ---

@@ -65,14 +65,14 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-UI_Element * j1Gui::CreateUIElement(UiElemType type, iPoint position, j1Module * callback, SDL_Rect* texSection)
+UI_Element * j1Gui::CreateUIElement(UiElemType type, iPoint position, j1Module * callback, SDL_Rect texSection)
 {
 	UI_Element* ret = nullptr;
 
 	switch (type)
 	{
 	case SPRITE:
-		ret = new UI_Sprite(atlas, texSection, position, callback);
+		ret = new UI_Sprite(SPRITE, texSection, position, callback);
 	}
 
 	if (ret != nullptr)
@@ -126,4 +126,3 @@ void j1Gui::UI_Debug()
 }
 
 // class Gui ---------------------------------------------------
-

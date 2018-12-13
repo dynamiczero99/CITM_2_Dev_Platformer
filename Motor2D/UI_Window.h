@@ -2,6 +2,7 @@
 #define _UI_WINDOW_
 
 #include "UI_Sprite.h"
+#include "UI_Label.h"
 #include "SDL\include\SDL.h"
 
 enum WindowType
@@ -25,11 +26,7 @@ private:
 	void SetArea(uint w, uint h);
 
 public:
-
-	SDL_Rect verticalWindow;
-	SDL_Rect horizontalWindow;
-	SDL_Rect titleWindow;
-	SDL_Rect horizontalWindowSmall;
+	UI_Label
 };
 
 #endif //_UI_WINDOW_

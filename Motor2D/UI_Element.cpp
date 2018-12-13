@@ -50,9 +50,9 @@ void UI_Element::Drag()
 	{
 		position += tempMousePos - lastMousePos;
 	}
-	if (attached && beingClicked && lastMousePos != tempMousePos && lastMousePos.x != 0 && last_mousepos.y != 0)
+	if (attached && beingClicked && lastMousePos != tempMousePos && lastMousePos.x != 0 && lastMousePos.y != 0)
 	{
-		beingClicked += tempMousePos - last_mousepos;
+		relativePos += tempMousePos - lastMousePos;
 	}
 	if (beingClicked)
 		lastMousePos = tempMousePos; App->gui->dragging = true;

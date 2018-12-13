@@ -1,13 +1,13 @@
 #ifndef _UI_BUTTON_
 #define _UI_BUTTON_
 
-#include "UI_Element.h"
+#include "UI_Sprite.h"
 
 #include "SDL/include/SDL.h"
 
 enum ButtonType
 {
-	NONE = 0,
+	BUTTON_NONE = 0,
 	PLAY,
 	SETTINGS,
 	TOGGLE_FULLSCREEN,
@@ -19,10 +19,19 @@ enum ButtonType
 	WEBPAGE,
 };
 
-class UI_Button : public UI_Element
+enum MouseEvents
+{
+	MOUSE_NONE = 0,
+	MOUSE_ENTER,
+	MOUSE_LEAVE,
+	MOUSE_CLICK,
+	MOUSE_RELEASE
+};
+
+class UI_Button : public UI_Sprite
 {
 public:
-	UI_Button(iPoint pos, j1Module* callback);
+	UI_Button(SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked, iPoint pos, j1Module* callback);
 	~UI_Button();
 
 	bool PreUpdate(float d_time);
@@ -47,11 +56,11 @@ private:
 	bool enabled = true;
 	uint click_sfx;
 
-	SDL_Rect click_rect;
-	SDL_Rect idle_rect;
-	SDL_Rect highlighted_rect;
-	SDL_Rect disabled_rect;
-	SDL_Rect* current_rect = nullptr;
+	SDL_Rect clickRect;
+	SDL_Rect idleRect;
+	SDL_Rect hoverRect;
+	SDL_Rect disabledRect;
+	SDL_Rect* currentRect = nullptr;
 
 };
 #endif //_UI_BUTTON_

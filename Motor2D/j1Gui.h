@@ -37,7 +37,7 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UI_Element* CreateUIElement(UiElemType type, iPoint position, j1Module* callback, SDL_Rect* texSection = nullptr);
+	UI_Element* CreateUIElement(UiElemType type, iPoint position, j1Module* callback, SDL_Rect texSection = { 0,0,0,0 });
 	bool DestroyUIElement(UI_Element* toDestroyElem);
 
 	const SDL_Texture* GetAtlas() const;
