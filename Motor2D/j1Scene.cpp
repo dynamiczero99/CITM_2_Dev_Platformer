@@ -81,12 +81,12 @@ bool j1Scene::Start()
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
 
-	SDL_Rect section = { 115, 145, 218, 57 };
-	SDL_Rect hover = { 526, 201, 218, 57};
-	SDL_Rect clicked = {757, 201, 218, 57};
+	SDL_Rect section = { 6, 117, 217, 56 };
+	SDL_Rect hover = { 417, 173, 217, 56};
+	SDL_Rect clicked = {648, 173, 217, 56};
 	SDL_Rect disabled = { 0,0,0,0 };
-	UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, clicked, disabled);
-	button->draggable = true;
+	UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, disabled, clicked);
+	button->draggable = false;
 
 
 	return true;
