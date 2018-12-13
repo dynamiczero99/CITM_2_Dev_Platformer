@@ -19,15 +19,8 @@
   </window>
   
   <gui>
-    <atlas file="gui/atlas.png"/>
-	<button_up file="gui/UI-DialogBox-Button-Up.png"/>
-	<button_down file="gui/UI-DialogBox-Button-Down.png"/>
-	<button_hover file="gui/UI-DialogBox-Button-Highlight.png"/>
-	<checkbox_up file="gui/UI-CheckBox-Up.png"/>
-	<checkbox_down file="gui/UI-CheckBox-Down.png"/>
-	<checkbox_highlight file="gui/UI-CheckBox-Highlight.png"/>
-	<checkbox_check file="gui/UI-CheckBox-Check.png"/>
-	<checkbox_check_locked file="gui/UI-CheckBox-Check-Disabled.png"/>
+  <atlas file="gui/atlas.png"/>
+	<logo file="gui/swap_game_logo.png"/>
 
   </gui>
 
@@ -44,7 +37,7 @@
     <folder>maps/</folder>
 	  <levels>
       <!--<level name="test_level.tmx"/>-->
-      <level name="level000.tmx"/>
+      <level name="main_menu.tmx"/>
       <level name="level001.tmx"/>
       <level name="level002.tmx"/>
       <level name="level003.tmx"/>
