@@ -18,6 +18,7 @@
 #include "j1Map.h"
 #include "j1FadeToBlack.h"
 #include "j1Particles.h"
+#include "j1Scene.h"
 
 ObjPlayer::ObjPlayer(pugi::xml_node & playerNode, fPoint &position, int index) : GameObject(position, index) {
 
@@ -122,7 +123,7 @@ void ObjPlayer::StandardControls()
 {
 	//LOG("%f", recoveryTimer.ReadSec());
 	//LOG("%f", recoveryTime);
-	if (App->map->data.loadedLevel != "main_menu.tmx")
+	if (App->map->data.loadedLevel != App->scene->menu)
 	{ 
 		if (recoveryTimer.ReadSec() > recoveryTime) {
 			//LOG("Condition evaluates to true");
@@ -428,7 +429,7 @@ void ObjPlayer::GodMovement(float dt) {
 
 void ObjPlayer::ShootProjectile()
 {
-	if (App->map->data.loadedLevel != "main_menu.tmx")
+	if (App->map->data.loadedLevel != App->scene->menu)
 	{
 		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
 			App->audio->PlayFx(aim);
@@ -490,7 +491,7 @@ void ObjPlayer::SwapPosition() {
 	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ||
 		App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X)) &&
 		swapObject != nullptr
-		&& App->map->data.loadedLevel != "main_menu.tmx") 
+		&& App->map->data.loadedLevel != App->scene->menu) 
 	{
 		fPoint auxPos = position;
 		// add previous point particle effect -------

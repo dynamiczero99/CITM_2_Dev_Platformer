@@ -40,6 +40,8 @@ bool j1Scene::Awake(pugi::xml_node& node)
 	cameraJumpMultiplier = node.child("camera").child("jump_multiplier").text().as_float();
 	cameraFallMultiplier = node.child("camera").child("fall_multiplier").text().as_float();
 
+	menu = node.child("camera").child("name").text().as_string();
+
 	uint width, height;
 	App->win->GetWindowSize(width, height);
 	horizontalScreenDivision = (1.0f / node.child("camera").child("horizontal_screen_divisions").text().as_float()) * width;
@@ -79,7 +81,7 @@ bool j1Scene::Start()
 
 	SearchValidCameraPos();
 
-	if (App->map->data.loadedLevel == "main_menu.tmx")
+	if (App->map->data.loadedLevel == menu)
 	{
 		CreateWidgets();
 	}
@@ -138,7 +140,7 @@ bool j1Scene::Update(float dt)
 	//}
 	//// ------------------------------------------------
 
-	if (App->map->data.loadedLevel != "main_menu.tmx")
+	if (App->map->data.loadedLevel != menu)
 	{
 		App->gui->DestroyAllUIElements();
 	}

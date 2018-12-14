@@ -19,8 +19,8 @@
   </window>
   
   <gui>
-  <atlas file="gui/atlas.png"/>
-	<logo file="gui/swap_game_logo.png"/>
+    <atlas file="gui/atlas.png"/>
+	  <logo file="gui/swap_game_logo.png"/>
 
   </gui>
 
@@ -56,6 +56,7 @@
 
   <scene>
     <camera>
+      <name>main_menu.tmx</name>
       <horizontal_multiplier>3.0</horizontal_multiplier>
       <jump_multiplier>20.0</jump_multiplier>
       <fall_multiplier>1.2</fall_multiplier>

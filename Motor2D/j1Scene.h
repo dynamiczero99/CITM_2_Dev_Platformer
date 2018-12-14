@@ -43,6 +43,9 @@ public:
 
 	void CreateWidgets();
 
+public:
+	p2SString menu;
+
 private:
 	void DebugInput();
 	// debug path generation with mouse
@@ -62,6 +65,7 @@ private:
 	float	verticalScreenDivision = 0.0f;
 
 	SDL_Rect atlasRect;
+	
 
 };
 
