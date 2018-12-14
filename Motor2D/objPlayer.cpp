@@ -122,42 +122,46 @@ void ObjPlayer::StandardControls()
 {
 	//LOG("%f", recoveryTimer.ReadSec());
 	//LOG("%f", recoveryTime);
-	if (recoveryTimer.ReadSec() > recoveryTime) {
-		//LOG("Condition evaluates to true");
-	}
+	if (App->map->data.loadedLevel != "main_menu.tmx")
+	{ 
+		if (recoveryTimer.ReadSec() > recoveryTime) {
+			//LOG("Condition evaluates to true");
+		}
 
-	Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-	if (((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)) ||
-		(xAxis < 0 && recoveryTimer.ReadSec() > recoveryTime && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP))) {
-		if (isOnPlatform) {
-			velocity.x = -moveSpeedGnd;
+		Sint16 xAxis = App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+		if (((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)) ||
+			(xAxis < 0 && recoveryTimer.ReadSec() > recoveryTime && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP))) {
+			if (isOnPlatform) {
+				velocity.x = -moveSpeedGnd;
+			}
+			else {
+				velocity.x = -moveSpeedAir;
+			}
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+		}
+		else if (((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)) ||
+			(xAxis > 0 && recoveryTimer.ReadSec() > recoveryTime && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP))) {
+			if (isOnPlatform) {
+				velocity.x = moveSpeedGnd;
+			}
+			else {
+				velocity.x = moveSpeedAir;
+			}
+			flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
 		else {
-			velocity.x = -moveSpeedAir;
+			velocity.x = 0;
 		}
-		flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-	}
-	else if (((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE)) ||
-		(xAxis > 0 && recoveryTimer.ReadSec() > recoveryTime && !(App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP))) {
-		if (isOnPlatform) {
-			velocity.x = moveSpeedGnd;
-		}
-		else {
-			velocity.x = moveSpeedAir;
-		}
-		flip = SDL_RendererFlip::SDL_FLIP_NONE;
-	}
-	else {
-		velocity.x = 0;
-	}
 
-	// Check that it is hitting the ground to be able to jump (he could jump on the air otherwise)
-	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN) && isOnPlatform) {
-		velocity.y = jumpSpeed;
-		isOnPlatform = false;
-		checkFallPlatform = false;
-		App->audio->PlayFx(jump);
+		// Check that it is hitting the ground to be able to jump (he could jump on the air otherwise)
+		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN) && isOnPlatform) {
+			velocity.y = jumpSpeed;
+			isOnPlatform = false;
+			checkFallPlatform = false;
+			App->audio->PlayFx(jump);
+		}
 	}
+	
 }
 
 bool ObjPlayer::Update(float dt) {
@@ -424,62 +428,70 @@ void ObjPlayer::GodMovement(float dt) {
 
 void ObjPlayer::ShootProjectile()
 {
-	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
-		App->audio->PlayFx(aim);
-	}
-
-	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-
-		if (projectile != nullptr) {
-			App->object->DeleteObject(projectile);
-			projectile = nullptr;
+	if (App->map->data.loadedLevel != "main_menu.tmx")
+	{
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN) {
+			App->audio->PlayFx(aim);
 		}
 
-		if (swapObject != nullptr) {
-			swapObject->MarkObject(false);
-			swapObject = nullptr;
-		}
+		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP || App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
 
-		fPoint sourcePosProjectile;
-		sourcePosProjectile.x = position.x;
-		sourcePosProjectile.y = position.y - shootHeight;
-
-		fPoint projectileDir;
-		if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP) {
-			projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
-			projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
-			if (projectileDir.IsZero()) {
-				//If no direction is given, shoot forward
-				if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
-					projectileDir.x = SHRT_MAX;
-				}
-				else {
-					projectileDir.x = SHRT_MIN;
-				}
+			if (projectile != nullptr) {
+				App->object->DeleteObject(projectile);
+				projectile = nullptr;
 			}
-			recoveryTimer.Start();
-		}
-		else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
-			iPoint mousePos;
-			App->input->GetMousePosition(mousePos.x, mousePos.y);
-			iPoint cameraPos;
-			cameraPos.x = -App->render->camera.x / (int)App->win->GetScale();
-			cameraPos.y = -App->render->camera.y / (int)App->win->GetScale();
-			iPoint targetPosProjectile;
-			targetPosProjectile = cameraPos + mousePos;
-			projectileDir = (fPoint)targetPosProjectile - sourcePosProjectile;
-		}
-		projectileDir.Normalize();
 
-		projectile = App->object->AddObjProjectile(sourcePosProjectile, projectileDir, this);
+			if (swapObject != nullptr) {
+				swapObject->MarkObject(false);
+				swapObject = nullptr;
+			}
 
-		//Play sfx
-		App->audio->PlayFx(shoot);
+			fPoint sourcePosProjectile;
+			sourcePosProjectile.x = position.x;
+			sourcePosProjectile.y = position.y - shootHeight;
+
+			fPoint projectileDir;
+			if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_B) == KEY_UP) {
+				projectileDir.x = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX);
+				projectileDir.y = (float)App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY);
+				if (projectileDir.IsZero()) {
+					//If no direction is given, shoot forward
+					if (flip == SDL_RendererFlip::SDL_FLIP_NONE) {
+						projectileDir.x = SHRT_MAX;
+					}
+					else {
+						projectileDir.x = SHRT_MIN;
+					}
+				}
+				recoveryTimer.Start();
+			}
+			else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN) {
+				iPoint mousePos;
+				App->input->GetMousePosition(mousePos.x, mousePos.y);
+				iPoint cameraPos;
+				cameraPos.x = -App->render->camera.x / (int)App->win->GetScale();
+				cameraPos.y = -App->render->camera.y / (int)App->win->GetScale();
+				iPoint targetPosProjectile;
+				targetPosProjectile = cameraPos + mousePos;
+				projectileDir = (fPoint)targetPosProjectile - sourcePosProjectile;
+			}
+			projectileDir.Normalize();
+
+			projectile = App->object->AddObjProjectile(sourcePosProjectile, projectileDir, this);
+
+			//Play sfx
+			App->audio->PlayFx(shoot);
+		}
 	}
+	
 }
 
 void ObjPlayer::SwapPosition() {
-	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X)) && swapObject != nullptr) {
+	if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ||
+		App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X)) &&
+		swapObject != nullptr
+		&& App->map->data.loadedLevel != "main_menu.tmx") 
+	{
 		fPoint auxPos = position;
 		// add previous point particle effect -------
 		SDL_Rect pInstantiationPos = App->particles->teleport01.anim.GetCurrentFrame();
