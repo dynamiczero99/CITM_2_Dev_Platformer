@@ -98,11 +98,13 @@ UI_Sprite * j1Gui::CreateSprite(iPoint position, j1Module * callback, SDL_Rect t
 	return (UI_Sprite*)ret;
 }
 
-UI_Button * j1Gui::CreateButton(iPoint position, j1Module * callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect disabledSection, SDL_Rect clickSection)
+
+
+UI_Button * j1Gui::CreateButton(ButtonType type, iPoint position, j1Module * callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect disabledSection, SDL_Rect clickSection)
 {
 	UI_Element* ret = nullptr;
 
-	ret = new UI_Button(BUTTON, position, callback, idleSection, hoverSection, disabledSection, clickSection);
+	ret = new UI_Button(ButtonType::BUTTON_NONE, position, callback, idleSection, hoverSection, disabledSection, clickSection);
 
 	if (ret != nullptr)
 		uiList.add(ret);

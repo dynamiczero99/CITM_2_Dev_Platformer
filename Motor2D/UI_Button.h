@@ -8,15 +8,18 @@
 enum ButtonType
 {
 	BUTTON_NONE = 0,
+	//MAIN BUTTONS
 	PLAY,
+	CONTINUE,
 	SETTINGS,
-	TOGGLE_FULLSCREEN,
 	CREDITS,
 	EXIT,
+	TOGGLE_FULLSCREEN,
+	
+	WEBPAGE,
 	CLOSE_WINDOW,
 	RESUME,
 	TO_MAIN_SCENE,
-	WEBPAGE,
 };
 
 enum MouseEvents
@@ -31,7 +34,7 @@ enum MouseEvents
 class UI_Button : public UI_Sprite
 {
 public:
-	UI_Button(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked);
+	UI_Button(ButtonType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked);
 	~UI_Button();
 
 	bool Update();

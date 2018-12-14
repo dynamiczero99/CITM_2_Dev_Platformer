@@ -10,8 +10,10 @@
 #include "SDL\include\SDL.h"
 
 
-UI_Button::UI_Button(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked) : UI_Sprite(UiElemType::BUTTON, pos, callback, idle)
+UI_Button::UI_Button(ButtonType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked) : UI_Sprite(UiElemType::BUTTON, pos, callback, idle)
 {
+	type = ButtonType::BUTTON_NONE;
+
 	idleRect = atlasSection;
 	hoverRect = hover;
 	clickRect = clicked;

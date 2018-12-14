@@ -305,35 +305,32 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::CreateWidgets()
  {
-	 //Big buttons rects
-	 SDL_Rect section = { 9 , 2,128,26 };
-	 SDL_Rect hover = { 7,57,129,28 };
-	 SDL_Rect clicked = { 9,30,127,26};
-	 SDL_Rect disabled = { 0,0,0,0 };
-	 //Small buttons rects
-	 SDL_Rect section1 = { 11 , 120, 61, 26 };
-	 SDL_Rect hover1 = { 9, 172, 63, 28 };
-	 SDL_Rect clicked1 =  { 11, 148, 61, 26 };
-	 SDL_Rect disabled1 = { 11, 204, 61, 26};
+	//Big buttons rects
+	SDL_Rect section = { 9 , 2,128,26 };
+	SDL_Rect hover = { 7,57,129,28 };
+	SDL_Rect clicked = { 9,30,127,26};
+	SDL_Rect disabled = { 0,0,0,0 };
+	//Small buttons rects
+	SDL_Rect section1 = { 11 , 120, 61, 26 };
+	SDL_Rect hover1 = { 9, 172, 63, 28 };
+	SDL_Rect clicked1 =  { 11, 148, 61, 26 };
+	SDL_Rect disabled1 = { 11, 204, 61, 26};
 	 
 	// UI_Button* button = App->gui->CreateButton({ 315, 200 }, this, section1, hover1, disabled1, clicked1);
 
-	 
-	 UI_Button* button1 = App->gui->CreateButton({ 390, 240 }, this, section1, hover1, disabled1, clicked1);
-	 UI_Button* button2 = App->gui->CreateButton({ 465, 240 }, this, section1, hover1, disabled1, clicked1);
-	 UI_Button* button3 = App->gui->CreateButton({ 390, 200 }, this, section1, hover1, disabled1, clicked1);
-	 UI_Button* button4 = App->gui->CreateButton({ 465, 200 }, this, section1, hover1, disabled1, clicked1);
 
-
-	// button->draggable = true;
-	 button1->draggable = true;
-	 button2->draggable = true;
-	 button3->draggable = true;
-	 button4->draggable = true;
+	//PLAY
+	UI_Button* button3 = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, section1, hover1, disabled1, clicked1);
+	//CONTINUE
+	UI_Button* button4 = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, section1, hover1, disabled1, clicked1);
+	//SETTINGS
+	UI_Button* button1 = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, section1, hover1, disabled1, clicked1);
+	//CREDITS
+	UI_Button* button2 = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, section1, hover1, disabled1, clicked1);
 	
-	 //This is not hardcoded. Gets values from xml in j1GUi::Awake
-	 UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
-	 title->draggable = true;
+	//This is not hardcoded. Gets values from xml in j1GUi::Awake
+	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
+	title->draggable = true;
 
 	
  }
@@ -377,19 +374,44 @@ void j1Scene::CameraLogic(float dt)
 	 }
  }
 
-bool j1Scene::OnEvent(UI_Button* button)
-{
-	// Play from the 1st level
-	if (button->button_type = ButtonType::PLAY)
-	{
-		p2List_item<Levels*>* levelData = App->map->data.levels.start;
-		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
-	}
-	//Opens default browser and redirects to link
-	else if (button->button_type = ButtonType::WEBPAGE)
-	{
-		ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
-	}
-	//Exits app
-	else if (button->button_type = ButtonType::EXIT) { return false; }
-}
+ bool j1Scene::OnEvent(UI_Button* button)
+ {
+	 bool ret = true;
+	 //Lots of else if == switch
+	 switch (button->button_type)
+	 {
+	 case ButtonType::PLAY:
+	 {
+		 p2List_item<Levels*>* levelData = App->map->data.levels.start;
+		 App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+		 break;
+	 }
+	 case ButtonType::CONTINUE:
+	 {
+		 //TODO
+		 break;
+	 }
+	 case ButtonType::SETTINGS:
+	 {
+		 //TODO
+		 break;
+	 }
+	 case ButtonType::CREDITS:
+	 {
+		 //TODO
+		 break;
+	 }
+	 case ButtonType::EXIT:
+	 {
+		 ret = false;
+		 break;
+	 }
+	 case ButtonType::WEBPAGE:
+	 {
+		 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
+		 break;
+	 }
+
+	 return ret;
+	 }
+ }

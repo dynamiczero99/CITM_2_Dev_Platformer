@@ -42,7 +42,7 @@ public:
 	// Gui creation functions
 	UI_Element* CreateUIElement(iPoint position, j1Module* callback);
 	UI_Sprite* CreateSprite(iPoint position, j1Module* callback, SDL_Rect texSection);
-	UI_Button* CreateButton(iPoint position, j1Module* callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect clickSection, SDL_Rect disabledSection);
+	UI_Button* CreateButton(ButtonType type, iPoint position, j1Module* callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect clickSection, SDL_Rect disabledSection);
 	UI_Label* CreateLabel(iPoint position, j1Module* callback);
 	UI_DynamicLabel* CreateDynamicLabel(iPoint position, j1Module* callback);
 
