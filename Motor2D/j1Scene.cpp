@@ -305,17 +305,28 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::CreateWidgets()
  {
+	 //Big buttons rects
+	 SDL_Rect section = { 9 , 2,128,26 };
+	 SDL_Rect hover = { 7,57,129,28 };
+	 SDL_Rect clicked = { 9,30,127,26};
+	 SDL_Rect disabled = { 0,0,0,0 };
+	 //Small buttons rects
+	 SDL_Rect section1 = { 11 , 120, 61, 26 };
+	 SDL_Rect hover1 = { 9, 172, 63, 28 };
+	 SDL_Rect clicked1 =  { 11, 148, 61, 26 };
+	 SDL_Rect disabled1 = { 11, 204, 61, 26};
+	 
+	 UI_Button* button = App->gui->CreateButton({ 315, 200 }, this, section1, hover1, disabled1, clicked1);
 
-	 //SDL_Rect section = { 6, 117, 217, 56 };
-	 //SDL_Rect hover = { 417, 173, 217, 56 };
-	 //SDL_Rect clicked = { 648, 173, 217, 56 };
-	 //SDL_Rect disabled = { 0,0,0,0 };
-	 //UI_Button* button = App->gui->CreateButton({ 200, 150 }, OnEvent, section, hover, disabled, clicked);
-	 //button->draggable = false;
+	 
+	 UI_Button* button1 = App->gui->CreateButton({ 315, 240 }, this, section, hover, disabled, clicked);
 
-	 iPoint pos = { 340, 75 };
-	 atlasRect = { 40, 1024, 228, 119 };
-	 UI_Sprite* title = App->gui->CreateSprite(pos, this, atlasRect);
+
+	 button->draggable = true;
+	 button1->draggable = true;
+	
+	 
+	 UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 	 title->draggable = true;
 
 	

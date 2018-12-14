@@ -79,7 +79,8 @@ bool UI_Button::MouseOver(const SDL_Rect& button)
 	App->input->GetMousePosition(mouse_cords.x, mouse_cords.y);
 	mouse_cords = App->render->ScreenToWorld(mouse_cords.x, mouse_cords.y);
 
-	return (mouse_cords.x >= button.x && mouse_cords.x <= button.x + button.w) && (mouse_cords.y >= button.y && mouse_cords.y <= button.y + button.h);
+	return (mouse_cords.x >= button.x && mouse_cords.x <= button.x + button.w) 
+		&& (mouse_cords.y >= button.y && mouse_cords.y <= button.y + button.h);
 }
 
 void UI_Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicked_sec, SDL_Rect disabled_sec)
