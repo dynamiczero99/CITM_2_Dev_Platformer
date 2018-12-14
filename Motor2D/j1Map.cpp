@@ -102,6 +102,7 @@ void j1Map::Draw()
 			tilesets->data->anim->GetCurrentFrame();
 		}
 	}
+	
 }
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const

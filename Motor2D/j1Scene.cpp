@@ -52,6 +52,7 @@ bool j1Scene::Awake(pugi::xml_node& node)
 bool j1Scene::Start()
 {
 	// Load the first level of the list on first game start -------------------------
+	
 	if (firstStart)
 	{
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
@@ -78,15 +79,14 @@ bool j1Scene::Start()
 
 	SearchValidCameraPos();
 
+	if (App->map->data.loadedLevel == "main_menu.tmx")
+	{
+		CreateWidgets();
+	}
+	
+
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
-
-	SDL_Rect section = { 6, 117, 217, 56 };
-	SDL_Rect hover = { 417, 173, 217, 56};
-	SDL_Rect clicked = {648, 173, 217, 56};
-	SDL_Rect disabled = { 0,0,0,0 };
-	UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, disabled, clicked);
-	button->draggable = false;
 
 
 	return true;
@@ -119,6 +119,7 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("savegame.xml");
 	}
 
+	
 	App->map->Draw();
 
 	//// Debug pathfinding ------------------------------
@@ -136,6 +137,11 @@ bool j1Scene::Update(float dt)
 	//	App->render->Blit(debug_tex, pos.x, pos.y);
 	//}
 	//// ------------------------------------------------
+
+	if (App->map->data.loadedLevel != "main_menu.tmx")
+	{
+		App->gui->DestroyAllUIElements();
+	}
 
 	return true;
 }
@@ -266,6 +272,24 @@ void j1Scene::CameraLogic(float dt)
 	currentLevelNode.append_attribute("name") = App->map->data.loadedLevel.GetString();
 	
 	 return true;
+ }
+
+ void j1Scene::CreateWidgets()
+ {
+
+	 SDL_Rect section = { 6, 117, 217, 56 };
+	 SDL_Rect hover = { 417, 173, 217, 56 };
+	 SDL_Rect clicked = { 648, 173, 217, 56 };
+	 SDL_Rect disabled = { 0,0,0,0 };
+	 UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, disabled, clicked);
+	 button->draggable = false;
+
+	 iPoint pos = { 340, 75 };
+	 atlasRect = { 40, 1024, 228, 119 };
+	 UI_Sprite* title = App->gui->CreateSprite(pos, this, atlasRect);
+	 title->draggable = true;
+
+	
  }
 
  bool j1Scene::SearchValidCameraPos()

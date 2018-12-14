@@ -41,6 +41,8 @@ public:
 	bool Load(pugi::xml_node& node);
 	bool Save(pugi::xml_node& node) const;
 
+	void CreateWidgets();
+
 private:
 	void DebugInput();
 	// debug path generation with mouse
@@ -58,6 +60,8 @@ private:
 	float	cameraFallMultiplier = 0.0f;//When falling
 	float	horizontalScreenDivision = 0.0f;
 	float	verticalScreenDivision = 0.0f;
+
+	SDL_Rect atlasRect;
 
 };
 

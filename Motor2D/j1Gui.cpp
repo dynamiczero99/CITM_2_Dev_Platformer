@@ -159,6 +159,16 @@ bool j1Gui::DestroyUIElement(UI_Element * toDestroyElem)
 	return ret;
 }
 
+void j1Gui::DestroyAllUIElements()
+{
+	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
+	{
+		tmp->data->CleanUp();
+		uiList.del(tmp);
+		RELEASE(tmp->data);
+	}
+}
+
 // const getter for atlas
 SDL_Texture* j1Gui::GetAtlas() const
 {

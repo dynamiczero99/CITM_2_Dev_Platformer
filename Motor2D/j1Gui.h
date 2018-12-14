@@ -47,6 +47,7 @@ public:
 	UI_DynamicLabel* CreateDynamicLabel(iPoint position, j1Module* callback);
 
 	bool DestroyUIElement(UI_Element* toDestroyElem);
+	void DestroyAllUIElements();
 
 	SDL_Texture* GetAtlas() const;
 	void UI_Debug();
