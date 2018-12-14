@@ -216,7 +216,7 @@ void j1Scene::CameraLogic(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		// Load the first level of the list -------------------------
+		// Load the first level of the list. Returning to main menu
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 	}
@@ -250,6 +250,33 @@ void j1Scene::CameraLogic(float dt)
 			levelData = levelData->next;
 		}
 		
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	{
+		p2List_item<Levels*>* levelData = App->map->data.levels.end;
+
+		// check current level and loads the previous one, if next is null, load the first one
+		while (levelData != NULL)
+		{
+			p2SString loadedLevel = App->map->data.loadedLevel.GetString();
+			p2SString compareLevel = levelData->data->name.GetString();
+
+			if (loadedLevel == compareLevel)
+			{
+				LOG("coincidence");
+				levelData = levelData->prev;
+
+				if (levelData == NULL)
+				{
+					levelData = App->map->data.levels.start;
+				}
+				break;
+			}
+			levelData = levelData->prev;
+		}
+
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 	}
 }
