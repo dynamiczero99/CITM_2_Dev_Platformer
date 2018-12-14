@@ -316,16 +316,22 @@ void j1Scene::CameraLogic(float dt)
 	 SDL_Rect clicked1 =  { 11, 148, 61, 26 };
 	 SDL_Rect disabled1 = { 11, 204, 61, 26};
 	 
-	 UI_Button* button = App->gui->CreateButton({ 315, 200 }, this, section1, hover1, disabled1, clicked1);
+	// UI_Button* button = App->gui->CreateButton({ 315, 200 }, this, section1, hover1, disabled1, clicked1);
 
 	 
-	 UI_Button* button1 = App->gui->CreateButton({ 315, 240 }, this, section, hover, disabled, clicked);
+	 UI_Button* button1 = App->gui->CreateButton({ 390, 240 }, this, section1, hover1, disabled1, clicked1);
+	 UI_Button* button2 = App->gui->CreateButton({ 465, 240 }, this, section1, hover1, disabled1, clicked1);
+	 UI_Button* button3 = App->gui->CreateButton({ 390, 200 }, this, section1, hover1, disabled1, clicked1);
+	 UI_Button* button4 = App->gui->CreateButton({ 465, 200 }, this, section1, hover1, disabled1, clicked1);
 
 
-	 button->draggable = true;
+	// button->draggable = true;
 	 button1->draggable = true;
+	 button2->draggable = true;
+	 button3->draggable = true;
+	 button4->draggable = true;
 	
-	 
+	 //This is not hardcoded. Gets values from xml in j1GUi::Awake
 	 UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 	 title->draggable = true;
 
@@ -373,14 +379,17 @@ void j1Scene::CameraLogic(float dt)
 
 bool j1Scene::OnEvent(UI_Button* button)
 {
+	// Play from the 1st level
 	if (button->button_type = ButtonType::PLAY)
 	{
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 	}
+	//Opens default browser and redirects to link
 	else if (button->button_type = ButtonType::WEBPAGE)
 	{
 		ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
 	}
+	//Exits app
 	else if (button->button_type = ButtonType::EXIT) { return false; }
 }
