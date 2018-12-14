@@ -52,6 +52,8 @@ private:
 	p2DynArray<iPoint> last_path = NULL;
 	void CopyLastGeneratedPath();
 
+	bool OnEvent(UI_Button * button);
+
 private:
 	fPoint cameraPos = { 0,0 };
 	bool firstStart = true;

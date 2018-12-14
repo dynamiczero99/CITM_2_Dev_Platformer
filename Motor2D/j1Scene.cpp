@@ -306,12 +306,12 @@ void j1Scene::CameraLogic(float dt)
  void j1Scene::CreateWidgets()
  {
 
-	/* SDL_Rect section = { 6, 117, 217, 56 };
-	 SDL_Rect hover = { 417, 173, 217, 56 };
-	 SDL_Rect clicked = { 648, 173, 217, 56 };
-	 SDL_Rect disabled = { 0,0,0,0 };
-	 UI_Button* button = App->gui->CreateButton({ 200, 150 }, this, section, hover, disabled, clicked);
-	 button->draggable = false;*/
+	 //SDL_Rect section = { 6, 117, 217, 56 };
+	 //SDL_Rect hover = { 417, 173, 217, 56 };
+	 //SDL_Rect clicked = { 648, 173, 217, 56 };
+	 //SDL_Rect disabled = { 0,0,0,0 };
+	 //UI_Button* button = App->gui->CreateButton({ 200, 150 }, OnEvent, section, hover, disabled, clicked);
+	 //button->draggable = false;
 
 	 iPoint pos = { 340, 75 };
 	 atlasRect = { 40, 1024, 228, 119 };
@@ -359,3 +359,17 @@ void j1Scene::CameraLogic(float dt)
 		 last_path.PushBack(*pathToCopy->At(i));
 	 }
  }
+
+bool j1Scene::OnEvent(UI_Button* button)
+{
+	if (button->button_type = ButtonType::PLAY)
+	{
+		p2List_item<Levels*>* levelData = App->map->data.levels.start;
+		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+	}
+	else if (button->button_type = ButtonType::WEBPAGE)
+	{
+		ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
+	}
+	else if (button->button_type = ButtonType::EXIT) { return false; }
+}
