@@ -24,6 +24,15 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 
+	title_pos.x = conf.child("title_coords").attribute("x").as_int();
+	title_pos.y = conf.child("title_coords").attribute("y").as_int();
+
+	title_Rect.x = conf.child("title_rect").attribute("x").as_int();
+	title_Rect.y = conf.child("title_rect").attribute("y").as_int();
+	title_Rect.w = conf.child("title_rect").attribute("w").as_int();
+	title_Rect.h = conf.child("title_rect").attribute("h").as_int();
+
+
 	return ret;
 }
 

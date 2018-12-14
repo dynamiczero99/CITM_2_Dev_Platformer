@@ -21,7 +21,8 @@
   <gui>
     <atlas file="gui/atlas.png"/>
 	  <logo file="gui/swap_game_logo.png"/>
-
+    <title_coords x ="340" y="75"/>
+    <title_rect x="40" y ="1024" w=" 228" h="119" />
   </gui>
 
   <file_system>

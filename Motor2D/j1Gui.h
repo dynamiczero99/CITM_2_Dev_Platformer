@@ -52,6 +52,10 @@ public:
 	SDL_Texture* GetAtlas() const;
 	void UI_Debug();
 
+
+	iPoint title_pos/* = { 0,0 }*/;
+	SDL_Rect title_Rect/* = { 0,0,0,0 }*/;
+
 public:
 
 	bool dragging = false;
@@ -62,6 +66,7 @@ private:
 	bool debug = false;
 	SDL_Texture* atlas;
 	p2SString atlas_file_name;
+
 };
 
 #endif // __j1GUI_H__
