@@ -380,37 +380,41 @@ void j1Scene::CameraLogic(float dt)
 	 //Lots of else if == switch
 	 switch (button->button_type)
 	 {
-	 case ButtonType::PLAY:
-	 {
-		 p2List_item<Levels*>* levelData = App->map->data.levels.start;
-		 App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
-		 break;
-	 }
-	 case ButtonType::CONTINUE:
-	 {
-		 //TODO
-		 break;
-	 }
-	 case ButtonType::SETTINGS:
-	 {
-		 //TODO
-		 break;
-	 }
-	 case ButtonType::CREDITS:
-	 {
-		 //TODO
-		 break;
-	 }
-	 case ButtonType::EXIT:
-	 {
-		 ret = false;
-		 break;
-	 }
-	 case ButtonType::WEBPAGE:
-	 {
-		 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
-		 break;
-	 }
+		 case ButtonType::PLAY:
+		 {
+			p2List_item<Levels*>* levelData = App->map->data.levels.start;
+
+			 // check current level and loads the next, if next is null, load the first one
+			levelData = App->map->data.levels.start;
+			levelData = levelData->next;
+			App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+				 
+		 }
+		 case ButtonType::CONTINUE:
+		 {
+			 //TODO
+			 break;
+		 }
+		 case ButtonType::SETTINGS:
+		 {
+			 //TODO
+			 break;
+		 }
+		 case ButtonType::CREDITS:
+		 {
+			 //TODO
+			 break;
+		 }
+		 case ButtonType::EXIT:
+		 {
+			 ret = false;
+			 break;
+		 }
+		 case ButtonType::WEBPAGE:
+		 {
+			 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
+			 break;
+	}
 
 	 return ret;
 	 }

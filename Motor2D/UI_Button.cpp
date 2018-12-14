@@ -12,7 +12,7 @@
 
 UI_Button::UI_Button(ButtonType type, iPoint pos, j1Module* callback, SDL_Rect idle, SDL_Rect hover, SDL_Rect disabled, SDL_Rect clicked) : UI_Sprite(UiElemType::BUTTON, pos, callback, idle)
 {
-	type = ButtonType::BUTTON_NONE;
+	button_type = type;
 
 	idleRect = atlasSection;
 	hoverRect = hover;

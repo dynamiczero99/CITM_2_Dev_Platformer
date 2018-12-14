@@ -104,7 +104,7 @@ UI_Button * j1Gui::CreateButton(ButtonType type, iPoint position, j1Module * cal
 {
 	UI_Element* ret = nullptr;
 
-	ret = new UI_Button(ButtonType::BUTTON_NONE, position, callback, idleSection, hoverSection, disabledSection, clickSection);
+	ret = new UI_Button(type, position, callback, idleSection, hoverSection, disabledSection, clickSection);
 
 	if (ret != nullptr)
 		uiList.add(ret);
