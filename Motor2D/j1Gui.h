@@ -53,8 +53,23 @@ public:
 	void UI_Debug();
 
 
-	iPoint title_pos/* = { 0,0 }*/;
-	SDL_Rect title_Rect/* = { 0,0,0,0 }*/;
+	iPoint title_pos;
+	SDL_Rect title_Rect;
+	//Big button rects
+	SDL_Rect L_Button_Section;
+	SDL_Rect L_Button_Hover;
+	SDL_Rect L_Button_Clicked;
+	SDL_Rect L_Button_Disabled;
+	//Small buttons rects
+	SDL_Rect S_Button_Section;
+	SDL_Rect S_Button_Hover;
+	SDL_Rect S_Button_Clicked;
+	SDL_Rect S_Button_Disabled;
+	//X button rects
+	SDL_Rect X_Button_Section;
+	SDL_Rect X_Button_Hover;
+	SDL_Rect X_Button_Clicked;
+	SDL_Rect X_Button_Disabled;
 
 public:
 

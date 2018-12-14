@@ -23,6 +23,22 @@
 	  <logo file="gui/swap_game_logo.png"/>
     <title_coords x ="340" y="75"/>
     <title_rect x="10" y ="241" w="228" h="119" />
+    
+    <L_Button_Section x="9" y ="2" w="128" h="26" />
+    <L_Button_Hover x="7" y ="57" w="129" h="28" />
+    <L_Button_Clicked x="9" y ="30" w="127" h="26" />
+    <L_Button_Disabled x="0" y ="0" w="0" h="0" />
+
+    <S_Button_Section x="11" y ="120" w="61" h="26" />
+    <S_Button_Hover x="9" y ="172" w="63" h="28" />
+    <S_Button_Clicked x="11" y ="148" w="61" h="26" />
+    <S_Button_Disabled x="11" y ="204" w="61" h="26" />
+
+    <X_Button_Section x="100" y ="123" w="22" h="22" />
+    <X_Button_Hover x="98" y ="169" w="24" h="24" />
+    <X_Button_Clicked x="100" y ="147" w="22" h="22" />
+    <X_Button_Disabled x="0" y ="0" w="0" h="0" />
+
   </gui>
 
   <file_system>

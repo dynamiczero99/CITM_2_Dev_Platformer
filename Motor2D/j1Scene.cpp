@@ -81,6 +81,7 @@ bool j1Scene::Start()
 
 	SearchValidCameraPos();
 
+	//Creates widgets only in main menu
 	if (App->map->data.loadedLevel == menu)
 	{
 		CreateWidgets();
@@ -155,6 +156,7 @@ bool j1Scene::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
 	
 	return ret;
 }
@@ -305,30 +307,39 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::CreateWidgets()
  {
-	//Big buttons rects
-	SDL_Rect section = { 9 , 2,128,26 };
-	SDL_Rect hover = { 7,57,129,28 };
-	SDL_Rect clicked = { 9,30,127,26};
-	SDL_Rect disabled = { 0,0,0,0 };
-	//Small buttons rects
-	SDL_Rect section1 = { 11 , 120, 61, 26 };
-	SDL_Rect hover1 = { 9, 172, 63, 28 };
-	SDL_Rect clicked1 =  { 11, 148, 61, 26 };
-	SDL_Rect disabled1 = { 11, 204, 61, 26};
-	 
-	// UI_Button* button = App->gui->CreateButton({ 315, 200 }, this, section1, hover1, disabled1, clicked1);
-
-
-	//PLAY
-	UI_Button* button3 = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, section1, hover1, disabled1, clicked1);
-	//CONTINUE
-	UI_Button* button4 = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, section1, hover1, disabled1, clicked1);
-	//SETTINGS
-	UI_Button* button1 = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, section1, hover1, disabled1, clicked1);
-	//CREDITS
-	UI_Button* button2 = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, section1, hover1, disabled1, clicked1);
+	////Big buttons rects
+	//SDL_Rect L_Button_Section = { 9 , 2,128,26 };
+	//SDL_Rect L_Button_Hover = { 7,57,129,28 };
+	//SDL_Rect L_Button_Clicked = { 9,30,127,26};
+	//SDL_Rect L_Button_Disabeled = { 0,0,0,0 };
+	////Small buttons rects
+	//SDL_Rect S_Button_Section = { 11 , 120, 61, 26 };
+	//SDL_Rect S_Button_Hover = { 9, 172, 63, 28 };
+	//SDL_Rect S_Button_Clicked =  { 11, 148, 61, 26 };
+	//SDL_Rect S_Button_Disabled = { 11, 204, 61, 26};
+	////Xbutton rects
+	//SDL_Rect X_Button_Section = { 100, 123, 22, 22 };
+	//SDL_Rect X_Button_Hover = { 98, 169, 24, 24  };
+	//SDL_Rect X_Button_Clicked = { 100, 147, 22, 22 };
+	//SDL_Rect X_Button_Disabled = { 0,0,0,0 };
 	
-	//This is not hardcoded. Gets values from xml in j1GUi::Awake
+	//PLAY
+	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	//CONTINUE
+	UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, 
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	//SETTINGS
+	UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, 
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	//CREDITS
+	UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, 
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	//CREDITS
+	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 600, 80 }, this, 
+		App->gui->X_Button_Section, App->gui->X_Button_Hover, App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+
+	//Title. This is not hardcoded. Gets values from xml in j1GUi::Awake
 	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 	title->draggable = true;
 
@@ -383,9 +394,6 @@ void j1Scene::CameraLogic(float dt)
 		 case ButtonType::PLAY:
 		 {
 			p2List_item<Levels*>* levelData = App->map->data.levels.start;
-
-			 // check current level and loads the next, if next is null, load the first one
-			levelData = App->map->data.levels.start;
 			levelData = levelData->next;
 			App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
 				 
@@ -407,7 +415,7 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::EXIT:
 		 {
-			 ret = false;
+			 return false;
 			 break;
 		 }
 		 case ButtonType::WEBPAGE:
