@@ -58,6 +58,7 @@ bool j1Object::Start() {
 	// load general sfx for objects
 	impactBoxSFX = App->audio->LoadFx(object_node.child("projectile").find_child_by_attribute("name", "impact").attribute("value").as_string());
 
+	App->scene->CreateWidgets();
 	return true;
 }
 

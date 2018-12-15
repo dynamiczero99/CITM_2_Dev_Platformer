@@ -280,10 +280,10 @@ void j1Gui::DestroyWindow()
 
 			}
 		}
-		
 
 	}
 	//This is to close more than 1 window during the game's execution
+	App->scene->active_window = false;
 	App->scene->window_to_close = nullptr;
 
 }
