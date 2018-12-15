@@ -410,40 +410,49 @@ void j1Scene::CameraLogic(float dt)
 		 case ButtonType::SETTINGS:
 		 {
 			 ///////////////////////windows
-			 iPoint settings_pos = { 390, 120};
-			 SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
+			 if (!active_window)
+			 {
+				 iPoint settings_pos = { 390, 120 };
+				 SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
 
-			 
-			 UI_Sprite* settings = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
 
-			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 503, 130 }, this,
-				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
-				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+				 UI_Sprite* settings = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
 
-			 UI_Button* fullscreen = App->gui->CreateButton(ButtonType::TOGGLE_FULLSCREEN, { 465, 240 }, this,
-				 App->gui->S_Button_Section, App->gui->S_Button_Hover,
-				 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+				 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 503, 130 }, this,
+					 App->gui->X_Button_Section, App->gui->X_Button_Hover,
+					 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
-			 settings->Attach(exit, { 0,0 });
+				 UI_Button* fullscreen = App->gui->CreateButton(ButtonType::TOGGLE_FULLSCREEN, { 465, 240 }, this,
+					 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+					 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 
-			 window_to_close = settings;
+				 settings->Attach(exit, { 0,0 });
+
+				 window_to_close = settings;
+			 }
+			
 			 active_window = true;
 			 //TODO
 			 break;
 		 }
 		 case ButtonType::CREDITS:
 		 {
-			 iPoint credits_pos = { 325, 70 };
-			 SDL_Rect big_windows_coords = { 59, 364, 274, 244 };
-			 UI_Sprite* credits = App->gui->CreateSprite(credits_pos, this, big_windows_coords);
+			 if (!active_window)
+			 {
+				 iPoint credits_pos = { 325, 70 };
+				 SDL_Rect big_windows_coords = { 59, 364, 274, 244 };
+				 UI_Sprite* credits = App->gui->CreateSprite(credits_pos, this, big_windows_coords);
 
-			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 567, 80 }, this,
-				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
-				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+				 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 567, 80 }, this,
+					 App->gui->X_Button_Section, App->gui->X_Button_Hover,
+					 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
-			 credits->Attach(exit, {0, 0});
+				 credits->Attach(exit, { 0, 0 });
 
-			 window_to_close = credits;
+				 window_to_close = credits;
+			 }
+			
+			 active_window = true;
 
 			 break;
 		 }
