@@ -274,8 +274,8 @@ void j1Gui::DestroyWindow()
 		{
 			DestroyUIElement(tmp->data);
 
-			break;
 		}
+
 	}
 	//This is to close more than 1 window during the game's execution
 	App->scene->window_to_close = nullptr;
