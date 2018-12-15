@@ -47,7 +47,7 @@ public:
 	p2SString menu;
 	bool pauseGame = false;
 	float scene_dt = 0.0f;
-	UI_Sprite* window_to_close = nullptr;
+	UI_Sprite* window_to_close =  nullptr;
 
 private:
 	void DebugInput();

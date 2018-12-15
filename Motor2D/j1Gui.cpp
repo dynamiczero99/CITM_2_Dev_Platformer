@@ -270,13 +270,16 @@ void j1Gui::DestroyWindow()
 {
 	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
 	{
-		if (tmp->data->type == UiElemType::SPRITE && tmp->data)
+		if (tmp->data->type == UiElemType::SPRITE && tmp->data == App->scene->window_to_close)
 		{
 			DestroyUIElement(tmp->data);
+			uiList.del(tmp);
+			RELEASE(tmp->data);
 
 			break;
 		}
 	}
+	//This is to close more than 1 window during the game's execution
 	App->scene->window_to_close = nullptr;
 }
 

@@ -414,10 +414,13 @@ void j1Scene::CameraLogic(float dt)
 			 ///////////////////////windows
 			 iPoint settings_pos = { 390, 150};
 			 SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
-			 UI_Sprite* window_to_close = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
+			 UI_Sprite* settings = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
+
 			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 500, 150 }, this,
 				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
 				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+
+			 window_to_close = settings;
 			 //TODO
 			 break;
 		 }
@@ -433,7 +436,8 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::WEBPAGE:
 		 {
-			 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
+			 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", 
+							NULL, NULL, SW_SHOWNORMAL);
 			 break;
 		 }
 		 case ButtonType::CLOSE_WINDOW:

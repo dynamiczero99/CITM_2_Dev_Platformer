@@ -236,24 +236,23 @@ public:
 		return p_item;
 	}
 
-	/**
-	* access to a node in a position in the list
-	*/
-	p2List_item<tdata>* At(unsigned int index)
-	{
-		long                  pos = 0;
-		p2List_item<tdata>*   p_item = start;
+	//* access to a node in a position in the list
+	//*/
+	//p2List_item<tdata>* At(unsigned int index)
+	//{
+	//	long                  pos = 0;
+	//	p2List_item<tdata>*   p_item = start;
 
-		while (p_item != NULL)
-		{
-			if (pos++ == index)
-				break;
+	//	while (p_item != NULL)
+	//	{
+	//		if (pos++ == index)
+	//			break;
 
-			p_item = p_item->next;
-		}
+	//		p_item = p_item->next;
+	//	}
 
-		return p_item;
-	}
+	//	return p_item;
+	//}
 
 	// Sort
 	int BubbleSort()
