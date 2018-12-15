@@ -8,6 +8,8 @@
 #include "j1Textures.h"
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Audio.h"
+#include "j1Scene.h"
+#include "j1Window.h"
 //Objects
 #include "ObjPlayer.h"
 #include "ObjProjectile.h"
@@ -93,6 +95,12 @@ bool j1Object::PostUpdate() {
 			objects[i]->PostUpdate();
 		}
 	}
+
+	if (App->scene->pauseGame)
+	{
+		App->render->DrawQuad({ 0, 0, (int)App->win->width, (int)App->win->height }, 0, 0, 0, 150, true, false);
+	}
+
 	return true;
 }
 
