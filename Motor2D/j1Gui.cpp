@@ -273,8 +273,6 @@ void j1Gui::DestroyWindow()
 		if (tmp->data->type == UiElemType::SPRITE && tmp->data == App->scene->window_to_close)
 		{
 			DestroyUIElement(tmp->data);
-			uiList.del(tmp);
-			RELEASE(tmp->data);
 
 			break;
 		}
