@@ -49,6 +49,9 @@ public:
 	bool DestroyUIElement(UI_Element* toDestroyElem);
 	void DestroyAllUIElements();
 
+	void OpenWindow();
+	void DestroyWindow();
+
 	SDL_Texture* GetAtlas() const;
 	void UI_Debug();
 
@@ -86,6 +89,7 @@ private:
 	bool debug = false;
 	SDL_Texture* atlas;
 	p2SString atlas_file_name;
+
 
 };
 

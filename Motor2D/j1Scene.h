@@ -47,6 +47,7 @@ public:
 	p2SString menu;
 	bool pauseGame = false;
 	float scene_dt = 0.0f;
+	UI_Sprite* window_to_close = nullptr;
 
 private:
 	void DebugInput();
@@ -68,6 +69,7 @@ private:
 	float	horizontalScreenDivision = 0.0f;
 	float	verticalScreenDivision = 0.0f;
 
+	
 	bool mustClose = true;
 	
 };

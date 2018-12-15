@@ -330,7 +330,7 @@ void j1Scene::CameraLogic(float dt)
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	//EXIT
-	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 600, 80 }, this, 
+	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this, 
 		App->gui->X_Button_Section, App->gui->X_Button_Hover, 
 		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 	//WEBPAGE/github
@@ -338,9 +338,16 @@ void j1Scene::CameraLogic(float dt)
 		App->gui->W_Button_Section, App->gui->W_Button_Hover, 
 		App->gui->W_Button_Disabled, App->gui->W_Button_Clicked);
 
+	/*UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
+		App->gui->L_Button_Section, App->gui->L_Button_Hover,
+		App->gui->L_Button_Disabled, App->gui->L_Button_Clicked);*/
+
 	//Title.
 	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 	title->draggable = true;
+
+	
+	
 
  }
 
@@ -393,8 +400,9 @@ void j1Scene::CameraLogic(float dt)
 		 {
 			p2List_item<Levels*>* levelData = App->map->data.levels.start;
 			levelData = levelData->next;
-			App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
-				 
+			
+				App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.5f);
+			
 		 }
 		 case ButtonType::CONTINUE:
 		 {
@@ -403,6 +411,13 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::SETTINGS:
 		 {
+			 ///////////////////////windows
+			 iPoint settings_pos = { 390, 150};
+			 SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
+			 UI_Sprite* window_to_close = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
+			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 500, 150 }, this,
+				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
+				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 			 //TODO
 			 break;
 		 }
@@ -420,7 +435,13 @@ void j1Scene::CameraLogic(float dt)
 		 {
 			 ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer", NULL, NULL, SW_SHOWNORMAL);
 			 break;
-	}
+		 }
+		 case ButtonType::CLOSE_WINDOW:
+		 {
+			 App->gui->DestroyWindow();
+			 
+			 break;
+		 }
 
 	 return ret;
 	}

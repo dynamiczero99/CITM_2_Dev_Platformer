@@ -251,7 +251,6 @@ void j1Gui::DestroyAllUIElements()
 {
 	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
 	{
-		tmp->data->CleanUp();
 		uiList.del(tmp);
 		RELEASE(tmp->data);
 	}
@@ -265,6 +264,20 @@ SDL_Texture* j1Gui::GetAtlas() const
 
 void j1Gui::UI_Debug()
 {
+}
+
+void j1Gui::DestroyWindow()
+{
+	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
+	{
+		if (tmp->data->type == UiElemType::SPRITE && tmp->data)
+		{
+			DestroyUIElement(tmp->data);
+
+			break;
+		}
+	}
+	App->scene->window_to_close = nullptr;
 }
 
 // class Gui ---------------------------------------------------
