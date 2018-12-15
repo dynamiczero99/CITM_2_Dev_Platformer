@@ -49,8 +49,9 @@ public:
 	bool DestroyUIElement(UI_Element* toDestroyElem);
 	void DestroyAllUIElements();
 
-	void OpenWindow();
+	/*void OpenWindow();*/
 	void DestroyWindow();
+	bool visible = true;
 
 	SDL_Texture* GetAtlas() const;
 	void UI_Debug();

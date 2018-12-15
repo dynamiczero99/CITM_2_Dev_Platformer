@@ -49,7 +49,6 @@ public:
 	void SetArea(uint w, uint h);
 
 private:
-
 	void ChangeVisualState(const int event);
 
 public:

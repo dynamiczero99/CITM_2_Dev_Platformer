@@ -71,12 +71,14 @@ bool UI_Button::Update()
 
 void UI_Button::Draw()
 {
-	App->render->Blit(uiAtlas, position.x, position.y, currentRect);
+	if(App->gui->visible)
+		App->render->Blit(uiAtlas, position.x, position.y, currentRect);
 }
 
 
 bool UI_Button::MouseOver(const SDL_Rect& button)
 {
+	
 	iPoint mouse_cords;
 	App->input->GetMousePosition(mouse_cords.x, mouse_cords.y);
 	mouse_cords = App->render->ScreenToWorld(mouse_cords.x, mouse_cords.y);
