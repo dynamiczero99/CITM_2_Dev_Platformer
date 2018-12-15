@@ -111,6 +111,7 @@ public:
 	bool want_to_load = false;
 
 	bool vsync = false;
+	bool capFrames = true;
 
 	bool transition = false;
 
@@ -142,7 +143,7 @@ private:
 	uint32				capTime = 0;
 	uint32				framerateCap = 0;
 	float				dt = 0.0f;
-	bool				capFrames = true;
+	
 };
 
 extern j1App* App;

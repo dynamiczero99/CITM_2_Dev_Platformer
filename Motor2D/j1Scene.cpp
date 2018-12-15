@@ -426,6 +426,10 @@ void j1Scene::CameraLogic(float dt)
 					 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 					 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 
+				 UI_Button* framerate = App->gui->CreateButton(ButtonType::LIMIT_FRAMERATE, { 400, 240 }, this,
+					 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+					 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+
 				 settings->Attach(exit, { 0,0 });
 
 				 window_to_close = settings;
@@ -492,7 +496,7 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::LIMIT_FRAMERATE:
 		 {
-			 
+			 App->capFrames = !App->capFrames;
 
 			 break;
 		 }
