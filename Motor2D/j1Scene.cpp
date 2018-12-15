@@ -106,7 +106,7 @@ bool j1Scene::PreUpdate() {
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-
+	scene_dt = dt;
 	BROFILER_CATEGORY("SCENE UPDATE", Profiler::Color::DeepSkyBlue);
 	if (!App->render->cameraDebug) {
 		CameraLogic(dt);
@@ -156,8 +156,10 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		pauseGame = !pauseGame;
+	}
+	
 
 	
 	return ret;

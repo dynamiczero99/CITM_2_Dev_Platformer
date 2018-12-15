@@ -45,6 +45,8 @@ public:
 
 public:
 	p2SString menu;
+	bool pauseGame = false;
+	float scene_dt = 0.0f;
 
 private:
 	void DebugInput();
@@ -67,6 +69,7 @@ private:
 	float	verticalScreenDivision = 0.0f;
 
 	bool mustClose = true;
+	
 };
 
 #endif // __j1SCENE_H__

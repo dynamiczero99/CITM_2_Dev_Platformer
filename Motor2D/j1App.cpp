@@ -200,7 +200,10 @@ void j1App::PrepareUpdate()
 		transition = false;
 	}
 	else {
+		
 		dt = frame_time.ReadSec();
+		if (App->scene->pauseGame)
+			dt = 0.0f;
 	}
 
 	frame_time.Start();
