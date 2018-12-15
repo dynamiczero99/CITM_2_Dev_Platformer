@@ -48,6 +48,7 @@ public:
 	bool pauseGame = false;
 	bool fullscreen = false;
 	bool active_window = false;
+	bool enable_continue = false;
 	float scene_dt = 0.0f;
 	UI_Sprite* window_to_close =  nullptr;
 

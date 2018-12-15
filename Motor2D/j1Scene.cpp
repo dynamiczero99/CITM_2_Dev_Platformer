@@ -117,6 +117,7 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		App->SaveGame("savegame.xml");
+		enable_continue = true;
 	}
 
 	
@@ -323,6 +324,9 @@ void j1Scene::CameraLogic(float dt)
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	_continue->enabled = false;
 
+	if(enable_continue)
+		_continue->enabled = true;
+
 	//SETTINGS
 	UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
@@ -410,7 +414,9 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::CONTINUE:
 		 {
-			 //TODO
+			 if (!App->fade_to_black->IsFading()) {
+				 App->LoadGame("savegame.xml");
+			 }
 			 break;
 		 }
 		 case ButtonType::SETTINGS:
@@ -442,7 +448,7 @@ void j1Scene::CameraLogic(float dt)
 			 }
 			
 			 active_window = true;
-			 //TODO
+			
 			 break;
 		 }
 		 case ButtonType::CREDITS:
