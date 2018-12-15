@@ -33,7 +33,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	title_Rect.y = conf.child("title_rect").attribute("y").as_int();
 	title_Rect.w = conf.child("title_rect").attribute("w").as_int();
 	title_Rect.h = conf.child("title_rect").attribute("h").as_int();
-
+	//Large button
 	L_Button_Section.x = conf.child("L_Button_Section").attribute("x").as_int();
 	L_Button_Section.y = conf.child("L_Button_Section").attribute("y").as_int();
 	L_Button_Section.w = conf.child("L_Button_Section").attribute("w").as_int();
@@ -54,6 +54,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	L_Button_Disabled.w = conf.child("L_Button_Disabled").attribute("w").as_int();
 	L_Button_Disabled.h = conf.child("L_Button_Disabled").attribute("h").as_int();
 
+	//---------------SMALL BUTTON-------------------
 	S_Button_Section.x = conf.child("S_Button_Section").attribute("x").as_int();
 	S_Button_Section.y = conf.child("S_Button_Section").attribute("y").as_int();
 	S_Button_Section.w = conf.child("S_Button_Section").attribute("w").as_int();
@@ -73,7 +74,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	S_Button_Disabled.y = conf.child("S_Button_Disabled").attribute("y").as_int();
 	S_Button_Disabled.w = conf.child("S_Button_Disabled").attribute("w").as_int();
 	S_Button_Disabled.h = conf.child("S_Button_Disabled").attribute("h").as_int();
-
+	//--------------EXIT BUTTON-----------------
 	X_Button_Section.x = conf.child("X_Button_Section").attribute("x").as_int();
 	X_Button_Section.y = conf.child("X_Button_Section").attribute("y").as_int();
 	X_Button_Section.w = conf.child("X_Button_Section").attribute("w").as_int();
@@ -88,7 +89,21 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	X_Button_Clicked.y = conf.child("X_Button_Clicked").attribute("y").as_int();
 	X_Button_Clicked.w = conf.child("X_Button_Clicked").attribute("w").as_int();
 	X_Button_Clicked.h = conf.child("X_Button_Clicked").attribute("h").as_int();
+	//----------------WEB/GITHUB BUTTON--------------
+	W_Button_Section.x = conf.child("W_Button_Section").attribute("x").as_int();
+	W_Button_Section.y = conf.child("W_Button_Section").attribute("y").as_int();
+	W_Button_Section.w = conf.child("W_Button_Section").attribute("w").as_int();
+	W_Button_Section.h = conf.child("W_Button_Section").attribute("h").as_int();
 
+	W_Button_Hover.x = conf.child("W_Button_Hover").attribute("x").as_int();
+	W_Button_Hover.y = conf.child("W_Button_Hover").attribute("y").as_int();
+	W_Button_Hover.w = conf.child("W_Button_Hover").attribute("w").as_int();
+	W_Button_Hover.h = conf.child("W_Button_Hover").attribute("h").as_int();
+
+	W_Button_Clicked.x = conf.child("W_Button_Clicked").attribute("x").as_int();
+	W_Button_Clicked.y = conf.child("W_Button_Clicked").attribute("y").as_int();
+	W_Button_Clicked.w = conf.child("W_Button_Clicked").attribute("w").as_int();
+	W_Button_Clicked.h = conf.child("W_Button_Clicked").attribute("h").as_int();
 
 	return ret;
 }

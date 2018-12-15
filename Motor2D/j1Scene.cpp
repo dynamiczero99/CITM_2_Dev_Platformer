@@ -311,21 +311,7 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::CreateWidgets()
  {
-	////Big buttons rects
-	//SDL_Rect L_Button_Section = { 9 , 2,128,26 };
-	//SDL_Rect L_Button_Hover = { 7,57,129,28 };
-	//SDL_Rect L_Button_Clicked = { 9,30,127,26};
-	//SDL_Rect L_Button_Disabeled = { 0,0,0,0 };
-	////Small buttons rects
-	//SDL_Rect S_Button_Section = { 11 , 120, 61, 26 };
-	//SDL_Rect S_Button_Hover = { 9, 172, 63, 28 };
-	//SDL_Rect S_Button_Clicked =  { 11, 148, 61, 26 };
-	//SDL_Rect S_Button_Disabled = { 11, 204, 61, 26};
-	////Xbutton rects
-	//SDL_Rect X_Button_Section = { 100, 123, 22, 22 };
-	//SDL_Rect X_Button_Hover = { 98, 169, 24, 24  };
-	//SDL_Rect X_Button_Clicked = { 100, 147, 22, 22 };
-	//SDL_Rect X_Button_Disabled = { 0,0,0,0 };
+	 //Values not hardcoded. Gets values from xml in j1Gui::Awake. iPoint needs to be dehardcoded
 	
 	//PLAY
 	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
@@ -343,16 +329,19 @@ void j1Scene::CameraLogic(float dt)
 	UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	//CREDITS
+	//EXIT
 	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 600, 80 }, this, 
 		App->gui->X_Button_Section, App->gui->X_Button_Hover, 
 		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+	//WEBPAGE/github
+	UI_Button* webpage = App->gui->CreateButton(ButtonType::WEBPAGE, { 590, 285 }, this, 
+		App->gui->W_Button_Section, App->gui->W_Button_Hover, 
+		App->gui->W_Button_Disabled, App->gui->W_Button_Clicked);
 
-	//Title. This is not hardcoded. Gets values from xml in j1GUi::Awake
+	//Title.
 	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 	title->draggable = true;
 
-	
  }
 
  bool j1Scene::SearchValidCameraPos()

@@ -71,6 +71,11 @@ public:
 	SDL_Rect X_Button_Clicked;
 	SDL_Rect X_Button_Disabled;
 
+	SDL_Rect W_Button_Section;
+	SDL_Rect W_Button_Hover;
+	SDL_Rect W_Button_Clicked;
+	SDL_Rect W_Button_Disabled;
+
 public:
 
 	bool dragging = false;
