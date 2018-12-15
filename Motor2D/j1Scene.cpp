@@ -53,6 +53,8 @@ bool j1Scene::Awake(pugi::xml_node& node)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	//Creates widgets only in main menu
+	
 	// Load the first level of the list on first game start -------------------------
 	
 	if (firstStart)
@@ -65,6 +67,11 @@ bool j1Scene::Start()
 	if (!App->collision->IsEnabled()) { App->collision->Enable(); }
 	// TODO, search a workaround to reload player info
 	if (!App->object->IsEnabled()) { App->object->Enable(); }
+
+	if (App->map->data.loadedLevel == menu)
+	{
+		CreateWidgets();
+	}
 
 	// create walkability map
 	if (App->map->map_loaded)
@@ -80,13 +87,6 @@ bool j1Scene::Start()
 	debug_tex = App->tex->LoadTexture("maps/calculatedPathTex.png");
 
 	SearchValidCameraPos();
-
-	//Creates widgets only in main menu
-	if (App->map->data.loadedLevel == menu)
-	{
-		CreateWidgets();
-	}
-	
 
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
@@ -106,6 +106,7 @@ bool j1Scene::PreUpdate() {
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+
 	BROFILER_CATEGORY("SCENE UPDATE", Profiler::Color::DeepSkyBlue);
 	if (!App->render->cameraDebug) {
 		CameraLogic(dt);
@@ -145,8 +146,9 @@ bool j1Scene::Update(float dt)
 	{
 		App->gui->DestroyAllUIElements();
 	}
+	
 
-	return true;
+	return mustClose;
 }
 
 // Called each loop iteration
@@ -325,19 +327,24 @@ void j1Scene::CameraLogic(float dt)
 	
 	//PLAY
 	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		App->gui->S_Button_Section, App->gui->S_Button_Hover,
+		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	//CONTINUE
 	UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
+		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	//SETTINGS
 	UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
+		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	//CREDITS
 	UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
+		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	//CREDITS
 	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 600, 80 }, this, 
-		App->gui->X_Button_Section, App->gui->X_Button_Hover, App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+		App->gui->X_Button_Section, App->gui->X_Button_Hover, 
+		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
 	//Title. This is not hardcoded. Gets values from xml in j1GUi::Awake
 	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
@@ -415,7 +422,7 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::EXIT:
 		 {
-			 return false;
+			 mustClose = false;
 			 break;
 		 }
 		 case ButtonType::WEBPAGE:
@@ -425,5 +432,5 @@ void j1Scene::CameraLogic(float dt)
 	}
 
 	 return ret;
-	 }
+	}
  }

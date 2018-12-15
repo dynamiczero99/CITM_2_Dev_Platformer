@@ -65,6 +65,8 @@ private:
 	float	cameraFallMultiplier = 0.0f;//When falling
 	float	horizontalScreenDivision = 0.0f;
 	float	verticalScreenDivision = 0.0f;
+
+	bool mustClose = true;
 };
 
 #endif // __j1SCENE_H__
