@@ -76,5 +76,6 @@ void UI_Element::Attach(UI_Element * toAttach, const iPoint relativePosition)
 {
 	toAttach->relativePos = relativePosition;
 	toAttach->attached = true;
+	toAttach->parent = this;
 	attachedUIElements.add(toAttach);
 }

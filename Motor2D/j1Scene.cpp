@@ -313,6 +313,10 @@ void j1Scene::CameraLogic(float dt)
 	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	UI_Label* playLabel = App->gui->CreateLabel({ 30, 30 }, this);
+	//play->Attach(playLabel, { 10, 10 });
+	playLabel->SetText("NEW GAME", { 255, 255, 255, 255 }, App->font->defaultFont);
+
 	//CONTINUE
 	UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 

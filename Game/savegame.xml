@@ -9,17 +9,17 @@
 	<fonts />
 	<gui />
 	<scene>
-		<camera x="-994.791931" y="-584.622925" />
-		<current_level name="level002.tmx" />
+		<camera x="-1108.84814" y="-200.441177" />
+		<current_level name="level001.tmx" />
 	</scene>
 	<object>
-		<Box x="627.383972" y="368" velocity_x="0" velocity_y="0" id="21" />
-		<Player x="544.640076" y="408" velocity_x="0" velocity_y="0" flip_direction="true" />
+		<Box x="872" y="280" velocity_x="0" velocity_y="0" id="21" />
+		<Player x="508.799805" y="280" velocity_x="0" velocity_y="0" flip_direction="false" />
 	</object>
 	<Particles />
 	<FadeToBlack />
 	<Collision />
 	<renderer>
-		<camera x="-994" y="-584" />
+		<camera x="-1108" y="-200" />
 	</renderer>
 </game_state>

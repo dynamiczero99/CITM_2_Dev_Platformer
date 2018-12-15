@@ -148,6 +148,8 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
+	DestroyAllUIElements();
+
 	return true;
 }
 
