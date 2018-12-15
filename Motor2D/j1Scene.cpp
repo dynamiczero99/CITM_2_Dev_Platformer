@@ -422,11 +422,11 @@ void j1Scene::CameraLogic(float dt)
 					 App->gui->X_Button_Section, App->gui->X_Button_Hover,
 					 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
-				 UI_Button* fullscreen = App->gui->CreateButton(ButtonType::TOGGLE_FULLSCREEN, { 465, 240 }, this,
+				 UI_Button* fullscreen = App->gui->CreateButton(ButtonType::TOGGLE_FULLSCREEN, { 465, 155 }, this,
 					 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 					 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 
-				 UI_Button* framerate = App->gui->CreateButton(ButtonType::LIMIT_FRAMERATE, { 400, 240 }, this,
+				 UI_Button* framerate = App->gui->CreateButton(ButtonType::LIMIT_FRAMERATE, { 400, 155 }, this,
 					 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 					 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 
@@ -496,7 +496,8 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::LIMIT_FRAMERATE:
 		 {
-			 App->capFrames = !App->capFrames;
+			 if(active_window)
+				 App->capFrames = !App->capFrames;
 
 			 break;
 		 }
