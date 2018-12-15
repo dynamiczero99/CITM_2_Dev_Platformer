@@ -412,11 +412,11 @@ void j1Scene::CameraLogic(float dt)
 		 case ButtonType::SETTINGS:
 		 {
 			 ///////////////////////windows
-			 iPoint settings_pos = { 390, 150};
+			 iPoint settings_pos = { 390, 120};
 			 SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
 			 UI_Sprite* settings = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
 
-			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 500, 150 }, this,
+			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 503, 130 }, this,
 				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
 				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
@@ -426,7 +426,16 @@ void j1Scene::CameraLogic(float dt)
 		 }
 		 case ButtonType::CREDITS:
 		 {
-			 //TODO
+			 iPoint credits_pos = { 325, 70 };
+			 SDL_Rect big_windows_coords = { 59, 364, 274, 244 };
+			 UI_Sprite* settings = App->gui->CreateSprite(credits_pos, this, big_windows_coords);
+
+			 UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 567, 80 }, this,
+				 App->gui->X_Button_Section, App->gui->X_Button_Hover,
+				 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+
+			 window_to_close = settings;
+
 			 break;
 		 }
 		 case ButtonType::EXIT:
