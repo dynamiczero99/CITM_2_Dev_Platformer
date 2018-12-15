@@ -33,12 +33,13 @@ bool UI_Button::Update()
 	if (!enabled)
 	{
 		currentRect = &disabledRect;
-		return ret;
+		ChangeVisualState(MOUSE_DISABLE);
+		
 	}
 
 	world_area = { position.x, position.y, currentRect->w, currentRect->h };
 
-	if (!App->gui->dragging)
+	if (!App->gui->dragging && enabled)
 	{
 		if (MouseOver(world_area) && !hovering)
 		{
@@ -103,16 +104,14 @@ void UI_Button::SetSection(SDL_Rect idle_sec, SDL_Rect high_sec, SDL_Rect clicke
 	clickRect.y = clicked_sec.y;
 	clickRect.w = clicked_sec.w;
 	clickRect.h = clicked_sec.h;
+	
+	disabledRect.h = disabled_sec.h;
+	disabledRect.w = disabled_sec.w;
+	disabledRect.x = disabled_sec.x;
+	disabledRect.y = disabled_sec.y;
 
-	if (disabled_sec.h != 0 && disabled_sec.w != 0)
-	{
-		disabledRect.h = disabled_sec.h;
-		disabledRect.w = disabled_sec.w;
-		disabledRect.x = disabled_sec.x;
-		disabledRect.y = disabled_sec.y;
-
-		enabled = false;
-	}
+	enabled = false;
+	
 }
 
 
@@ -139,6 +138,8 @@ void UI_Button::ChangeVisualState(const int event)
 		currentRect = &hoverRect; break;
 	case MOUSE_LEAVE:
 		currentRect = &idleRect; break;
+	case MOUSE_DISABLE:
+		currentRect = &disabledRect; break;
 	}
 
 	//	SetArea(current_rect->w, current_rect->h);

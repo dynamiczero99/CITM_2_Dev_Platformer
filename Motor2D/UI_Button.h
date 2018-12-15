@@ -32,7 +32,8 @@ enum MouseEvents
 	MOUSE_ENTER,
 	MOUSE_LEAVE,
 	MOUSE_CLICK,
-	MOUSE_RELEASE
+	MOUSE_RELEASE,
+	MOUSE_DISABLE,
 };
 
 class UI_Button : public UI_Sprite
@@ -56,10 +57,11 @@ public:
 
 	ButtonType button_type;
 	bool hovering = false;
+	bool enabled = true;
 
 private:
 
-	bool enabled = true;
+	
 	uint click_sfx;
 
 	SDL_Rect clickRect;

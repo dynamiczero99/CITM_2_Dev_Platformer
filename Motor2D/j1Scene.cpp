@@ -317,6 +317,8 @@ void j1Scene::CameraLogic(float dt)
 	UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	_continue->enabled = false;
+
 	//SETTINGS
 	UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover, 

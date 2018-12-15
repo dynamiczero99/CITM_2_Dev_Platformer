@@ -32,7 +32,7 @@
     <S_Button_Section x="10" y ="119" w="61" h="26" />
     <S_Button_Hover x="9" y ="173" w="63" h="28" />
     <S_Button_Clicked x="10" y ="147" w="61" h="26" />
-    <S_Button_Disabled x="11" y ="204" w="61" h="26" />
+    <S_Button_Disabled x="10" y ="203" w="61" h="26" />
 
     <X_Button_Section x="99" y ="122" w="22" h="22" />
     <X_Button_Hover x="98" y ="169" w="24" h="24" />
