@@ -156,7 +156,6 @@ bool j1Scene::Update(float dt)
 		sfxLabel->ChangeContent(temp.GetString());
 	}
 
-
 	return mustClose;
 }
 
@@ -240,7 +239,9 @@ void j1Scene::DebugInput()
 		// Load the first level of the list. Returning to main menu
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
-		in_mainmenu = true;
+		firstStart = true;
+		CreateMainMenu();
+		
 	}
 
 	// START from the current level
@@ -411,32 +412,35 @@ void j1Scene::CreateSettings()
 	settings_window->Attach(close_settings, { 115, 5 });
 
 	musicLabel = App->gui->CreateDynamicLabel({ 50, 140 }, this);
-	musicThumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
-	musicSlider = App->gui->CreateSlider({ 110, 115, }, this, { 152, 4, 122, 7 }, musicThumb, &App->audio->musicVolume);
+	musicThumb = App->gui->CreateSprite({ 0,0 }, this, { 300, 2, 12, 24 });
+	musicSlider = App->gui->CreateSlider({ 110, 125, }, this, { 151, 3, 122, 7 }, musicThumb, &App->audio->musicVolume);
 
 	sfxLabel = App->gui->CreateDynamicLabel({ 50, 140 }, this);
-	sfxThumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
-	sfxSlider = App->gui->CreateSlider({ 110, 145, }, this, { 152, 4, 122, 7 }, sfxThumb, &App->audio->sfxVolume);
+	sfxThumb = App->gui->CreateSprite({ 0,0 }, this, { 300, 2, 12, 24 });
+	sfxSlider = App->gui->CreateSlider({ 110, 165, }, this, { 151, 3, 122, 7 }, sfxThumb, &App->audio->sfxVolume);
 
 	App->audio->musicVolume = 10;
 	App->audio->sfxVolume = 10;
 
-	musicSlider->Attach(musicLabel, { 15, -10 });
-	sfxSlider->Attach(sfxLabel, { 15, -10 });
-	
+	musicSlider->Attach(musicLabel, { 15, -20 });
+	sfxSlider->Attach(sfxLabel, { 15, -20 });
+
 	active_window = true;
 }
 
 void j1Scene::CreateCredits()
 {
-	iPoint credits_pos = { 100, 30 };
+	iPoint credits_pos = { 40, 10 };
 	SDL_Rect big_windows_coords = { 59, 364, 274, 244 };
 	credits_window = App->gui->CreateSprite(credits_pos, this, big_windows_coords);
 
 	//TODO UI_Label* credits_content = nullptr;
 
+	/*UI_Label* credits_content = App->gui->CreateLabel({ 0,0 }, this);
+	credits_content->SetText("FULLSC.", { 255, 255, 255, 255 }, App->font->defaultFont);*/
 
-	close_credits = App->gui->CreateButton(ButtonType::CLOSE_CREDITS, { 567, 80 }, this,
+
+	close_credits = App->gui->CreateButton(ButtonType::CLOSE_CREDITS, { 280, 18 }, this,
 		App->gui->X_Button_Section, App->gui->X_Button_Hover,
 		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
@@ -463,6 +467,8 @@ void j1Scene::CreateInGameMenu()
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 
 	active_window = true;
+
+	in_mainmenu = true;
 }
 
 void j1Scene::DestroyMainMenu()
@@ -690,12 +696,11 @@ bool j1Scene::OnEvent(UI_Button* button)
 
 	case ButtonType::TO_MAIN_MENU:
 	{
-		// Load the first level of the list. Returning to main menu
+
 		pauseGame = false;
 		DestroyInGameMenu();
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
-		in_mainmenu = true;
 
 		break;
 	}
