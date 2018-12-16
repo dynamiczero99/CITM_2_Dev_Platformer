@@ -35,9 +35,9 @@ void UI_Element::Drag()
 
 	// Check if element is clicked/click has been release, and modify bool accordingly
 	SDL_Point tempMouseposSdl;
-	App->input->GetMousePosition(tempMouseposSdl.x, tempMouseposSdl.y);
+	App->input->GetMousePosition(tempMouseposSdl.x, tempMouseposSdl.y);/*
 	tempMouseposSdl.x = App->render->ScreenToWorld(tempMouseposSdl.x, tempMouseposSdl.y).x;
-	tempMouseposSdl.y = App->render->ScreenToWorld(tempMouseposSdl.x, tempMouseposSdl.y).y;
+	tempMouseposSdl.y = App->render->ScreenToWorld(tempMouseposSdl.x, tempMouseposSdl.y).y;*/
 	if (!beingClicked && SDL_PointInRect(&tempMouseposSdl, &world_area) && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		beingClicked = true, LOG("Clicked = TRUE");
 	if (beingClicked && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)

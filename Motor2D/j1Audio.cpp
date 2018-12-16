@@ -57,6 +57,18 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+bool j1Audio::Update(float d_time)
+{
+	Mix_VolumeMusic(musicVolume * 15);
+
+	for (p2List_item<Mix_Chunk*>* iterator = fx.start; iterator; iterator = iterator->next)
+	{
+		Mix_VolumeChunk(iterator->data, sfxVolume * 15);
+	}
+
+	return true;
+}
+
 // Called before quitting
 bool j1Audio::CleanUp()
 {

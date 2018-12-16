@@ -45,5 +45,5 @@ bool UI_Label::Update()
 
 void UI_Label::Draw()
 {
-	App->render->Blit(textTexture, position.x, position.y);
+	App->render->Blit(textTexture, App->render->ScreenToWorld(position.x, position.y).x, App->render->ScreenToWorld(position.x, position.y).y);
 }

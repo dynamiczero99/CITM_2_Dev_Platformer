@@ -5,6 +5,7 @@
 #include "j1Audio.h"
 #include "j1Fonts.h"
 #include "j1Render.h"
+#include "j1Window.h"
 #include "j1Gui.h"
 
 #include "SDL\include\SDL.h"
@@ -71,8 +72,7 @@ bool UI_Button::Update()
 
 void UI_Button::Draw()
 {
-	
-		App->render->Blit(uiAtlas, position.x, position.y, currentRect);
+		App->render->Blit(uiAtlas, App->render->ScreenToWorld(position.x, position.y).x, App->render->ScreenToWorld(position.x, position.y).y, currentRect);
 }
 
 bool UI_Button::MouseOver(const SDL_Rect& button)
@@ -80,7 +80,7 @@ bool UI_Button::MouseOver(const SDL_Rect& button)
 	
 	iPoint mouse_cords;
 	App->input->GetMousePosition(mouse_cords.x, mouse_cords.y);
-	mouse_cords = App->render->ScreenToWorld(mouse_cords.x, mouse_cords.y);
+	//mouse_cords = App->render->ScreenToWorld(mouse_cords.x, mouse_cords.y);
 
 	return (mouse_cords.x >= button.x && mouse_cords.x <= button.x + button.w) 
 		&& (mouse_cords.y >= button.y && mouse_cords.y <= button.y + button.h);
@@ -140,5 +140,5 @@ void UI_Button::ChangeVisualState(const int event)
 		currentRect = &disabledRect; break;
 	}
 
-	//	SetArea(current_rect->w, current_rect->h);
+	//SetArea(current_rect->w, current_rect->h);
 }

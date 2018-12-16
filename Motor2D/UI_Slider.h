@@ -6,7 +6,7 @@
 class UI_Slider : public UI_Sprite
 {
 public:
-	UI_Slider(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect texSection, UI_Sprite* _thumb);
+	UI_Slider(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect texSection, UI_Sprite* _thumb, int* assignedNumber);
 	~UI_Slider();
 
 	bool Update();
@@ -18,7 +18,11 @@ public:
 	UI_Sprite* thumb;
 	int thumbMaxPos, thumbMinPos, thumbMidPos, middleHeight, length;
 	iPoint thumbCenterFromCorner;
+	int keepHeight;
 	void Draw();
+	void KeepBoundaries();
+	int defaultTargetNumber;
+	int* targetNumber;
 
 	float percentile;
 	

@@ -16,6 +16,8 @@ UI_Sprite::~UI_Sprite()
 
 bool UI_Sprite::Update()
 {
+	world_area = { position.x, position.y, atlasSection.w, atlasSection.h };
+
 	Drag();
 	UpdateAttached();
 	Draw();
@@ -24,5 +26,5 @@ bool UI_Sprite::Update()
 
 void UI_Sprite::Draw()
 {
-	App->render->Blit(uiAtlas, position.x, position.y, &atlasSection);
+	App->render->Blit(uiAtlas, App->render->ScreenToWorld(position.x, position.y).x, App->render->ScreenToWorld(position.x, position.y).y, &atlasSection);
 }

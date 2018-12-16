@@ -61,6 +61,7 @@ bool j1Scene::Start()
 	{
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->map->Load(levelData->data->name.GetString());
+		//CreateMainMenu();
 		firstStart = false;
 	}
 	// ----------------------------------------------------------
@@ -87,8 +88,8 @@ bool j1Scene::Start()
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
 
-	CreateMainMenu();
 
+	CreateMainMenu();
 	return true;
 }
 
@@ -143,6 +144,20 @@ bool j1Scene::Update(float dt)
 	//{
 	//	App->gui->DestroyAllUIElements();
 	//}
+
+	if (musicLabel != nullptr)
+	{
+		p2SString temp;
+		temp.create("Music: %i", App->audio->musicVolume);
+		musicLabel->ChangeContent(temp.GetString());
+	}
+
+	if (sfxLabel != nullptr)
+	{
+		p2SString temp;
+		temp.create("SFX: %i", App->audio->sfxVolume);
+		sfxLabel->ChangeContent(temp.GetString());
+	}
 
 
 	return mustClose;
@@ -316,9 +331,7 @@ bool j1Scene::Save(pugi::xml_node& saveNode) const
 //void j1Scene::CreateWidgets()
 //{
    //
-   //UI_Sprite* thumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
 
-   //UI_Slider* slider = App->gui->CreateSlider({ 50, 50, }, this, { 152, 4, 122, 7 }, thumb);
 
 
 //}
@@ -326,37 +339,45 @@ bool j1Scene::Save(pugi::xml_node& saveNode) const
 void j1Scene::CreateMainMenu()
 {
 	title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
-	title->draggable = true;
 
-	play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
+	play = App->gui->CreateButton(ButtonType::PLAY, { 95, 140 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	/* UI_Label* playLabel = App->gui->CreateLabel({ 30, 30 }, this);
-	 play->Attach(playLabel, { 10, 10 });
-	 playLabel->SetText("NEW GAME", { 255, 255, 255, 255 }, App->font->defaultFont);*/
-
-	_continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this,
+	 playLabel = App->gui->CreateLabel({ 30, 30 }, this);
+	 play->Attach(playLabel, { 15, 10 });
+	 playLabel->SetText("PLAY", { 255, 255, 255, 255 }, App->font->defaultFont);
+	_continue = App->gui->CreateButton(ButtonType::CONTINUE, { 170, 140 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 	_continue->enabled = false;
+	contLabel = App->gui->CreateLabel({ 30, 30 }, this);
+
+	_continue->Attach(contLabel, { 13, 10 });
+	contLabel->SetText("CONT.", { 255, 255, 255, 255 }, App->font->defaultFont);
 
 	if (enable_continue)
 		_continue->enabled = true;
 
 
-	settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this,
+	settings = App->gui->CreateButton(ButtonType::SETTINGS, { 95, 169 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	settLabel = App->gui->CreateLabel({ 30, 30 }, this);
+	settings->Attach(settLabel, { 13, 10 });
+	settLabel->SetText("SETT.", { 255, 255, 255, 255 }, App->font->defaultFont);
 
-	credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this,
+	credits = App->gui->CreateButton(ButtonType::CREDITS, { 170, 169 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	credLabel = App->gui->CreateLabel({ 30, 30 }, this);
+	credits->Attach(credLabel, { 13, 10 });
+	credLabel->SetText("CRED.", { 255, 255, 255, 255 }, App->font->defaultFont);
 
-	exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this,
+	exit = App->gui->CreateButton(ButtonType::EXIT, { 310, 5 }, this,
 		App->gui->X_Button_Section, App->gui->X_Button_Hover,
 		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
 
-	webpage = App->gui->CreateButton(ButtonType::WEBPAGE, { 590, 285 }, this,
+	webpage = App->gui->CreateButton(ButtonType::WEBPAGE, { 305, 220 }, this,
 		App->gui->W_Button_Section, App->gui->W_Button_Hover,
 		App->gui->W_Button_Disabled, App->gui->W_Button_Clicked);
 
@@ -365,7 +386,7 @@ void j1Scene::CreateMainMenu()
 
 void j1Scene::CreateSettings()
 {
-	iPoint settings_pos = { 390, 120 };
+	iPoint settings_pos = { 100, 30 };
 	SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
 
 	settings_window = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
@@ -373,17 +394,36 @@ void j1Scene::CreateSettings()
 	toggle_fullscreen = App->gui->CreateButton(ButtonType::TOGGLE_FULLSCREEN, { 465, 155 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	UI_Label* fullscreenLabel = App->gui->CreateLabel({ 0,0 }, this);
+	fullscreenLabel->SetText("FULLSC.", { 255, 255, 255, 255 }, App->font->defaultFont);
+	toggle_fullscreen->Attach(fullscreenLabel, { 7, 10 });
+
+	settings_window->Attach(toggle_fullscreen, { 39, 15 });
 
 	toggle_framerate = App->gui->CreateButton(ButtonType::LIMIT_FRAMERATE, { 400, 155 }, this,
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
 		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+	settings_window->Attach(toggle_framerate, { 39, 45 });
+	UI_Label* framerateLabel = App->gui->CreateLabel({ 0,0 }, this);
+	framerateLabel->SetText("FPS CAP", { 255, 255, 255, 255 }, App->font->defaultFont);
+	toggle_framerate->Attach(framerateLabel, { 7, 10 });
 
 	close_settings = App->gui->CreateButton(ButtonType::CLOSE_SETTINGS, { 503, 130 }, this,
 		App->gui->X_Button_Section, App->gui->X_Button_Hover,
 		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+	settings_window->Attach(close_settings, { 115, 5 });
 
-	settings_window->Attach(exit, { 0,0 });
+	musicLabel = App->gui->CreateDynamicLabel({ 50, 140 }, this);
+	musicThumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
+	musicSlider = App->gui->CreateSlider({ 110, 115, }, this, { 152, 4, 122, 7 }, musicThumb, &App->audio->musicVolume);
 
+	sfxLabel = App->gui->CreateDynamicLabel({ 50, 140 }, this);
+	sfxThumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
+	sfxSlider = App->gui->CreateSlider({ 110, 145, }, this, { 152, 4, 122, 7 }, sfxThumb, &App->audio->sfxVolume);
+
+	musicSlider->Attach(musicLabel, { 15, -10 });
+	sfxSlider->Attach(sfxLabel, { 15, -10 });
+	
 	active_window = true;
 }
 
@@ -452,6 +492,12 @@ void j1Scene::DestroySettings()
 	App->gui->DestroyUIElement(toggle_fullscreen);
 	App->gui->DestroyUIElement(toggle_framerate);
 	App->gui->DestroyUIElement(close_settings);
+	App->gui->DestroyUIElement(musicLabel);
+	App->gui->DestroyUIElement(musicSlider);
+	App->gui->DestroyUIElement(musicThumb);
+	App->gui->DestroyUIElement(sfxLabel);
+	App->gui->DestroyUIElement(sfxSlider);
+	App->gui->DestroyUIElement(sfxThumb);
 
 	UI_Sprite* settings_window = nullptr;
 	UI_Button* toggle_fullscreen = nullptr;
@@ -531,12 +577,11 @@ bool j1Scene::OnEvent(UI_Button* button)
 	{
 		if (!active_window)
 		{
-			DestroyMainMenu();
 			in_mainmenu = false;
 			p2List_item<Levels*>* levelData = App->map->data.levels.start;
 			levelData = levelData->next;
 			App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.5f);
-
+			DestroyMainMenu();
 		}
 
 	}

@@ -20,6 +20,8 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
 
+	bool Update(float d_time);
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -34,6 +36,9 @@ public:
 
 	bool UnloadSFX();
 	bool UnloadDesiredSFX(uint id);
+
+public:
+	int musicVolume = 10, sfxVolume = 10;
 
 private:
 

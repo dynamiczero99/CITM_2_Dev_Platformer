@@ -3,10 +3,10 @@
 
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "j1Gui.h"
 
 struct SDL_Texture;
 
-class UI_Sprite;
 
 class j1Scene : public j1Module
 {
@@ -60,9 +60,13 @@ public:
 	UI_Sprite* title = nullptr;
 
 	UI_Button* play =  nullptr;
+	UI_Label* playLabel = nullptr;
 	UI_Button* _continue = nullptr;
+	UI_Label* contLabel = nullptr;
 	UI_Button* settings = nullptr;
+	UI_Label* settLabel = nullptr;
 	UI_Button* credits = nullptr;
+	UI_Label* credLabel = nullptr;
 	UI_Button* webpage = nullptr;
 	UI_Button* exit = nullptr;
 
@@ -71,7 +75,15 @@ public:
 	UI_Button* toggle_fullscreen = nullptr;
 	UI_Button* toggle_framerate = nullptr;
 	UI_Button* close_settings = nullptr;
-	//Sliders
+	UI_DynamicLabel* musicLabel = nullptr;
+	UI_DynamicLabel* sfxLabel = nullptr;
+
+
+	// Sliders
+	UI_Slider* musicSlider = nullptr;
+	UI_Sprite* musicThumb = nullptr;
+	UI_Slider* sfxSlider = nullptr;
+	UI_Sprite* sfxThumb = nullptr;
 	
 	//------Credits window
 	UI_Sprite* credits_window = nullptr;
