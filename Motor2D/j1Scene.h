@@ -49,6 +49,8 @@ public:
 	bool fullscreen = false;
 	bool active_window = false;
 	bool enable_continue = false;
+	bool escape_menu = false;
+	bool in_mainmenu = true;
 	float scene_dt = 0.0f;
 	UI_Sprite* window_to_close =  nullptr;
 

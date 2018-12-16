@@ -139,7 +139,7 @@ bool j1Scene::Update(float dt)
 	//}
 	//// ------------------------------------------------
 
-	if (App->map->data.loadedLevel != menu)
+	if (App->map->data.loadedLevel != menu && !escape_menu && !in_mainmenu)
 	{
 		App->gui->DestroyAllUIElements();
 	}
@@ -153,8 +153,13 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && App->map->data.loadedLevel != menu) {
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !in_mainmenu /*&& !escape_menu*/)
+	{
+		
 		pauseGame = !pauseGame;
+		CreateWidgets();
+		escape_menu = true;
+		
 	}
 	
 
@@ -222,6 +227,7 @@ void j1Scene::CameraLogic(float dt)
 		// Load the first level of the list. Returning to main menu
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+		in_mainmenu = true;
 	}
 
 	// START from the current level
@@ -308,54 +314,69 @@ void j1Scene::CameraLogic(float dt)
 
  void j1Scene::CreateWidgets()
  {
-	 //Values not hardcoded. Gets values from xml in j1Gui::Awake. iPoint needs to be dehardcoded
-	
-	 UI_Sprite* thumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
+	 if (in_mainmenu && !escape_menu)
+	 {
+		 //Values not hardcoded. Gets values from xml in j1Gui::Awake. iPoint needs to be dehardcoded
 
-	 UI_Slider* slider = App->gui->CreateSlider({ 50, 50, }, this, { 152, 4, 122, 7 }, thumb);
+		 UI_Sprite* thumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
 
-	//PLAY
-	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover,
-		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	UI_Label* playLabel = App->gui->CreateLabel({ 30, 30 }, this);
-	//play->Attach(playLabel, { 10, 10 });
-	playLabel->SetText("NEW GAME", { 255, 255, 255, 255 }, App->font->defaultFont);
+		 UI_Slider* slider = App->gui->CreateSlider({ 50, 50, }, this, { 152, 4, 122, 7 }, thumb);
 
-	//CONTINUE
-	UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
-		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	_continue->enabled = false;
+		 //PLAY
+		 UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
+			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		 UI_Label* playLabel = App->gui->CreateLabel({ 30, 30 }, this);
+		 //play->Attach(playLabel, { 10, 10 });
+		 playLabel->SetText("NEW GAME", { 255, 255, 255, 255 }, App->font->defaultFont);
 
-	if(enable_continue)
-		_continue->enabled = true;
+		 //CONTINUE
+		 UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this,
+			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		 _continue->enabled = false;
 
-	//SETTINGS
-	UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
-		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	//CREDITS
-	UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this, 
-		App->gui->S_Button_Section, App->gui->S_Button_Hover, 
-		App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
-	//EXIT
-	UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this, 
-		App->gui->X_Button_Section, App->gui->X_Button_Hover, 
-		App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
-	//WEBPAGE/github
-	UI_Button* webpage = App->gui->CreateButton(ButtonType::WEBPAGE, { 590, 285 }, this, 
-		App->gui->W_Button_Section, App->gui->W_Button_Hover, 
-		App->gui->W_Button_Disabled, App->gui->W_Button_Clicked);
+		 if (enable_continue)
+			 _continue->enabled = true;
 
-	/*UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
-		App->gui->L_Button_Section, App->gui->L_Button_Hover,
-		App->gui->L_Button_Disabled, App->gui->L_Button_Clicked);*/
+		 //SETTINGS
+		 UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this,
+			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		 //CREDITS
+		 UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this,
+			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+		 //EXIT
+		 UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this,
+			 App->gui->X_Button_Section, App->gui->X_Button_Hover,
+			 App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+		 //WEBPAGE/github
+		 UI_Button* webpage = App->gui->CreateButton(ButtonType::WEBPAGE, { 590, 285 }, this,
+			 App->gui->W_Button_Section, App->gui->W_Button_Hover,
+			 App->gui->W_Button_Disabled, App->gui->W_Button_Clicked);
 
-	//Title.
-	UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
-	title->draggable = true;
+		 /*UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
+			 App->gui->L_Button_Section, App->gui->L_Button_Hover,
+			 App->gui->L_Button_Disabled, App->gui->L_Button_Clicked);*/
 
+			 //Title.
+		 UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
+		 title->draggable = true;
+	 }
+	 
+
+	if (!in_mainmenu )
+	{
+
+		UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
+		UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this,
+			App->gui->X_Button_Section, App->gui->X_Button_Hover,
+			App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+
+		escape_menu = false;
+	}
+		
 	
 	
 
@@ -413,6 +434,8 @@ void j1Scene::CameraLogic(float dt)
 				 p2List_item<Levels*>* levelData = App->map->data.levels.start;
 				 levelData = levelData->next;
 
+				 escape_menu = true;
+				 in_mainmenu = false;
 				 App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.5f);
 			 }
 		 }
