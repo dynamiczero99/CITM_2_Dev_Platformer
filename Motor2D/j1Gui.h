@@ -49,11 +49,11 @@ public:
 	UI_DynamicLabel* CreateDynamicLabel(iPoint position, j1Module* callback);
 
 	bool DestroyUIElement(UI_Element* toDestroyElem);
-	void DestroyAllUIElements();
+	//void DestroyAllUIElements();
 
-	/*void OpenWindow();*/
-	void DestroyWindow();
-	bool visible = true;
+	///*void OpenWindow();*/
+	//void DestroyWindow();
+	//bool visible = true;
 
 	SDL_Texture* GetAtlas() const;
 	void UI_Debug();

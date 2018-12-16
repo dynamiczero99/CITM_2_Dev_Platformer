@@ -41,18 +41,63 @@ public:
 	bool Load(pugi::xml_node& node);
 	bool Save(pugi::xml_node& node) const;
 
-	void CreateWidgets();
+	/*void CreateWidgets();*/
 
 public:
 	p2SString menu;
 	bool pauseGame = false;
 	bool fullscreen = false;
-	bool active_window = false;
 	bool enable_continue = false;
-	bool escape_menu = false;
-	bool in_mainmenu = true;
+	bool active_window = false;
+	bool in_mainmenu = false;
+
 	float scene_dt = 0.0f;
-	UI_Sprite* window_to_close =  nullptr;
+
+	//All UI pointers initialized to nullptr
+public:
+	//---------MainMenu
+
+	UI_Sprite* title = nullptr;
+
+	UI_Button* play =  nullptr;
+	UI_Button* _continue = nullptr;
+	UI_Button* settings = nullptr;
+	UI_Button* credits = nullptr;
+	UI_Button* webpage = nullptr;
+	UI_Button* exit = nullptr;
+
+	//-------Settings window
+	UI_Sprite* settings_window = nullptr;
+	UI_Button* toggle_fullscreen = nullptr;
+	UI_Button* toggle_framerate = nullptr;
+	UI_Button* close_settings = nullptr;
+	//Sliders
+	
+	//------Credits window
+	UI_Sprite* credits_window = nullptr;
+	/*UI_Label* credits_content = nullptr;*/
+	UI_Button* close_credits = nullptr;
+
+	//-----------Ingame window
+	UI_Sprite* ingame_window = nullptr;
+	UI_Button* resume = nullptr;
+	UI_Button* save = nullptr;
+	UI_Button* load = nullptr;
+	UI_Button* to_mainmenu = nullptr;
+	UI_Button* close_ingame_menu = nullptr;
+
+
+//Widget creation
+public:
+	void CreateMainMenu();
+	void CreateSettings();
+	void CreateCredits();
+	void CreateInGameMenu();
+
+	void DestroyMainMenu();
+	void DestroySettings();
+	void DestroyCredits();
+	void DestroyInGameMenu();
 
 private:
 	void DebugInput();

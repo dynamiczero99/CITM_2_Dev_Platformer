@@ -152,7 +152,7 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
-	DestroyAllUIElements();
+	/*DestroyAllUIElements();*/
 
 	return true;
 }
@@ -180,7 +180,6 @@ UI_Sprite * j1Gui::CreateSprite(iPoint position, j1Module * callback, SDL_Rect t
 
 	return (UI_Sprite*)ret;
 }
-
 
 
 UI_Button * j1Gui::CreateButton(ButtonType type, iPoint position, j1Module * callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect disabledSection, SDL_Rect clickSection)
@@ -265,14 +264,14 @@ bool j1Gui::DestroyUIElement(UI_Element * toDestroyElem)
 	return ret;
 }
 
-void j1Gui::DestroyAllUIElements()
-{
-	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
-	{
-		uiList.del(tmp);
-		RELEASE(tmp->data);
-	}
-}
+//void j1Gui::DestroyAllUIElements()
+//{
+//	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
+//	{
+//		uiList.del(tmp);
+//		RELEASE(tmp->data);
+//	}
+//}
 
 // const getter for atlas
 SDL_Texture* j1Gui::GetAtlas() const
@@ -284,23 +283,23 @@ void j1Gui::UI_Debug()
 {
 }
 
-void j1Gui::DestroyWindow()
-{
-	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
-	{
-		if (tmp->data->type == UiElemType::SPRITE && tmp->data == App->scene->window_to_close)
-		{
-			/*DestroyUIElement(tmp->data);*/
-			DestroyAllUIElements();
-			App->scene->CreateWidgets();
-		}
-		
-
-	}
-	//This is to close more than 1 window during the game's execution
-	App->scene->active_window = false;
-	App->scene->window_to_close = nullptr;
-
-}
+//void j1Gui::DestroyWindow()
+//{
+//	for (p2List_item<UI_Element*>* tmp = uiList.start; tmp != nullptr; tmp = tmp->next)
+//	{
+//		if (tmp->data->type == UiElemType::SPRITE && tmp->data == App->scene->window_to_close)
+//		{
+//			/*DestroyUIElement(tmp->data);*/
+//			DestroyAllUIElements();
+//			App->scene->CreateWidgets();
+//		}
+//		
+//
+//	}
+//	//This is to close more than 1 window during the game's execution
+//	App->scene->active_window = false;
+//	App->scene->window_to_close = nullptr;
+//
+//}
 
 // class Gui ---------------------------------------------------
