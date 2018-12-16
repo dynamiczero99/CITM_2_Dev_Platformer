@@ -71,7 +71,7 @@ bool UI_Button::Update()
 
 void UI_Button::Draw()
 {
-	if(App->gui->visible)
+	
 		App->render->Blit(uiAtlas, position.x, position.y, currentRect);
 }
 
