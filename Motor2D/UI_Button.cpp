@@ -62,20 +62,18 @@ bool UI_Button::Update()
 			ChangeVisualState(MOUSE_LEAVE);
 		}
 	}
-
 	Drag();
+	UpdateAttached();
 	Draw();
 
 	return ret;
 }
-
 
 void UI_Button::Draw()
 {
 	if(App->gui->visible)
 		App->render->Blit(uiAtlas, position.x, position.y, currentRect);
 }
-
 
 bool UI_Button::MouseOver(const SDL_Rect& button)
 {

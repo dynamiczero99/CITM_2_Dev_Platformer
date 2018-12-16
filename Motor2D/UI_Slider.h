@@ -9,6 +9,8 @@ public:
 	UI_Slider(UiElemType type, iPoint pos, j1Module* callback, SDL_Rect texSection, UI_Sprite* _thumb);
 	~UI_Slider();
 
+	bool Update();
+
 	void CheckThumbPosition();
 
 public:

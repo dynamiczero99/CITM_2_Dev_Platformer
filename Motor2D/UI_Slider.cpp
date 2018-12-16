@@ -12,10 +12,10 @@ UI_Slider::UI_Slider(UiElemType type, iPoint pos, j1Module * callback, SDL_Rect 
 	middleHeight = (position.y + (position.y + atlasSection.y)) / 2;
 	length = thumbMaxPos - thumbMinPos;
 
-	thumbCenterFromCorner.create(atlasSection.x / 2, atlasSection.y / 2);
+	thumbCenterFromCorner.create(thumb->atlasSection.w / 2, thumb->atlasSection.h / 2);
 
 	iPoint newPos;
-	newPos.create(thumbMidPos, middleHeight);
+	newPos.create(thumbMidPos - position.x, middleHeight - position.y);
 
 	newPos -= thumbCenterFromCorner;
 
@@ -27,22 +27,25 @@ UI_Slider::~UI_Slider()
 {
 }
 
-void Update()
+bool UI_Slider::Update()
 {
+	CheckThumbPosition();
+	UpdateAttached();
+	Draw();
 
+	return true;
 }
 
 void UI_Slider::Draw()
 {
 	App->render->Blit(uiAtlas, position.x, position.y, &atlasSection);
-	CheckThumbPosition();
 }
 
 void UI_Slider::CheckThumbPosition()
 {
 	iPoint thumbCenter = thumb->position - thumbCenterFromCorner;
 
-	int relativeDistance = position.x - thumbCenter.x;
+	int relativeDistance = thumbCenter.x - position.x;
 
-	percentile = length / relativeDistance;
+	percentile = (float)relativeDistance/(float)length;
 }

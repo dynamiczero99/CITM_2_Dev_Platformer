@@ -16,6 +16,8 @@ UI_Sprite::~UI_Sprite()
 
 bool UI_Sprite::Update()
 {
+	Drag();
+	UpdateAttached();
 	Draw();
 	return true;
 }

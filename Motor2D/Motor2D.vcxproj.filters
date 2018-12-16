@@ -97,7 +97,9 @@
       <Filter>UI_Elements</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="UI_Slider.cpp" />
+    <ClCompile Include="UI_Slider.cpp">
+      <Filter>UI_Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -219,7 +221,9 @@
       <Filter>UI_Elements</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="UI_Slider.h" />
+    <ClInclude Include="UI_Slider.h">
+      <Filter>UI_Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

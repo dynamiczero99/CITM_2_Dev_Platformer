@@ -34,16 +34,16 @@ void UI_Element::Drag()
 	}
 
 	// Check if element is clicked/click has been release, and modify bool accordingly
-	SDL_Point temp_mousepos_sdl;
-	App->input->GetMousePosition(temp_mousepos_sdl.x, temp_mousepos_sdl.y);
-	temp_mousepos_sdl.x = App->render->ScreenToWorld(temp_mousepos_sdl.x, temp_mousepos_sdl.y).x;
-	temp_mousepos_sdl.y = App->render->ScreenToWorld(temp_mousepos_sdl.x, temp_mousepos_sdl.y).y;
-	if (!beingClicked && SDL_PointInRect(&temp_mousepos_sdl, &world_area) && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	SDL_Point tempMouseposSdl;
+	App->input->GetMousePosition(tempMouseposSdl.x, tempMouseposSdl.y);
+	tempMouseposSdl.x = App->render->ScreenToWorld(tempMouseposSdl.x, tempMouseposSdl.y).x;
+	tempMouseposSdl.y = App->render->ScreenToWorld(tempMouseposSdl.x, tempMouseposSdl.y).y;
+	if (!beingClicked && SDL_PointInRect(&tempMouseposSdl, &world_area) && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		beingClicked = true, LOG("Clicked = TRUE");
 	if (beingClicked && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 		beingClicked = false, LOG("Clicked = FALSE");
 	iPoint tempMousePos;
-	tempMousePos.create(temp_mousepos_sdl.x, temp_mousepos_sdl.y);
+	tempMousePos.create(tempMouseposSdl.x, tempMouseposSdl.y);
 
 	// Move element if it's clicked and if last mouse position is different from the new one
 	if (!attached && beingClicked && lastMousePos != tempMousePos && lastMousePos.x != 0 && lastMousePos.y != 0)

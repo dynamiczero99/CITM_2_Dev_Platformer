@@ -318,23 +318,23 @@ void j1Scene::CameraLogic(float dt)
 	 {
 		 //Values not hardcoded. Gets values from xml in j1Gui::Awake. iPoint needs to be dehardcoded
 
-		 UI_Sprite* thumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
-
-		 UI_Slider* slider = App->gui->CreateSlider({ 50, 50, }, this, { 152, 4, 122, 7 }, thumb);
-
 		 //PLAY
 		 UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this,
 			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 		 UI_Label* playLabel = App->gui->CreateLabel({ 30, 30 }, this);
-		 //play->Attach(playLabel, { 10, 10 });
-		 playLabel->SetText("NEW GAME", { 255, 255, 255, 255 }, App->font->defaultFont);
+		 play->Attach(playLabel, { 15, 10 });
+		 playLabel->SetText("PLAY", { 255, 255, 255, 255 }, App->font->defaultFont);
 
 		 //CONTINUE
 		 UI_Button* _continue = App->gui->CreateButton(ButtonType::CONTINUE, { 465, 200 }, this,
 			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
 		 _continue->enabled = false;
+
+		 UI_Label* contLabel = App->gui->CreateLabel({ 30, 30 }, this);
+		 _continue->Attach(contLabel, { 13, 10 });
+		 contLabel->SetText("CONT.", { 255, 255, 255, 255 }, App->font->defaultFont);
 
 		 if (enable_continue)
 			 _continue->enabled = true;
@@ -343,10 +343,20 @@ void j1Scene::CameraLogic(float dt)
 		 UI_Button* settings = App->gui->CreateButton(ButtonType::SETTINGS, { 390, 240 }, this,
 			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+
+		 UI_Label* settLabel = App->gui->CreateLabel({ 30, 30 }, this);
+		 settings->Attach(settLabel, { 13, 10 });
+		 settLabel->SetText("SETT.", { 255, 255, 255, 255 }, App->font->defaultFont);
+
 		 //CREDITS
 		 UI_Button* credits = App->gui->CreateButton(ButtonType::CREDITS, { 465, 240 }, this,
 			 App->gui->S_Button_Section, App->gui->S_Button_Hover,
 			 App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+
+		 UI_Label* credLabel = App->gui->CreateLabel({ 30, 30 }, this);
+		 credits->Attach(credLabel, { 13, 10 });
+		 credLabel->SetText("CRED.", { 255, 255, 255, 255 }, App->font->defaultFont);
+
 		 //EXIT
 		 UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this,
 			 App->gui->X_Button_Section, App->gui->X_Button_Hover,
@@ -363,6 +373,11 @@ void j1Scene::CameraLogic(float dt)
 			 //Title.
 		 UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
 		 title->draggable = true;
+
+		 // Slider test
+		 UI_Sprite* thumb = App->gui->CreateSprite({ 395,100 }, this, { 301, 3, 12, 24 });
+		 UI_Slider* slider = App->gui->CreateSlider({ 390, 100, }, this, { 152, 4, 122, 7 }, thumb);
+
 	 }
 	 
 
