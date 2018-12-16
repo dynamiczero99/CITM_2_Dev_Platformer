@@ -620,7 +620,7 @@ bool j1Scene::OnEvent(UI_Button* button)
 	}
 	case ButtonType::WEBPAGE:
 	{
-		ShellExecuteA(NULL, "open", "https://github.com/dynamiczero99/CITM_2_Dev_Platformer",
+		ShellExecuteA(NULL, "open", "https://dynamiczero99.github.io/CITM_2_Dev_Platformer/",
 			NULL, NULL, SW_SHOWNORMAL);
 		break;
 	}
