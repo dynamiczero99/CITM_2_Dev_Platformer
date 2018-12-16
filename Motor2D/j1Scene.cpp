@@ -61,7 +61,7 @@ bool j1Scene::Start()
 	{
 		p2List_item<Levels*>* levelData = App->map->data.levels.start;
 		App->map->Load(levelData->data->name.GetString());
-		//CreateMainMenu();
+		CreateMainMenu();
 		firstStart = false;
 	}
 	// ----------------------------------------------------------
@@ -87,9 +87,6 @@ bool j1Scene::Start()
 
 	// loads music
 	App->audio->PlayMusic(App->map->data.properties.music_name.GetString(), 0.0f);
-
-
-	CreateMainMenu();
 	return true;
 }
 
