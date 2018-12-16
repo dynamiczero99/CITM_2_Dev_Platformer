@@ -421,6 +421,9 @@ void j1Scene::CreateSettings()
 	sfxThumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
 	sfxSlider = App->gui->CreateSlider({ 110, 145, }, this, { 152, 4, 122, 7 }, sfxThumb, &App->audio->sfxVolume);
 
+	App->audio->musicVolume = 10;
+	App->audio->sfxVolume = 10;
+
 	musicSlider->Attach(musicLabel, { 15, -10 });
 	sfxSlider->Attach(sfxLabel, { 15, -10 });
 	
@@ -429,7 +432,7 @@ void j1Scene::CreateSettings()
 
 void j1Scene::CreateCredits()
 {
-	iPoint credits_pos = { 325, 70 };
+	iPoint credits_pos = { 100, 30 };
 	SDL_Rect big_windows_coords = { 59, 364, 274, 244 };
 	credits_window = App->gui->CreateSprite(credits_pos, this, big_windows_coords);
 
