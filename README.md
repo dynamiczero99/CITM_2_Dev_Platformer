@@ -10,7 +10,7 @@ Swap Game is a puzzle platformer.
 
 ## The Team
 ### Víctor Chen
-![](http://i.imgur.com/AZKuqnw.png)
+![](https://i.imgur.com/whMlj9l.png)
 
  - UI UML Planning
  - UI UML Design
