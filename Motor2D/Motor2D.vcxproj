@@ -109,6 +109,7 @@
     <ClCompile Include="UI_DynamicLabel.cpp" />
     <ClCompile Include="UI_Element.cpp" />
     <ClCompile Include="UI_Label.cpp" />
+    <ClCompile Include="UI_Slider.cpp" />
     <ClCompile Include="UI_Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="UI_DynamicLabel.h" />
     <ClInclude Include="UI_Element.h" />
     <ClInclude Include="UI_Label.h" />
+    <ClInclude Include="UI_Slider.h" />
     <ClInclude Include="UI_Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

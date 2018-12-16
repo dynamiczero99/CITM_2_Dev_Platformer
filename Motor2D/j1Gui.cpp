@@ -191,6 +191,18 @@ UI_Button * j1Gui::CreateButton(ButtonType type, iPoint position, j1Module * cal
 	return (UI_Button*)ret;
 }
 
+UI_Slider * j1Gui::CreateSlider(iPoint position, j1Module * callback, SDL_Rect texSection, UI_Sprite * thumb)
+{
+	UI_Element* ret = nullptr;
+
+	ret = new UI_Slider(SLIDER, position, callback, texSection, thumb);
+
+	if (ret != nullptr)
+		uiList.add(ret);
+
+	return (UI_Slider*)ret;
+}
+
 UI_Label * j1Gui::CreateLabel(iPoint position, j1Module * callback)
 {
 	UI_Element* ret = nullptr;

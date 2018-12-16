@@ -16,9 +16,12 @@ private:
 
 	virtual void Draw();
 
+public:
+
+	SDL_Rect atlasSection;
+
 protected:
 	SDL_Texture* uiAtlas = nullptr;
-	SDL_Rect atlasSection;
 };
 
 #endif //_UI_SPRITE_

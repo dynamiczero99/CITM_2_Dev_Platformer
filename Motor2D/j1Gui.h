@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "UI_Element.h"
 #include "UI_Sprite.h"
+#include "UI_Slider.h"
 #include "UI_Button.h"
 #include "UI_Label.h"
 #include "UI_DynamicLabel.h"
@@ -43,6 +44,7 @@ public:
 	UI_Element* CreateUIElement(iPoint position, j1Module* callback);
 	UI_Sprite* CreateSprite(iPoint position, j1Module* callback, SDL_Rect texSection);
 	UI_Button* CreateButton(ButtonType type, iPoint position, j1Module* callback, SDL_Rect idleSection, SDL_Rect hoverSection, SDL_Rect clickSection, SDL_Rect disabledSection);
+	UI_Slider* CreateSlider(iPoint position, j1Module* callback, SDL_Rect texSection, UI_Sprite* thumb);
 	UI_Label* CreateLabel(iPoint position, j1Module* callback);
 	UI_DynamicLabel* CreateDynamicLabel(iPoint position, j1Module* callback);
 

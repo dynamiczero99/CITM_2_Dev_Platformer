@@ -61,7 +61,6 @@ public:
 
 private:
 
-	
 	uint click_sfx;
 
 	SDL_Rect clickRect;

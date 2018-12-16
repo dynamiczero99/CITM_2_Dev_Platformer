@@ -310,6 +310,10 @@ void j1Scene::CameraLogic(float dt)
  {
 	 //Values not hardcoded. Gets values from xml in j1Gui::Awake. iPoint needs to be dehardcoded
 	
+	 UI_Sprite* thumb = App->gui->CreateSprite({ 0,0 }, this, { 301, 3, 12, 24 });
+
+	 UI_Slider* slider = App->gui->CreateSlider({ 50, 50, }, this, { 152, 4, 122, 7 }, thumb);
+
 	//PLAY
 	UI_Button* play = App->gui->CreateButton(ButtonType::PLAY, { 390, 200 }, this, 
 		App->gui->S_Button_Section, App->gui->S_Button_Hover,
