@@ -24,16 +24,17 @@ We've programmed the game from scratch in C++ and used free artwork.
 - Space: Jump
 - Mouse left button: Shoot a projectile which marks objects
 - Mouse right button: Swap positions with marked object
+- ESC: pause game.
 
 ## Credits
-# Owners of this project:
+### Owners of this project:
 - Owner: Jose Antonio Prieto
 - [Jose Antonio Prieto's GitHub Link](https://github.com/peterMcP)
 
 - Owner: Jaume Montagut
-- [Jose Antonio Prieto's GitHub Link](https://github.com/JaumeMontagut)
+- [Jaume Montagut's GitHub Link](https://github.com/JaumeMontagut)
 
-# Authors after the fork:
+### Authors after the fork:
 
 Joel Cabaco Pérez
    - [Joel's GitHub Link](https://github.com/dynamiczero99)
@@ -41,7 +42,7 @@ Joel Cabaco Pérez
 Victor Chen Chen
    - [Victor's GitHub Link](https://github.com/Scarzard)
 
-- Art from:
+### Art from:
 
 Ollie Berzs: _https://ollieberzs.itch.io/industrial-pack_
 
@@ -51,7 +52,7 @@ Buch: https://opengameart.org/content/sci-fi-interior-tiles
 
 OmegaGrim: https://hyohnoo.itch.io/keyboard-controller-keys
 
-- Music from:
+### Music from:
   
 cynicmusic: https://opengameart.org/content/mysterious-ambience-song21
 
@@ -59,7 +60,7 @@ benjobanjo: https://opengameart.org/content/rpg-map-screen
 
 Brandon Morris: https://opengameart.org/content/loading-screen-loop
 
-- SFX from:
+### SFX from:
   
 Ogrebane: https://opengameart.org/content/teleport-spell
 
@@ -72,6 +73,9 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 
 ## Innovations:
 - Animated main menu screen.
+- Debug functionality to go back in levels.
+- Toggle fullscreen in settings.
+- Toggle framerate cap in settings.
 
 
 ## Important notes.
@@ -100,27 +104,8 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 
 ## License:
 	GNU GPLv3
-	-Swap Game- (Provisional name)
-    Copyright (C) 2018  Jaume Montagut / Jose Antonio Prieto
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-	
-	See the license here: https://github.com/JaumeMontagut/CITM_2_Dev_Platformer/blob/master/LICENSE
-
-## Find this project's repository in:
-https://github.com/dynamiczero99/CITM_2_Dev_Platformer
-t (C) 2018  Jaume Montagut / Jose Antonio Prieto
+	-Swap Game- 
+    Copyright (C) 2018  (Jaume Montagut / Jose Antonio Prieto
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -139,6 +124,3 @@ t (C) 2018  Jaume Montagut / Jose Antonio Prieto
 
 ## Find this project's repository in:
 https://github.com/JaumeMontagut/CITM_2_Dev_Platformer
-
-## Find this project's scrum board in:
-https://trello.com/b/TiOp7JWt
