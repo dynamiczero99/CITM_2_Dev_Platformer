@@ -94,6 +94,7 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
   - Move up width W and move down with S
 - Enter: Go to the next level (if you are in the last one come back to the first)
 - Return: Go to the previous level.
+
 - NUMPAD 7: Zoom in
 - NUMPAD 9: Zoom out
 - NUMPAD 8: Move camera up
@@ -105,7 +106,7 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 ## License:
 	GNU GPLv3
 	-Swap Game- 
-    Copyright (C) 2018  (Jaume Montagut / Jose Antonio Prieto
+    Copyright (C) 2018  Jaume Montagut / Jose Antonio Prieto
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -123,4 +124,4 @@ sauer2: https://opengameart.org/content/oldschool-win-and-die-jump-and-run-sound
 	See the license here: https://github.com/JaumeMontagut/CITM_2_Dev_Platformer/blob/master/LICENSE
 
 ## Find this project's repository in:
-https://github.com/JaumeMontagut/CITM_2_Dev_Platformer
+https://github.com/dynamiczero99/CITM_2_Dev_Platformer
