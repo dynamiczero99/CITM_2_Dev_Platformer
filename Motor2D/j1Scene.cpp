@@ -159,6 +159,9 @@ bool j1Scene::PostUpdate()
 		pauseGame = !pauseGame;
 		CreateWidgets();
 		escape_menu = true;
+
+		if(!pauseGame)
+			App->gui->DestroyAllUIElements();
 		
 	}
 	
@@ -384,10 +387,27 @@ void j1Scene::CameraLogic(float dt)
 	if (!in_mainmenu )
 	{
 
-		UI_Sprite* title = App->gui->CreateSprite(App->gui->title_pos, this, App->gui->title_Rect);
-		UI_Button* exit = App->gui->CreateButton(ButtonType::EXIT, { 605, 70 }, this,
+		iPoint settings_pos = { 390, 120 };
+		SDL_Rect small_windows_coords = { 151, 15, 142, 163 };
+
+
+		UI_Sprite* settings = App->gui->CreateSprite(settings_pos, this, small_windows_coords);
+
+		UI_Button* exit = App->gui->CreateButton(ButtonType::CLOSE_WINDOW, { 503, 130 }, this,
 			App->gui->X_Button_Section, App->gui->X_Button_Hover,
 			App->gui->X_Button_Disabled, App->gui->X_Button_Clicked);
+
+		UI_Button* resume = App->gui->CreateButton(ButtonType::RESUME, { 465, 155 }, this,
+			App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+
+		UI_Button* to_main_menu = App->gui->CreateButton(ButtonType::TO_MAIN_MENU, { 400, 155 }, this,
+			App->gui->S_Button_Section, App->gui->S_Button_Hover,
+			App->gui->S_Button_Disabled, App->gui->S_Button_Clicked);
+
+		settings->Attach(exit, { 0,0 });
+
+		window_to_close = settings;
 
 		escape_menu = false;
 	}
@@ -526,12 +546,6 @@ void j1Scene::CameraLogic(float dt)
 							NULL, NULL, SW_SHOWNORMAL);
 			 break;
 		 }
-		 case ButtonType::CLOSE_WINDOW:
-		 {
-			 App->gui->DestroyWindow();
-			 
-			 break;
-		 }
 		 case ButtonType::TOGGLE_FULLSCREEN:
 		 {
 			 if (!fullscreen)
@@ -548,11 +562,53 @@ void j1Scene::CameraLogic(float dt)
 
 			 break;
 		 }
+
 		 case ButtonType::LIMIT_FRAMERATE:
 		 {
-			 if(active_window)
+			 if (active_window)
 				 App->capFrames = !App->capFrames;
 
+			 break;
+		 }
+		 //--------------------------INGAME BUTTONS-----------------------
+		 case ButtonType::RESUME:
+		 {
+			 pauseGame = !pauseGame;
+
+			 if (!pauseGame)
+				 App->gui->DestroyAllUIElements();
+			 
+			 break;
+		 }
+		
+		 case ButtonType::SAVE_GAME:
+		 {
+			 if (active_window)
+				 App->capFrames = !App->capFrames;
+
+			 break;
+		 }
+
+		 case ButtonType::LOAD_GAME:
+		 {
+			 if (active_window)
+				 App->capFrames = !App->capFrames;
+
+			 break;
+		 }
+
+		 case ButtonType::TO_MAIN_MENU:
+		 {
+			 // Load the first level of the list. Returning to main menu
+			 App->gui->DestroyAllUIElements();
+			 pauseGame = false;
+			 in_mainmenu = true;
+			 escape_menu = false;
+			 CreateWidgets();
+			 p2List_item<Levels*>* levelData = App->map->data.levels.start;
+			 App->fade_to_black->FadeToBlack(levelData->data->name.GetString(), 1.0f);
+			 
+			
 			 break;
 		 }
 
