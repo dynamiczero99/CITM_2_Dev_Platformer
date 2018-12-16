@@ -6,7 +6,7 @@ You can find the original work in the following link: https://github.com/JaumeMo
 We do not take any credits from the original code as it belongs to their respective owners.
 
 ## About the Game 
-Swap Game is a puzzle platformer.
+Swap Game is a puzzle platformer. The player can shoot at certain elements to mark them and then swap positions with the marked item in order to succeed in a level.
 
 ## The Team
 ### Víctor Chen
@@ -40,6 +40,7 @@ Swap Game is a puzzle platformer.
 	A: Move left
 	D: Move right
 	Space: Jump
+	Mouse: Aim
 	Mouse left button: Shoot a projectile which marks objects
 	Mouse right button: Swap positions with marked object
 	
