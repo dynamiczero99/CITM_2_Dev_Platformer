@@ -69,6 +69,8 @@ bool j1Object::PreUpdate() {
 			objects[i]->PreUpdate();
 		}
 	}
+
+	
 	return true;
 }
 
@@ -96,12 +98,7 @@ bool j1Object::PostUpdate() {
 			objects[i]->PostUpdate();
 		}
 	}
-
-	if (App->scene->pauseGame)
-	{
-		App->render->DrawQuad({ 0, 0, (int)App->win->width, (int)App->win->height }, 0, 0, 0, 150, true, false);
-	}
-
+	
 	return true;
 }
 

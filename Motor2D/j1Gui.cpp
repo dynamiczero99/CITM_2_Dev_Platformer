@@ -119,6 +119,8 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
+	
+
 	return true;
 }
 
@@ -131,15 +133,17 @@ bool j1Gui::Update(float dt)
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
-	/*if (App->scene->pauseGame)
+	if (App->scene->pauseGame)
 	{
 		App->render->DrawQuad({ 0, 0, (int)App->win->width, (int)App->win->height }, 0, 0, 0, 150, true, false);
-	}*/
+	}
 
 	for (p2List_item<UI_Element*>* iterator = uiList.start; iterator; iterator = iterator->next)
 	{
 		iterator->data->Update();
 	}
+	
+	
 	return true;
 }
 

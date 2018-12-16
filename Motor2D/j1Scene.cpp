@@ -159,6 +159,9 @@ bool j1Scene::PostUpdate()
 		pauseGame = !pauseGame;
 		CreateWidgets();
 		escape_menu = true;
+
+		if(!pauseGame)
+			App->gui->DestroyAllUIElements();
 		
 	}
 	
